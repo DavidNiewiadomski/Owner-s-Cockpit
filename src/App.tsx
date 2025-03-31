@@ -9,6 +9,10 @@ import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
 import Integrations from "./pages/Integrations";
+import Settings from "./pages/Settings";
+import Messages from "./pages/Messages";
+import Timeline from "./pages/Timeline";
+import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound";
 
 // Enable dark mode by default
@@ -35,10 +39,10 @@ const App = () => {
             <Route path="/documents" element={<Documents />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/integrations" element={<Integrations />} />
-            <Route path="/projects" element={<Navigate to="/" />} />
-            <Route path="/timeline" element={<Navigate to="/" />} />
-            <Route path="/messages" element={<Navigate to="/" />} />
-            <Route path="/settings" element={<Navigate to="/" />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/timeline" element={<Timeline />} />
+            <Route path="/projects" element={<Projects />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
