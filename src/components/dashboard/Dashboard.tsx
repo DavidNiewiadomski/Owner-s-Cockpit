@@ -23,7 +23,7 @@ export function Dashboard({
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
-  // Define AI insights
+  // Define AI insights - ensure these are all strings
   const insights = [
     "Construction delays may impact your ROI by 2.3% annually",
     "Material cost increases have affected 3 of your projects",
@@ -41,7 +41,7 @@ export function Dashboard({
             <Button>New Project</Button>
           }
         />
-        <div className="flex items-center pr-2">
+        <div className="flex items-center pr-2 z-10">
           <ProjectSelector />
         </div>
       </div>
