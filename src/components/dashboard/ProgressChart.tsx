@@ -53,29 +53,35 @@ export function ProgressChart({ data }: ProgressChartProps) {
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis 
                 dataKey="name" 
-                tick={{ fill: '#aaa', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                tick={{ fill: '#e2e8f0', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
               />
               <YAxis 
-                tick={{ fill: '#aaa', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                tick={{ fill: '#e2e8f0', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
               />
               <Tooltip 
-                contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                contentStyle={{ 
+                  backgroundColor: '#1f2937', 
+                  border: '1px solid rgba(255,255,255,0.2)', 
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+                }}
                 labelStyle={{ color: '#fff', fontWeight: 'bold' }}
+                itemStyle={{ color: '#e2e8f0' }}
               />
               <defs>
                 <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0}/>
+                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.2}/>
                 </linearGradient>
               </defs>
               <Area 
                 type="monotone" 
                 dataKey="value" 
                 stroke="#38bdf8" 
-                fill="url(#splitColor)" 
                 strokeWidth={3}
+                fill="url(#splitColor)" 
                 className={`transition-all duration-1000 ${activeChart ? 'opacity-100' : 'opacity-80'}`}
                 animationDuration={1500}
               />
