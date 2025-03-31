@@ -26,14 +26,43 @@ import {
   timelineInsights 
 } from '@/data/timelineData';
 
-// Project-specific milestone data
-const projectMilestoneData = {
+// Define a consistent type for realityCapture to fix type errors
+interface RealityCaptureBase {
+  available: boolean;
+}
+
+interface RealityCaptureAvailable extends RealityCaptureBase {
+  available: true;
+  date: string;
+  url: string;
+}
+
+interface RealityCaptureUnavailable extends RealityCaptureBase {
+  available: false;
+  date?: never;
+  url?: never;
+}
+
+type RealityCapture = RealityCaptureAvailable | RealityCaptureUnavailable;
+
+// Define milestone type to ensure consistency
+interface Milestone {
+  name: string;
+  plannedDate: string;
+  actualDate: string;
+  status: "completed" | "delayed" | "in-progress" | "upcoming";
+  description: string;
+  realityCapture: RealityCapture;
+}
+
+// Project-specific milestone data with consistent typing
+const projectMilestoneData: Record<string, Milestone[]> = {
   '1': [
     {
       name: "Site Preparation",
       plannedDate: "Jan 15, 2024",
       actualDate: "Jan 20, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Clearing and grading of East Tower site",
       realityCapture: {
         available: true,
@@ -45,7 +74,7 @@ const projectMilestoneData = {
       name: "Foundation Work",
       plannedDate: "Mar 1, 2024",
       actualDate: "Feb 25, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Foundation pouring and curing",
       realityCapture: {
         available: true,
@@ -57,7 +86,7 @@ const projectMilestoneData = {
       name: "Structural Framework",
       plannedDate: "Jun 15, 2024",
       actualDate: "Not Started",
-      status: "in-progress" as const,
+      status: "in-progress",
       description: "Steel framework installation for all 32 floors",
       realityCapture: {
         available: false
@@ -67,15 +96,21 @@ const projectMilestoneData = {
       name: "Facade Installation",
       plannedDate: "Sep 1, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Glass panel installation on building exterior"
+      status: "upcoming",
+      description: "Glass panel installation on building exterior",
+      realityCapture: {
+        available: false
+      }
     },
     {
       name: "Interior Finishing",
       plannedDate: "Dec 15, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Interior walls, flooring, and fixtures"
+      status: "upcoming",
+      description: "Interior walls, flooring, and fixtures",
+      realityCapture: {
+        available: false
+      }
     }
   ],
   '2': [
@@ -83,7 +118,7 @@ const projectMilestoneData = {
       name: "Land Clearing",
       plannedDate: "Feb 10, 2024",
       actualDate: "Feb 15, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Vegetation removal and initial grading",
       realityCapture: {
         available: true,
@@ -95,7 +130,7 @@ const projectMilestoneData = {
       name: "Drainage System",
       plannedDate: "Apr 5, 2024",
       actualDate: "Apr 15, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Storm water management and drainage installation",
       realityCapture: {
         available: true,
@@ -107,7 +142,7 @@ const projectMilestoneData = {
       name: "Main Pathways",
       plannedDate: "Jun 1, 2024",
       actualDate: "Not Started",
-      status: "in-progress" as const,
+      status: "in-progress",
       description: "Primary walking and biking paths through park",
       realityCapture: {
         available: false
@@ -117,15 +152,21 @@ const projectMilestoneData = {
       name: "Playground Construction",
       plannedDate: "Aug 10, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Installation of playground equipment and safety surfaces"
+      status: "upcoming",
+      description: "Installation of playground equipment and safety surfaces",
+      realityCapture: {
+        available: false
+      }
     },
     {
       name: "Landscaping & Planting",
       plannedDate: "Sep 25, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Trees, shrubs, and lawn areas installation"
+      status: "upcoming",
+      description: "Trees, shrubs, and lawn areas installation",
+      realityCapture: {
+        available: false
+      }
     }
   ],
   '3': [
@@ -133,7 +174,7 @@ const projectMilestoneData = {
       name: "Initial Assessment",
       plannedDate: "Mar 5, 2024",
       actualDate: "Mar 10, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Structural inspection and engineering assessment",
       realityCapture: {
         available: true,
@@ -145,7 +186,7 @@ const projectMilestoneData = {
       name: "Traffic Management Plan",
       plannedDate: "Apr 1, 2024",
       actualDate: "Apr 10, 2024",
-      status: "completed" as const,
+      status: "completed",
       description: "Detour routes and traffic flow planning",
       realityCapture: {
         available: false
@@ -155,7 +196,7 @@ const projectMilestoneData = {
       name: "Support Column Reinforcement",
       plannedDate: "May 15, 2024",
       actualDate: "Not Started",
-      status: "in-progress" as const,
+      status: "in-progress",
       description: "Strengthening existing support columns",
       realityCapture: {
         available: true,
@@ -167,18 +208,29 @@ const projectMilestoneData = {
       name: "Deck Replacement",
       plannedDate: "Aug 1, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Bridge deck removal and installation of new surface"
+      status: "upcoming",
+      description: "Bridge deck removal and installation of new surface",
+      realityCapture: {
+        available: false
+      }
     },
     {
       name: "Final Inspections",
       plannedDate: "Oct 15, 2024",
       actualDate: "Not Started",
-      status: "upcoming" as const,
-      description: "Engineering safety inspections and load testing"
+      status: "upcoming",
+      description: "Engineering safety inspections and load testing",
+      realityCapture: {
+        available: false
+      }
     }
   ],
-  'all': baseMilestoneData
+  'all': baseMilestoneData.map(milestone => ({
+    ...milestone,
+    realityCapture: milestone.realityCapture.available ? 
+      { ...milestone.realityCapture } : 
+      { available: false }
+  })) as Milestone[]
 };
 
 interface RealityCaptureEvent {
@@ -193,7 +245,7 @@ const Timeline = () => {
   const [timelineView, setTimelineView] = useState("gantt");
   const [realityCapture, setRealityCapture] = useState<RealityCaptureEvent | null>(null);
   const { selectedProject } = useProject();
-  const [milestoneData, setMilestoneData] = useState(baseMilestoneData);
+  const [milestoneData, setMilestoneData] = useState<Milestone[]>(baseMilestoneData as Milestone[]);
   const [projectSpecificInsights, setProjectSpecificInsights] = useState<string[]>([]);
   
   // Update milestones and insights based on selected project
