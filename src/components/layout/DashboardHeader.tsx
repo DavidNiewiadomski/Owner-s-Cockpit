@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -22,7 +21,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export interface DashboardHeaderProps {
   onSearch?: (term: string) => void;
@@ -33,7 +32,7 @@ export interface DashboardHeaderProps {
 export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderProps) {
   const [searchValue, setSearchValue] = useState('');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -47,7 +46,6 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
     <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between py-4">
         <div className="flex items-center gap-2 md:gap-4">
-          {/* Mobile menu button */}
           <Button
             variant="ghost"
             size="icon"
@@ -57,7 +55,6 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
             {showMobileMenu ? <X /> : <Menu />}
           </Button>
           
-          {/* Title area - will only show when title is provided */}
           {title && (
             <div className="hidden md:block">
               <h1 className="text-xl font-bold">{title}</h1>
@@ -67,7 +64,6 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
         </div>
         
         <div className="flex flex-1 items-center justify-end md:justify-between gap-2">
-          {/* Search bar */}
           <div className="relative max-w-md flex-1 hidden md:block ml-8">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input 
@@ -79,7 +75,6 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
             />
           </div>
           
-          {/* Right-side actions */}
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

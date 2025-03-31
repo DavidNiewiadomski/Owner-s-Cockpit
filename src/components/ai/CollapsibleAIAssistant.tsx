@@ -17,7 +17,6 @@ interface CollapsibleAIAssistantProps {
   projectName?: string;
   insights?: string[];
   className?: string;
-  // Add these new props
   projectContext?: string;
   initialInsights?: Insight[];
   mode?: string;
@@ -87,7 +86,7 @@ export function CollapsibleAIAssistant({
                   }`} />
                   <div>
                     {initialInsights && <p className="text-xs font-medium mb-1">{insight.title}</p>}
-                    <p className="text-sm text-gray-200">{insight.content || insight}</p>
+                    <p className="text-sm text-gray-200">{typeof insight === 'string' ? insight : insight.content}</p>
                   </div>
                 </div>
               ))}

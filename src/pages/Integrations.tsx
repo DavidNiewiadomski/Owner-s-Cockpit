@@ -6,8 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import { crypto } from 'crypto';
+import { useToast } from '@/hooks/use-toast';
 
 // Sample integrations data with expanded categories
 const integrations = [
@@ -96,22 +95,27 @@ const categories = [
   { id: 'other', name: 'Other Integrations', icon: Code2 }
 ];
 
-const handleIntegrationAction = (action: string, name: string) => {
-  toast({
-    id: crypto.randomUUID(),
-    title: `${action}: ${name}`,
-    description: `Integration ${action.toLowerCase()} successfully.`,
-    duration: 3000,
-  });
-};
-
 const Integrations = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleIntegrationToggle = (name: string) => {
-    handleIntegrationAction('Toggle', name);
+    toast({
+      id: crypto.randomUUID(),
+      title: `Toggle: ${name}`,
+      description: `Integration toggle successfully.`,
+      duration: 3000,
+    });
+  };
+
+  const handleIntegrationAction = (action: string, name: string) => {
+    toast({
+      id: crypto.randomUUID(),
+      title: `${action}: ${name}`,
+      description: `Integration ${action.toLowerCase()} successfully.`,
+      duration: 3000,
+    });
   };
 
   const filteredIntegrations = integrations.filter(integration => {
