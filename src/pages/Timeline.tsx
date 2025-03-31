@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -377,7 +376,6 @@ const Timeline = () => {
     }
   };
 
-  // Project-specific insights based on selected project
   const projectSpecificInsights = [
     `Schedule variance is currently 2.5 days ahead for ${selectedProject?.title || 'this project'}`,
     `Critical path activities are 92% on schedule for ${selectedProject?.title || 'this project'}`,
@@ -500,18 +498,18 @@ const Timeline = () => {
                 ) : null}
                 
                 {timelineView === "gantt" && (
-                  <Card>
+                  <Card className="bg-gray-800 border-gray-700">
                     <CardHeader className="pb-2">
-                      <CardTitle className="flex justify-between items-center">
+                      <CardTitle className="flex justify-between items-center text-white">
                         <span>Gantt Chart</span>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                          <Badge variant="outline" className="bg-blue-900/40 text-blue-400 border-blue-500">
                             Planned
                           </Badge>
-                          <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+                          <Badge variant="outline" className="bg-green-900/40 text-green-400 border-green-500">
                             Actual
                           </Badge>
-                          <Badge variant="outline" className="bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
+                          <Badge variant="outline" className="bg-purple-900/40 text-purple-400 border-purple-500">
                             % Complete
                           </Badge>
                         </div>
@@ -525,9 +523,21 @@ const Timeline = () => {
                             data={ganttData}
                             margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
                           >
-                            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                            <XAxis type="number" domain={[0, 56]} tickCount={15} />
-                            <YAxis dataKey="name" type="category" width={100} />
+                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.15)" />
+                            <XAxis 
+                              type="number" 
+                              domain={[0, 56]} 
+                              tickCount={15} 
+                              tick={{ fill: '#e2e8f0' }}
+                              axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                            />
+                            <YAxis 
+                              dataKey="name" 
+                              type="category" 
+                              width={100} 
+                              tick={{ fill: '#e2e8f0' }}
+                              axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                            />
                             <Tooltip 
                               formatter={(value: any, name: string) => {
                                 if (name === 'actualStart' || name === 'actualEnd') return null;
@@ -540,30 +550,44 @@ const Timeline = () => {
                                 if (active && payload && payload.length) {
                                   const data = payload[0].payload;
                                   return (
-                                    <div className="bg-background border p-3 rounded-md shadow-md">
-                                      <p className="font-bold text-sm mb-1">{data.name}</p>
-                                      <p className="text-sm">Planned: Week {data.plannedStart} - Week {data.plannedEnd}</p>
+                                    <div className="bg-gray-800 border border-gray-600 p-3 rounded-md shadow-md">
+                                      <p className="font-bold text-sm mb-1 text-white">{data.name}</p>
+                                      <p className="text-sm text-gray-200">Planned: Week {data.plannedStart} - Week {data.plannedEnd}</p>
                                       {data.actualStart !== null && (
-                                        <p className="text-sm">Actual: Week {data.actualStart}{data.actualEnd ? ` - Week ${data.actualEnd}` : ' (in progress)'}</p>
+                                        <p className="text-sm text-gray-200">Actual: Week {data.actualStart}{data.actualEnd ? ` - Week ${data.actualEnd}` : ' (in progress)'}</p>
                                       )}
-                                      <p className="font-semibold text-sm mt-1">Completion: {data.completion}%</p>
+                                      <p className="font-semibold text-sm mt-1 text-gray-200">Completion: {data.completion}%</p>
                                     </div>
                                   );
                                 }
                                 return null;
                               }}
                             />
-                            <Legend />
-                            <ReferenceLine x={18} stroke="#ef4444" strokeWidth={2} label={{ value: 'Today', position: 'top', fill: '#ef4444' }} />
+                            <Legend 
+                              formatter={(value, entry) => (
+                                <span style={{ color: '#e2e8f0' }}>{value}</span>
+                              )}
+                            />
+                            <ReferenceLine 
+                              x={18} 
+                              stroke="#ef4444" 
+                              strokeWidth={2} 
+                              label={{ 
+                                value: 'Today', 
+                                position: 'top', 
+                                fill: '#ef4444',
+                                fontSize: 12,
+                                fontWeight: 'bold' 
+                              }} 
+                            />
                             
-                            {/* Planned Duration Bars */}
                             <Bar 
                               dataKey="plannedDuration"
                               name="Planned"
                               barSize={20}
-                              fill="#3b82f6"
-                              fillOpacity={0.3}
-                              stroke="#3b82f6"
+                              fill="#1A56DB"
+                              fillOpacity={0.85}
+                              stroke="#60A5FA"
                               strokeWidth={1}
                               radius={[0, 4, 4, 0]}
                               stackId="a"
@@ -574,14 +598,13 @@ const Timeline = () => {
                               }))}
                             />
                             
-                            {/* Actual Duration Bars */}
                             <Bar 
                               dataKey="actualDuration" 
                               name="Actual" 
                               barSize={20}
-                              fill="#10b981"
-                              fillOpacity={0.8}
-                              stroke="#047857"
+                              fill="#047857"
+                              fillOpacity={0.85}
+                              stroke="#34D399"
                               strokeWidth={1}
                               radius={[0, 4, 4, 0]}
                               stackId="b"
@@ -594,12 +617,13 @@ const Timeline = () => {
                               }))}
                             />
 
-                            {/* Completion Progress Bars */}
                             <Bar
                               dataKey="progressBar"
                               name="Progress"
                               barSize={6}
-                              fill="#8b5cf6"
+                              fill="#8B5CF6"
+                              stroke="#C4B5FD"
+                              strokeWidth={1}
                               radius={4}
                               stackId="c"
                               data={ganttData.map(item => {
