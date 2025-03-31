@@ -51,21 +51,21 @@ export function Dashboard({
           <TabsTrigger value="risks">Risks</TabsTrigger>
         </TabsList>
         
-        {/* Fixed: Using separate TabsContent components for each tab value instead of passing activeTab as a child */}
+        {/* Create a single TabsContent for each tab, passing the tab name to DashboardTabContent */}
         <TabsContent value="overview">
-          <DashboardTabContent />
+          <DashboardTabContent tab="overview" />
         </TabsContent>
         <TabsContent value="timeline">
-          <DashboardTabContent />
+          <DashboardTabContent tab="timeline" />
         </TabsContent>
         <TabsContent value="budget">
-          <DashboardTabContent />
+          <DashboardTabContent tab="budget" />
         </TabsContent>
         <TabsContent value="team">
-          <DashboardTabContent />
+          <DashboardTabContent tab="team" />
         </TabsContent>
         <TabsContent value="risks">
-          <DashboardTabContent />
+          <DashboardTabContent tab="risks" />
         </TabsContent>
       </Tabs>
     </div>

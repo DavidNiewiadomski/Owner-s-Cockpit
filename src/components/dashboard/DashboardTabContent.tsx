@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { TabsContent } from '@/components/ui/tabs';
 import { ProjectProgress } from '@/components/dashboard/ProjectProgress';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
 import { TeamMembers } from '@/components/dashboard/TeamMembers';
@@ -10,58 +9,66 @@ import { BudgetOverview } from '@/components/dashboard/BudgetOverview';
 import { ProjectTimeline } from '@/components/dashboard/ProjectTimeline';
 import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 
-export function DashboardTabContent() {
-  return (
-    <>
-      <TabsContent value="overview" className="space-y-4">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="col-span-2">
-            <CardHeader>
-              <CardTitle>Project Progress</CardTitle>
-              <CardDescription>Track the progress of your active projects</CardDescription>
-            </CardHeader>
+interface DashboardTabContentProps {
+  tab?: string;
+}
+
+export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentProps) {
+  // Render appropriate content based on which tab is active
+  switch (tab) {
+    case 'overview':
+      return (
+        <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <Card className="col-span-2">
+              <CardHeader>
+                <CardTitle>Project Progress</CardTitle>
+                <CardDescription>Track the progress of your active projects</CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <ProjectProgress />
+              </CardContent>
+            </Card>
             
-            <CardContent>
-              <ProjectProgress />
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Latest updates from your projects</CardDescription>
-            </CardHeader>
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+                <CardDescription>Latest updates from your projects</CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <RecentActivity />
+              </CardContent>
+            </Card>
             
-            <CardContent>
-              <RecentActivity />
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Tasks</CardTitle>
-              <CardDescription>Tasks due in the next 7 days</CardDescription>
-            </CardHeader>
+            <Card>
+              <CardHeader>
+                <CardTitle>Upcoming Tasks</CardTitle>
+                <CardDescription>Tasks due in the next 7 days</CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <UpcomingTasks />
+              </CardContent>
+            </Card>
             
-            <CardContent>
-              <UpcomingTasks />
-            </CardContent>
-          </Card>
-          
-          <Card className="col-span-2">
-            <CardHeader>
-              <CardTitle>Budget Overview</CardTitle>
-              <CardDescription>Financial summary of your projects</CardDescription>
-            </CardHeader>
-            
-            <CardContent>
-              <BudgetOverview />
-            </CardContent>
-          </Card>
+            <Card className="col-span-2">
+              <CardHeader>
+                <CardTitle>Budget Overview</CardTitle>
+                <CardDescription>Financial summary of your projects</CardDescription>
+              </CardHeader>
+              
+              <CardContent>
+                <BudgetOverview />
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </TabsContent>
-      
-      <TabsContent value="timeline" className="space-y-4">
+      );
+
+    case 'timeline':
+      return (
         <Card>
           <CardHeader>
             <CardTitle>Project Timeline</CardTitle>
@@ -72,9 +79,10 @@ export function DashboardTabContent() {
             <ProjectTimeline />
           </CardContent>
         </Card>
-      </TabsContent>
-      
-      <TabsContent value="budget" className="space-y-4">
+      );
+
+    case 'budget':
+      return (
         <Card>
           <CardHeader>
             <CardTitle>Budget Details</CardTitle>
@@ -85,9 +93,10 @@ export function DashboardTabContent() {
             <BudgetOverview detailed={true} />
           </CardContent>
         </Card>
-      </TabsContent>
-      
-      <TabsContent value="team" className="space-y-4">
+      );
+
+    case 'team':
+      return (
         <Card>
           <CardHeader>
             <CardTitle>Team Members</CardTitle>
@@ -98,9 +107,10 @@ export function DashboardTabContent() {
             <TeamMembers />
           </CardContent>
         </Card>
-      </TabsContent>
-      
-      <TabsContent value="risks" className="space-y-4">
+      );
+
+    case 'risks':
+      return (
         <Card>
           <CardHeader>
             <CardTitle>Project Risks</CardTitle>
@@ -111,7 +121,9 @@ export function DashboardTabContent() {
             <ProjectRisks />
           </CardContent>
         </Card>
-      </TabsContent>
-    </>
-  );
+      );
+
+    default:
+      return null;
+  }
 }
