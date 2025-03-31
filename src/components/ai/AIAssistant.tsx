@@ -52,26 +52,26 @@ export function AIAssistant() {
   };
 
   return (
-    <Card className={cn("mb-6 transition-all duration-300", 
+    <Card className={cn("mb-6 transition-all duration-300 bg-gray-800 border-gray-700 shadow-lg", 
       isExpanded ? "max-h-96" : "max-h-16"
     )}>
-      <CardHeader className="py-3 px-4 flex flex-row items-center justify-between">
-        <CardTitle className="text-md flex items-center">
-          <Bot className="w-5 h-5 mr-2 text-primary" />
+      <CardHeader className="py-3 px-4 flex flex-row items-center justify-between border-b border-gray-700">
+        <CardTitle className="text-md flex items-center text-white">
+          <Bot className="w-5 h-5 mr-2 text-construction-400" />
           AI Assistant
         </CardTitle>
         <Button 
           variant="ghost" 
           size="icon" 
           onClick={() => setIsExpanded(!isExpanded)}
-          className="h-8 w-8"
+          className="h-8 w-8 text-gray-300 hover:text-white"
         >
           {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
         </Button>
       </CardHeader>
       
       {isExpanded && (
-        <CardContent className="px-4 pt-0 pb-4">
+        <CardContent className="px-4 pt-3 pb-4">
           <div className="h-48 overflow-y-auto mb-4 space-y-3 pr-2">
             {conversation.map((msg, index) => (
               <div 
@@ -79,8 +79,8 @@ export function AIAssistant() {
                 className={cn(
                   "p-3 rounded-lg max-w-[80%]",
                   msg.role === 'assistant' 
-                    ? "bg-primary/10 text-primary-foreground mr-auto" 
-                    : "bg-muted ml-auto"
+                    ? "bg-gray-700 text-gray-100 mr-auto" 
+                    : "bg-construction-600/20 ml-auto text-construction-100"
                 )}
               >
                 {msg.content}
@@ -93,9 +93,9 @@ export function AIAssistant() {
               placeholder="Ask about your projects..." 
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="flex-1"
+              className="flex-1 bg-gray-700 border-gray-600 text-white"
             />
-            <Button type="submit" size="icon">
+            <Button type="submit" size="icon" className="bg-construction-600 hover:bg-construction-700 text-white">
               <Send className="w-4 h-4" />
             </Button>
           </form>

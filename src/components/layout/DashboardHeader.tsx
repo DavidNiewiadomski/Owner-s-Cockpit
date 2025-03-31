@@ -11,7 +11,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
   const { toast } = useToast();
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [isDarkMode, setIsDarkMode] = React.useState(true); // Set dark mode as default
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const toggleTheme = () => {
@@ -45,25 +45,25 @@ export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 px-6">
+    <header className="bg-gray-800 dark:bg-gray-900 border-b border-gray-700 dark:border-gray-800 py-4 px-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center w-full max-w-md">
           <Search className="w-4 h-4 absolute ml-3 text-gray-400" />
           <Input 
             type="search" 
             placeholder="Search projects, documents..." 
-            className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+            className="pl-10 bg-gray-700 dark:bg-gray-800 border-gray-600 dark:border-gray-700 text-white"
             value={searchTerm}
             onChange={handleSearchChange}
           />
         </div>
         
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" onClick={toggleTheme}>
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-gray-300 hover:text-white">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </Button>
           
-          <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
+          <Button variant="ghost" size="icon" onClick={handleNotificationClick} className="text-gray-300 hover:text-white">
             <Bell size={20} />
           </Button>
         </div>

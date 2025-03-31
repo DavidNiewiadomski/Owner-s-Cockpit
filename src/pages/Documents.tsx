@@ -101,7 +101,7 @@ const Documents = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-screen bg-gray-900 text-gray-100">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -114,11 +114,11 @@ const Documents = () => {
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Documents</h1>
-                <p className="text-gray-500 dark:text-gray-400">Manage your project documents</p>
+                <h1 className="text-2xl font-bold text-white">Documents</h1>
+                <p className="text-gray-400">Manage your project documents</p>
               </div>
               <div className="mt-3 md:mt-0 flex gap-2">
-                <Button>
+                <Button className="bg-construction-600 hover:bg-construction-700 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Upload Document
                 </Button>
