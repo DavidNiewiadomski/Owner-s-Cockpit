@@ -40,14 +40,25 @@ export function UpcomingTasks() {
     }
   ];
 
+  const getBadgeVariant = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'secondary';
+      default:
+        return 'outline';
+    }
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-black">
       {tasks.map((task) => (
         <div key={task.id} className="bg-black border border-gray-700 rounded-lg p-3">
           <div className="flex items-start gap-3">
             <Checkbox id={`task-${task.id}`} className="mt-0.5" />
             <div className="flex-1 min-w-0">
-              <label htmlFor={`task-${task.id}`} className="font-medium cursor-pointer">
+              <label htmlFor={`task-${task.id}`} className="font-medium cursor-pointer text-white">
                 {task.title}
               </label>
               <div className="flex flex-wrap gap-x-4 gap-y-2 mt-2 text-xs text-muted-foreground">
@@ -65,10 +76,7 @@ export function UpcomingTasks() {
                 </div>
               </div>
             </div>
-            <Badge variant={
-              task.priority === 'high' ? 'destructive' : 
-              task.priority === 'medium' ? 'secondary' : 'outline'
-            }>
+            <Badge variant={getBadgeVariant(task.priority)}>
               {task.priority}
             </Badge>
           </div>

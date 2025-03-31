@@ -35,27 +35,37 @@ export function ProjectProgress() {
     },
   ];
 
+  const getBadgeVariant = (status: string) => {
+    switch (status) {
+      case 'on-track':
+        return 'default';
+      case 'at-risk':
+        return 'secondary';
+      case 'delayed':
+        return 'destructive';
+      default:
+        return 'outline';
+    }
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-black">
       {projects.map((project, index) => (
         <div key={index} className="space-y-2">
           <div className="flex justify-between items-center">
             <div>
-              <p className="font-medium">{project.name}</p>
+              <p className="font-medium text-white">{project.name}</p>
               <p className="text-xs text-muted-foreground">
                 {project.startDate} - {project.endDate}
               </p>
             </div>
-            <Badge variant={
-              project.status === 'on-track' ? 'default' : 
-              project.status === 'at-risk' ? 'secondary' : 'destructive'
-            }>
+            <Badge variant={getBadgeVariant(project.status)}>
               {project.status}
             </Badge>
           </div>
           <div className="flex items-center gap-2">
             <Progress value={project.progress} className="h-2" />
-            <span className="text-sm font-medium w-8">{project.progress}%</span>
+            <span className="text-sm font-medium w-8 text-white">{project.progress}%</span>
           </div>
         </div>
       ))}

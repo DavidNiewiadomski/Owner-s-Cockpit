@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -16,6 +15,17 @@ import { UpcomingTasks } from '@/components/dashboard/UpcomingTasks';
 import { BudgetOverview } from '@/components/dashboard/BudgetOverview';
 import { ProjectProgress } from '@/components/dashboard/ProjectProgress';
 import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
+
+// Simple PageHeader component
+const PageHeader = ({ title, description, actions }: { title: string, description: string, actions?: React.ReactNode }) => (
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+    <div>
+      <h1 className="text-2xl font-bold">{title}</h1>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+    {actions && <div>{actions}</div>}
+  </div>
+);
 
 const Index = () => {
   const { toast } = useToast();
@@ -59,36 +69,40 @@ const Index = () => {
             title="Completion"
             value={completionPercentage}
             format="percent"
-            icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+            icon={TrendingUp}
             description="Overall project completion"
-            trend={{ value: 12, label: "from last month" }}
+            trend="up"
+            trendValue="from last month"
           />
           
           <StatCard
             title="Timeline"
             value={daysRemaining}
             format="days"
-            icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+            icon={Calendar}
             description="Days remaining"
-            trend={{ value: -3, label: "fewer than expected", direction: "down" }}
+            trend="down"
+            trendValue="fewer than expected"
           />
           
           <StatCard
             title="Budget"
             value={budgetUtilization}
             format="percent"
-            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+            icon={DollarSign}
             description="Budget utilization"
-            trend={{ value: 5, label: "under budget", direction: "down" }}
+            trend="down"
+            trendValue="under budget"
           />
           
           <StatCard
             title="Team"
             value={teamSize}
             format="number"
-            icon={<Users className="h-4 w-4 text-muted-foreground" />}
+            icon={Users}
             description="Team members"
-            trend={{ value: 2, label: "new this month" }}
+            trend="up"
+            trendValue="new this month"
           />
         </div>
         
