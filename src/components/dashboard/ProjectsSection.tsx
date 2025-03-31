@@ -9,7 +9,7 @@ interface Project {
   progress: number;
   status: 'on-track' | 'at-risk' | 'delayed';
   dueDate: string;
-  teamMembers: { name: string }[];
+  teamMembers: { name: string; avatar?: string }[];
 }
 
 interface ProjectsSectionProps {
@@ -22,7 +22,15 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
-          <ProjectCard key={project.id} {...project} />
+          <ProjectCard 
+            key={project.id}
+            title={project.title}
+            description={project.description}
+            progress={project.progress}
+            status={project.status}
+            dueDate={project.dueDate}
+            teamMembers={project.teamMembers}
+          />
         ))}
       </div>
     </>

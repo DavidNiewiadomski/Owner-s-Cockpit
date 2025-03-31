@@ -2,8 +2,6 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProjectTableRow } from './ProjectTableRow';
-import { ArrowUpRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 interface Project {
   id: number;
