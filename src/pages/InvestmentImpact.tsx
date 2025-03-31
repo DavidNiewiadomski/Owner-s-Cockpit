@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -266,13 +267,13 @@ const InvestmentImpact = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 dark:bg-gray-900">
+    <div className="flex h-screen bg-black dark:bg-black">
       <SidebarNavigation />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-black">
         <DashboardHeader onSearch={setSearchTerm} />
         
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6 bg-black">
           <div className="max-w-7xl mx-auto">
             <CollapsibleAIAssistant 
               projectName="investment portfolio"
