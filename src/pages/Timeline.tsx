@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -11,6 +12,7 @@ import { RealityCaptureViewer } from '@/components/dashboard/RealityCaptureViewe
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { useProject } from '@/contexts/ProjectContext';
 import { 
   Calendar, 
   Clock, 
@@ -352,6 +354,7 @@ const Timeline = () => {
   const [activeProject, setActiveProject] = useState("downtown");
   const [timelineView, setTimelineView] = useState("gantt");
   const [realityCapture, setRealityCapture] = useState<RealityCaptureEvent | null>(null);
+  const { selectedProject } = useProject();
   
   const getPlannedDuration = (item: any) => {
     return item.plannedEnd - item.plannedStart;
@@ -373,6 +376,14 @@ const Timeline = () => {
       });
     }
   };
+
+  // Project-specific insights based on selected project
+  const projectSpecificInsights = [
+    `Schedule variance is currently 2.5 days ahead for ${selectedProject?.title || 'this project'}`,
+    `Critical path activities are 92% on schedule for ${selectedProject?.title || 'this project'}`,
+    `Weather forecast shows potential impact to exterior work next week for ${selectedProject?.title || 'this project'}`,
+    `Resource allocation is optimized at 87% efficiency for ${selectedProject?.title || 'this project'}`
+  ];
   
   return (
     <div className="flex min-h-screen bg-background">
@@ -381,6 +392,12 @@ const Timeline = () => {
         <DashboardHeader onSearch={() => {}} />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
+          <CollapsibleAIAssistant 
+            projectName={selectedProject?.title || 'your project'} 
+            insights={projectSpecificInsights}
+            initialInsights={timelineInsights}
+          />
+
           <div className="mb-6">
             <h1 className="text-2xl font-bold">Project Timeline</h1>
             <p className="text-muted-foreground">Monitor schedules, milestones, and progress across your projects</p>
@@ -494,6 +511,9 @@ const Timeline = () => {
                           <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                             Actual
                           </Badge>
+                          <Badge variant="outline" className="bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
+                            % Complete
+                          </Badge>
                         </div>
                       </CardTitle>
                     </CardHeader>
@@ -512,6 +532,7 @@ const Timeline = () => {
                               formatter={(value: any, name: string) => {
                                 if (name === 'actualStart' || name === 'actualEnd') return null;
                                 if (name === 'plannedStart' || name === 'plannedEnd') return null;
+                                if (name === 'completion') return `${value}%`;
                                 return value;
                               }}
                               labelFormatter={(label) => label}
@@ -519,13 +540,13 @@ const Timeline = () => {
                                 if (active && payload && payload.length) {
                                   const data = payload[0].payload;
                                   return (
-                                    <div className="bg-background border p-2 rounded-md shadow-md">
-                                      <p className="font-bold">{data.name}</p>
-                                      <p>Planned: Week {data.plannedStart} - Week {data.plannedEnd}</p>
+                                    <div className="bg-background border p-3 rounded-md shadow-md">
+                                      <p className="font-bold text-sm mb-1">{data.name}</p>
+                                      <p className="text-sm">Planned: Week {data.plannedStart} - Week {data.plannedEnd}</p>
                                       {data.actualStart !== null && (
-                                        <p>Actual: Week {data.actualStart}{data.actualEnd ? ` - Week ${data.actualEnd}` : ' (in progress)'}</p>
+                                        <p className="text-sm">Actual: Week {data.actualStart}{data.actualEnd ? ` - Week ${data.actualEnd}` : ' (in progress)'}</p>
                                       )}
-                                      <p className="font-semibold">Completion: {data.completion}%</p>
+                                      <p className="font-semibold text-sm mt-1">Completion: {data.completion}%</p>
                                     </div>
                                   );
                                 }
@@ -533,13 +554,17 @@ const Timeline = () => {
                               }}
                             />
                             <Legend />
-                            <ReferenceLine x={18} stroke="red" label={{ value: 'Today', position: 'top', fill: 'red' }} />
+                            <ReferenceLine x={18} stroke="#ef4444" strokeWidth={2} label={{ value: 'Today', position: 'top', fill: '#ef4444' }} />
                             
+                            {/* Planned Duration Bars */}
                             <Bar 
                               dataKey="plannedDuration"
                               name="Planned"
                               barSize={20}
-                              fill="rgba(59, 130, 246, 0.5)"
+                              fill="#3b82f6"
+                              fillOpacity={0.3}
+                              stroke="#3b82f6"
+                              strokeWidth={1}
                               radius={[0, 4, 4, 0]}
                               stackId="a"
                               data={ganttData.map(item => ({
@@ -549,11 +574,15 @@ const Timeline = () => {
                               }))}
                             />
                             
+                            {/* Actual Duration Bars */}
                             <Bar 
                               dataKey="actualDuration" 
                               name="Actual" 
                               barSize={20}
-                              fill="rgba(16, 185, 129, 0.8)"
+                              fill="#10b981"
+                              fillOpacity={0.8}
+                              stroke="#047857"
+                              strokeWidth={1}
                               radius={[0, 4, 4, 0]}
                               stackId="b"
                               data={ganttData.map(item => ({
@@ -563,6 +592,25 @@ const Timeline = () => {
                                   (item.actualStart !== null ? 1 : 0),
                                 offset: item.actualStart
                               }))}
+                            />
+
+                            {/* Completion Progress Bars */}
+                            <Bar
+                              dataKey="progressBar"
+                              name="Progress"
+                              barSize={6}
+                              fill="#8b5cf6"
+                              radius={4}
+                              stackId="c"
+                              data={ganttData.map(item => {
+                                const duration = item.plannedEnd - item.plannedStart;
+                                return {
+                                  ...item,
+                                  progressBar: item.completion > 0 ? 
+                                    (duration * (item.completion / 100)) : 0,
+                                  offset: item.plannedStart
+                                };
+                              })}
                             />
                           </BarChart>
                         </ResponsiveContainer>
@@ -904,12 +952,6 @@ const Timeline = () => {
             </div>
           </Tabs>
         </main>
-        
-        <CollapsibleAIAssistant 
-          projectContext="Downtown High-Rise"
-          initialInsights={timelineInsights}
-          mode="construction"
-        />
       </div>
     </div>
   );
