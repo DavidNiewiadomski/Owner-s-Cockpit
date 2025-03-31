@@ -13,11 +13,11 @@ const Index = () => {
     : 0;
     
   const daysRemaining = currentProject && typeof currentProject === 'object' && 'daysRemaining' in currentProject 
-    ? currentProject.daysRemaining 
+    ? Number(currentProject.daysRemaining)
     : 0;
     
   const budgetUtilization = currentProject && typeof currentProject === 'object' && 'budgetUtilization' in currentProject 
-    ? currentProject.budgetUtilization 
+    ? Number(currentProject.budgetUtilization) 
     : 0;
     
   const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject && Array.isArray(currentProject.team)

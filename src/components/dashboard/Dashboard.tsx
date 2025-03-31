@@ -51,7 +51,6 @@ export function Dashboard({
           <TabsTrigger value="risks">Risks</TabsTrigger>
         </TabsList>
         
-        {/* Create a single TabsContent for each tab, passing the tab name to DashboardTabContent */}
         <TabsContent value="overview">
           <DashboardTabContent tab="overview" />
         </TabsContent>
