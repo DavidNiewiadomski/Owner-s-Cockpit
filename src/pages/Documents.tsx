@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { DocumentList } from '@/components/dashboard/DocumentList';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
 import { useProject } from '@/contexts/ProjectContext';
 import { projectDocuments } from '@/data/dashboardData';
 
@@ -63,12 +63,13 @@ const Documents = () => {
           onSearch={setSearchTerm} 
         />
         
-        <CollapsibleAIAssistant 
-          insights={documentInsights}
-          projectName={selectedProject?.title || 'All Projects'}
-        />
-        
         <main className="flex-1 overflow-y-auto p-6">
+          <SimpleInsightsPanel
+            title="Document Insights"
+            projectName={selectedProject?.title || 'All Projects'}
+            insights={documentInsights}
+          />
+          
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>

@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentMetricsSection } from '@/components/investment/InvestmentMetricsSection';
 import { InvestmentTabContent } from '@/components/investment/InvestmentTabContent';
@@ -120,12 +121,13 @@ const InvestmentImpact = () => {
           subtitle="Financial analysis and risk assessment"
         />
         
-        <CollapsibleAIAssistant 
-          projectName={projectName}
-          insights={simpleInsights}
-        />
-        
         <main className="flex-1 p-6">
+          <SimpleInsightsPanel 
+            title="Investment Insights"
+            projectName={projectName}
+            insights={simpleInsights}
+          />
+          
           <InvestmentHeader 
             selectedProject={projectId}
             projectOptions={projectOptions}
