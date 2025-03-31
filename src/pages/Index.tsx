@@ -1,174 +1,216 @@
-
-import React, { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { DocumentList } from '@/components/dashboard/DocumentList';
-import { AIAssistant } from '@/components/ai/AIAssistant';
-import { PropertyDetails } from '@/components/dashboard/PropertyDetails';
-import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
-import { DashboardStats } from '@/components/dashboard/DashboardStats';
-import { ProgressChart } from '@/components/dashboard/ProgressChart';
-import { ProjectsSection } from '@/components/dashboard/ProjectsSection';
-import { NotificationsCard } from '@/components/dashboard/NotificationsCard';
-import { OwnerActionItems } from '@/components/dashboard/OwnerActionItems';
-import { TimelineCard } from '@/components/dashboard/TimelineCard';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 import { useProject } from '@/contexts/ProjectContext';
-import { 
-  projects, 
-  projectTimelineEvents,
-  projectDocuments,
-  projectPerformanceData,
-  projectPropertyData,
-  notifications, 
-  financialData 
-} from '@/data/dashboardData';
+import { BarChart, Calendar, Clock, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { StatCard } from '@/components/dashboard/StatCard';
+import { ProjectTimeline } from '@/components/dashboard/ProjectTimeline';
+import { RecentActivity } from '@/components/dashboard/RecentActivity';
+import { TeamMembers } from '@/components/dashboard/TeamMembers';
+import { UpcomingTasks } from '@/components/dashboard/UpcomingTasks';
+import { BudgetOverview } from '@/components/dashboard/BudgetOverview';
+import { ProjectProgress } from '@/components/dashboard/ProjectProgress';
+import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 
 const Index = () => {
   const { toast } = useToast();
-  const [searchTerm, setSearchTerm] = useState('');
-  const { selectedProject } = useProject();
-  
-  // Get project-specific data based on selected project
-  const projectId = selectedProject?.id || 'all';
-  const timelineEvents = projectTimelineEvents[projectId as keyof typeof projectTimelineEvents] || projectTimelineEvents['all'];
-  const documents = projectDocuments[projectId as keyof typeof projectDocuments] || projectDocuments['all'];
-  const performanceData = projectPerformanceData[projectId as keyof typeof projectPerformanceData] || projectPerformanceData['all'];
-  const propertyData = projectPropertyData[projectId as keyof typeof projectPropertyData] || projectPropertyData['all'];
+  const { currentProject, projects } = useProject();
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const filteredDocuments = searchTerm 
-    ? documents.filter(doc => 
-        doc.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        doc.project.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : documents;
+  useEffect(() => {
+    // Simulate loading data
+    const timer = setTimeout(() => {
+      toast({
+        title: "Dashboard Updated",
+        description: "Latest project data has been loaded.",
+      });
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, [toast]);
 
-  const handleDocumentAction = (action: string, docId: string) => {
-    const docName = documents.find(d => d.id === docId)?.name || '';
-    toast({
-      title: `${action} ${docName}`,
-      description: `Document ${action.toLowerCase()} action triggered`,
-      duration: 3000,
-    });
-  };
-
-  // Generate project-specific insights
-  const projectInsights = [
-    `Budget variance is currently ${projectId === '1' ? '2.7% under budget' : projectId === '2' ? '1.5% over budget' : projectId === '3' ? '0.8% under budget' : '3.2% under budget'} for ${selectedProject?.title || 'this project'}`,
-    `Labor productivity is ${projectId === '1' ? '15%' : projectId === '2' ? '8%' : projectId === '3' ? '10%' : '12%'} above industry benchmark in ${selectedProject?.title || 'this project'}`,
-    `Quality inspection pass rate is at ${projectId === '1' ? '98.2%' : projectId === '2' ? '96.5%' : projectId === '3' ? '97.9%' : '97.8%'} for ${selectedProject?.title || 'this project'}`,
-    `Schedule compliance is currently at ${projectId === '1' ? '95%' : projectId === '2' ? '89%' : projectId === '3' ? '92%' : '94%'} for ${selectedProject?.title || 'this project'}`
-  ];
-
-  // Fix for the Type 'string | number' is not assignable to type 'number' error
-  // Ensure completionPercentage is a number
-  const completionPercentage = typeof propertyData.completionPercentage === 'string' 
-    ? parseFloat(propertyData.completionPercentage) 
-    : propertyData.completionPercentage;
+  // Calculate project statistics
+  const completionPercentage = currentProject ? Number(currentProject.completion) : 0;
+  const daysRemaining = currentProject ? currentProject.daysRemaining : 0;
+  const budgetUtilization = currentProject ? currentProject.budgetUtilization : 0;
+  const teamSize = currentProject ? currentProject.team.length : 0;
 
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onSearch={setSearchTerm} />
+      <main className="flex-1 p-6 pt-0">
+        <PageHeader 
+          title="Project Dashboard" 
+          description="Overview of your current construction projects"
+          actions={
+            <Button>New Project</Button>
+          }
+        />
         
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            <CollapsibleAIAssistant 
-              projectName={selectedProject?.title || 'your properties'} 
-              insights={projectInsights}
-              initialInsights={[
-                {
-                  title: "Budget Analysis",
-                  content: `${selectedProject?.title || 'This project'} is currently ${projectId === '1' ? '2.7% under budget with potential savings in foundation costs.' : projectId === '2' ? '1.5% over budget due to increased material costs.' : projectId === '3' ? '0.8% under budget with slightly higher labor expenses.' : '3.2% under budget with potential savings in material costs.'}`,
-                  type: "success"
-                },
-                {
-                  title: "Schedule Risk",
-                  content: `${projectId === '1' ? 'Material delivery delays may impact facade installation.' : projectId === '2' ? 'Weather forecast shows potential flooding concerns for drainage work.' : projectId === '3' ? 'Traffic diversion plan needs review before next phase.' : 'Weather forecast shows potential delays next week for your project.'}`,
-                  type: "warning"
-                },
-                {
-                  title: "Quality Metrics",
-                  content: `Latest inspections show ${projectId === '1' ? '98.2%' : projectId === '2' ? '96.5%' : projectId === '3' ? '97.9%' : '97.8%'} pass rate, above industry average.`,
-                  type: "info"
-                },
-                {
-                  title: "Resource Optimization",
-                  content: `${projectId === '1' ? 'Concrete usage optimization could yield 5% savings.' : projectId === '2' ? 'Equipment scheduling adjustment recommended to reduce idle time.' : projectId === '3' ? 'Traffic management resource allocation needs review.' : 'AI analysis suggests optimizing crew scheduling could save 8.5% on labor costs.'}`,
-                  type: "info"
-                }
-              ]}
-            />
-            
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-100">Owner Dashboard</h1>
-                <p className="text-gray-400">Real-time overview of your properties and projects</p>
-              </div>
-              <div className="mt-3 md:mt-0">
-                <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                  <span className="w-2 h-2 mr-1 rounded-full bg-green-500"></span>
-                  All projects active
-                </span>
-              </div>
-            </div>
-            
-            <DashboardStats />
-            
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-4">Featured Property Details</h2>
-              <PropertyDetails 
-                propertyName={propertyData.propertyName}
-                propertyType={propertyData.propertyType}
-                location={propertyData.location}
-                squareFootage={propertyData.squareFootage}
-                floors={propertyData.floors}
-                constructionStartDate={propertyData.constructionStartDate}
-                estimatedCompletionDate={propertyData.estimatedCompletionDate}
-                currentPhase={propertyData.currentPhase}
-                completionPercentage={completionPercentage}
-                keyContacts={propertyData.keyContacts}
-                permits={propertyData.permits}
-                inspections={propertyData.inspections}
-              />
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <div className="lg:col-span-2 space-y-6">
-                <FinancialTracking 
-                  projectName={selectedProject?.title || 'All Projects'}
-                  totalBudget={financialData.totalBudget}
-                  spending={financialData.spending}
-                  changeOrders={financialData.changeOrders}
-                />
-                
-                <ProgressChart data={performanceData} />
-
-                <ProjectsSection projects={projects} />
-                
-                <DocumentList 
-                  documents={filteredDocuments} 
-                  className="mt-6" 
-                  onView={(id) => handleDocumentAction('Viewed', id)}
-                  onDownload={(id) => handleDocumentAction('Downloaded', id)}
-                />
-              </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
+          <StatCard 
+            title="Completion" 
+            value={Number(completionPercentage)} 
+            format="percent"
+            icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
+            description="Overall project completion"
+            trend={{ value: 12, label: "from last month" }}
+          />
+          
+          <StatCard 
+            title="Timeline" 
+            value={daysRemaining} 
+            format="days"
+            icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
+            description="Days remaining"
+            trend={{ value: -3, label: "fewer than expected", direction: "down" }}
+          />
+          
+          <StatCard 
+            title="Budget" 
+            value={budgetUtilization} 
+            format="percent"
+            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+            description="Budget utilization"
+            trend={{ value: 5, label: "under budget", direction: "down" }}
+          />
+          
+          <StatCard 
+            title="Team" 
+            value={teamSize} 
+            format="number"
+            icon={<Users className="h-4 w-4 text-muted-foreground" />}
+            description="Team members"
+            trend={{ value: 2, label: "new this month" }}
+          />
+        </div>
+        
+        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="timeline">Timeline</TabsTrigger>
+            <TabsTrigger value="budget">Budget</TabsTrigger>
+            <TabsTrigger value="team">Team</TabsTrigger>
+            <TabsTrigger value="risks">Risks</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Project Progress</CardTitle>
+                  <CardDescription>
+                    Track the progress of your active projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ProjectProgress />
+                </CardContent>
+              </Card>
               
-              <div className="space-y-6">
-                <NotificationsCard notifications={notifications} />
-
-                <h2 className="text-xl font-semibold text-gray-100">Project Timeline</h2>
-                <TimelineCard events={timelineEvents} />
-                
-                <OwnerActionItems />
-              </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Activity</CardTitle>
+                  <CardDescription>
+                    Latest updates from your projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <RecentActivity />
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Upcoming Tasks</CardTitle>
+                  <CardDescription>
+                    Tasks due in the next 7 days
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <UpcomingTasks />
+                </CardContent>
+              </Card>
+              
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Budget Overview</CardTitle>
+                  <CardDescription>
+                    Financial summary of your projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <BudgetOverview />
+                </CardContent>
+              </Card>
             </div>
-          </div>
-        </main>
-      </div>
+          </TabsContent>
+          
+          <TabsContent value="timeline" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Timeline</CardTitle>
+                <CardDescription>
+                  Visualize your project schedule and milestones
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProjectTimeline />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="budget" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Budget Details</CardTitle>
+                <CardDescription>
+                  Detailed breakdown of project finances
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <BudgetOverview detailed />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="team" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Team Members</CardTitle>
+                <CardDescription>
+                  People working on your projects
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TeamMembers />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="risks" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Risks</CardTitle>
+                <CardDescription>
+                  Identified risks and mitigation strategies
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProjectRisks />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
 };
