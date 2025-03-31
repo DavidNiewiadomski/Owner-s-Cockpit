@@ -8,7 +8,7 @@ import { ProjectOverview } from '@/components/dashboard/ProjectOverview';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 // Simple string array for insights
-const dashboardInsights: string[] = [
+const dashboardInsights = [
   "Budget Alert: Current cost variance is +8.2% above contingency, mainly in structural materials",
   "Schedule Update: Project is currently tracking 3 days ahead of schedule with SPI of 1.05",
   "Quality Control: Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday",
