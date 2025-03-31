@@ -126,10 +126,10 @@ export const timelineData = [
 ];
 
 export const ganttData = [
-  { name: 'Site Preparation', actualStart: 0, actualEnd: 4, plannedStart: 0, plannedEnd: 5, completion: 100 },
-  { name: 'Foundation', actualStart: 4, actualEnd: 8, plannedStart: 5, plannedEnd: 10, completion: 100 },
-  { name: 'Structural Framework', actualStart: 8, actualEnd: 15, plannedStart: 10, plannedEnd: 18, completion: 100 },
-  { name: 'Exterior Walls', actualStart: 15, actualEnd: 18, plannedStart: 18, plannedEnd: 22, completion: 60 },
+  { name: 'Site Preparation', actualStart: 0, actualEnd: 5, plannedStart: 0, plannedEnd: 5, completion: 100 },
+  { name: 'Foundation', actualStart: 5, actualEnd: 10, plannedStart: 5, plannedEnd: 10, completion: 100 },
+  { name: 'Structural Framework', actualStart: 10, actualEnd: 18, plannedStart: 10, plannedEnd: 18, completion: 100 },
+  { name: 'Exterior Walls', actualStart: 15, actualEnd: 22, plannedStart: 18, plannedEnd: 22, completion: 60 },
   { name: 'Roofing', actualStart: 18, actualEnd: null, plannedStart: 22, plannedEnd: 26, completion: 20 },
   { name: 'Interior Rough-In', actualStart: null, actualEnd: null, plannedStart: 26, plannedEnd: 32, completion: 0 },
   { name: 'Drywall', actualStart: null, actualEnd: null, plannedStart: 32, plannedEnd: 36, completion: 0 },
