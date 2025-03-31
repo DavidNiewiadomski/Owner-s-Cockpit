@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
 import { LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Tooltip, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { ArrowDownIcon, ArrowUpIcon, CalendarIcon, FilterIcon, InfoIcon, PlusIcon, RefreshCw } from 'lucide-react';
 import { useProject } from '@/contexts/ProjectContext';
@@ -82,28 +81,12 @@ const Analytics = () => {
     severity: '#8b5cf6',
   };
   
-  // Create analytics insights based on the data
+  // Create analytics insights as simple strings
   const analyticsInsights = [
-    {
-      title: 'Cost Trend Alert',
-      content: 'Material costs have increased by 12% this month, exceeding your budget allocation.',
-      type: 'warning' as const
-    },
-    {
-      title: 'Schedule Variance',
-      content: `${projectName} is currently 7% behind planned progress. Action recommended.`,
-      type: 'warning' as const
-    },
-    {
-      title: 'Resource Optimization',
-      content: 'Crane utilization is below target (72% vs 80%). Consider reallocation.',
-      type: 'info' as const
-    },
-    {
-      title: 'Quality Issues',
-      content: 'Structural quality issues have a lower resolution rate (62%) than other categories.',
-      type: 'warning' as const
-    }
+    'Cost Trend Alert: Material costs have increased by 12% this month, exceeding your budget allocation.',
+    `Schedule Variance: ${projectName} is currently 7% behind planned progress. Action recommended.`,
+    'Resource Optimization: Crane utilization is below target (72% vs 80%). Consider reallocation.',
+    'Quality Issues: Structural quality issues have a lower resolution rate (62%) than other categories.'
   ];
   
   // Animate charts when tab changes
@@ -125,10 +108,10 @@ const Analytics = () => {
           subtitle="Project performance metrics and insights"
         />
         
-        <CollapsibleAIAssistant 
-          projectContext="Analytics"
+        <SimpleInsightsPanel
+          title="Analytics Insights"
           projectName={projectName}
-          initialInsights={analyticsInsights}
+          insights={analyticsInsights}
         />
         
         <main className="flex-1 p-6">

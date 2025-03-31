@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell
 } from 'recharts';
 
 interface ImpactChartProps {
@@ -64,10 +65,14 @@ export const InvestmentImpactChart: React.FC<ImpactChartProps> = ({
               <Bar 
                 dataKey="value" 
                 name="Impact" 
-                fill={(entry) => entry.color || '#3b82f6'} 
+                fill="#3b82f6" 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
-              />
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color || '#3b82f6'} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>

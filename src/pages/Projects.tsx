@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -11,7 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
 import { 
   Search, Plus, Filter, Building, Calendar, Clock, MoreHorizontal, 
   ArrowUpRight, ChevronDown, ChevronUp, Columns, List, Users 
@@ -151,24 +150,6 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', options);
 };
 
-const projectInsights = [
-  {
-    title: 'Budget Alert',
-    content: 'Corporate Office Park has exceeded material budget by 7%. Review purchasing contracts.',
-    type: 'warning' as const
-  },
-  {
-    title: 'Schedule Opportunity',
-    content: 'Downtown High-Rise is 5 days ahead of schedule. Consider advancing tenant negotiations.',
-    type: 'success' as const
-  },
-  {
-    title: 'ROI Impact',
-    content: 'Riverside residential sales trending 8% above projections. Expected ROI increase from 6.8% to 7.3%.',
-    type: 'info' as const
-  }
-];
-
 const Projects = () => {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
@@ -177,6 +158,12 @@ const Projects = () => {
   const toggleProjectExpand = (projectId: number) => {
     setExpandedProject(expandedProject === projectId ? null : projectId);
   };
+
+  const projectInsights = [
+    'Budget Alert: Corporate Office Park has exceeded material budget by 7%. Review purchasing contracts.',
+    'Schedule Opportunity: Downtown High-Rise is 5 days ahead of schedule. Consider advancing tenant negotiations.',
+    'ROI Impact: Riverside residential sales trending 8% above projections. Expected ROI increase from 6.8% to 7.3%.'
+  ];
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -189,10 +176,9 @@ const Projects = () => {
         />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
-          {/* Moved AI Assistant to the top */}
-          <CollapsibleAIAssistant 
-            projectContext="your projects" 
-            initialInsights={projectInsights}
+          <SimpleInsightsPanel
+            title="Project Insights"
+            insights={projectInsights}
           />
           
           <div className="mb-6">
