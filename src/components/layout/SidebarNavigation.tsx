@@ -111,7 +111,7 @@ const DEFAULT_MENU_ITEMS: MenuItem[] = [
   }
 ];
 
-const STORAGE_KEY = 'buildmaster-menu-order';
+const STORAGE_KEY = 'ownerrealm-menu-order';
 
 export function SidebarNavigation({ className }: SidebarNavigationProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -202,8 +202,8 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
         <Link to="/" className="flex items-center gap-2">
           {!collapsed && (
             <div className="font-semibold text-xl leading-none">
-              <span className="text-construction-600">Build</span>
-              <span>Master</span>
+              <span className="text-construction-600">Owner</span>
+              <span>Realm</span>
             </div>
           )}
           {collapsed && (
