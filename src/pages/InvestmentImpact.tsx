@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -231,6 +231,29 @@ const InvestmentImpact = () => {
   const { toast } = useToast();
   const [selectedProject, setSelectedProject] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeAnimation, setActiveAnimation] = useState(false);
+  
+  // Effect for animation states
+  useEffect(() => {
+    setActiveAnimation(true);
+    
+    const interval = setInterval(() => {
+      setActiveAnimation(prev => !prev);
+    }, 8000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Custom color scheme for futuristic look
+  const colors = {
+    primary: '#38bdf8',
+    secondary: '#4ade80',
+    accent: '#f43f5e',
+    warning: '#fb923c',
+    info: '#a78bfa',
+    background: 'rgba(255, 255, 255, 0.05)',
+    gridLine: 'rgba(255, 255, 255, 0.1)'
+  };
   
   const handleStrategyAction = (id: number, action: string) => {
     toast({
@@ -295,7 +318,7 @@ const InvestmentImpact = () => {
                   value={selectedProject}
                   onValueChange={setSelectedProject}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[180px] glass-input">
                     <SelectValue placeholder="Select project" />
                   </SelectTrigger>
                   <SelectContent>
@@ -306,15 +329,20 @@ const InvestmentImpact = () => {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button variant="outline" size="sm" className="gap-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-1 border-gray-700 hover:border-gray-600 text-gray-300 hover-scale"
+                  onClick={handleDownloadReport}
+                >
                   <Download className="h-4 w-4" />
-                  <span onClick={handleDownloadReport}>Export Report</span>
+                  <span>Export Report</span>
                 </Button>
               </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-black border-gray-700 shadow-lg col-span-full md:col-span-1">
+              <Card className="glass-card shadow-glow col-span-full md:col-span-1 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <TrendingDown className="h-5 w-5 text-red-500" />
@@ -342,7 +370,11 @@ const InvestmentImpact = () => {
                         </div>
                         <div className="h-1 bg-gray-700 rounded-full mt-1">
                           <div 
-                            className={`h-1 rounded-full ${metric.impact === 'negative' ? 'bg-red-500' : 'bg-green-500'}`}
+                            className={`h-1 rounded-full ${
+                              metric.impact === 'negative' ? 'bg-red-500' : 'bg-green-500'
+                            } transition-all duration-1000 ease-in-out ${
+                              activeAnimation ? 'opacity-70' : 'opacity-100'
+                            }`}
                             style={{ width: `${metric.impact === 'negative' ? '75%' : '85%'}` }}
                           ></div>
                         </div>
@@ -352,7 +384,7 @@ const InvestmentImpact = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-black border-gray-700 shadow-lg col-span-full md:col-span-2">
+              <Card className="glass-card shadow-glow-blue col-span-full md:col-span-2 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-blue-500" />
@@ -363,15 +395,15 @@ const InvestmentImpact = () => {
                   <div className="h-72">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={roiData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                        <CartesianGrid strokeDasharray="3 3" stroke={colors.gridLine} />
                         <XAxis 
                           dataKey="name" 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                         />
                         <YAxis 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                           domain={[6, 9]}
                           tickFormatter={(value) => `${value}%`}
                         />
@@ -384,19 +416,22 @@ const InvestmentImpact = () => {
                         <Line 
                           type="monotone" 
                           dataKey="projected" 
-                          stroke="#34d399" 
+                          stroke={colors.secondary} 
                           strokeWidth={2} 
                           activeDot={{ r: 6 }}
                           name="Projected ROI"
+                          animationDuration={1500}
                         />
                         <Line 
                           type="monotone" 
                           dataKey="actual" 
-                          stroke="#f87171" 
+                          stroke={colors.accent} 
                           strokeWidth={2} 
                           activeDot={{ r: 6 }}
                           name="Actual ROI"
                           strokeDasharray="5 5"
+                          animationDuration={1500}
+                          animationBegin={300}
                         />
                       </LineChart>
                     </ResponsiveContainer>
@@ -407,10 +442,10 @@ const InvestmentImpact = () => {
             
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-100 mb-4">Construction Impact Events</h2>
-              <div className="bg-black border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+              <div className="glass-card rounded-lg shadow-glow overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-black">
+                    <thead className="bg-black/40">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Project</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Event</th>
@@ -423,7 +458,7 @@ const InvestmentImpact = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-700">
                       {impactEvents.map((event) => (
-                        <tr key={event.id} className="hover:bg-black">
+                        <tr key={event.id} className="hover:bg-black/30 transition-colors">
                           <td className="px-4 py-3 text-sm text-gray-300">{event.project}</td>
                           <td className="px-4 py-3 text-sm text-gray-300">{event.event}</td>
                           <td className={`px-4 py-3 text-sm ${event.financialImpact.startsWith('-') ? 'text-red-400' : 'text-green-400'}`}>
@@ -438,10 +473,10 @@ const InvestmentImpact = () => {
                           <td className="px-4 py-3 text-sm text-gray-300">{event.date}</td>
                           <td className="px-4 py-3 text-sm">
                             <Badge className={
-                              event.status === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
-                              event.status === 'medium' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
-                              event.status === 'low' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                              'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                              event.status === 'high' ? 'bg-red-900/20 text-red-400' :
+                              event.status === 'medium' ? 'bg-amber-900/20 text-amber-400' :
+                              event.status === 'low' ? 'bg-yellow-900/20 text-yellow-400' :
+                              'bg-green-900/20 text-green-400'
                             }>
                               {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
                             </Badge>
@@ -455,12 +490,15 @@ const InvestmentImpact = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <Card className="bg-black border-gray-700 shadow-lg">
+              <Card className="glass-card shadow-glow col-span-full lg:col-span-1 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Clock className="h-5 w-5 text-amber-500" />
                     Schedule Variance Impact
                   </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Comparing original and current timelines
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-72">
@@ -469,15 +507,15 @@ const InvestmentImpact = () => {
                         data={schedulingImpactData}
                         margin={{ top: 10, right: 30, left: 20, bottom: 40 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                        <CartesianGrid strokeDasharray="3 3" stroke={colors.gridLine} />
                         <XAxis 
                           dataKey="name" 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                         />
                         <YAxis 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                           label={{ 
                             value: 'Months', 
                             angle: -90, 
@@ -489,21 +527,41 @@ const InvestmentImpact = () => {
                           contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
-                        <Legend />
-                        <Bar dataKey="original" name="Original Timeline" fill="#38bdf8" />
-                        <Bar dataKey="current" name="Current Timeline" fill="#fb7185" />
+                        <Legend 
+                          verticalAlign="top" 
+                          height={36}
+                          wrapperStyle={{ paddingTop: '10px' }}
+                        />
+                        <Bar 
+                          dataKey="original" 
+                          name="Original Timeline" 
+                          fill={colors.primary} 
+                          radius={[4, 4, 0, 0]}
+                          animationDuration={1500}
+                        />
+                        <Bar 
+                          dataKey="current" 
+                          name="Current Timeline" 
+                          fill={colors.accent} 
+                          radius={[4, 4, 0, 0]}
+                          animationDuration={1500}
+                          animationBegin={300}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </CardContent>
               </Card>
               
-              <Card className="bg-black border-gray-700 shadow-lg">
+              <Card className="glass-card shadow-glow-purple col-span-full lg:col-span-1 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <DollarSign className="h-5 w-5 text-green-500" />
                     Budget Overrun Breakdown
                   </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Distribution of cost overruns by category
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-72">
@@ -518,6 +576,7 @@ const InvestmentImpact = () => {
                           fill="#8884d8"
                           dataKey="value"
                           label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          animationDuration={1500}
                         >
                           {costOverrunData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
@@ -528,7 +587,10 @@ const InvestmentImpact = () => {
                           contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
-                        <Legend />
+                        <Legend 
+                          verticalAlign="bottom"
+                          height={36}
+                        />
                       </PieChart>
                     </ResponsiveContainer>
                   </div>
@@ -537,12 +599,15 @@ const InvestmentImpact = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-black border-gray-700 shadow-lg col-span-full lg:col-span-2">
+              <Card className="glass-card shadow-glow col-span-full lg:col-span-2 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Building className="h-5 w-5 text-blue-500" />
                     Property Valuation Impact
                   </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Monthly changes in property value relative to baseline
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-72">
@@ -551,15 +616,15 @@ const InvestmentImpact = () => {
                         data={valuationImpactData}
                         margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                        <CartesianGrid strokeDasharray="3 3" stroke={colors.gridLine} />
                         <XAxis 
                           dataKey="month" 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                         />
                         <YAxis 
                           tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          axisLine={{ stroke: colors.gridLine }}
                           domain={[95, 115]}
                           tickFormatter={(value) => `${value}%`}
                         />
@@ -570,16 +635,17 @@ const InvestmentImpact = () => {
                         />
                         <defs>
                           <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                            <stop offset="5%" stopColor={colors.info} stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor={colors.info} stopOpacity={0}/>
                           </linearGradient>
                         </defs>
                         <Area 
                           type="monotone" 
                           dataKey="value" 
-                          stroke="#8884d8" 
+                          stroke={colors.info} 
                           fill="url(#colorValue)" 
                           name="Relative Property Value"
+                          animationDuration={2000}
                         />
                       </AreaChart>
                     </ResponsiveContainer>
@@ -587,12 +653,15 @@ const InvestmentImpact = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-black border-gray-700 shadow-lg col-span-full lg:col-span-1">
+              <Card className="glass-card shadow-glow col-span-full lg:col-span-1 hover-scale transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-amber-500" />
                     Financial Risk Indicators
                   </CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Key metrics indicating financial health
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -602,7 +671,8 @@ const InvestmentImpact = () => {
                         <span className="text-sm font-medium text-amber-400">1.2x</span>
                       </div>
                       <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-amber-500 rounded-full" style={{ width: '60%' }}></div>
+                        <div className="h-2 bg-amber-500 rounded-full transition-all duration-1000 ease-in-out" 
+                          style={{ width: '60%' }}></div>
                       </div>
                       <p className="text-xs text-gray-500">Below safe threshold (1.25x)</p>
                     </div>
@@ -613,7 +683,8 @@ const InvestmentImpact = () => {
                         <span className="text-sm font-medium text-red-400">+12.5%</span>
                       </div>
                       <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-red-500 rounded-full" style={{ width: '80%' }}></div>
+                        <div className="h-2 bg-red-500 rounded-full transition-all duration-1000 ease-in-out" 
+                          style={{ width: '80%' }}></div>
                       </div>
                       <p className="text-xs text-gray-500">Above contingency budget (10%)</p>
                     </div>
@@ -624,7 +695,8 @@ const InvestmentImpact = () => {
                         <span className="text-sm font-medium text-amber-400">+18%</span>
                       </div>
                       <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-amber-500 rounded-full" style={{ width: '70%' }}></div>
+                        <div className="h-2 bg-amber-500 rounded-full transition-all duration-1000 ease-in-out" 
+                          style={{ width: '70%' }}></div>
                       </div>
                       <p className="text-xs text-gray-500">Projected completion delay</p>
                     </div>
@@ -635,7 +707,8 @@ const InvestmentImpact = () => {
                         <span className="text-sm font-medium text-green-400">Compliance</span>
                       </div>
                       <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-green-500 rounded-full" style={{ width: '90%' }}></div>
+                        <div className="h-2 bg-green-500 rounded-full transition-all duration-1000 ease-in-out" 
+                          style={{ width: '90%' }}></div>
                       </div>
                       <p className="text-xs text-gray-500">Within acceptable parameters</p>
                     </div>
@@ -646,10 +719,10 @@ const InvestmentImpact = () => {
             
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-100 mb-4">Impact Mitigation Strategies</h2>
-              <div className="bg-black border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+              <div className="glass-card rounded-lg shadow-glow overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-black">
+                    <thead className="bg-black/40">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Issue</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Mitigation Strategy</th>
@@ -662,7 +735,7 @@ const InvestmentImpact = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-700">
                       {mitigationStrategies.map((strategy) => (
-                        <tr key={strategy.id} className="hover:bg-black">
+                        <tr key={strategy.id} className="hover:bg-black/30 transition-colors">
                           <td className="px-4 py-3 text-sm text-gray-300">{strategy.issue}</td>
                           <td className="px-4 py-3 text-sm text-gray-300">{strategy.strategy}</td>
                           <td className="px-4 py-3 text-sm text-green-400">{strategy.potentialSavings}</td>
@@ -670,9 +743,9 @@ const InvestmentImpact = () => {
                           <td className="px-4 py-3 text-sm text-green-400">{strategy.netRoiImpact}</td>
                           <td className="px-4 py-3 text-sm">
                             <Badge className={
-                              strategy.status === 'proposed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
-                              strategy.status === 'in-progress' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
-                              'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                              strategy.status === 'proposed' ? 'bg-blue-900/20 text-blue-400' :
+                              strategy.status === 'in-progress' ? 'bg-amber-900/20 text-amber-400' :
+                              'bg-green-900/20 text-green-400'
                             }>
                               {strategy.status.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                             </Badge>
@@ -682,7 +755,7 @@ const InvestmentImpact = () => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="h-7 px-2 text-xs"
+                                className="h-7 px-2 text-xs border-gray-700 hover:border-gray-600 text-gray-300 hover-scale"
                                 onClick={() => handleStrategyAction(strategy.id, 'Approved')}
                               >
                                 Approve
@@ -690,7 +763,7 @@ const InvestmentImpact = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-7 px-2 text-xs"
+                                className="h-7 px-2 text-xs text-gray-300 hover:text-white"
                                 onClick={() => handleStrategyAction(strategy.id, 'Detailed')}
                               >
                                 Details
