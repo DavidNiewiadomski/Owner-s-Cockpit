@@ -1,13 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
-import { LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Tooltip, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { ArrowDownIcon, ArrowUpIcon, CalendarIcon, FilterIcon, InfoIcon, PlusIcon, RefreshCw } from 'lucide-react';
 import { useProject } from '@/contexts/ProjectContext';
+
+// Component imports
+import { AnalyticsHeader } from '@/components/analytics/AnalyticsHeader';
+import { OverviewDashboard } from '@/components/analytics/OverviewDashboard';
+import { CostAnalysisChart } from '@/components/analytics/CostAnalysisChart';
+import { ProgressTrackingChart } from '@/components/analytics/ProgressTrackingChart';
+import { ResourceUtilizationChart } from '@/components/analytics/ResourceUtilizationChart';
+import { QualityMetricsChart } from '@/components/analytics/QualityMetricsChart';
+import { SafetyIncidentsChart } from '@/components/analytics/SafetyIncidentsChart';
 
 // Analytics page demo data
 const costData = [
@@ -67,20 +73,6 @@ const Analytics = () => {
   
   const projectName = selectedProject?.title || 'All Projects';
   
-  const colors = {
-    labor: '#3b82f6',
-    materials: '#8b5cf6',
-    equipment: '#06b6d4',
-    planned: '#22c55e',
-    actual: '#f97316',
-    issues: '#ef4444',
-    resolved: '#22c55e',
-    utilization: '#3b82f6',
-    target: '#f97316',
-    count: '#ef4444',
-    severity: '#8b5cf6',
-  };
-  
   // Create analytics insights as simple strings
   const analyticsInsights = [
     'Cost Trend Alert: Material costs have increased by 12% this month, exceeding your budget allocation.',
@@ -115,65 +107,11 @@ const Analytics = () => {
         />
         
         <main className="flex-1 p-6">
-          <div className="flex flex-col md:flex-row gap-4 items-start justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-white">Analytics Dashboard</h1>
-              <p className="text-gray-400">Analyzing data from {projectName}</p>
-            </div>
-            
-            <div className="flex gap-2 items-center">
-              <div className="bg-gray-800 rounded-md p-1 flex">
-                <Button 
-                  variant={currentPeriod === '1M' ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  onClick={() => setCurrentPeriod('1M')}
-                  className="text-xs"
-                >
-                  1M
-                </Button>
-                <Button 
-                  variant={currentPeriod === '3M' ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  onClick={() => setCurrentPeriod('3M')}
-                  className="text-xs"
-                >
-                  3M
-                </Button>
-                <Button 
-                  variant={currentPeriod === '6M' ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  onClick={() => setCurrentPeriod('6M')}
-                  className="text-xs"
-                >
-                  6M
-                </Button>
-                <Button 
-                  variant={currentPeriod === '1Y' ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  onClick={() => setCurrentPeriod('1Y')}
-                  className="text-xs"
-                >
-                  1Y
-                </Button>
-                <Button 
-                  variant={currentPeriod === 'ALL' ? 'secondary' : 'ghost'} 
-                  size="sm"
-                  onClick={() => setCurrentPeriod('ALL')}
-                  className="text-xs"
-                >
-                  ALL
-                </Button>
-              </div>
-              <Button variant="outline" size="sm">
-                <FilterIcon className="h-4 w-4 mr-1" />
-                Filter
-              </Button>
-              <Button variant="outline" size="sm">
-                <RefreshCw className="h-4 w-4 mr-1" />
-                Refresh
-              </Button>
-            </div>
-          </div>
+          <AnalyticsHeader 
+            projectName={projectName}
+            currentPeriod={currentPeriod}
+            setCurrentPeriod={setCurrentPeriod}
+          />
           
           <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="bg-gray-800">
@@ -186,354 +124,33 @@ const Analytics = () => {
             </TabsList>
             
             <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Cost Overview */}
-                <Card className="border-gray-700 bg-gray-800">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-medium flex justify-between">
-                      Cost Breakdown
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <InfoIcon className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[180px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart
-                          data={costData}
-                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="name" stroke="#9ca3af" />
-                          <YAxis stroke="#9ca3af" />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                          />
-                          <Area type="monotone" dataKey="labor" stackId="1" stroke={colors.labor} fill={colors.labor} fillOpacity={0.6} />
-                          <Area type="monotone" dataKey="materials" stackId="1" stroke={colors.materials} fill={colors.materials} fillOpacity={0.6} />
-                          <Area type="monotone" dataKey="equipment" stackId="1" stroke={colors.equipment} fill={colors.equipment} fillOpacity={0.6} />
-                        </AreaChart>
-                      </ResponsiveContainer>
-                    </div>
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex items-center">
-                        <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: colors.labor }}></div>
-                        <span className="text-xs text-gray-300">Labor</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: colors.materials }}></div>
-                        <span className="text-xs text-gray-300">Materials</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: colors.equipment }}></div>
-                        <span className="text-xs text-gray-300">Equipment</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Progress */}
-                <Card className="border-gray-700 bg-gray-800">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-medium flex justify-between">
-                      Schedule Progress
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <InfoIcon className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[180px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                          data={progressData}
-                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="name" stroke="#9ca3af" />
-                          <YAxis stroke="#9ca3af" />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                          />
-                          <Line type="monotone" dataKey="planned" stroke={colors.planned} strokeWidth={2} dot={{ r: 4 }} />
-                          <Line type="monotone" dataKey="actual" stroke={colors.actual} strokeWidth={2} dot={{ r: 4 }} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex items-center">
-                        <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: colors.planned }}></div>
-                        <span className="text-xs text-gray-300">Planned</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: colors.actual }}></div>
-                        <span className="text-xs text-gray-300">Actual</span>
-                      </div>
-                      <div className="flex-grow text-right">
-                        <span className="text-xs text-gray-300">Variance: -7%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Risk Distribution */}
-                <Card className="border-gray-700 bg-gray-800">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-medium flex justify-between">
-                      Risk Distribution
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <InfoIcon className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[180px] flex justify-center">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={riskDistributionData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={45}
-                            outerRadius={70}
-                            paddingAngle={2}
-                            dataKey="value"
-                          >
-                            {riskDistributionData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                            formatter={(value, name) => [`${value}%`, name]}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </div>
-                    <div className="flex justify-between items-center mt-2">
-                      {riskDistributionData.map((entry, index) => (
-                        <div key={index} className="flex items-center">
-                          <div className="h-3 w-3 rounded-full mr-1" style={{ backgroundColor: entry.color }}></div>
-                          <span className="text-xs text-gray-300">{entry.name}: {entry.value}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Resource Utilization */}
-                <Card className="border-gray-700 bg-gray-800">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-medium flex justify-between">
-                      Resource Utilization
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <InfoIcon className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[250px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart
-                          data={resourceUtilizationData}
-                          margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="name" stroke="#9ca3af" />
-                          <YAxis stroke="#9ca3af" />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                          />
-                          <Legend />
-                          <Bar dataKey="utilization" fill={colors.utilization} radius={[4, 4, 0, 0]} />
-                          <Bar dataKey="target" fill={colors.target} radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Quality Issues */}
-                <Card className="border-gray-700 bg-gray-800">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-medium flex justify-between">
-                      Quality Issues
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <InfoIcon className="h-4 w-4" />
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[250px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart
-                          data={qualityIssuesData}
-                          margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-                        >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="name" stroke="#9ca3af" />
-                          <YAxis stroke="#9ca3af" />
-                          <Tooltip 
-                            contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                          />
-                          <Legend />
-                          <Bar dataKey="issues" fill={colors.issues} radius={[4, 4, 0, 0]} />
-                          <Bar dataKey="resolved" fill={colors.resolved} radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              <OverviewDashboard 
+                costData={costData}
+                progressData={progressData}
+                resourceUtilizationData={resourceUtilizationData}
+                qualityIssuesData={qualityIssuesData}
+                riskDistributionData={riskDistributionData}
+              />
             </TabsContent>
             
             <TabsContent value="costs" className="space-y-6">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle>Cost Analysis</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6">Detailed cost breakdown and analysis will be shown here.</p>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
-                        data={costData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                        />
-                        <Legend />
-                        <Area type="monotone" dataKey="labor" stackId="1" stroke={colors.labor} fill={colors.labor} fillOpacity={0.6} />
-                        <Area type="monotone" dataKey="materials" stackId="1" stroke={colors.materials} fill={colors.materials} fillOpacity={0.6} />
-                        <Area type="monotone" dataKey="equipment" stackId="1" stroke={colors.equipment} fill={colors.equipment} fillOpacity={0.6} />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <CostAnalysisChart data={costData} />
             </TabsContent>
             
             <TabsContent value="progress" className="space-y-6">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle>Progress Tracking</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6">Detailed progress monitoring and schedule comparison.</p>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={progressData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                        />
-                        <Legend />
-                        <Line type="monotone" dataKey="planned" stroke={colors.planned} strokeWidth={2} dot={{ r: 4 }} />
-                        <Line type="monotone" dataKey="actual" stroke={colors.actual} strokeWidth={2} dot={{ r: 4 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <ProgressTrackingChart data={progressData} />
             </TabsContent>
             
             <TabsContent value="resources" className="space-y-6">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle>Resource Utilization</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6">Equipment and resource utilization analytics.</p>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={resourceUtilizationData}
-                        margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                        />
-                        <Legend />
-                        <Bar dataKey="utilization" fill={colors.utilization} radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="target" fill={colors.target} radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <ResourceUtilizationChart data={resourceUtilizationData} />
             </TabsContent>
             
             <TabsContent value="quality" className="space-y-6">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle>Quality Metrics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6">Quality issues tracking and resolution rates.</p>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={qualityIssuesData}
-                        margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                        />
-                        <Legend />
-                        <Bar dataKey="issues" fill={colors.issues} radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="resolved" fill={colors.resolved} radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <QualityMetricsChart data={qualityIssuesData} />
             </TabsContent>
             
             <TabsContent value="safety" className="space-y-6">
-              <Card className="border-gray-700 bg-gray-800">
-                <CardHeader>
-                  <CardTitle>Safety Incidents</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6">Safety incident tracking and severity analysis.</p>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={safetyIncidentsData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" />
-                        <YAxis stroke="#9ca3af" />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', color: '#fff' }} 
-                        />
-                        <Legend />
-                        <Line type="monotone" dataKey="count" stroke={colors.count} strokeWidth={2} dot={{ r: 4 }} />
-                        <Line type="monotone" dataKey="severity" stroke={colors.severity} strokeWidth={2} dot={{ r: 4 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+              <SafetyIncidentsChart data={safetyIncidentsData} />
             </TabsContent>
           </Tabs>
         </main>
