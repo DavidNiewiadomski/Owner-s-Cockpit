@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { AIAssistant } from '@/components/ai/AIAssistant';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield, Camera, Map, Scan, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-// Sample integrations data with expanded categories including Jet.Build and Track3D
 const integrations = [
   {
     id: '1',
@@ -103,7 +100,6 @@ const integrations = [
   }
 ];
 
-// Integration categories to organize the view - updated with Reality Capture category
 const categories = [
   { id: 'project-management', name: 'Project Management', icon: Workflow },
   { id: 'design-modeling', name: 'Design & Modeling', icon: Box },
@@ -115,7 +111,6 @@ const categories = [
   { id: 'other', name: 'Other Integrations', icon: Code2 }
 ];
 
-// Featured integrations that we want to highlight
 const featuredIntegrations = ['Jet.Build', 'Track3D'];
 
 const Integrations = () => {
@@ -151,12 +146,10 @@ const Integrations = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Get featured integrations to display at the top
   const featured = filteredIntegrations.filter(integration => 
     featuredIntegrations.includes(integration.name)
   );
   
-  // Get the rest of the integrations
   const regular = filteredIntegrations.filter(integration => 
     !featuredIntegrations.includes(integration.name)
   );
@@ -183,7 +176,6 @@ const Integrations = () => {
               </div>
             </div>
 
-            {/* Category Selection */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
               {categories.map((category) => (
                 <Button
@@ -202,7 +194,6 @@ const Integrations = () => {
               ))}
             </div>
             
-            {/* Integration Status Overview */}
             <Card className="bg-black border-gray-700 p-4 mb-8">
               <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
@@ -230,7 +221,6 @@ const Integrations = () => {
               </CardContent>
             </Card>
             
-            {/* Featured Integrations */}
             {featured.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-4 text-white flex items-center">
@@ -250,7 +240,6 @@ const Integrations = () => {
               </div>
             )}
             
-            {/* Regular Integration Cards Grid */}
             <h2 className="text-xl font-semibold mb-4 text-white">All Integrations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regular.map((integration) => (
@@ -279,23 +268,6 @@ const Integrations = () => {
             )}
           </div>
         </main>
-        
-        <CollapsibleAIAssistant 
-          projectContext="Integrations"
-          initialInsights={[
-            {
-              title: 'Reality Capture Integration',
-              content: 'Connecting Track3D can provide 360° site captures automatically linked to your timeline milestones.',
-              type: 'info'
-            },
-            {
-              title: 'New Feature Alert',
-              content: 'Jet.Build now offers AI-powered resource allocation that can reduce schedule delays by up to 15%.',
-              type: 'success'
-            }
-          ]}
-          mode="construction"
-        />
       </div>
     </div>
   );
