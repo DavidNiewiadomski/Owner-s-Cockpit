@@ -48,6 +48,11 @@ export interface State {
   toasts: ToasterToastWithId[];
 }
 
+// Export initialState which was missing
+export const initialState: State = {
+  toasts: [],
+};
+
 export type ToastContextType = {
   toasts: ToasterToastWithId[];
   toast: (props: ToasterToast) => ToasterToastWithId["id"];

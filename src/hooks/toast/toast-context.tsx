@@ -7,7 +7,8 @@ import {
   ToasterToastWithId,
   initialState 
 } from "./toast-types";
-import { reducer, dispatchToast, genId, toast } from "./toast-actions";
+import { reducer, dispatchToast, genId } from "./toast-actions";
+import type { Action } from "./toast-types";
 
 // Create context
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -28,6 +29,9 @@ export function ToastProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  
+  // Set the dispatch function to the exported variable
+  // @ts-expect-error - This is a mutable export
   dispatchToast = dispatch;
 
   const contextValue = useMemo(

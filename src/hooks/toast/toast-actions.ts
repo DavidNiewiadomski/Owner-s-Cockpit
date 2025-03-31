@@ -1,5 +1,5 @@
 
-import { Action, actionTypes, State, ToasterToast } from "./toast-types";
+import { Action, actionTypes, State, initialState, ToasterToast } from "./toast-types";
 
 // ID Generation
 let count = 0;
@@ -86,12 +86,8 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-// Global dispatch function
+// Global dispatch variable (not import)
 export let dispatchToast: React.Dispatch<Action>;
-
-export const initialState: State = {
-  toasts: [],
-};
 
 // Standalone toast function
 export const toast = (props: ToasterToast) => {
