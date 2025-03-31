@@ -6,7 +6,7 @@ import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentMetricsSection } from '@/components/investment/InvestmentMetricsSection';
 import { InvestmentTabContent } from '@/components/investment/InvestmentTabContent';
-import { InvestmentInsights } from '@/components/investment/InvestmentInsights';
+import { InvestmentInsights, getInvestmentInsights } from '@/components/investment/InvestmentInsights';
 import { useProject } from '@/contexts/ProjectContext';
 import { 
   investmentMetricsData, 
@@ -96,7 +96,7 @@ const InvestmentImpact = () => {
   };
   
   // Get the insights for the selected project
-  const { investmentInsights } = InvestmentInsights({ projectId, projectName });
+  const insights = getInvestmentInsights(projectId);
   
   // Filter for the selected project
   const projectRisks = financialRisks[projectId as keyof typeof financialRisks] || financialRisks.all;
@@ -134,7 +134,7 @@ const InvestmentImpact = () => {
         <CollapsibleAIAssistant 
           projectContext="Investment Impact"
           projectName={projectName}
-          initialInsights={investmentInsights}
+          initialInsights={insights}
         />
         
         <main className="flex-1 p-6">
@@ -150,6 +150,14 @@ const InvestmentImpact = () => {
             irrMetrics={irrMetrics}
             paybackMetrics={paybackMetrics}
           />
+          
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold mb-4">Investment Insights</h2>
+            <InvestmentInsights 
+              projectId={projectId} 
+              projectName={projectName} 
+            />
+          </div>
           
           <InvestmentTabContent 
             activeTab={activeTab}
