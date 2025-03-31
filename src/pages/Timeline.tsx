@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -255,34 +254,34 @@ const Timeline = () => {
       // Set project-specific milestone data
       setMilestoneData(projectMilestoneData[projectId as keyof typeof projectMilestoneData] || projectMilestoneData['all']);
       
-      // Set project-specific insights
+      // Set project-specific insights as simple strings
       if (projectId === '1') {
         setProjectSpecificInsights([
-          `East Tower is currently 1.5 days ahead of schedule`,
-          `Facade material delivery is scheduled for next week`,
-          `Weather forecast shows clear conditions for the next 10 days`,
-          `Resource allocation is optimized at 93% efficiency for East Tower`
+          `Schedule Update: East Tower is currently 1.5 days ahead of schedule`,
+          `Material Alert: Facade material delivery is scheduled for next week`,
+          `Weather Update: Weather forecast shows clear conditions for the next 10 days`,
+          `Resource Update: Resource allocation is optimized at 93% efficiency for East Tower`
         ]);
       } else if (projectId === '2') {
         setProjectSpecificInsights([
-          `Westside Park is currently 3.2 days behind schedule due to drainage issues`,
-          `Excavation equipment needs to be relocated by Friday`,
-          `Weather forecast shows potential rain impact to landscaping next week`,
-          `Resource allocation is optimized at 85% efficiency for Westside Park`
+          `Schedule Alert: Westside Park is currently 3.2 days behind schedule due to drainage issues`,
+          `Resource Alert: Excavation equipment needs to be relocated by Friday`,
+          `Weather Alert: Weather forecast shows potential rain impact to landscaping next week`,
+          `Resource Update: Resource allocation is optimized at 85% efficiency for Westside Park`
         ]);
       } else if (projectId === '3') {
         setProjectSpecificInsights([
-          `North Bridge repairs are on schedule with no current variance`,
-          `Traffic diversion plan needs minor adjustments for weekend work`,
-          `Weather forecast shows moderate impact to exterior work next week`,
-          `Resource allocation is optimized at 89% efficiency for North Bridge`
+          `Schedule Update: North Bridge repairs are on schedule with no current variance`,
+          `Traffic Alert: Traffic diversion plan needs minor adjustments for weekend work`,
+          `Weather Alert: Weather forecast shows moderate impact to exterior work next week`,
+          `Resource Update: Resource allocation is optimized at 89% efficiency for North Bridge`
         ]);
       } else {
         setProjectSpecificInsights([
-          `Schedule variance is currently 2.5 days ahead across all projects`,
-          `Critical path activities are 92% on schedule`,
-          `Weather forecast shows potential impact to exterior work next week`,
-          `Resource allocation is optimized at 87% efficiency across all projects`
+          `Schedule Update: Schedule variance is currently 2.5 days ahead across all projects`,
+          `Critical Path Update: Critical path activities are 92% on schedule`,
+          `Weather Alert: Weather forecast shows potential impact to exterior work next week`,
+          `Resource Update: Resource allocation is optimized at 87% efficiency across all projects`
         ]);
       }
     }
@@ -314,7 +313,6 @@ const Timeline = () => {
           <CollapsibleAIAssistant 
             projectName={selectedProject?.title || 'your project'} 
             insights={projectSpecificInsights}
-            initialInsights={timelineInsights}
           />
 
           <div className="mb-6">

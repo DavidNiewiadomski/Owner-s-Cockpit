@@ -146,22 +146,10 @@ const messages: Message[] = [
   },
 ];
 
-const messageInsights = [
-  {
-    title: 'Communication Alert',
-    content: 'Sarah Wilson has requested approval for Downtown High-Rise facade materials by tomorrow.',
-    type: 'warning' as const
-  },
-  {
-    title: 'Meeting Reminder',
-    content: 'Project status meeting with the Downtown High-Rise team scheduled for Thursday at 2pm.',
-    type: 'info' as const
-  },
-  {
-    title: 'Decision Impact',
-    content: 'Approving the material change for Corporate Office Park would save $85,000 on overall budget.',
-    type: 'success' as const
-  }
+const messageInsightsArray = [
+  "Communication Alert: Sarah Wilson has requested approval for Downtown High-Rise facade materials by tomorrow.",
+  "Meeting Reminder: Project status meeting with the Downtown High-Rise team scheduled for Thursday at 2pm.",
+  "Decision Impact: Approving the material change for Corporate Office Park would save $85,000 on overall budget."
 ];
 
 const Messages = () => {
@@ -194,8 +182,8 @@ const Messages = () => {
         />
         
         <CollapsibleAIAssistant
-          projectContext="your messages"
-          initialInsights={messageInsights}
+          projectName="your messages"
+          insights={messageInsightsArray}
         />
         
         <main className="flex-1 flex">

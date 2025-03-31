@@ -6,6 +6,12 @@ import { AIAssistant } from "@/components/ai/AIAssistant";
 import { BrainCircuit, ChevronDown, ChevronUp, LightbulbIcon, MessageSquare, Mic } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
+interface InsightItem {
+  title: string;
+  content: string;
+  type: "warning" | "success" | "info";
+}
+
 interface CollapsibleAIAssistantProps {
   projectName?: string;
   insights?: string[];
@@ -25,7 +31,7 @@ export function CollapsibleAIAssistant({
   const [expanded, setExpanded] = useState(false);
   
   // Parse insights into title and content
-  const parsedInsights = insights.map(insight => {
+  const parsedInsights: InsightItem[] = insights.map(insight => {
     const parts = insight.split(":");
     return {
       title: parts.length > 1 ? parts[0].trim() : `Insight ${Math.floor(Math.random() * 100)}`,

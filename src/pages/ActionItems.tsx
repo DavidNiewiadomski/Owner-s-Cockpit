@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
@@ -33,7 +32,6 @@ import {
 import { ActionItemList } from '@/components/actionItems/ActionItemList';
 import { useProject } from '@/contexts/ProjectContext';
 
-// Define project-specific action items
 const projectActionItems = {
   '1': [
     {
@@ -240,11 +238,15 @@ export default function ActionItems() {
   const { selectedProject } = useProject();
   const [actionItems, setActionItems] = useState<any[]>([]);
   
-  // Get project-specific action items based on selected project
   useEffect(() => {
     const projectId = selectedProject?.id || 'all';
     setActionItems(projectActionItems[projectId as keyof typeof projectActionItems] || projectActionItems['all']);
   }, [selectedProject]);
+  
+  const actionItemInsights = [
+    `Priority Items: You have ${actionItems.filter(item => item.priority === 'high' && item.status === 'pending').length} high-priority items requiring attention`,
+    `Upcoming Deadlines: ${actionItems.filter(item => new Date(item.dueDate) <= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000) && item.status === 'pending').length} items due within the next 7 days`
+  ];
   
   return (
     <div className="flex h-screen bg-black">
@@ -254,18 +256,7 @@ export default function ActionItems() {
         <DashboardHeader title="Action Items" />
         <CollapsibleAIAssistant 
           projectName={selectedProject?.title || 'All Projects'}
-          initialInsights={[
-            {
-              title: 'Priority Items',
-              content: `You have ${actionItems.filter(item => item.priority === 'high' && item.status === 'pending').length} high-priority items requiring attention`,
-              type: 'warning'
-            },
-            {
-              title: 'Upcoming Deadlines',
-              content: `${actionItems.filter(item => new Date(item.dueDate) <= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000) && item.status === 'pending').length} items due within the next 7 days`,
-              type: 'info'
-            }
-          ]}
+          insights={actionItemInsights}
         />
         
         <div className="container mx-auto px-4 py-6">
@@ -320,16 +311,12 @@ export default function ActionItems() {
   );
 }
 
-// Component to display project-specific action items
 function ProjectActionItemList({ items, filter, searchQuery }: { items: any[], filter: 'all' | 'pending' | 'completed' | 'urgent', searchQuery: string }) {
-  // Filter items based on filter type and search query
   const filteredItems = items.filter(item => {
-    // Apply status filter
     if (filter === 'pending' && item.status !== 'pending') return false;
     if (filter === 'completed' && item.status !== 'completed') return false;
     if (filter === 'urgent' && item.priority !== 'high') return false;
     
-    // Apply search filter
     if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
         !item.description.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !item.project.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -413,5 +400,4 @@ function ProjectActionItemList({ items, filter, searchQuery }: { items: any[], f
   );
 }
 
-// Missing Badge component import
 import { Badge } from '@/components/ui/badge';

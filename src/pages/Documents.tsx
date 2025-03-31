@@ -40,23 +40,17 @@ const Documents = () => {
     });
   };
 
+  // Define document insights as strings
   const documentInsights = [
-    {
-      title: 'Document Updates',
-      content: projectId === '1' ? 'East Tower Blueprint.pdf was updated 2 days ago with facade design changes' :
-               projectId === '2' ? 'Landscaping Plan.pdf requires your approval for the irrigation system' :
-               projectId === '3' ? 'Bridge Structural Analysis.pdf has critical reinforcement recommendations' :
-               'Project Blueprint.pdf was updated 2 days ago with foundation design changes',
-      type: 'info' as const
-    },
-    {
-      title: 'Approval Needed',
-      content: projectId === '1' ? 'Construction Timeline.xlsx is awaiting your review for milestone adjustments' :
-               projectId === '2' ? 'Environmental Impact Report.docx has outstanding comments to address' :
-               projectId === '3' ? 'Traffic Flow Models.xlsx needs approval before implementation' :
-               'Budget Forecast.xlsx is awaiting your review and approval',
-      type: 'warning' as const
-    }
+    projectId === '1' ? 'Document Updates: East Tower Blueprint.pdf was updated 2 days ago with facade design changes' :
+    projectId === '2' ? 'Document Updates: Landscaping Plan.pdf requires your approval for the irrigation system' :
+    projectId === '3' ? 'Document Updates: Bridge Structural Analysis.pdf has critical reinforcement recommendations' :
+    'Document Updates: Project Blueprint.pdf was updated 2 days ago with foundation design changes',
+    
+    projectId === '1' ? 'Approval Needed: Construction Timeline.xlsx is awaiting your review for milestone adjustments' :
+    projectId === '2' ? 'Approval Needed: Environmental Impact Report.docx has outstanding comments to address' :
+    projectId === '3' ? 'Approval Needed: Traffic Flow Models.xlsx needs approval before implementation' :
+    'Approval Needed: Budget Forecast.xlsx is awaiting your review and approval'
   ];
 
   return (
@@ -70,9 +64,8 @@ const Documents = () => {
         />
         
         <CollapsibleAIAssistant 
-          projectContext="Documents"
+          insights={documentInsights}
           projectName={selectedProject?.title || 'All Projects'}
-          initialInsights={documentInsights}
         />
         
         <main className="flex-1 overflow-y-auto p-6">

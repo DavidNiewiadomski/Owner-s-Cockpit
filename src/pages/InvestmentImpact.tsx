@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -16,7 +15,6 @@ import {
   projectOptions
 } from '@/utils/investmentData';
 
-// Chart colors for consistency across visualizations
 const chartColors = {
   primary: '#3b82f6',    // blue-500
   secondary: '#22c55e',  // green-500
@@ -27,7 +25,6 @@ const chartColors = {
   gridLine: '#333333'    // neutral-700
 };
 
-// Financial risks data
 const financialRisks = {
   all: [
     { name: 'Market Volatility', level: 'high', impact: '$1.2M' },
@@ -37,14 +34,12 @@ const financialRisks = {
   ]
 };
 
-// Mock schedule variance data
 const scheduleVarianceData = [
   { project: 'East Tower', originalDuration: 120, currentDuration: 145 },
   { project: 'Green Valley', originalDuration: 90, currentDuration: 100 },
   { project: 'Bridge Project', originalDuration: 180, currentDuration: 190 }
 ];
 
-// Mock ROI trend data
 const roiTrendData = [
   { month: 'Jan', original: 12, current: 11.5 },
   { month: 'Feb', original: 12.5, current: 11.8 },
@@ -54,7 +49,6 @@ const roiTrendData = [
   { month: 'Jun', original: 14.2, current: 13 }
 ];
 
-// Mock property valuation data
 const propertyValuationData = [
   { month: 'Jan', initial: 100, current: 98 },
   { month: 'Feb', initial: 100, current: 97 },
@@ -70,7 +64,6 @@ const InvestmentImpact = () => {
   const projectId = selectedProject?.id || 'all';
   const projectName = selectedProject?.title || 'All Projects';
   
-  // Define metrics for investment metrics cards
   const roiMetrics = {
     label: "ROI",
     original: "16.8%",
@@ -95,29 +88,25 @@ const InvestmentImpact = () => {
     variance: "+0.7 yrs"
   };
   
-  // Get the insights for the selected project
-  const insights = getInvestmentInsights(projectId);
-  
-  // Filter for the selected project
-  const projectRisks = financialRisks[projectId as keyof typeof financialRisks] || financialRisks.all;
-  
-  // Handle changes to the project selection
-  const handleProjectChange = (value: string) => {
-    console.log(`Project changed to: ${value}`);
-    // This would typically update the selected project in a context or state
+  const getSimpleInsights = (projectId: string): string[] => {
+    const insights = getInvestmentInsights(projectId);
+    return insights.map(insight => `${insight.title}: ${insight.content}`);
   };
   
-  // Handle download report action
+  const simpleInsights = getSimpleInsights(projectId);
+  
+  const handleProjectChange = (value: string) => {
+    console.log(`Project changed to: ${value}`);
+  };
+  
   const handleDownloadReport = () => {
     console.log('Downloading investment impact report');
   };
 
   useEffect(() => {
-    // Update analytics or load data when project changes
     console.log(`Loading investment data for project: ${projectName}`);
   }, [projectId, projectName]);
   
-  // Handle strategy action function
   const handleStrategyAction = (id: number, action: string) => {
     console.log(`Strategy ${id} action: ${action}`);
   };
@@ -132,9 +121,8 @@ const InvestmentImpact = () => {
         />
         
         <CollapsibleAIAssistant 
-          projectContext="Investment Impact"
           projectName={projectName}
-          initialInsights={insights}
+          insights={simpleInsights}
         />
         
         <main className="flex-1 p-6">
@@ -167,7 +155,7 @@ const InvestmentImpact = () => {
             roiTrendData={roiTrendData}
             propertyValuationData={propertyValuationData}
             impactEventsData={impactEventsData}
-            projectRisks={projectRisks}
+            projectRisks={financialRisks.all}
             mitigationStrategiesData={mitigationStrategiesData}
             chartColors={chartColors}
             onStrategyAction={handleStrategyAction}
