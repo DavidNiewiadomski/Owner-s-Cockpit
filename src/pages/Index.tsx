@@ -11,7 +11,11 @@ import {
   AlertTriangle,
   TrendingUp,
   Bell,
-  ArrowUpRight
+  ArrowUpRight,
+  Building,
+  Construction,
+  Landmark,
+  CheckCircle
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -24,6 +28,8 @@ import { AIAssistant } from '@/components/ai/AIAssistant';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { PropertyDetails } from '@/components/dashboard/PropertyDetails';
+import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
 
 // Sample data
 const projects = [
@@ -74,21 +80,30 @@ const timelineEvents = [
     title: 'Project Kickoff',
     date: 'March 15, 2024',
     description: 'Initial project meeting and scope definition',
-    status: 'completed' as const
+    status: 'completed' as const,
+    financial: {
+      amount: 0,
+      type: 'neutral' as const,
+    }
   },
   {
     id: '2',
     title: 'Design Approval',
     date: 'April 10, 2024',
     description: 'Final design approval by stakeholders',
-    status: 'completed' as const
+    status: 'completed' as const,
+    financial: {
+      amount: 25000,
+      type: 'under' as const,
+    }
   },
   {
     id: '3',
     title: 'Foundation Work',
     date: 'Today',
     description: 'Laying building foundation',
-    status: 'in-progress' as const
+    status: 'in-progress' as const,
+    impact: 'high' as const
   },
   {
     id: '4',
@@ -140,7 +155,7 @@ const documents = [
   },
 ];
 
-// New chart data
+// Performance data
 const performanceData = [
   { name: 'Jan', value: 40 },
   { name: 'Feb', value: 45 },
@@ -158,6 +173,58 @@ const notifications = [
   { id: 3, title: 'Inspection Scheduled', message: 'Foundation inspection set for Westside Park', time: 'Yesterday', read: true },
   { id: 4, title: 'Document Updated', message: 'Project Blueprint.pdf has been updated', time: '2 days ago', read: true },
 ];
+
+// Sample property data for owner dashboard
+const propertyData = {
+  propertyName: "Downtown High-Rise",
+  propertyType: "Mixed-Use",
+  location: "San Francisco, CA",
+  squareFootage: 250000,
+  floors: 23,
+  constructionStartDate: "November 15, 2023",
+  estimatedCompletionDate: "June 30, 2025",
+  currentPhase: "Structural Framework",
+  completionPercentage: 35,
+  keyContacts: [
+    { role: "Project Manager", name: "Sarah Wilson", contact: "sarah.wilson@example.com" },
+    { role: "General Contractor", name: "Alex Rodriguez", contact: "alex.rodriguez@example.com" },
+    { role: "Architect", name: "Lisa Chen", contact: "lisa.chen@example.com" },
+    { role: "Permit Coordinator", name: "Robert Smith", contact: "robert.smith@example.com" }
+  ],
+  permits: [
+    { type: "Building Permit", status: "approved", date: "Dec 20, 2023" },
+    { type: "Electrical Permit", status: "approved", date: "Jan 15, 2024" },
+    { type: "Plumbing Permit", status: "approved", date: "Jan 22, 2024" },
+    { type: "Environmental Clearance", status: "approved", date: "Nov 30, 2023" },
+    { type: "Mechanical Permit", status: "pending", date: "Submitted Mar 5, 2024" }
+  ],
+  inspections: [
+    { type: "Foundation Inspection", status: "passed", date: "Jan 30, 2024", notes: "All requirements met" },
+    { type: "Structural Framing", status: "passed", date: "Mar 15, 2024", notes: "Approved with minor comments" },
+    { type: "Electrical Rough-In", status: "scheduled", date: "Apr 28, 2024" },
+    { type: "Plumbing Rough-In", status: "not-scheduled" }
+  ]
+};
+
+// Sample financial data for owner dashboard
+const financialData = {
+  projectName: "Downtown High-Rise",
+  totalBudget: 42500000,
+  spending: [
+    { category: "Land Acquisition", amount: 12000000, color: "#4c1d95", status: "normal" },
+    { category: "Site Preparation", amount: 2500000, color: "#2563eb", status: "under", variance: 150000 },
+    { category: "Foundation", amount: 3800000, color: "#0891b2", status: "normal" },
+    { category: "Structural Frame", amount: 4200000, color: "#059669", status: "over", variance: 250000 },
+    { category: "Exterior", amount: 1500000, color: "#65a30d", status: "normal" },
+    { category: "Mechanical/Electrical", amount: 800000, color: "#a5b4fc", status: "normal" }
+  ],
+  changeOrders: [
+    { id: "CO-001", description: "Foundation Redesign", amount: 120000, status: "approved", date: "Jan 18, 2024" },
+    { id: "CO-002", description: "Material Substitution Savings", amount: -45000, status: "approved", date: "Feb 02, 2024" },
+    { id: "CO-003", description: "Additional HVAC Capacity", amount: 85000, status: "pending", date: "Mar 25, 2024" },
+    { id: "CO-004", description: "Design Change: Interior Layout", amount: 35000, status: "rejected", date: "Apr 05, 2024" }
+  ]
+};
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -212,13 +279,13 @@ const Dashboard = () => {
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-100">Dashboard</h1>
-                <p className="text-gray-400">Welcome back to your project overview</p>
+                <h1 className="text-2xl font-bold text-gray-100">Owner Dashboard</h1>
+                <p className="text-gray-400">Real-time overview of your properties and projects</p>
               </div>
               <div className="mt-3 md:mt-0">
                 <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                   <span className="w-2 h-2 mr-1 rounded-full bg-green-500"></span>
-                  All systems operational
+                  All projects active
                 </span>
               </div>
             </div>
@@ -226,33 +293,52 @@ const Dashboard = () => {
             {/* Stats Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               <StatCard 
-                title="Active Projects" 
+                title="Active Properties" 
                 value="8" 
-                icon={Briefcase} 
+                icon={Building} 
                 trend="up" 
-                trendValue="2 new this month" 
+                trendValue="2 new acquisitions" 
               />
               <StatCard 
-                title="Budget Utilization" 
-                value="$4.2M" 
-                description="of $6.8M total" 
+                title="Construction Value" 
+                value="$86.4M" 
+                description="total investment" 
                 icon={DollarSign}
                 trend="up" 
-                trendValue="12% since last month" 
+                trendValue="12% YOY increase" 
               />
               <StatCard 
-                title="Team Members" 
-                value="32" 
-                icon={Users}
+                title="Total Square Footage" 
+                value="1.2M" 
+                icon={Landmark}
                 trend="up" 
-                trendValue="4 new this month" 
+                trendValue="215,000 sq ft in development" 
               />
               <StatCard 
-                title="Open Issues" 
-                value="12" 
+                title="Critical Issues" 
+                value="3" 
                 icon={AlertTriangle}
                 trend="down" 
-                trendValue="3 fewer than last week" 
+                trendValue="5 resolved this month" 
+              />
+            </div>
+            
+            {/* Property Details Section */}
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-100 mb-4">Featured Property Details</h2>
+              <PropertyDetails 
+                propertyName={propertyData.propertyName}
+                propertyType={propertyData.propertyType}
+                location={propertyData.location}
+                squareFootage={propertyData.squareFootage}
+                floors={propertyData.floors}
+                constructionStartDate={propertyData.constructionStartDate}
+                estimatedCompletionDate={propertyData.estimatedCompletionDate}
+                currentPhase={propertyData.currentPhase}
+                completionPercentage={propertyData.completionPercentage}
+                keyContacts={propertyData.keyContacts}
+                permits={propertyData.permits}
+                inspections={propertyData.inspections}
               />
             </div>
             
@@ -260,13 +346,21 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               {/* Projects Column */}
               <div className="lg:col-span-2 space-y-6">
+                {/* Financial Tracking */}
+                <FinancialTracking 
+                  projectName={financialData.projectName}
+                  totalBudget={financialData.totalBudget}
+                  spending={financialData.spending}
+                  changeOrders={financialData.changeOrders}
+                />
+                
                 {/* Performance Chart */}
                 <Card className="bg-gray-800 border-gray-700 shadow-lg overflow-hidden">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
                       <CardTitle className="text-lg text-white flex items-center">
                         <TrendingUp className="h-5 w-5 mr-2 text-construction-400" />
-                        Overall Performance
+                        Construction Progress Trend
                       </CardTitle>
                       <Button size="sm" variant="ghost" className="h-8 px-2 text-gray-400 hover:text-white">
                         <ArrowUpRight className="h-4 w-4 mr-1" />
@@ -367,29 +461,68 @@ const Dashboard = () => {
                 <h2 className="text-xl font-semibold text-gray-100">Project Timeline</h2>
                 <TimelineCard events={timelineEvents} />
                 
-                {/* Quick Actions */}
+                {/* Owner Action Items */}
                 <Card className="bg-gray-800 border-gray-700 shadow-lg">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
+                    <CardTitle className="text-lg text-white">Owner Action Items</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-2">
-                      <Button className="w-full justify-start bg-construction-600 hover:bg-construction-700 text-white">
-                        <FileText className="h-4 w-4 mr-2" />
-                        Create New Document
-                      </Button>
-                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Schedule Meeting
-                      </Button>
-                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
-                        <AlertTriangle className="h-4 w-4 mr-2" />
-                        Report Issue
-                      </Button>
-                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
-                        <BarChart3 className="h-4 w-4 mr-2" />
-                        View Analytics
-                      </Button>
+                    <div className="space-y-3">
+                      <div className="p-3 bg-gray-750 rounded-lg border border-amber-800/30">
+                        <div className="flex items-start gap-3">
+                          <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-white text-sm">Budget Approval Required</h4>
+                            <p className="text-xs text-gray-400 mt-1">Change order for East Tower HVAC upgrade needs approval.</p>
+                            <div className="flex justify-between items-center mt-2">
+                              <span className="text-xs text-amber-400">Due in 3 days</span>
+                              <Button size="sm" variant="destructive" className="h-7 text-xs">Review</Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-3 bg-gray-750 rounded-lg border border-blue-800/30">
+                        <div className="flex items-start gap-3">
+                          <FileText className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-white text-sm">Document Review</h4>
+                            <p className="text-xs text-gray-400 mt-1">Updated construction contracts for Westside Park project.</p>
+                            <div className="flex justify-between items-center mt-2">
+                              <span className="text-xs text-blue-400">5 documents</span>
+                              <Button size="sm" variant="secondary" className="h-7 text-xs">View</Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-3 bg-gray-750 rounded-lg border border-green-800/30">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-white text-sm">Schedule Site Visit</h4>
+                            <p className="text-xs text-gray-400 mt-1">North Bridge project reached structural completion milestone.</p>
+                            <div className="flex justify-between items-center mt-2">
+                              <span className="text-xs text-green-400">Milestone achieved</span>
+                              <Button size="sm" variant="outline" className="h-7 text-xs">Schedule</Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="p-3 bg-gray-750 rounded-lg border border-construction-800/30">
+                        <div className="flex items-start gap-3">
+                          <Construction className="h-5 w-5 text-construction-500 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium text-white text-sm">Design Decision Needed</h4>
+                            <p className="text-xs text-gray-400 mt-1">Facade material selection for East Tower project.</p>
+                            <div className="flex justify-between items-center mt-2">
+                              <span className="text-xs text-construction-400">3 options available</span>
+                              <Button size="sm" variant="outline" className="h-7 text-xs">Review Options</Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
