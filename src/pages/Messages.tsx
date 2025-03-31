@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -12,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, Send, Paperclip, MoreVertical, Phone, Video } from 'lucide-react';
 
-// Sample message data
 const conversations = [
   {
     id: 1,
@@ -81,7 +79,6 @@ const conversations = [
   }
 ];
 
-// Sample messages for active conversation
 const messageHistory = [
   {
     id: 1,
@@ -158,27 +155,30 @@ const messageHistory = [
 ];
 
 const Messages = () => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [activeConversation, setActiveConversation] = useState(conversations[0]);
-  const [message, setMessage] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+
+  const filteredConversations = conversations.filter((conversation) =>
+    conversation.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim()) {
-      // In a real app, this would send the message to the server
-      console.log('Sending message:', message);
-      setMessage('');
+    if (newMessage.trim()) {
+      console.log('Sending message:', newMessage);
+      setNewMessage('');
     }
   };
 
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
-      <div className="flex-1">
-        <DashboardHeader title="Messages" subtitle="Communicate with your team and clients" />
+      <div className="flex-1 flex flex-col">
+        <DashboardHeader onSearch={setSearchTerm} title="Messages" subtitle="Communicate with your team and clients" />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
           <div className="grid h-[calc(100vh-180px)] grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Conversations List */}
             <Card className="md:col-span-1 overflow-hidden flex flex-col">
               <div className="p-4 border-b">
                 <div className="relative">
@@ -201,7 +201,7 @@ const Messages = () => {
               
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-2">
-                  {conversations.map((conversation) => (
+                  {filteredConversations.map((conversation) => (
                     <div
                       key={conversation.id}
                       onClick={() => setActiveConversation(conversation)}
@@ -241,9 +241,7 @@ const Messages = () => {
               </ScrollArea>
             </Card>
             
-            {/* Active Conversation */}
             <Card className="md:col-span-2 overflow-hidden flex flex-col">
-              {/* Conversation Header */}
               <div className="p-4 border-b flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-10 w-10">
@@ -275,7 +273,6 @@ const Messages = () => {
                 </div>
               </div>
               
-              {/* Messages */}
               <ScrollArea className="flex-1 p-4">
                 <div className="space-y-4">
                   {messageHistory.map((msg) => (
@@ -312,7 +309,6 @@ const Messages = () => {
                 </div>
               </ScrollArea>
               
-              {/* Message Input */}
               <div className="p-4 border-t">
                 <form onSubmit={handleSendMessage} className="flex gap-2">
                   <Button
@@ -324,8 +320,8 @@ const Messages = () => {
                     <Paperclip className="h-5 w-5" />
                   </Button>
                   <Input
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message..."
                     className="flex-1"
                   />

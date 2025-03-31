@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -16,7 +15,6 @@ import {
   ArrowUpRight, ChevronDown, ChevronUp, Columns, List, Users 
 } from 'lucide-react';
 
-// Sample project data
 const projects = [
   {
     id: 1,
@@ -129,7 +127,6 @@ const projects = [
   }
 ];
 
-// Convert project status to readable format
 const getStatusLabel = (status: string) => {
   switch (status) {
     case 'on-track':
@@ -147,7 +144,6 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-// Format date to readable format
 const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
   return new Date(dateString).toLocaleDateString('en-US', options);
@@ -156,6 +152,7 @@ const formatDate = (dateString: string) => {
 const Projects = () => {
   const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleProjectExpand = (projectId: number) => {
     setExpandedProject(expandedProject === projectId ? null : projectId);
@@ -165,7 +162,7 @@ const Projects = () => {
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1">
-        <DashboardHeader title="Projects" subtitle="Manage and track all your construction projects" />
+        <DashboardHeader onSearch={setSearchTerm} title="Projects" subtitle="Manage and track all your construction projects" />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
@@ -314,7 +311,6 @@ const Projects = () => {
                                 </td>
                               </tr>
                               
-                              {/* Expanded row with details */}
                               {expandedProject === project.id && (
                                 <tr className="bg-muted/30">
                                   <td colSpan={6} className="p-4">
