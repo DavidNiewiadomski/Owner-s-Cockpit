@@ -142,7 +142,7 @@ export const ProjectTableRow: React.FC<ProjectTableRowProps> = ({
               
               <div className="md:col-span-3 flex justify-end">
                 <Button variant="outline" size="sm" className="text-sm gap-1">
-                  <span>View Details</span>
+                  View Details
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Button>
               </div>

@@ -7,7 +7,7 @@ interface Project {
   title: string;
   description: string;
   progress: number;
-  status: "on-track" | "at-risk" | "delayed" | string;
+  status: string;
   startDate: string;
   endDate: string;
   budget: string;
@@ -22,6 +22,14 @@ interface ProjectsGridProps {
 }
 
 export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, formatDate }) => {
+  // Function to convert status to the specific type expected by ProjectCard
+  const mapStatus = (status: string): "on-track" | "at-risk" | "delayed" => {
+    if (status === "on-track" || status === "in-progress") return "on-track";
+    if (status === "at-risk") return "at-risk";
+    if (status === "delayed") return "delayed";
+    return "on-track"; // Default fallback
+  };
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((project) => (
@@ -30,7 +38,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, formatDate
           title={project.title}
           description={project.description}
           progress={project.progress}
-          status={project.status as "on-track" | "at-risk" | "delayed"}
+          status={mapStatus(project.status)}
           dueDate={formatDate(project.endDate)}
           teamMembers={project.teamMembers}
         />
