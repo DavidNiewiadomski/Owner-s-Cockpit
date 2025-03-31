@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -310,9 +309,26 @@ const timelineInsights = [
   }
 ];
 
+const CustomBar = (props: any) => {
+  const { dataKey, ...rest } = props;
+  return <Bar {...rest} dataKey={dataKey} />;
+};
+
+const renderColoredBar = (entry: any) => {
+  return <rect fill={getVarianceColor(entry)} />;
+};
+
 const Timeline = () => {
   const [activeProject, setActiveProject] = useState("downtown");
   const [timelineView, setTimelineView] = useState("gantt");
+  
+  const getPlannedDuration = (item: any) => {
+    return item.plannedEnd - item.plannedStart;
+  };
+  
+  const getActualDuration = (item: any) => {
+    return item.actualEnd !== null ? item.actualEnd - item.actualStart : (item.actualStart !== null ? 1 : 0);
+  };
   
   return (
     <div className="flex min-h-screen bg-background">
@@ -460,29 +476,36 @@ const Timeline = () => {
                               }}
                             />
                             <Legend />
-                            {/* Today marker */}
                             <ReferenceLine x={18} stroke="red" label={{ value: 'Today', position: 'top', fill: 'red' }} />
                             
-                            {/* Planned schedule bars */}
                             <Bar 
-                              dataKey={item => item.plannedEnd - item.plannedStart} 
-                              stackId="a" 
+                              dataKey="plannedDuration"
                               name="Planned"
                               barSize={20}
                               fill="rgba(59, 130, 246, 0.5)"
                               radius={[0, 4, 4, 0]}
-                              offset={item => item.plannedStart}
+                              stackId="a"
+                              data={ganttData.map(item => ({
+                                ...item,
+                                plannedDuration: item.plannedEnd - item.plannedStart,
+                                offset: item.plannedStart
+                              }))}
                             />
                             
-                            {/* Actual progress bars */}
                             <Bar 
-                              dataKey={item => item.actualEnd !== null ? item.actualEnd - item.actualStart : (item.actualStart !== null ? 1 : 0)} 
-                              stackId="b" 
+                              dataKey="actualDuration" 
                               name="Actual" 
                               barSize={20}
                               fill="rgba(16, 185, 129, 0.8)"
                               radius={[0, 4, 4, 0]}
-                              offset={item => item.actualStart}
+                              stackId="b"
+                              data={ganttData.map(item => ({
+                                ...item,
+                                actualDuration: item.actualEnd !== null ? 
+                                  item.actualEnd - item.actualStart : 
+                                  (item.actualStart !== null ? 1 : 0),
+                                offset: item.actualStart
+                              }))}
                             />
                           </BarChart>
                         </ResponsiveContainer>
@@ -541,7 +564,12 @@ const Timeline = () => {
                             <Bar 
                               dataKey="variance"
                               name="Schedule Variance" 
-                              fill={(data) => getVarianceColor(data)}
+                              fill="rgba(59, 130, 246, 0.5)"
+                              shape={(props) => {
+                                const { x, y, width, height, payload } = props;
+                                const color = getVarianceColor(payload);
+                                return <rect x={x} y={y} width={width} height={height} fill={color} />;
+                              }}
                             />
                           </BarChart>
                         </ResponsiveContainer>
@@ -801,7 +829,6 @@ const Timeline = () => {
           </Tabs>
         </main>
         
-        {/* Add the AI Assistant component */}
         <CollapsibleAIAssistant 
           projectContext="Downtown High-Rise"
           initialInsights={timelineInsights}

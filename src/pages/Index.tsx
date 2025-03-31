@@ -28,7 +28,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { PropertyDetails } from '@/components/dashboard/PropertyDetails';
-import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
 
 const projects = [
   {
@@ -203,17 +202,17 @@ const financialData = {
   totalBudget: 42500000,
   spending: [
     { category: "Land Acquisition", amount: 12000000, color: "#4c1d95", status: "normal" as const },
-    { category: "Site Preparation", amount: 2500000, color: "#2563eb", status: "under", variance: 150000 },
+    { category: "Site Preparation", amount: 2500000, color: "#2563eb", status: "under" as const, variance: 150000 },
     { category: "Foundation", amount: 3800000, color: "#0891b2", status: "normal" as const },
-    { category: "Structural Frame", amount: 4200000, color: "#059669", status: "over", variance: 250000 },
+    { category: "Structural Frame", amount: 4200000, color: "#059669", status: "over" as const, variance: 250000 },
     { category: "Exterior", amount: 1500000, color: "#65a30d", status: "normal" as const },
     { category: "Mechanical/Electrical", amount: 800000, color: "#a5b4fc", status: "normal" as const }
   ],
   changeOrders: [
-    { id: "CO-001", description: "Foundation Redesign", amount: 120000, status: "approved", date: "Jan 18, 2024" },
-    { id: "CO-002", description: "Material Substitution Savings", amount: -45000, status: "approved", date: "Feb 02, 2024" },
-    { id: "CO-003", description: "Additional HVAC Capacity", amount: 85000, status: "pending", date: "Mar 25, 2024" },
-    { id: "CO-004", description: "Design Change: Interior Layout", amount: 35000, status: "rejected", date: "Apr 05, 2024" }
+    { id: "CO-001", description: "Foundation Redesign", amount: 120000, status: "approved" as const, date: "Jan 18, 2024" },
+    { id: "CO-002", description: "Material Substitution Savings", amount: -45000, status: "approved" as const, date: "Feb 02, 2024" },
+    { id: "CO-003", description: "Additional HVAC Capacity", amount: 85000, status: "pending" as const, date: "Mar 25, 2024" },
+    { id: "CO-004", description: "Design Change: Interior Layout", amount: 35000, status: "rejected" as const, date: "Apr 05, 2024" }
   ]
 };
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -42,7 +41,6 @@ import {
   Filter
 } from 'lucide-react';
 
-// Sample data
 const projectOptions = [
   { value: 'all', label: 'All Projects' },
   { value: 'east-tower', label: 'East Tower Construction' },
@@ -248,7 +246,25 @@ const InvestmentImpact = () => {
       duration: 3000,
     });
   };
-  
+
+  const handleViewScenario = (scenarioId: string) => {
+    toast({
+      id: crypto.randomUUID(),
+      title: "Scenario Analysis",
+      description: `Viewing detailed analysis for scenario ${scenarioId}`,
+      duration: 3000,
+    });
+  };
+
+  const handleRunSimulation = () => {
+    toast({
+      id: crypto.randomUUID(),
+      title: "Simulation In Progress",
+      description: "Running investment impact simulation with updated parameters",
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="flex h-screen bg-gray-900 dark:bg-gray-900">
       <SidebarNavigation />

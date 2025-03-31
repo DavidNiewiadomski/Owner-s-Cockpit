@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -8,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { crypto } from 'crypto';
 
 // Sample integrations data with expanded categories
 const integrations = [
@@ -96,17 +96,22 @@ const categories = [
   { id: 'other', name: 'Other Integrations', icon: Code2 }
 ];
 
+const handleIntegrationAction = (action: string, name: string) => {
+  toast({
+    id: crypto.randomUUID(),
+    title: `${action}: ${name}`,
+    description: `Integration ${action.toLowerCase()} successfully.`,
+    duration: 3000,
+  });
+};
+
 const Integrations = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleIntegrationToggle = (name: string) => {
-    toast({
-      title: `${name} integration ${integrations.find(i => i.name === name)?.connected ? 'disconnected' : 'connected'}`,
-      description: `Settings updated successfully`,
-      duration: 3000,
-    });
+    handleIntegrationAction('Toggle', name);
   };
 
   const filteredIntegrations = integrations.filter(integration => {

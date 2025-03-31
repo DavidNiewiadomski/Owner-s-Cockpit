@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Plus, 
@@ -92,10 +91,11 @@ const Documents = () => {
       )
     : documents;
     
-  const handleDocumentAction = (action: string, docName: string) => {
+  const handleFileAction = (action: string, fileName: string) => {
     toast({
-      title: `${action} ${docName}`,
-      description: `Document ${action.toLowerCase()} action triggered`,
+      id: crypto.randomUUID(),
+      title: `${action}: ${fileName}`,
+      description: `File ${action.toLowerCase()} action triggered.`,
       duration: 3000,
     });
   };
@@ -128,8 +128,8 @@ const Documents = () => {
             <DocumentList 
               documents={filteredDocuments} 
               className="mt-6" 
-              onView={(docId) => handleDocumentAction('Viewed', documents.find(d => d.id === docId)?.name || '')}
-              onDownload={(docId) => handleDocumentAction('Downloaded', documents.find(d => d.id === docId)?.name || '')}
+              onView={(docId) => handleFileAction('Viewed', documents.find(d => d.id === docId)?.name || '')}
+              onDownload={(docId) => handleFileAction('Downloaded', documents.find(d => d.id === docId)?.name || '')}
             />
           </div>
         </main>

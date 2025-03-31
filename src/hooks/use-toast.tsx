@@ -5,7 +5,7 @@ const TOAST_LIMIT = 3;
 const TOAST_REMOVE_DELAY = 1000000;
 
 type ToasterToast = {
-  id: string;
+  id?: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: React.ReactNode;
@@ -14,6 +14,7 @@ type ToasterToast = {
 };
 
 type Toast = ToasterToast & {
+  id: string;
   open: boolean;
 };
 
