@@ -19,13 +19,19 @@ export function Dashboard({
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
+  // Ensure we have valid numbers for all stats
+  const safeCompletionPercentage = typeof completionPercentage === 'number' ? completionPercentage : 0;
+  const safeDaysRemaining = typeof daysRemaining === 'number' ? daysRemaining : 0;
+  const safeBudgetUtilization = typeof budgetUtilization === 'number' ? budgetUtilization : 0;
+  const safeTeamSize = typeof teamSize === 'number' ? teamSize : 0;
+  
   return (
     <div className="space-y-6">
       <DashboardStats 
-        completionPercentage={completionPercentage}
-        daysRemaining={daysRemaining}
-        budgetUtilization={budgetUtilization}
-        teamSize={teamSize}
+        completionPercentage={safeCompletionPercentage}
+        daysRemaining={safeDaysRemaining}
+        budgetUtilization={safeBudgetUtilization}
+        teamSize={safeTeamSize}
       />
       
       <Tabs 
