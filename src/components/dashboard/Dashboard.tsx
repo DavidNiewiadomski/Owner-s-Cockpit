@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { DashboardTabContent } from '@/components/dashboard/DashboardTabContent';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 interface DashboardProps {
   completionPercentage: number;
@@ -21,6 +22,14 @@ export function Dashboard({
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
+  // Define AI insights
+  const insights = [
+    "Construction delays may impact your ROI by 2.3% annually",
+    "Material cost increases have affected 3 of your projects",
+    "Current schedule variance is within acceptable limits",
+    "Equipment rental costs are 12% over budget"
+  ];
+  
   return (
     <div className="space-y-6">
       <PageHeader 
@@ -30,6 +39,8 @@ export function Dashboard({
           <Button>New Project</Button>
         }
       />
+      
+      <CollapsibleAIAssistant insights={insights} />
       
       <DashboardStats 
         completionPercentage={completionPercentage}
