@@ -49,7 +49,7 @@ export function ProjectProgress() {
   };
 
   return (
-    <div className="space-y-4 bg-black">
+    <div className="space-y-4">
       {projects.map((project, index) => (
         <div key={index} className="space-y-2">
           <div className="flex justify-between items-center">
