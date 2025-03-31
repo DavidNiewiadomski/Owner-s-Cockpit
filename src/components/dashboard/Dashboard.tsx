@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { DashboardTabContent } from '@/components/dashboard/DashboardTabContent';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { ProjectSelector } from '@/components/project/ProjectSelector';
 
 interface DashboardProps {
   completionPercentage: number;
@@ -32,13 +33,18 @@ export function Dashboard({
   
   return (
     <div className="space-y-6">
-      <PageHeader 
-        title="Project Dashboard" 
-        description="Overview of your current construction projects"
-        actions={
-          <Button>New Project</Button>
-        }
-      />
+      <div className="flex justify-between items-center">
+        <PageHeader 
+          title="Project Dashboard" 
+          description="Overview of your current construction projects"
+          actions={
+            <Button>New Project</Button>
+          }
+        />
+        <div className="pr-2">
+          <ProjectSelector />
+        </div>
+      </div>
       
       <CollapsibleAIAssistant insights={insights} />
       
