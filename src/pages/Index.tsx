@@ -13,6 +13,8 @@ import { ProjectsSection } from '@/components/dashboard/ProjectsSection';
 import { NotificationsCard } from '@/components/dashboard/NotificationsCard';
 import { OwnerActionItems } from '@/components/dashboard/OwnerActionItems';
 import { TimelineCard } from '@/components/dashboard/TimelineCard';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { useProject } from '@/contexts/ProjectContext';
 import { 
   projects, 
   timelineEvents, 
@@ -26,6 +28,7 @@ import {
 const Index = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const { selectedProject } = useProject();
 
   const filteredDocuments = searchTerm 
     ? documents.filter(doc => 
@@ -43,6 +46,13 @@ const Index = () => {
     });
   };
 
+  const projectInsights = [
+    `Budget variance is currently 3.2% under budget for ${selectedProject?.title || 'this project'}`,
+    `Labor productivity is 12% above industry benchmark in ${selectedProject?.title || 'this project'}`,
+    `Quality inspection pass rate is at 97.8% for ${selectedProject?.title || 'this project'}`,
+    `Schedule compliance is currently at 94% for ${selectedProject?.title || 'this project'}`
+  ];
+
   return (
     <div className="flex h-screen bg-gray-900 dark:bg-gray-900">
       <SidebarNavigation />
@@ -52,7 +62,32 @@ const Index = () => {
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            <AIAssistant />
+            <CollapsibleAIAssistant 
+              projectName={selectedProject?.title || 'your properties'} 
+              insights={projectInsights}
+              initialInsights={[
+                {
+                  title: "Budget Analysis",
+                  content: `${selectedProject?.title || 'This project'} is currently 3.2% under budget with potential savings in material costs.`,
+                  type: "success"
+                },
+                {
+                  title: "Schedule Risk",
+                  content: `Weather forecast shows potential delays next week for ${selectedProject?.title || 'your project'}.`,
+                  type: "warning"
+                },
+                {
+                  title: "Quality Metrics",
+                  content: `Latest inspections show 97.8% pass rate, above industry average.`,
+                  type: "info"
+                },
+                {
+                  title: "Resource Optimization",
+                  content: `AI analysis suggests optimizing crew scheduling could save 8.5% on labor costs.`,
+                  type: "info"
+                }
+              ]}
+            />
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
