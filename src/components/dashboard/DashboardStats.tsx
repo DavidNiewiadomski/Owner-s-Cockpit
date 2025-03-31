@@ -17,7 +17,7 @@ export function DashboardStats({
   teamSize
 }: DashboardStatsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6 animate-fade-in">
       <StatCard
         title="Completion"
         value={completionPercentage}

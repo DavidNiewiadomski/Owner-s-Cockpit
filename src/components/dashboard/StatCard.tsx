@@ -26,16 +26,16 @@ export function StatCard({
   format,
 }: StatCardProps) {
   return (
-    <Card className={cn("overflow-hidden bg-black border-gray-700", className)}>
+    <Card className={cn("glass-card backdrop-blur-md overflow-hidden bg-black/60 border-gray-700/50 hover-scale hover-glow transition-all duration-300", className)}>
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+            <p className="text-sm font-medium text-gray-400">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white">
               {format === "percent" ? `${value}%` : format === "days" ? `${value} days` : value}
             </h3>
             {description && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+              <p className="text-sm text-gray-500 mt-1">{description}</p>
             )}
             
             {trend && (
@@ -43,9 +43,9 @@ export function StatCard({
                 <span
                   className={cn(
                     "inline-flex items-center text-xs font-medium",
-                    trend === "up" && "text-green-600 dark:text-green-400",
-                    trend === "down" && "text-red-600 dark:text-red-400",
-                    trend === "neutral" && "text-gray-500"
+                    trend === "up" && "text-green-400",
+                    trend === "down" && "text-red-400",
+                    trend === "neutral" && "text-gray-400"
                   )}
                 >
                   {trend === "up" && (
@@ -86,11 +86,13 @@ export function StatCard({
             )}
           </div>
           
-          <div className="p-3 rounded-full bg-black border border-construction-800/30">
-            {icon && React.createElement(icon, { 
-              className: "w-5 h-5 text-construction-600 dark:text-construction-400" 
-            })}
-          </div>
+          {icon && (
+            <div className="p-3 rounded-full bg-black/80 border border-construction-600/30 shadow-glow">
+              {React.createElement(icon, { 
+                className: "w-5 h-5 text-construction-400" 
+              })}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
