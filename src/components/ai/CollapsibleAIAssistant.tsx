@@ -39,8 +39,8 @@ export function CollapsibleAIAssistant({
   const [expanded, setExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   
-  // Use initialInsights if provided, otherwise use the default format with insights
-  const displayInsights = initialInsights || insights.map((insight, index) => ({
+  // Transform string insights into the Insight format if initialInsights not provided
+  const displayInsights: Insight[] = initialInsights || insights.map((insight, index) => ({
     title: `Insight ${index + 1}`,
     content: insight,
     type: (index % 3 === 0 ? "warning" : index % 3 === 1 ? "info" : "success") as InsightType
@@ -50,7 +50,7 @@ export function CollapsibleAIAssistant({
   const displayProjectName = projectContext || projectName;
   
   // Handle clicking on an insight
-  const handleInsightClick = (insight: string | Insight) => {
+  const handleInsightClick = (insight: Insight) => {
     setExpanded(true);
   };
   
@@ -118,19 +118,14 @@ export function CollapsibleAIAssistant({
             <div className="p-4 animate-fade-in">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                 {displayInsights.map((insight, index) => {
-                  // Handle different insight types
-                  const insightText = typeof insight === 'string' ? insight : insight.content;
-                  const insightType = typeof insight === 'string' ? 'info' : insight.type;
-                  const insightTitle = typeof insight === 'string' ? `Insight ${index + 1}` : insight.title;
-                  
                   const colorClass = 
-                    insightType === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
-                    insightType === "success" ? "border-green-700/50 hover:border-green-600" : 
+                    insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
+                    insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
                     "border-blue-700/50 hover:border-blue-600";
                     
                   const iconColorClass = 
-                    insightType === "warning" ? "text-amber-400" : 
-                    insightType === "success" ? "text-green-400" : 
+                    insight.type === "warning" ? "text-amber-400" : 
+                    insight.type === "success" ? "text-green-400" : 
                     "text-blue-400";
                   
                   return (
@@ -141,8 +136,8 @@ export function CollapsibleAIAssistant({
                     >
                       <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${iconColorClass}`} />
                       <div>
-                        <p className="text-xs font-medium mb-1">{insightTitle}</p>
-                        <p className="text-sm text-gray-200">{insightText}</p>
+                        <p className="text-xs font-medium mb-1">{insight.title}</p>
+                        <p className="text-sm text-gray-200">{insight.content}</p>
                       </div>
                     </div>
                   );

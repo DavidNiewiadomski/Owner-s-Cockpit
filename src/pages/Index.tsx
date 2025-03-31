@@ -7,6 +7,12 @@ import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { ProjectOverview } from '@/components/dashboard/ProjectOverview';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
+type DashboardInsight = {
+  title: string;
+  content: string;
+  type: "info" | "warning" | "success";
+};
+
 const Index = () => {
   const { currentProject, selectedProject } = useProject();
   
@@ -28,26 +34,26 @@ const Index = () => {
     : 24; // Default value for demo
 
   // Dashboard insights based on Gronk's recommendations
-  const dashboardInsights = [
+  const dashboardInsights: DashboardInsight[] = [
     {
       title: "Budget Alert",
       content: "Current cost variance is +8.2% above contingency, mainly in structural materials",
-      type: "warning" as const
+      type: "warning"
     },
     {
       title: "Schedule Update",
       content: "Project is currently tracking 3 days ahead of schedule with SPI of 1.05",
-      type: "success" as const
+      type: "success"
     },
     {
       title: "Quality Control",
       content: "Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday",
-      type: "info" as const
+      type: "info"
     },
     {
       title: "Risk Alert",
       content: "Supply chain disruption identified for facade materials, mitigation plan in development",
-      type: "warning" as const
+      type: "warning"
     }
   ];
   
