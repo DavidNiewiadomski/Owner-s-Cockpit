@@ -65,7 +65,7 @@ export function MilestoneView({ milestones, onViewRealityCapture }: MilestoneVie
                           milestone.status === 'delayed' ? 'Delayed' : 'Upcoming'}
                         </Badge>
                         
-                        {milestone.realityCapture?.available && (
+                        {milestone.realityCapture && milestone.realityCapture.available && (
                           <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 flex items-center gap-1 cursor-pointer" onClick={() => onViewRealityCapture(milestone)}>
                             <Camera className="h-3 w-3" />
                             <span>Reality Capture</span>
@@ -91,7 +91,7 @@ export function MilestoneView({ milestones, onViewRealityCapture }: MilestoneVie
                         </div>
                       )}
                       
-                      {milestone.realityCapture?.available && (
+                      {milestone.realityCapture && milestone.realityCapture.available && (
                         <Button
                           variant="ghost"
                           size="sm"

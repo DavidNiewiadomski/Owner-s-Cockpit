@@ -76,7 +76,7 @@ export function TimelineCard({
                     {event.impact === "high" && (
                       <AlertTriangle className="h-4 w-4 ml-1.5 text-amber-500" />
                     )}
-                    {event.realityCapture?.available && (
+                    {event.realityCapture && event.realityCapture.available && (
                       <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 flex items-center gap-1">
                         <Camera className="h-3 w-3" />
                         <span>Reality Capture</span>
@@ -121,7 +121,7 @@ export function TimelineCard({
                 </div>
               )}
               
-              {event.realityCapture?.available && onViewRealityCapture && (
+              {event.realityCapture && event.realityCapture.available && onViewRealityCapture && (
                 <Button
                   variant="ghost"
                   size="sm"

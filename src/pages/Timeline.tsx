@@ -52,7 +52,7 @@ interface Milestone {
   actualDate: string;
   status: "completed" | "delayed" | "in-progress" | "upcoming";
   description: string;
-  realityCapture: RealityCapture;
+  realityCapture?: RealityCapture;  // Make realityCapture optional to handle undefined cases
 }
 
 // Project-specific milestone data with consistent typing
@@ -227,7 +227,7 @@ const projectMilestoneData: Record<string, Milestone[]> = {
   ],
   'all': baseMilestoneData.map(milestone => ({
     ...milestone,
-    realityCapture: milestone.realityCapture.available ? 
+    realityCapture: milestone.realityCapture ? 
       { ...milestone.realityCapture } : 
       { available: false }
   })) as Milestone[]
@@ -288,8 +288,9 @@ const Timeline = () => {
     }
   }, [selectedProject]);
   
-  const handleViewRealityCapture = (milestone: any) => {
-    if (milestone.realityCapture?.available) {
+  const handleViewRealityCapture = (milestone: Milestone) => {
+    // Check if milestone and realityCapture exist and realityCapture is available
+    if (milestone.realityCapture && milestone.realityCapture.available) {
       setRealityCapture({
         name: milestone.name,
         date: milestone.realityCapture.date,
