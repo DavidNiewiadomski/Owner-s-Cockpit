@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -22,6 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ProjectSelector } from '@/components/project/ProjectSelector';
 
 export interface DashboardHeaderProps {
   onSearch?: (term: string) => void;
@@ -61,6 +63,10 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
               {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
             </div>
           )}
+          
+          <div className="ml-4 hidden md:block">
+            <ProjectSelector />
+          </div>
         </div>
         
         <div className="flex flex-1 items-center justify-end md:justify-between gap-2">
@@ -140,6 +146,11 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
             </DropdownMenu>
           </div>
         </div>
+      </div>
+      
+      {/* Mobile project selector */}
+      <div className="md:hidden px-4 pb-3">
+        <ProjectSelector />
       </div>
     </header>
   );

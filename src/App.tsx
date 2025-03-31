@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { useEffect } from "react";
+import { ProjectProvider } from "@/contexts/ProjectContext";
 import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
@@ -43,25 +44,27 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <TooltipProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<PageLayout />}>
-                <Route path="/" element={<Index />} />
-                <Route path="/documents" element={<Documents />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/integrations" element={<Integrations />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/timeline" element={<Timeline />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/investment-impact" element={<InvestmentImpact />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <Toaster />
-          <Sonner />
+          <ProjectProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<PageLayout />}>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/documents" element={<Documents />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/integrations" element={<Integrations />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/timeline" element={<Timeline />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/investment-impact" element={<InvestmentImpact />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+            <Toaster />
+            <Sonner />
+          </ProjectProvider>
         </TooltipProvider>
       </ToastProvider>
     </QueryClientProvider>
