@@ -18,6 +18,7 @@ import { ProjectCard } from '@/components/dashboard/ProjectCard';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { TimelineCard } from '@/components/dashboard/TimelineCard';
 import { DocumentList } from '@/components/dashboard/DocumentList';
+import { AIAssistant } from '@/components/ai/AIAssistant';
 
 // Sample data
 const projects = [
@@ -163,10 +164,27 @@ const documents = [
 
 const Dashboard = () => {
   const { toast } = useToast();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleIntegrationToggle = (name: string) => {
     toast({
       title: `${name} integration ${integrations.find(i => i.name === name)?.connected ? 'disconnected' : 'connected'}`,
+      duration: 3000,
+    });
+  };
+
+  const filteredDocuments = searchTerm 
+    ? documents.filter(doc => 
+        doc.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        doc.project.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : documents;
+
+  const handleDocumentAction = (action: string, docId: string) => {
+    const docName = documents.find(d => d.id === docId)?.name || '';
+    toast({
+      title: `${action} ${docName}`,
+      description: `Document ${action.toLowerCase()} action triggered`,
       duration: 3000,
     });
   };
@@ -176,10 +194,13 @@ const Dashboard = () => {
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader />
+        <DashboardHeader onSearch={setSearchTerm} />
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
+            {/* AI Assistant Section */}
+            <AIAssistant />
+            
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
@@ -237,7 +258,12 @@ const Dashboard = () => {
                   ))}
                 </div>
                 
-                <DocumentList documents={documents} className="mt-6" />
+                <DocumentList 
+                  documents={filteredDocuments} 
+                  className="mt-6" 
+                  onView={(id) => handleDocumentAction('Viewed', id)}
+                  onDownload={(id) => handleDocumentAction('Downloaded', id)}
+                />
               </div>
               
               {/* Sidebar Column */}

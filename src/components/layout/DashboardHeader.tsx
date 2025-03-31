@@ -5,9 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 
-export function DashboardHeader() {
+interface DashboardHeaderProps {
+  onSearch?: (searchTerm: string) => void;
+}
+
+export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
   const { toast } = useToast();
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   const toggleTheme = () => {
     if (isDarkMode) {
@@ -31,6 +36,14 @@ export function DashboardHeader() {
     });
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
+
   return (
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 px-6">
       <div className="flex items-center justify-between">
@@ -40,6 +53,8 @@ export function DashboardHeader() {
             type="search" 
             placeholder="Search projects, documents..." 
             className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+            value={searchTerm}
+            onChange={handleSearchChange}
           />
         </div>
         

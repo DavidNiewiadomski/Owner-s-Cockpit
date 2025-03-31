@@ -36,9 +36,11 @@ interface Document {
 interface DocumentListProps {
   documents: Document[];
   className?: string;
+  onView?: (id: string) => void;
+  onDownload?: (id: string) => void;
 }
 
-export function DocumentList({ documents, className }: DocumentListProps) {
+export function DocumentList({ documents, className, onView, onDownload }: DocumentListProps) {
   const getDocumentIcon = (type: Document["type"]) => {
     switch (type) {
       case "pdf":
@@ -51,6 +53,14 @@ export function DocumentList({ documents, className }: DocumentListProps) {
       default:
         return <FileText className="w-5 h-5 text-gray-500" />;
     }
+  };
+
+  const handleView = (id: string) => {
+    if (onView) onView(id);
+  };
+
+  const handleDownload = (id: string) => {
+    if (onDownload) onDownload(id);
   };
 
   return (
@@ -83,10 +93,10 @@ export function DocumentList({ documents, className }: DocumentListProps) {
                 <TableCell>{doc.size}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" onClick={() => handleView(doc.id)}>
                       <Eye className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.id)}>
                       <Download className="w-4 h-4" />
                     </Button>
                   </div>
