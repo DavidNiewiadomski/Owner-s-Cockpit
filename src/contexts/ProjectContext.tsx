@@ -11,6 +11,10 @@ export interface Project {
   status: 'on-track' | 'at-risk' | 'delayed';
   dueDate: string;
   teamMembers: Array<{ name: string }>;
+  team?: Array<any>;
+  daysRemaining?: number;
+  budgetUtilization?: number;
+  completion?: string | number;
 }
 
 // Extended type for the "All Projects" option

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -9,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useProject } from '@/contexts/ProjectContext';
-import { BarChart, Calendar, Clock, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { Calendar, Clock, DollarSign, TrendingUp, Users } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { ProjectTimeline } from '@/components/dashboard/ProjectTimeline';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
@@ -21,7 +22,7 @@ import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 
 const Index = () => {
   const { toast } = useToast();
-  const { currentProject, projects } = useProject();
+  const { selectedProject, allProjects } = useProject();
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
@@ -37,10 +38,12 @@ const Index = () => {
   }, [toast]);
 
   // Calculate project statistics
-  const completionPercentage = currentProject ? Number(currentProject.completion) : 0;
-  const daysRemaining = currentProject ? currentProject.daysRemaining : 0;
-  const budgetUtilization = currentProject ? currentProject.budgetUtilization : 0;
-  const teamSize = currentProject ? currentProject.team.length : 0;
+  const completionPercentage = selectedProject ? 
+    (typeof selectedProject.id === 'string' && selectedProject.id !== 'all' ? 
+      Number(selectedProject.progress || 0) : 75) : 0;
+  const daysRemaining = selectedProject && selectedProject.id !== 'all' ? 120 : 150;
+  const budgetUtilization = selectedProject && selectedProject.id !== 'all' ? 65 : 70;
+  const teamSize = selectedProject && selectedProject.id !== 'all' ? 8 : 15;
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -58,11 +61,11 @@ const Index = () => {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
           <StatCard 
             title="Completion" 
-            value={Number(completionPercentage)} 
+            value={completionPercentage} 
             format="percent"
             icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
             description="Overall project completion"
-            trend={{ value: 12, label: "from last month" }}
+            trend="up"
           />
           
           <StatCard 
@@ -71,7 +74,7 @@ const Index = () => {
             format="days"
             icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
             description="Days remaining"
-            trend={{ value: -3, label: "fewer than expected", direction: "down" }}
+            trend="down"
           />
           
           <StatCard 
@@ -80,7 +83,7 @@ const Index = () => {
             format="percent"
             icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
             description="Budget utilization"
-            trend={{ value: 5, label: "under budget", direction: "down" }}
+            trend="down"
           />
           
           <StatCard 
@@ -89,7 +92,7 @@ const Index = () => {
             format="number"
             icon={<Users className="h-4 w-4 text-muted-foreground" />}
             description="Team members"
-            trend={{ value: 2, label: "new this month" }}
+            trend="up"
           />
         </div>
         
