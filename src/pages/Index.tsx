@@ -7,8 +7,7 @@ import { Dashboard } from '@/components/dashboard/Dashboard';
 const Index = () => {
   const { currentProject } = useProject();
   
-  // Calculate project statistics
-  // Use 0 as default if currentProject is undefined or is the "all" option
+  // Calculate project statistics with safe defaults
   const completionPercentage = currentProject && typeof currentProject === 'object' && 'completion' in currentProject 
     ? Number(currentProject.completion) 
     : 0;
@@ -21,7 +20,7 @@ const Index = () => {
     ? currentProject.budgetUtilization 
     : 0;
     
-  const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject 
+  const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject && Array.isArray(currentProject.team)
     ? currentProject.team.length 
     : 0;
   

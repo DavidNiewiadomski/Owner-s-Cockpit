@@ -51,7 +51,20 @@ export function Dashboard({
           <TabsTrigger value="risks">Risks</TabsTrigger>
         </TabsList>
         
-        <TabsContent value={activeTab}>
+        {/* Fixed: Using separate TabsContent components for each tab value instead of passing activeTab as a child */}
+        <TabsContent value="overview">
+          <DashboardTabContent />
+        </TabsContent>
+        <TabsContent value="timeline">
+          <DashboardTabContent />
+        </TabsContent>
+        <TabsContent value="budget">
+          <DashboardTabContent />
+        </TabsContent>
+        <TabsContent value="team">
+          <DashboardTabContent />
+        </TabsContent>
+        <TabsContent value="risks">
           <DashboardTabContent />
         </TabsContent>
       </Tabs>
