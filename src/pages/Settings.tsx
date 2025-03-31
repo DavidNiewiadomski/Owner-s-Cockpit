@@ -18,7 +18,11 @@ const Settings = () => {
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1">
-        <DashboardHeader onSearch={() => {}} />
+        <DashboardHeader 
+          title="Settings" 
+          subtitle="Manage your account and preferences"
+          onSearch={() => {}} 
+        />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
           <div className="mb-6">

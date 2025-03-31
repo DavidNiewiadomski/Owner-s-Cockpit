@@ -133,6 +133,7 @@ export function CollapsibleAIAssistant({
                     insightType === "success" ? "text-green-400" : 
                     "text-blue-400";
                   
+                  // Ensure we're rendering valid React content
                   return (
                     <div 
                       key={index} 
@@ -141,7 +142,6 @@ export function CollapsibleAIAssistant({
                     >
                       <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${iconColorClass}`} />
                       <div>
-                        {/* Ensure we're only rendering strings, not React elements */}
                         {typeof insightTitle === 'string' && initialInsights && (
                           <p className="text-xs font-medium mb-1">{insightTitle}</p>
                         )}

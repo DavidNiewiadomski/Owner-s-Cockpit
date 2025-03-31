@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Plus, 
@@ -21,7 +20,6 @@ const Documents = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
   
-  // Get project-specific documents
   const projectId = selectedProject?.id || 'all';
   const documents = projectDocuments[projectId as keyof typeof projectDocuments] || projectDocuments['all'];
   
@@ -41,7 +39,6 @@ const Documents = () => {
     });
   };
 
-  // Generate project-specific document insights
   const documentInsights = [
     {
       title: 'Document Updates',
@@ -62,11 +59,14 @@ const Documents = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-black text-gray-100">
+    <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onSearch={setSearchTerm} />
+      <div className="flex-1">
+        <DashboardHeader 
+          title="Documents" 
+          subtitle="Manage your project documentation"
+          onSearch={setSearchTerm} 
+        />
         
         <CollapsibleAIAssistant 
           projectContext="Documents"

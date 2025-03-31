@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useToast } from '@/hooks/use-toast';
 
@@ -120,11 +120,14 @@ const InvestmentImpact = () => {
   };
 
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden bg-black">
-        <DashboardHeader onSearch={setSearchTerm} />
+      <div className="flex-1">
+        <DashboardHeader 
+          title="Investment Impact" 
+          subtitle="Track the performance of your investments"
+          onSearch={setSearchTerm} 
+        />
         
         <main className="flex-1 overflow-y-auto p-6 bg-black">
           <div className="max-w-7xl mx-auto">

@@ -304,7 +304,11 @@ const Timeline = () => {
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1">
-        <DashboardHeader onSearch={() => {}} />
+        <DashboardHeader 
+          title="Timeline" 
+          subtitle="Track your project schedules and milestones"
+          onSearch={() => {}} 
+        />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
           <CollapsibleAIAssistant 

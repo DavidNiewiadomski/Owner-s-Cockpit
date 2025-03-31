@@ -182,7 +182,11 @@ const Projects = () => {
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1">
-        <DashboardHeader onSearch={setSearchTerm} />
+        <DashboardHeader 
+          title="Projects" 
+          subtitle="Manage and track your construction projects"
+          onSearch={setSearchTerm} 
+        />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
           {/* Moved AI Assistant to the top */}
@@ -425,8 +429,6 @@ const Projects = () => {
             </TabsContent>
           </Tabs>
         </main>
-        
-        {/* Removed CollapsibleAIAssistant from here */}
       </div>
     </div>
   );

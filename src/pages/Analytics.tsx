@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
@@ -75,39 +75,16 @@ const periods = [
 
 const Analytics = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentPeriod, setCurrentPeriod] = useState('monthly');
-  const [activeAnimation, setActiveAnimation] = useState(false);
-
-  // Trigger animation effect when component mounts
-  useEffect(() => {
-    setActiveAnimation(true);
-  }, []);
-
-  // Effect to switch between animation states for a pulse effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveAnimation(prev => !prev);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Custom color scheme for futuristic look
-  const colors = {
-    primary: '#38bdf8',
-    secondary: '#4ade80',
-    accent: '#f43f5e',
-    warning: '#fb923c',
-    info: '#a855f7',
-    background: 'rgba(255, 255, 255, 0.05)',
-    gridLine: 'rgba(255, 255, 255, 0.1)'
-  };
 
   return (
-    <div className="flex h-screen bg-black text-gray-100">
+    <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onSearch={setSearchTerm} />
+      <div className="flex-1">
+        <DashboardHeader 
+          title="Analytics" 
+          subtitle="Insights and metrics for your projects"
+          onSearch={setSearchTerm} 
+        />
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
