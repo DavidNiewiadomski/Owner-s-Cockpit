@@ -16,7 +16,6 @@ export function ProjectSelector() {
 
   const handleSelectProject = (project: typeof allProjects[0] | { id: 'all', title: 'All Projects', status: 'on-track' }) => {
     setSelectedProject(project);
-    // Toast notification removed
   };
 
   if (!selectedProject) return null;

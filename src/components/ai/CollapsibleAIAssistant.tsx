@@ -1,10 +1,9 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AIAssistant } from "@/components/ai/AIAssistant";
 import { BrainCircuit, ChevronDown, ChevronUp, LightbulbIcon, MessageSquare, Mic } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type InsightType = "warning" | "success" | "info";
@@ -122,20 +121,30 @@ export function CollapsibleAIAssistant({
                   <div 
                     key={index} 
                     className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 cursor-pointer ${
-                      insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
-                      insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
-                      "border-blue-700/50 hover:border-blue-600"
+                      typeof insight === 'string' 
+                        ? "border-blue-700/50 hover:border-blue-600" 
+                        : (
+                          insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
+                          insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
+                          "border-blue-700/50 hover:border-blue-600"
+                        )
                     }`}
                     onClick={() => handleInsightClick(insight)}
                   >
                     <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                      insight.type === "warning" ? "text-amber-400" : 
-                      insight.type === "success" ? "text-green-400" : 
-                      "text-blue-400"
+                      typeof insight === 'string'
+                        ? "text-blue-400"
+                        : (
+                          insight.type === "warning" ? "text-amber-400" : 
+                          insight.type === "success" ? "text-green-400" : 
+                          "text-blue-400"
+                        )
                     }`} />
                     <div>
-                      {initialInsights && <p className="text-xs font-medium mb-1">{insight.title}</p>}
-                      <p className="text-sm text-gray-200">{typeof insight === 'string' ? insight : insight.content}</p>
+                      {initialInsights && typeof insight !== 'string' && <p className="text-xs font-medium mb-1">{insight.title}</p>}
+                      <p className="text-sm text-gray-200">
+                        {typeof insight === 'string' ? insight : insight.content}
+                      </p>
                     </div>
                   </div>
                 ))}
