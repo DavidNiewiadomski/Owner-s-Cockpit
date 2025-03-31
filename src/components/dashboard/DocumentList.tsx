@@ -2,7 +2,7 @@
 import { 
   FileText, 
   FileImage, 
-  FilePdf, 
+  File, 
   FileSpreadsheet, 
   Download,
   Eye
@@ -42,7 +42,7 @@ export function DocumentList({ documents, className }: DocumentListProps) {
   const getDocumentIcon = (type: Document["type"]) => {
     switch (type) {
       case "pdf":
-        return <FilePdf className="w-5 h-5 text-red-500" />;
+        return <File className="w-5 h-5 text-red-500" />;
       case "image":
         return <FileImage className="w-5 h-5 text-blue-500" />;
       case "spreadsheet":
