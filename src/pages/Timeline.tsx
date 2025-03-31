@@ -38,6 +38,13 @@ import {
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine, CartesianGrid } from 'recharts';
 
+interface RealityCaptureEvent {
+  name: string;
+  date: string;
+  url: string;
+  location: string;
+}
+
 const timelineData = [
   {
     date: new Date(),
@@ -266,7 +273,7 @@ const milestoneData = [
     realityCapture: {
       available: true,
       date: 'Jan 25, 2024',
-      url: 'https://matterport.com/sites/default/files/2021-11/scan-gallery/scn-construction-site-nav_0.jpg'
+      url: 'https://matterport.com/sites/default/files/styles/atf_lightbox/public/2021-11/scan-gallery/scn-construction-site-nav_0.jpg'
     } 
   },
   { 
@@ -278,7 +285,7 @@ const milestoneData = [
     realityCapture: {
       available: true,
       date: 'Mar 10, 2024',
-      url: 'https://matterport.com/sites/default/files/2021-11/scan-gallery/scn-apartments-nav.jpg'
+      url: 'https://matterport.com/sites/default/files/styles/atf_lightbox/public/2021-11/scan-gallery/scn-apartments-nav.jpg'
     } 
   },
   { 
