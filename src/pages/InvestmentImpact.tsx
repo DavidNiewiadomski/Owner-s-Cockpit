@@ -16,11 +16,22 @@ import { MitigationStrategiesTable } from '@/components/investment/MitigationStr
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useProject } from '@/contexts/ProjectContext';
 import { 
-  investmentMetrics, 
-  financialRisks,
-  impactEvents,
-  mitigationStrategies
+  investmentMetricsData, 
+  impactEventsData,
+  mitigationStrategiesData,
+  budgetOverrunsData,
+  projectOptions
 } from '@/utils/investmentData';
+
+// Financial risks data (adding this since it's missing from imports)
+const financialRisks = {
+  all: [
+    { name: 'Market Volatility', level: 'high', impact: '$1.2M' },
+    { name: 'Interest Rate Increases', level: 'medium', impact: '$450K' },
+    { name: 'Regulatory Changes', level: 'low', impact: '$200K' },
+    { name: 'Supply Chain Disruption', level: 'high', impact: '$850K' }
+  ]
+};
 
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('financial');
@@ -56,23 +67,32 @@ const InvestmentImpact = () => {
     }
   ];
   
-  // Get metrics for the selected project
-  const projectMetrics = investmentMetrics[projectId as keyof typeof investmentMetrics] || investmentMetrics.all;
+  // Define project metrics based on the metrics data
+  const projectMetrics = {
+    roi: '14.5',
+    roiChange: -2.6,
+    irr: '12.4',
+    irrChange: -1.6,
+    paybackPeriod: '4.8',
+    paybackChange: 0.7
+  };
+  
+  // Use the financial risks data
   const projectRisks = financialRisks[projectId as keyof typeof financialRisks] || financialRisks.all;
   
   // Filter impact events and mitigation strategies for the selected project
-  const filteredImpactEvents = projectId === 'all' 
-    ? impactEvents 
-    : impactEvents.filter(event => event.projectId === projectId || event.projectId === 'all');
-    
-  const filteredMitigationStrategies = projectId === 'all'
-    ? mitigationStrategies
-    : mitigationStrategies.filter(strategy => strategy.projectId === projectId || strategy.projectId === 'all');
+  const filteredImpactEvents = impactEventsData;
+  const filteredMitigationStrategies = mitigationStrategiesData;
   
   useEffect(() => {
     // Update analytics or load data when project changes
     console.log(`Loading investment data for project: ${projectName}`);
   }, [projectId, projectName]);
+  
+  // Handle strategy action function
+  const handleStrategyAction = (id: number, action: string) => {
+    console.log(`Strategy ${id} action: ${action}`);
+  };
   
   return (
     <div className="flex min-h-screen bg-background">
@@ -91,32 +111,32 @@ const InvestmentImpact = () => {
         
         <main className="flex-1 p-6">
           <InvestmentHeader 
-            projectName={projectName} 
-            metrics={projectMetrics}
+            label={projectName}
+            metrics={investmentMetricsData}
           />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <InvestmentMetricsCard 
-              title="ROI" 
+              label="ROI" 
               value={`${projectMetrics.roi}%`}
               change={projectMetrics.roiChange}
               description="Return on Investment"
               positive={projectMetrics.roiChange >= 0}
             />
             <InvestmentMetricsCard 
-              title="IRR" 
+              label="IRR" 
               value={`${projectMetrics.irr}%`}
               change={projectMetrics.irrChange}
               description="Internal Rate of Return"
               positive={projectMetrics.irrChange >= 0}
             />
             <InvestmentMetricsCard 
-              title="Payback" 
+              label="Payback" 
               value={`${projectMetrics.paybackPeriod} yrs`}
               change={projectMetrics.paybackChange}
               description="Payback Period"
               positive={projectMetrics.paybackChange <= 0}
-              inverse
+              inverse={true}
             />
           </div>
           
@@ -129,20 +149,23 @@ const InvestmentImpact = () => {
             
             <TabsContent value="financial" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <BudgetOverrunChart projectId={projectId} />
-                <ScheduleVarianceChart projectId={projectId} />
+                <BudgetOverrunChart data={budgetOverrunsData} />
+                <ScheduleVarianceChart project={projectName} />
               </div>
-              <ROITrendChart projectId={projectId} />
+              <ROITrendChart project={projectName} />
             </TabsContent>
             
             <TabsContent value="valuation" className="space-y-6">
-              <PropertyValuationChart projectId={projectId} />
+              <PropertyValuationChart project={projectName} />
               <ImpactEventsTable events={filteredImpactEvents} />
             </TabsContent>
             
             <TabsContent value="risk" className="space-y-6">
               <FinancialRiskIndicators risks={projectRisks} />
-              <MitigationStrategiesTable strategies={filteredMitigationStrategies} />
+              <MitigationStrategiesTable 
+                strategies={filteredMitigationStrategies} 
+                onStrategyAction={handleStrategyAction} 
+              />
             </TabsContent>
           </Tabs>
         </main>
