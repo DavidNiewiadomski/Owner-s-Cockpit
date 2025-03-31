@@ -8,7 +8,7 @@ interface StatCardProps {
   title: string;
   value: string | number;
   description?: string;
-  icon?: LucideIcon | ReactNode;
+  icon?: LucideIcon;
   trend?: "up" | "down" | "neutral";
   trendValue?: string;
   className?: string;
@@ -19,7 +19,7 @@ export function StatCard({
   title,
   value,
   description,
-  icon: Icon,
+  icon,
   trend,
   trendValue,
   className,
@@ -87,12 +87,9 @@ export function StatCard({
           </div>
           
           <div className="p-3 rounded-full bg-black border border-construction-800/30">
-            {Icon && typeof Icon === 'function' ? (
-              React.createElement(Icon, { className: "w-5 h-5 text-construction-600 dark:text-construction-400" })
-            ) : (
-              // For ReactNode icons
-              Icon
-            )}
+            {icon && React.createElement(icon, { 
+              className: "w-5 h-5 text-construction-600 dark:text-construction-400" 
+            })}
           </div>
         </div>
       </CardContent>
