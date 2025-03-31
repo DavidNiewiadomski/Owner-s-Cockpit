@@ -86,15 +86,15 @@ export function StatCard({
             )}
           </div>
           
-          {Icon && typeof Icon === 'function' ? (
-            <div className="p-3 rounded-full bg-black border border-construction-800/30">
-              {React.createElement(Icon as React.ComponentType, { className: "w-5 h-5 text-construction-600 dark:text-construction-400" })}
-            </div>
-          ) : Icon ? (
-            <div className="p-3 rounded-full bg-black border border-construction-800/30">
-              {Icon}
-            </div>
-          ) : null}
+          <div className="p-3 rounded-full bg-black border border-construction-800/30">
+            {Icon && typeof Icon === 'function' ? (
+              // This properly handles Lucide icons by creating the element
+              React.createElement(Icon as React.ComponentType, { size: 20, className: "text-construction-600 dark:text-construction-400" })
+            ) : Icon ? (
+              // Handle ReactNode case
+              Icon
+            ) : null}
+          </div>
         </div>
       </CardContent>
     </Card>
