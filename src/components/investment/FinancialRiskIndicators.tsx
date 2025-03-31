@@ -1,9 +1,22 @@
 
 import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { AlertTriangle } from 'lucide-react';
 
-export const FinancialRiskIndicators: React.FC = () => {
+interface Risk {
+  name: string;
+  level: string;
+  impact: string;
+}
+
+interface FinancialRiskIndicatorsProps {
+  risks?: Risk[];
+}
+
+export const FinancialRiskIndicators: React.FC<FinancialRiskIndicatorsProps> = ({ 
+  risks = [] 
+}) => {
   return (
     <Card className="glass-card shadow-glow col-span-full lg:col-span-1 hover-scale transition-all duration-300">
       <CardHeader>
@@ -64,6 +77,26 @@ export const FinancialRiskIndicators: React.FC = () => {
             </div>
             <p className="text-xs text-gray-500">Within acceptable parameters</p>
           </div>
+          
+          {risks && risks.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-gray-700">
+              <h3 className="text-sm font-medium mb-2">Project Risks</h3>
+              {risks.map((risk, index) => (
+                <div key={index} className="flex justify-between items-center mb-2">
+                  <span className="text-xs">{risk.name}</span>
+                  <Badge 
+                    className={
+                      risk.level === 'high' ? 'bg-red-900/20 text-red-400' :
+                      risk.level === 'medium' ? 'bg-amber-900/20 text-amber-400' :
+                      'bg-green-900/20 text-green-400'
+                    }
+                  >
+                    {risk.impact}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
