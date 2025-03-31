@@ -16,7 +16,6 @@ import Timeline from "./pages/Timeline";
 import Projects from "./pages/Projects";
 import InvestmentImpact from "./pages/InvestmentImpact";
 import NotFound from "./pages/NotFound";
-import { CollapsibleAIAssistant } from "@/components/ai/CollapsibleAIAssistant";
 
 // Enable dark mode by default
 const enableDarkMode = () => {
@@ -25,14 +24,11 @@ const enableDarkMode = () => {
 
 const queryClient = new QueryClient();
 
-// Layout component that includes the AI Assistant
+// Layout component without the global AI Assistant
 const PageLayout = () => {
   return (
     <>
       <Outlet />
-      <div className="fixed bottom-4 left-4 right-4 z-50">
-        <CollapsibleAIAssistant />
-      </div>
     </>
   );
 };
