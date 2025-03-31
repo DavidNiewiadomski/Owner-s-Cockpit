@@ -31,7 +31,7 @@ export function ProjectSelector() {
           }`}></span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px] bg-black border-gray-700">
+      <DropdownMenuContent align="end" className="w-[200px] dark:bg-gray-900 border-gray-700">
         <DropdownMenuItem
           onClick={() => handleSelectProject({ id: 'all', title: 'All Projects', status: 'on-track' })}
           className="flex justify-between items-center cursor-pointer hover:bg-gray-800"

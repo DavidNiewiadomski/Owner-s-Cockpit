@@ -41,7 +41,7 @@ export function Dashboard({
             <Button>New Project</Button>
           }
         />
-        <div className="pr-2">
+        <div className="flex items-center pr-2">
           <ProjectSelector />
         </div>
       </div>
