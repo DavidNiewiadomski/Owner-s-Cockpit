@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { DashboardTabContent } from '@/components/dashboard/DashboardTabContent';

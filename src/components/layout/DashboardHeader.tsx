@@ -7,12 +7,14 @@ interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
+  onSearch?: (searchTerm: string) => void | React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function DashboardHeader({ 
   title, 
   subtitle,
-  actions
+  actions,
+  onSearch
 }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-gray-800 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4">

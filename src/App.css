@@ -53,7 +53,7 @@ html, body, #app, #root, main, .bg-gray-900, .bg-gray-800, .bg-gray-850, .bg-gra
 }
 
 /* Ensure dropdown menus are visible and have proper background */
-[class*="radix-dropdown-content"] {
+[class*="radix-dropdown-content"], .dropdown-menu {
   background-color: #1f2937 !important;
   z-index: 50 !important;
 }
