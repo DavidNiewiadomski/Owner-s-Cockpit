@@ -1,57 +1,73 @@
 
 import React from 'react';
-import { CalendarDays, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Calendar, Clock, User } from 'lucide-react';
 
 export function UpcomingTasks() {
   const tasks = [
     {
-      title: 'Site inspection',
-      date: 'Tomorrow',
+      id: 1,
+      title: 'Review updated floor plans',
+      dueDate: '2024-05-20',
       priority: 'high',
-      assignee: 'Alex Johnson'
+      assignee: 'Jessica Wong',
+      status: 'pending'
     },
     {
-      title: 'Material order approval',
-      date: 'Wed, Apr 3',
-      priority: 'medium',
-      assignee: 'Sarah Williams'
-    },
-    {
-      title: 'Foundation review',
-      date: 'Thu, Apr 4',
-      priority: 'medium',
-      assignee: 'Michael Brown'
-    },
-    {
-      title: 'Client meeting',
-      date: 'Fri, Apr 5',
+      id: 2,
+      title: 'Submit permit applications',
+      dueDate: '2024-05-22',
       priority: 'high',
-      assignee: 'You'
+      assignee: 'Michael Chen',
+      status: 'in-progress'
     },
+    {
+      id: 3,
+      title: 'Meeting with HVAC contractors',
+      dueDate: '2024-05-25',
+      priority: 'medium',
+      assignee: 'Sarah Johnson',
+      status: 'pending'
+    },
+    {
+      id: 4,
+      title: 'Approve material samples',
+      dueDate: '2024-05-27',
+      priority: 'low',
+      assignee: 'David Patel',
+      status: 'pending'
+    }
   ];
 
   return (
     <div className="space-y-4">
-      {tasks.map((task, index) => (
-        <div key={index} className="flex flex-col space-y-2 border-b border-border pb-3 last:border-0 last:pb-0">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="font-medium">{task.title}</p>
-              <div className="flex items-center text-sm text-muted-foreground gap-2">
-                <span className="flex items-center">
-                  <CalendarDays className="mr-1 h-3 w-3" />
-                  {task.date}
-                </span>
-                <span className="flex items-center">
-                  <Clock className="mr-1 h-3 w-3" />
-                  {task.assignee}
-                </span>
+      {tasks.map((task) => (
+        <div key={task.id} className="bg-black border border-gray-700 rounded-lg p-3">
+          <div className="flex items-start gap-3">
+            <Checkbox id={`task-${task.id}`} className="mt-0.5" />
+            <div className="flex-1 min-w-0">
+              <label htmlFor={`task-${task.id}`} className="font-medium cursor-pointer">
+                {task.title}
+              </label>
+              <div className="flex flex-wrap gap-x-4 gap-y-2 mt-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <User className="h-3.5 w-3.5" />
+                  <span>{task.assignee}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>{task.status}</span>
+                </div>
               </div>
             </div>
             <Badge variant={
               task.priority === 'high' ? 'destructive' : 
-              task.priority === 'medium' ? 'warning' : 'default'
+              task.priority === 'medium' ? 'secondary' : 'outline'
             }>
               {task.priority}
             </Badge>

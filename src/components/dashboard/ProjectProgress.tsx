@@ -48,7 +48,7 @@ export function ProjectProgress() {
             </div>
             <Badge variant={
               project.status === 'on-track' ? 'default' : 
-              project.status === 'at-risk' ? 'warning' : 'destructive'
+              project.status === 'at-risk' ? 'secondary' : 'destructive'
             }>
               {project.status}
             </Badge>

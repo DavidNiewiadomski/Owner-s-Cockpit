@@ -267,7 +267,7 @@ const InvestmentImpact = () => {
   };
 
   return (
-    <div className="flex h-screen bg-black dark:bg-black">
+    <div className="flex h-screen bg-black">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden bg-black">
@@ -314,7 +314,7 @@ const InvestmentImpact = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full md:col-span-1">
+              <Card className="bg-black border-gray-700 shadow-lg col-span-full md:col-span-1">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <TrendingDown className="h-5 w-5 text-red-500" />
@@ -352,7 +352,7 @@ const InvestmentImpact = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full md:col-span-2">
+              <Card className="bg-black border-gray-700 shadow-lg col-span-full md:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-blue-500" />
@@ -377,7 +377,7 @@ const InvestmentImpact = () => {
                         />
                         <Tooltip 
                           formatter={(value) => [`${value}%`, '']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                          contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
                         <Legend />
@@ -407,10 +407,10 @@ const InvestmentImpact = () => {
             
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-100 mb-4">Construction Impact Events</h2>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+              <div className="bg-black border border-gray-700 rounded-lg shadow-lg overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-750">
+                    <thead className="bg-black">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Project</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Event</th>
@@ -423,7 +423,7 @@ const InvestmentImpact = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-700">
                       {impactEvents.map((event) => (
-                        <tr key={event.id} className="hover:bg-gray-750">
+                        <tr key={event.id} className="hover:bg-black">
                           <td className="px-4 py-3 text-sm text-gray-300">{event.project}</td>
                           <td className="px-4 py-3 text-sm text-gray-300">{event.event}</td>
                           <td className={`px-4 py-3 text-sm ${event.financialImpact.startsWith('-') ? 'text-red-400' : 'text-green-400'}`}>
@@ -455,7 +455,7 @@ const InvestmentImpact = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg">
+              <Card className="bg-black border-gray-700 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Clock className="h-5 w-5 text-amber-500" />
@@ -486,7 +486,7 @@ const InvestmentImpact = () => {
                           }}
                         />
                         <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                          contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
                         <Legend />
@@ -498,7 +498,7 @@ const InvestmentImpact = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-800 border-gray-700 shadow-lg">
+              <Card className="bg-black border-gray-700 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <DollarSign className="h-5 w-5 text-green-500" />
@@ -525,7 +525,7 @@ const InvestmentImpact = () => {
                         </Pie>
                         <Tooltip 
                           formatter={(value) => [`${value}%`, 'Percentage']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                          contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
                         <Legend />
@@ -537,7 +537,7 @@ const InvestmentImpact = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full lg:col-span-2">
+              <Card className="bg-black border-gray-700 shadow-lg col-span-full lg:col-span-2">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Building className="h-5 w-5 text-blue-500" />
@@ -565,7 +565,7 @@ const InvestmentImpact = () => {
                         />
                         <Tooltip 
                           formatter={(value) => [`${value}%`, 'Relative Value']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                          contentStyle={{ backgroundColor: '#000000', border: 'none', borderRadius: '8px' }}
                           labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                         />
                         <defs>
@@ -587,7 +587,7 @@ const InvestmentImpact = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full lg:col-span-1">
+              <Card className="bg-black border-gray-700 shadow-lg col-span-full lg:col-span-1">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <AlertTriangle className="h-5 w-5 text-amber-500" />
@@ -646,10 +646,10 @@ const InvestmentImpact = () => {
             
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-100 mb-4">Impact Mitigation Strategies</h2>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
+              <div className="bg-black border border-gray-700 rounded-lg shadow-lg overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-750">
+                    <thead className="bg-black">
                       <tr>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Issue</th>
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Mitigation Strategy</th>
@@ -662,7 +662,7 @@ const InvestmentImpact = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-700">
                       {mitigationStrategies.map((strategy) => (
-                        <tr key={strategy.id} className="hover:bg-gray-750">
+                        <tr key={strategy.id} className="hover:bg-black">
                           <td className="px-4 py-3 text-sm text-gray-300">{strategy.issue}</td>
                           <td className="px-4 py-3 text-sm text-gray-300">{strategy.strategy}</td>
                           <td className="px-4 py-3 text-sm text-green-400">{strategy.potentialSavings}</td>

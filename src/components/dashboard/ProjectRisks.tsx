@@ -1,69 +1,82 @@
 
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, ArrowUpRight, Shield } from 'lucide-react';
 
 export function ProjectRisks() {
   const risks = [
     {
-      title: 'Material Price Increases',
+      id: 1,
+      title: 'Material Price Increase',
+      description: 'Steel prices have increased by 15% over the last quarter',
       impact: 'high',
-      likelihood: 'medium',
-      mitigation: 'Secure pricing contracts with suppliers early',
-      owner: 'Alex Johnson'
+      category: 'Financial',
+      status: 'active',
+      mitigationPlan: 'Secure price lock agreements with suppliers'
     },
     {
+      id: 2,
+      title: 'Permit Delays',
+      description: 'Environmental permits taking longer than expected',
+      impact: 'medium',
+      category: 'Regulatory',
+      status: 'active',
+      mitigationPlan: 'Pre-submit documentation to expedite review'
+    },
+    {
+      id: 3,
+      title: 'Labor Shortage',
+      description: 'Skilled labor availability continues to decrease',
+      impact: 'medium',
+      category: 'Resources',
+      status: 'monitoring',
+      mitigationPlan: 'Partner with local trade schools for apprenticeship program'
+    },
+    {
+      id: 4,
       title: 'Weather Delays',
-      impact: 'medium',
-      likelihood: 'high',
-      mitigation: 'Build buffer time into schedule, prepare contingency plans',
-      owner: 'Sarah Williams'
-    },
-    {
-      title: 'Permit Approval Delays',
-      impact: 'high',
-      likelihood: 'medium',
-      mitigation: 'Submit applications early, maintain relationships with officials',
-      owner: 'Michael Brown'
-    },
-    {
-      title: 'Labor Shortages',
-      impact: 'high',
-      likelihood: 'medium',
-      mitigation: 'Pre-book contractors, offer competitive rates',
-      owner: 'Lisa Chen'
-    },
-    {
-      title: 'Design Changes',
-      impact: 'medium',
-      likelihood: 'low',
-      mitigation: 'Establish clear change order process with client',
-      owner: 'David Rodriguez'
-    },
+      description: 'Potential for severe weather in Q3',
+      impact: 'low',
+      category: 'External',
+      status: 'monitoring',
+      mitigationPlan: 'Build weather contingency into schedule'
+    }
   ];
 
   return (
     <div className="space-y-4">
-      {risks.map((risk, index) => (
-        <div key={index} className="border-b pb-4 last:border-0 last:pb-0">
+      {risks.map((risk) => (
+        <div key={risk.id} className="bg-black border border-gray-700 rounded-lg p-4">
           <div className="flex justify-between items-start mb-2">
-            <h4 className="font-medium">{risk.title}</h4>
-            <div className="flex gap-2">
-              <Badge variant={
-                risk.impact === 'high' ? 'destructive' : 
-                risk.impact === 'medium' ? 'warning' : 'default'
-              }>
-                Impact: {risk.impact}
-              </Badge>
-              <Badge variant={
-                risk.likelihood === 'high' ? 'destructive' : 
-                risk.likelihood === 'medium' ? 'warning' : 'default'
-              }>
-                Likelihood: {risk.likelihood}
-              </Badge>
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" />
+              <h3 className="font-medium">{risk.title}</h3>
             </div>
+            <Badge variant={
+              risk.impact === 'high' ? 'destructive' : 
+              risk.impact === 'medium' ? 'secondary' : 'outline'
+            }>
+              {risk.impact}
+            </Badge>
           </div>
-          <p className="text-sm mb-1"><span className="font-medium">Mitigation:</span> {risk.mitigation}</p>
-          <p className="text-sm text-muted-foreground"><span className="font-medium">Owner:</span> {risk.owner}</p>
+          <p className="text-sm text-muted-foreground mb-3">{risk.description}</p>
+          <div className="flex justify-between items-center text-xs">
+            <div className="flex items-center gap-4">
+              <Badge variant={
+                risk.status === 'active' ? 'secondary' : 'outline'
+              } className="text-xs">
+                {risk.status}
+              </Badge>
+              <span className="text-muted-foreground">{risk.category}</span>
+            </div>
+            <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" asChild>
+              <a className="flex items-center gap-1" href="#">
+                <Shield className="h-3 w-3" />
+                <span>Mitigation Plan</span>
+              </a>
+            </Button>
+          </div>
         </div>
       ))}
     </div>

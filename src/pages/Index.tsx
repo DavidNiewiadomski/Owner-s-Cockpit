@@ -5,12 +5,9 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useProject } from '@/contexts/ProjectContext';
-import { Calendar, Clock, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { ProjectTimeline } from '@/components/dashboard/ProjectTimeline';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
@@ -22,29 +19,28 @@ import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 
 const Index = () => {
   const { toast } = useToast();
-  const { selectedProject, allProjects } = useProject();
+  const { currentProject, projects } = useProject();
   const [activeTab, setActiveTab] = useState('overview');
-
+  
   useEffect(() => {
     // Simulate loading data
     const timer = setTimeout(() => {
       toast({
         title: "Dashboard Updated",
-        description: "Latest project data has been loaded.",
+        description: "Latest project data has been loaded."
       });
     }, 1000);
     
     return () => clearTimeout(timer);
   }, [toast]);
-
+  
   // Calculate project statistics
-  const completionPercentage = selectedProject ? 
-    (typeof selectedProject.id === 'string' && selectedProject.id !== 'all' ? 
-      Number(selectedProject.progress || 0) : 75) : 0;
-  const daysRemaining = selectedProject && selectedProject.id !== 'all' ? 120 : 150;
-  const budgetUtilization = selectedProject && selectedProject.id !== 'all' ? 65 : 70;
-  const teamSize = selectedProject && selectedProject.id !== 'all' ? 8 : 15;
-
+  // Use 0 as default if currentProject is undefined or is the "all" option
+  const completionPercentage = (currentProject && 'completion' in currentProject) ? Number(currentProject.completion) : 0;
+  const daysRemaining = (currentProject && 'daysRemaining' in currentProject) ? currentProject.daysRemaining : 0;
+  const budgetUtilization = (currentProject && 'budgetUtilization' in currentProject) ? currentProject.budgetUtilization : 0;
+  const teamSize = (currentProject && 'team' in currentProject) ? currentProject.team.length : 0;
+  
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
@@ -59,44 +55,48 @@ const Index = () => {
         />
         
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
-          <StatCard 
-            title="Completion" 
-            value={completionPercentage} 
+          <StatCard
+            title="Completion"
+            value={completionPercentage}
             format="percent"
             icon={<TrendingUp className="h-4 w-4 text-muted-foreground" />}
             description="Overall project completion"
-            trend="up"
+            trend={{ value: 12, label: "from last month" }}
           />
           
-          <StatCard 
-            title="Timeline" 
-            value={daysRemaining} 
+          <StatCard
+            title="Timeline"
+            value={daysRemaining}
             format="days"
             icon={<Calendar className="h-4 w-4 text-muted-foreground" />}
             description="Days remaining"
-            trend="down"
+            trend={{ value: -3, label: "fewer than expected", direction: "down" }}
           />
           
-          <StatCard 
-            title="Budget" 
-            value={budgetUtilization} 
+          <StatCard
+            title="Budget"
+            value={budgetUtilization}
             format="percent"
             icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
             description="Budget utilization"
-            trend="down"
+            trend={{ value: 5, label: "under budget", direction: "down" }}
           />
           
-          <StatCard 
-            title="Team" 
-            value={teamSize} 
+          <StatCard
+            title="Team"
+            value={teamSize}
             format="number"
             icon={<Users className="h-4 w-4 text-muted-foreground" />}
             description="Team members"
-            trend="up"
+            trend={{ value: 2, label: "new this month" }}
           />
         </div>
         
-        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <Tabs 
+          defaultValue={activeTab} 
+          onValueChange={setActiveTab}
+          className="space-y-4"
+        >
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
@@ -110,10 +110,9 @@ const Index = () => {
               <Card className="col-span-2">
                 <CardHeader>
                   <CardTitle>Project Progress</CardTitle>
-                  <CardDescription>
-                    Track the progress of your active projects
-                  </CardDescription>
+                  <CardDescription>Track the progress of your active projects</CardDescription>
                 </CardHeader>
+                
                 <CardContent>
                   <ProjectProgress />
                 </CardContent>
@@ -122,10 +121,9 @@ const Index = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>
-                    Latest updates from your projects
-                  </CardDescription>
+                  <CardDescription>Latest updates from your projects</CardDescription>
                 </CardHeader>
+                
                 <CardContent>
                   <RecentActivity />
                 </CardContent>
@@ -134,10 +132,9 @@ const Index = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Upcoming Tasks</CardTitle>
-                  <CardDescription>
-                    Tasks due in the next 7 days
-                  </CardDescription>
+                  <CardDescription>Tasks due in the next 7 days</CardDescription>
                 </CardHeader>
+                
                 <CardContent>
                   <UpcomingTasks />
                 </CardContent>
@@ -146,10 +143,9 @@ const Index = () => {
               <Card className="col-span-2">
                 <CardHeader>
                   <CardTitle>Budget Overview</CardTitle>
-                  <CardDescription>
-                    Financial summary of your projects
-                  </CardDescription>
+                  <CardDescription>Financial summary of your projects</CardDescription>
                 </CardHeader>
+                
                 <CardContent>
                   <BudgetOverview />
                 </CardContent>
@@ -161,10 +157,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Project Timeline</CardTitle>
-                <CardDescription>
-                  Visualize your project schedule and milestones
-                </CardDescription>
+                <CardDescription>Visualize your project schedule and milestones</CardDescription>
               </CardHeader>
+              
               <CardContent>
                 <ProjectTimeline />
               </CardContent>
@@ -175,12 +170,11 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Budget Details</CardTitle>
-                <CardDescription>
-                  Detailed breakdown of project finances
-                </CardDescription>
+                <CardDescription>Detailed breakdown of project finances</CardDescription>
               </CardHeader>
+              
               <CardContent>
-                <BudgetOverview detailed />
+                <BudgetOverview detailed={true} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -189,10 +183,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Team Members</CardTitle>
-                <CardDescription>
-                  People working on your projects
-                </CardDescription>
+                <CardDescription>People working on your projects</CardDescription>
               </CardHeader>
+              
               <CardContent>
                 <TeamMembers />
               </CardContent>
@@ -203,10 +196,9 @@ const Index = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Project Risks</CardTitle>
-                <CardDescription>
-                  Identified risks and mitigation strategies
-                </CardDescription>
+                <CardDescription>Identified risks and mitigation strategies</CardDescription>
               </CardHeader>
+              
               <CardContent>
                 <ProjectRisks />
               </CardContent>
