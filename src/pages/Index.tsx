@@ -1,25 +1,11 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { useToast } from '@/hooks/use-toast';
 import { useProject } from '@/contexts/ProjectContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 
 const Index = () => {
-  const { toast } = useToast();
-  const { currentProject, projects } = useProject();
-  
-  useEffect(() => {
-    // Simulate loading data
-    const timer = setTimeout(() => {
-      toast({
-        title: "Dashboard Updated",
-        description: "Latest project data has been loaded."
-      });
-    }, 1000);
-    
-    return () => clearTimeout(timer);
-  }, [toast]);
+  const { currentProject } = useProject();
   
   // Calculate project statistics
   // Use 0 as default if currentProject is undefined or is the "all" option
