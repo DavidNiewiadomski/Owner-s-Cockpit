@@ -6,10 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+type MessageRole = 'user' | 'assistant';
+
+interface Message {
+  role: MessageRole;
+  content: string;
+}
+
 export function AIAssistant() {
   const [isExpanded, setIsExpanded] = useState(true);
   const [message, setMessage] = useState('');
-  const [conversation, setConversation] = useState<{role: 'user' | 'assistant'; content: string}[]>([
+  const [conversation, setConversation] = useState<Message[]>([
     {
       role: 'assistant',
       content: 'Hello, I\'m your construction project assistant. How can I help you today?'
@@ -21,10 +28,8 @@ export function AIAssistant() {
     if (!message.trim()) return;
     
     // Add user message to conversation
-    const newConversation = [
-      ...conversation,
-      { role: 'user', content: message }
-    ];
+    const userMessage: Message = { role: 'user', content: message };
+    const newConversation = [...conversation, userMessage];
     setConversation(newConversation);
     setMessage('');
     
@@ -41,7 +46,8 @@ export function AIAssistant() {
         response = 'I\'m here to help you manage your construction projects. You can ask about project progress, budget status, or any issues that need attention.';
       }
       
-      setConversation([...newConversation, { role: 'assistant', content: response }]);
+      const assistantMessage: Message = { role: 'assistant', content: response };
+      setConversation([...newConversation, assistantMessage]);
     }, 1000);
   };
 
