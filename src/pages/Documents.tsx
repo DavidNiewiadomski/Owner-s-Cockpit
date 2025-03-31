@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Plus, 
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { DocumentList } from '@/components/dashboard/DocumentList';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 // Sample documents data
 const documents = [
@@ -108,11 +108,24 @@ const Documents = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onSearch={setSearchTerm} />
         
+        <CollapsibleAIAssistant 
+          projectContext="Documents"
+          initialInsights={[
+            {
+              title: 'Document Updates',
+              content: 'Project Blueprint.pdf was updated 2 days ago with foundation design changes',
+              type: 'info'
+            },
+            {
+              title: 'Approval Needed',
+              content: 'Budget Forecast.xlsx is awaiting your review and approval',
+              type: 'warning'
+            }
+          ]}
+        />
+        
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            {/* AI Assistant Section */}
-            <AIAssistant />
-            
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
                 <h1 className="text-2xl font-bold text-white">Documents</h1>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -190,6 +191,12 @@ const Messages = () => {
       <SidebarNavigation />
       <div className="flex-1 flex flex-col">
         <DashboardHeader onSearch={setSearchTerm} />
+        
+        {/* Move AI Assistant to the top, right after header */}
+        <CollapsibleAIAssistant
+          projectContext="your messages"
+          initialInsights={messageInsights}
+        />
         
         <main className="flex-1 flex">
           {/* Conversations List */}
@@ -451,11 +458,7 @@ const Messages = () => {
           </div>
         </main>
         
-        {/* Add the AI Assistant component */}
-        <CollapsibleAIAssistant
-          projectContext="your messages"
-          initialInsights={messageInsights}
-        />
+        {/* Remove CollapsibleAIAssistant from here since we moved it to the top */}
       </div>
     </div>
   );
