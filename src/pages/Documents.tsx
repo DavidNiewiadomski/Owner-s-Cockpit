@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Plus, 
@@ -101,7 +102,7 @@ const Documents = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
+    <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">

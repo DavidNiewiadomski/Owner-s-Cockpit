@@ -163,7 +163,7 @@ const Integrations = () => {
   );
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
+    <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -193,7 +193,7 @@ const Integrations = () => {
                   className={`flex items-center justify-center p-2 h-auto ${
                     selectedCategory === category.id 
                       ? "bg-construction-600 text-white border-construction-700" 
-                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                      : "bg-black text-gray-300 hover:bg-gray-900"
                   }`}
                   onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
                 >
@@ -204,7 +204,7 @@ const Integrations = () => {
             </div>
             
             {/* Integration Status Overview */}
-            <Card className="bg-gray-800 border-gray-700 p-4 mb-8">
+            <Card className="bg-black border-gray-700 p-4 mb-8">
               <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
                   <div className="flex items-center">
@@ -223,7 +223,7 @@ const Integrations = () => {
                       <div className="w-3 h-3 rounded-full bg-gray-500"></div>
                       <span className="text-sm text-gray-300">{integrations.filter(i => !i.connected).length} Inactive</span>
                     </div>
-                    <Button variant="outline" className="ml-4 text-xs h-8 border-gray-700 bg-gray-800 hover:bg-gray-700">
+                    <Button variant="outline" className="ml-4 text-xs h-8 border-gray-700 bg-black hover:bg-gray-900">
                       View Audit Log
                     </Button>
                   </div>
@@ -244,7 +244,7 @@ const Integrations = () => {
                       key={integration.id} 
                       {...integration} 
                       onToggle={() => handleIntegrationToggle(integration.name)} 
-                      className="bg-gradient-to-br from-gray-800 to-gray-900 border-construction-700/30 shadow-lg"
+                      className="bg-gradient-to-br from-black to-black border-construction-700/30 shadow-lg"
                     />
                   ))}
                 </div>

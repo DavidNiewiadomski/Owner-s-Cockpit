@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -104,7 +103,7 @@ const Analytics = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
+    <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -121,7 +120,7 @@ const Analytics = () => {
                 <p className="text-gray-400">Interactive project performance metrics and insights</p>
               </div>
               <div className="mt-3 md:mt-0 flex gap-2">
-                <div className="flex items-center bg-gray-800 rounded-md p-1 border border-gray-700">
+                <div className="flex items-center bg-black rounded-md p-1 border border-gray-700">
                   {periods.map(period => (
                     <Button 
                       key={period.value}
@@ -153,7 +152,7 @@ const Analytics = () => {
                 { title: 'Quality Score', value: '88/100', trend: '+3', color: 'bg-purple-500' },
                 { title: 'Safety Rating', value: '95%', trend: '+1%', color: 'bg-orange-500' }
               ].map((kpi, index) => (
-                <Card key={index} className={`bg-gray-800 border-gray-700 overflow-hidden`}>
+                <Card key={index} className={`bg-black border-gray-700 overflow-hidden`}>
                   <div className={`h-1 ${kpi.color}`}></div>
                   <CardContent className="pt-6">
                     <div className="flex justify-between items-start">
@@ -181,7 +180,7 @@ const Analytics = () => {
             {/* Tabbed Charts Section */}
             <Tabs defaultValue="performance" className="mb-6">
               <div className="flex justify-between items-center mb-4">
-                <TabsList className="bg-gray-800 border border-gray-700">
+                <TabsList className="bg-black border border-gray-700">
                   <TabsTrigger value="performance" className="data-[state=active]:bg-construction-600 data-[state=active]:text-white">
                     <BarChart3 className="h-4 w-4 mr-2" />
                     Performance
@@ -211,7 +210,7 @@ const Analytics = () => {
               <TabsContent value="performance" className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Project Completion Chart */}
-                  <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <Card className="bg-black border-gray-700 shadow-lg">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg text-white flex items-center">
                         <BarChart3 className="h-5 w-5 mr-2 text-construction-400" />
@@ -272,7 +271,7 @@ const Analytics = () => {
                   </Card>
                   
                   {/* Project Performance Radar Chart */}
-                  <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <Card className="bg-black border-gray-700 shadow-lg">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg text-white flex items-center">
                         <BarChart3 className="h-5 w-5 mr-2 text-construction-400" />
@@ -309,7 +308,7 @@ const Analytics = () => {
                               animationBegin={300}
                             />
                             <Tooltip 
-                              contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
+                              contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
                               labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                             />
                             <Legend />
@@ -321,7 +320,7 @@ const Analytics = () => {
                 </div>
                 
                 {/* Issues by Project - Horizontal Bar Chart */}
-                <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                <Card className="bg-black border-gray-700 shadow-lg">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg text-white flex items-center">
                       <BarChart3 className="h-5 w-5 mr-2 text-construction-400" />
@@ -375,7 +374,7 @@ const Analytics = () => {
               <TabsContent value="timeline" className="space-y-6">
                 <div className="grid grid-cols-1 gap-6">
                   {/* Timeline Progress Chart */}
-                  <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <Card className="bg-black border-gray-700 shadow-lg">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg text-white flex items-center">
                         <Calendar className="h-5 w-5 mr-2 text-construction-400" />
@@ -462,7 +461,7 @@ const Analytics = () => {
               <TabsContent value="resources" className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Budget Allocation Pie Chart */}
-                  <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <Card className="bg-black border-gray-700 shadow-lg">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg text-white flex items-center">
                         <PieChartIcon className="h-5 w-5 mr-2 text-construction-400" />
@@ -504,7 +503,7 @@ const Analytics = () => {
                   </Card>
                   
                   {/* Resource Utilization Chart */}
-                  <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <Card className="bg-black border-gray-700 shadow-lg">
                     <CardHeader className="pb-2">
                       <CardTitle className="text-lg text-white flex items-center">
                         <LineChartIcon className="h-5 w-5 mr-2 text-construction-400" />

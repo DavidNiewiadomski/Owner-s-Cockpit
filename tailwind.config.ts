@@ -75,6 +75,11 @@ export default {
           850: "#1A1F2C",
           950: "#0F1117",
         },
+        // Adding pitch black color
+        black: {
+          DEFAULT: "#000000",
+          100: "#000000",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
