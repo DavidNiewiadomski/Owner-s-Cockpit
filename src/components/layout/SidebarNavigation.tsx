@@ -20,7 +20,8 @@ import {
   PanelLeft,
   LayoutDashboard,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  ListChecks
 } from 'lucide-react';
 
 interface SidebarNavigationProps {
@@ -108,6 +109,20 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             <Link to="/timeline">
               <Calendar className="h-4 w-4" />
               {!collapsed && <span>Timeline</span>}
+            </Link>
+          </Button>
+          
+          <Button 
+            variant={isActive("/action-items") ? "secondary" : "ghost"} 
+            className={cn(
+              "justify-start gap-3 h-10",
+              collapsed && "w-10 justify-center pl-0"
+            )}
+            asChild
+          >
+            <Link to="/action-items">
+              <ListChecks className="h-4 w-4" />
+              {!collapsed && <span>Action Items</span>}
             </Link>
           </Button>
           

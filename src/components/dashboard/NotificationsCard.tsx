@@ -3,6 +3,7 @@ import React from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 interface Notification {
   id: number;
@@ -25,8 +26,15 @@ export function NotificationsCard({ notifications }: NotificationsCardProps) {
             <Bell className="h-5 w-5 mr-2 text-construction-400" />
             Notifications
           </CardTitle>
-          <Button size="sm" variant="ghost" className="h-8 px-2 text-gray-400 hover:text-white">
-            <span className="text-xs">View All</span>
+          <Button 
+            size="sm" 
+            variant="ghost" 
+            className="h-8 px-2 text-gray-400 hover:text-white"
+            asChild
+          >
+            <Link to="/action-items">
+              <span className="text-xs">View All</span>
+            </Link>
           </Button>
         </div>
       </CardHeader>

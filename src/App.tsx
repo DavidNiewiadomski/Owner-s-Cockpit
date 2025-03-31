@@ -16,6 +16,7 @@ import Messages from "./pages/Messages";
 import Timeline from "./pages/Timeline";
 import Projects from "./pages/Projects";
 import InvestmentImpact from "./pages/InvestmentImpact";
+import ActionItems from "./pages/ActionItems";
 import NotFound from "./pages/NotFound";
 
 // Enable dark mode by default
@@ -57,6 +58,7 @@ const App = () => {
                   <Route path="/timeline" element={<Timeline />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/investment-impact" element={<InvestmentImpact />} />
+                  <Route path="/action-items" element={<ActionItems />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Route>
