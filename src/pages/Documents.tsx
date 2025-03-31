@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Plus, 
@@ -12,78 +13,17 @@ import { useToast } from '@/components/ui/use-toast';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 import { DocumentList } from '@/components/dashboard/DocumentList';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
-
-// Sample documents data
-const documents = [
-  {
-    id: '1',
-    name: 'Project Blueprint.pdf',
-    type: 'pdf' as const,
-    size: '8.5 MB',
-    updatedAt: '2 days ago',
-    project: 'East Tower'
-  },
-  {
-    id: '2',
-    name: 'Site Survey Images.jpg',
-    type: 'image' as const,
-    size: '12.3 MB',
-    updatedAt: '3 days ago',
-    project: 'Westside Park'
-  },
-  {
-    id: '3',
-    name: 'Budget Forecast.xlsx',
-    type: 'spreadsheet' as const,
-    size: '1.2 MB',
-    updatedAt: '1 week ago',
-    project: 'North Bridge'
-  },
-  {
-    id: '4',
-    name: 'Contractor Agreement.docx',
-    type: 'text' as const,
-    size: '567 KB',
-    updatedAt: '2 weeks ago',
-    project: 'East Tower'
-  },
-  {
-    id: '5',
-    name: 'Foundation Design.pdf',
-    type: 'pdf' as const,
-    size: '10.2 MB',
-    updatedAt: '1 day ago',
-    project: 'East Tower'
-  },
-  {
-    id: '6',
-    name: 'Electrical Plan.pdf',
-    type: 'pdf' as const,
-    size: '6.7 MB',
-    updatedAt: '1 week ago',
-    project: 'North Bridge'
-  },
-  {
-    id: '7',
-    name: 'Landscape Photos.jpg',
-    type: 'image' as const,
-    size: '15.5 MB',
-    updatedAt: '5 days ago',
-    project: 'Westside Park'
-  },
-  {
-    id: '8',
-    name: 'Project Timeline.xlsx',
-    type: 'spreadsheet' as const,
-    size: '980 KB',
-    updatedAt: '3 days ago',
-    project: 'East Tower'
-  },
-];
+import { useProject } from '@/contexts/ProjectContext';
+import { projectDocuments } from '@/data/dashboardData';
 
 const Documents = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const { selectedProject } = useProject();
+  
+  // Get project-specific documents
+  const projectId = selectedProject?.id || 'all';
+  const documents = projectDocuments[projectId as keyof typeof projectDocuments] || projectDocuments['all'];
   
   const filteredDocuments = searchTerm 
     ? documents.filter(doc => 
@@ -101,6 +41,26 @@ const Documents = () => {
     });
   };
 
+  // Generate project-specific document insights
+  const documentInsights = [
+    {
+      title: 'Document Updates',
+      content: projectId === '1' ? 'East Tower Blueprint.pdf was updated 2 days ago with facade design changes' :
+               projectId === '2' ? 'Landscaping Plan.pdf requires your approval for the irrigation system' :
+               projectId === '3' ? 'Bridge Structural Analysis.pdf has critical reinforcement recommendations' :
+               'Project Blueprint.pdf was updated 2 days ago with foundation design changes',
+      type: 'info' as const
+    },
+    {
+      title: 'Approval Needed',
+      content: projectId === '1' ? 'Construction Timeline.xlsx is awaiting your review for milestone adjustments' :
+               projectId === '2' ? 'Environmental Impact Report.docx has outstanding comments to address' :
+               projectId === '3' ? 'Traffic Flow Models.xlsx needs approval before implementation' :
+               'Budget Forecast.xlsx is awaiting your review and approval',
+      type: 'warning' as const
+    }
+  ];
+
   return (
     <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
@@ -110,18 +70,8 @@ const Documents = () => {
         
         <CollapsibleAIAssistant 
           projectContext="Documents"
-          initialInsights={[
-            {
-              title: 'Document Updates',
-              content: 'Project Blueprint.pdf was updated 2 days ago with foundation design changes',
-              type: 'info'
-            },
-            {
-              title: 'Approval Needed',
-              content: 'Budget Forecast.xlsx is awaiting your review and approval',
-              type: 'warning'
-            }
-          ]}
+          projectName={selectedProject?.title || 'All Projects'}
+          initialInsights={documentInsights}
         />
         
         <main className="flex-1 overflow-y-auto p-6">

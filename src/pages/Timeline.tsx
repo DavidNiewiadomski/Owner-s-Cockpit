@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
@@ -21,10 +21,165 @@ import { ProjectFilterBar } from '@/components/timeline/ProjectFilterBar';
 import { 
   ganttData, 
   delayMetricsData, 
-  milestoneData, 
+  milestoneData as baseMilestoneData, 
   timelineData, 
   timelineInsights 
 } from '@/data/timelineData';
+
+// Project-specific milestone data
+const projectMilestoneData = {
+  '1': [
+    {
+      name: "Site Preparation",
+      plannedDate: "Jan 15, 2024",
+      actualDate: "Jan 20, 2024",
+      status: "completed" as const,
+      description: "Clearing and grading of East Tower site",
+      realityCapture: {
+        available: true,
+        date: "Jan 20, 2024",
+        url: "https://example.com/reality-capture/east-tower-site-prep"
+      }
+    },
+    {
+      name: "Foundation Work",
+      plannedDate: "Mar 1, 2024",
+      actualDate: "Feb 25, 2024",
+      status: "completed" as const,
+      description: "Foundation pouring and curing",
+      realityCapture: {
+        available: true,
+        date: "Feb 28, 2024",
+        url: "https://example.com/reality-capture/east-tower-foundation"
+      }
+    },
+    {
+      name: "Structural Framework",
+      plannedDate: "Jun 15, 2024",
+      actualDate: "Not Started",
+      status: "in-progress" as const,
+      description: "Steel framework installation for all 32 floors",
+      realityCapture: {
+        available: false
+      }
+    },
+    {
+      name: "Facade Installation",
+      plannedDate: "Sep 1, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Glass panel installation on building exterior"
+    },
+    {
+      name: "Interior Finishing",
+      plannedDate: "Dec 15, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Interior walls, flooring, and fixtures"
+    }
+  ],
+  '2': [
+    {
+      name: "Land Clearing",
+      plannedDate: "Feb 10, 2024",
+      actualDate: "Feb 15, 2024",
+      status: "completed" as const,
+      description: "Vegetation removal and initial grading",
+      realityCapture: {
+        available: true,
+        date: "Feb 18, 2024",
+        url: "https://example.com/reality-capture/westside-park-clearing"
+      }
+    },
+    {
+      name: "Drainage System",
+      plannedDate: "Apr 5, 2024",
+      actualDate: "Apr 15, 2024",
+      status: "completed" as const,
+      description: "Storm water management and drainage installation",
+      realityCapture: {
+        available: true,
+        date: "Apr 20, 2024",
+        url: "https://example.com/reality-capture/westside-park-drainage"
+      }
+    },
+    {
+      name: "Main Pathways",
+      plannedDate: "Jun 1, 2024",
+      actualDate: "Not Started",
+      status: "in-progress" as const,
+      description: "Primary walking and biking paths through park",
+      realityCapture: {
+        available: false
+      }
+    },
+    {
+      name: "Playground Construction",
+      plannedDate: "Aug 10, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Installation of playground equipment and safety surfaces"
+    },
+    {
+      name: "Landscaping & Planting",
+      plannedDate: "Sep 25, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Trees, shrubs, and lawn areas installation"
+    }
+  ],
+  '3': [
+    {
+      name: "Initial Assessment",
+      plannedDate: "Mar 5, 2024",
+      actualDate: "Mar 10, 2024",
+      status: "completed" as const,
+      description: "Structural inspection and engineering assessment",
+      realityCapture: {
+        available: true,
+        date: "Mar 12, 2024",
+        url: "https://example.com/reality-capture/north-bridge-assessment"
+      }
+    },
+    {
+      name: "Traffic Management Plan",
+      plannedDate: "Apr 1, 2024",
+      actualDate: "Apr 10, 2024",
+      status: "completed" as const,
+      description: "Detour routes and traffic flow planning",
+      realityCapture: {
+        available: false
+      }
+    },
+    {
+      name: "Support Column Reinforcement",
+      plannedDate: "May 15, 2024",
+      actualDate: "Not Started",
+      status: "in-progress" as const,
+      description: "Strengthening existing support columns",
+      realityCapture: {
+        available: true,
+        date: "Jun 5, 2024",
+        url: "https://example.com/reality-capture/north-bridge-columns"
+      }
+    },
+    {
+      name: "Deck Replacement",
+      plannedDate: "Aug 1, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Bridge deck removal and installation of new surface"
+    },
+    {
+      name: "Final Inspections",
+      plannedDate: "Oct 15, 2024",
+      actualDate: "Not Started",
+      status: "upcoming" as const,
+      description: "Engineering safety inspections and load testing"
+    }
+  ],
+  'all': baseMilestoneData
+};
 
 interface RealityCaptureEvent {
   name: string;
@@ -33,20 +188,53 @@ interface RealityCaptureEvent {
   location: string;
 }
 
-const progressChartData = [
-  { name: 'Week 1', value: 5 },
-  { name: 'Week 5', value: 15 },
-  { name: 'Week 10', value: 25 },
-  { name: 'Week 15', value: 35 },
-  { name: 'Week 20', value: 45 },
-  { name: 'Week 25', value: 55 }
-];
-
 const Timeline = () => {
   const [activeProject, setActiveProject] = useState("downtown");
   const [timelineView, setTimelineView] = useState("gantt");
   const [realityCapture, setRealityCapture] = useState<RealityCaptureEvent | null>(null);
   const { selectedProject } = useProject();
+  const [milestoneData, setMilestoneData] = useState(baseMilestoneData);
+  const [projectSpecificInsights, setProjectSpecificInsights] = useState<string[]>([]);
+  
+  // Update milestones and insights based on selected project
+  useEffect(() => {
+    if (selectedProject) {
+      const projectId = selectedProject.id;
+      // Set project-specific milestone data
+      setMilestoneData(projectMilestoneData[projectId as keyof typeof projectMilestoneData] || projectMilestoneData['all']);
+      
+      // Set project-specific insights
+      if (projectId === '1') {
+        setProjectSpecificInsights([
+          `East Tower is currently 1.5 days ahead of schedule`,
+          `Facade material delivery is scheduled for next week`,
+          `Weather forecast shows clear conditions for the next 10 days`,
+          `Resource allocation is optimized at 93% efficiency for East Tower`
+        ]);
+      } else if (projectId === '2') {
+        setProjectSpecificInsights([
+          `Westside Park is currently 3.2 days behind schedule due to drainage issues`,
+          `Excavation equipment needs to be relocated by Friday`,
+          `Weather forecast shows potential rain impact to landscaping next week`,
+          `Resource allocation is optimized at 85% efficiency for Westside Park`
+        ]);
+      } else if (projectId === '3') {
+        setProjectSpecificInsights([
+          `North Bridge repairs are on schedule with no current variance`,
+          `Traffic diversion plan needs minor adjustments for weekend work`,
+          `Weather forecast shows moderate impact to exterior work next week`,
+          `Resource allocation is optimized at 89% efficiency for North Bridge`
+        ]);
+      } else {
+        setProjectSpecificInsights([
+          `Schedule variance is currently 2.5 days ahead across all projects`,
+          `Critical path activities are 92% on schedule`,
+          `Weather forecast shows potential impact to exterior work next week`,
+          `Resource allocation is optimized at 87% efficiency across all projects`
+        ]);
+      }
+    }
+  }, [selectedProject]);
   
   const handleViewRealityCapture = (milestone: any) => {
     if (milestone.realityCapture?.available) {
@@ -54,19 +242,10 @@ const Timeline = () => {
         name: milestone.name,
         date: milestone.realityCapture.date,
         url: milestone.realityCapture.url,
-        location: `${activeProject === 'downtown' ? 'Downtown High-Rise' : 
-                    activeProject === 'riverside' ? 'Riverside Complex' : 
-                    'Corporate Offices'} - ${milestone.name}`
+        location: `${selectedProject?.title || 'Project'} - ${milestone.name}`
       });
     }
   };
-
-  const projectSpecificInsights = [
-    `Schedule variance is currently 2.5 days ahead for ${selectedProject?.title || 'this project'}`,
-    `Critical path activities are 92% on schedule for ${selectedProject?.title || 'this project'}`,
-    `Weather forecast shows potential impact to exterior work next week for ${selectedProject?.title || 'this project'}`,
-    `Resource allocation is optimized at 87% efficiency for ${selectedProject?.title || 'this project'}`
-  ];
   
   return (
     <div className="flex min-h-screen bg-background">
@@ -93,7 +272,7 @@ const Timeline = () => {
             />
 
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Downtown High-Rise Timeline</h2>
+              <h2 className="text-xl font-semibold">{selectedProject?.title || 'Project'} Timeline</h2>
               <TimelineViewSelector 
                 activeView={timelineView} 
                 onViewChange={setTimelineView} 
@@ -106,9 +285,7 @@ const Timeline = () => {
                   <RealityCaptureViewer
                     captureUrl={realityCapture.url}
                     captureDate={realityCapture.date}
-                    projectName={activeProject === 'downtown' ? 'Downtown High-Rise' : 
-                                activeProject === 'riverside' ? 'Riverside Complex' : 
-                                'Corporate Offices'}
+                    projectName={selectedProject?.title || 'Project'}
                     location={realityCapture.location}
                     onClose={() => setRealityCapture(null)}
                     className="mb-6"

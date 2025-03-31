@@ -17,11 +17,11 @@ import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useProject } from '@/contexts/ProjectContext';
 import { 
   projects, 
-  timelineEvents, 
-  documents, 
-  performanceData, 
+  projectTimelineEvents,
+  projectDocuments,
+  projectPerformanceData,
+  projectPropertyData,
   notifications, 
-  propertyData, 
   financialData 
 } from '@/data/dashboardData';
 
@@ -29,6 +29,13 @@ const Index = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
+  
+  // Get project-specific data based on selected project
+  const projectId = selectedProject?.id || 'all';
+  const timelineEvents = projectTimelineEvents[projectId as keyof typeof projectTimelineEvents] || projectTimelineEvents['all'];
+  const documents = projectDocuments[projectId as keyof typeof projectDocuments] || projectDocuments['all'];
+  const performanceData = projectPerformanceData[projectId as keyof typeof projectPerformanceData] || projectPerformanceData['all'];
+  const propertyData = projectPropertyData[projectId as keyof typeof projectPropertyData] || projectPropertyData['all'];
 
   const filteredDocuments = searchTerm 
     ? documents.filter(doc => 
@@ -46,11 +53,12 @@ const Index = () => {
     });
   };
 
+  // Generate project-specific insights
   const projectInsights = [
-    `Budget variance is currently 3.2% under budget for ${selectedProject?.title || 'this project'}`,
-    `Labor productivity is 12% above industry benchmark in ${selectedProject?.title || 'this project'}`,
-    `Quality inspection pass rate is at 97.8% for ${selectedProject?.title || 'this project'}`,
-    `Schedule compliance is currently at 94% for ${selectedProject?.title || 'this project'}`
+    `Budget variance is currently ${projectId === '1' ? '2.7% under budget' : projectId === '2' ? '1.5% over budget' : projectId === '3' ? '0.8% under budget' : '3.2% under budget'} for ${selectedProject?.title || 'this project'}`,
+    `Labor productivity is ${projectId === '1' ? '15%' : projectId === '2' ? '8%' : projectId === '3' ? '10%' : '12%'} above industry benchmark in ${selectedProject?.title || 'this project'}`,
+    `Quality inspection pass rate is at ${projectId === '1' ? '98.2%' : projectId === '2' ? '96.5%' : projectId === '3' ? '97.9%' : '97.8%'} for ${selectedProject?.title || 'this project'}`,
+    `Schedule compliance is currently at ${projectId === '1' ? '95%' : projectId === '2' ? '89%' : projectId === '3' ? '92%' : '94%'} for ${selectedProject?.title || 'this project'}`
   ];
 
   return (
@@ -68,22 +76,22 @@ const Index = () => {
               initialInsights={[
                 {
                   title: "Budget Analysis",
-                  content: `${selectedProject?.title || 'This project'} is currently 3.2% under budget with potential savings in material costs.`,
+                  content: `${selectedProject?.title || 'This project'} is currently ${projectId === '1' ? '2.7% under budget with potential savings in foundation costs.' : projectId === '2' ? '1.5% over budget due to increased material costs.' : projectId === '3' ? '0.8% under budget with slightly higher labor expenses.' : '3.2% under budget with potential savings in material costs.'}`,
                   type: "success"
                 },
                 {
                   title: "Schedule Risk",
-                  content: `Weather forecast shows potential delays next week for ${selectedProject?.title || 'your project'}.`,
+                  content: `${projectId === '1' ? 'Material delivery delays may impact facade installation.' : projectId === '2' ? 'Weather forecast shows potential flooding concerns for drainage work.' : projectId === '3' ? 'Traffic diversion plan needs review before next phase.' : 'Weather forecast shows potential delays next week for your project.'}`,
                   type: "warning"
                 },
                 {
                   title: "Quality Metrics",
-                  content: `Latest inspections show 97.8% pass rate, above industry average.`,
+                  content: `Latest inspections show ${projectId === '1' ? '98.2%' : projectId === '2' ? '96.5%' : projectId === '3' ? '97.9%' : '97.8%'} pass rate, above industry average.`,
                   type: "info"
                 },
                 {
                   title: "Resource Optimization",
-                  content: `AI analysis suggests optimizing crew scheduling could save 8.5% on labor costs.`,
+                  content: `${projectId === '1' ? 'Concrete usage optimization could yield 5% savings.' : projectId === '2' ? 'Equipment scheduling adjustment recommended to reduce idle time.' : projectId === '3' ? 'Traffic management resource allocation needs review.' : 'AI analysis suggests optimizing crew scheduling could save 8.5% on labor costs.'}`,
                   type: "info"
                 }
               ]}
@@ -125,7 +133,7 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               <div className="lg:col-span-2 space-y-6">
                 <FinancialTracking 
-                  projectName={financialData.projectName}
+                  projectName={selectedProject?.title || 'All Projects'}
                   totalBudget={financialData.totalBudget}
                   spending={financialData.spending}
                   changeOrders={financialData.changeOrders}
