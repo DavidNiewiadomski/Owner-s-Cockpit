@@ -32,15 +32,15 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, formatDate
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {projects.map((project) => (
+      {projects && projects.map((project) => (
         <ProjectCard
-          key={project.id}
-          title={project.title}
-          description={project.description}
-          progress={project.progress}
-          status={mapStatus(project.status)}
-          dueDate={formatDate(project.endDate)}
-          teamMembers={project.teamMembers}
+          key={project.id.toString()}
+          title={project.title || ""}
+          description={project.description || ""}
+          progress={project.progress || 0}
+          status={mapStatus(project.status || "")}
+          dueDate={formatDate(project.endDate || "")}
+          teamMembers={project.teamMembers || []}
         />
       ))}
     </div>

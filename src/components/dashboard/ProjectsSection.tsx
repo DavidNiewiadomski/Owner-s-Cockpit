@@ -21,7 +21,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     <>
       <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projects.map((project) => (
+        {projects && projects.map((project) => (
           <ProjectCard 
             key={project.id}
             title={project.title}
@@ -29,7 +29,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
             progress={project.progress}
             status={project.status}
             dueDate={project.dueDate}
-            teamMembers={project.teamMembers}
+            teamMembers={project.teamMembers || []}
           />
         ))}
       </div>

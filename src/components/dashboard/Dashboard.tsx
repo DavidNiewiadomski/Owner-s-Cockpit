@@ -30,7 +30,7 @@ export function Dashboard({
       
       <Tabs 
         defaultValue="overview" 
-        onValueChange={setActiveTab}
+        onValueChange={(value) => setActiveTab(value)}
         className="space-y-4"
       >
         <TabsList>
