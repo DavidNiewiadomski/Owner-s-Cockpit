@@ -385,6 +385,98 @@ const Timeline = () => {
     `Resource allocation is optimized at 87% efficiency for ${selectedProject?.title || 'this project'}`
   ];
   
+  const getTransformedGanttData = () => {
+    return ganttData.map(item => {
+      const plannedDuration = item.plannedEnd - item.plannedStart;
+      const actualDuration = item.actualEnd !== null ? 
+        item.actualEnd - item.actualStart : 
+        (item.actualStart !== null ? 1 : 0);
+      
+      return {
+        ...item,
+        planned_width: plannedDuration,
+        planned_start: item.plannedStart,
+        actual_width: actualDuration,
+        actual_start: item.actualStart,
+        progress_width: item.completion > 0 ? 
+          (plannedDuration * (item.completion / 100)) : 0,
+        progress_start: item.plannedStart
+      };
+    });
+  };
+  
+  const renderPlannedBar = (props: any) => {
+    const { x, y, width, height, index } = props;
+    const item = ganttData[index];
+    if (!item) return null;
+    
+    const plannedWidth = (item.plannedEnd - item.plannedStart) * (width / 56);
+    const plannedX = item.plannedStart * (width / 56);
+    
+    return (
+      <rect
+        x={plannedX}
+        y={y + height * 0.25}
+        width={plannedWidth}
+        height={height * 0.5}
+        fill="#3B82F6"
+        stroke="#60A5FA"
+        strokeWidth={1}
+        rx={4}
+        ry={4}
+      />
+    );
+  };
+  
+  const renderActualBar = (props: any) => {
+    const { x, y, width, height, index } = props;
+    const item = ganttData[index];
+    if (!item || item.actualStart === null) return null;
+    
+    const actualWidth = item.actualEnd !== null 
+      ? (item.actualEnd - item.actualStart) * (width / 56)
+      : 1 * (width / 56);
+    const actualX = item.actualStart * (width / 56);
+    
+    return (
+      <rect
+        x={actualX}
+        y={y + height * 0.25}
+        width={actualWidth}
+        height={height * 0.5}
+        fill="#10B981"
+        stroke="#34D399"
+        strokeWidth={1}
+        rx={4}
+        ry={4}
+      />
+    );
+  };
+  
+  const renderProgressBar = (props: any) => {
+    const { x, y, width, height, index } = props;
+    const item = ganttData[index];
+    if (!item || item.completion <= 0) return null;
+    
+    const plannedDuration = item.plannedEnd - item.plannedStart;
+    const progressWidth = (plannedDuration * (item.completion / 100)) * (width / 56);
+    const progressX = item.plannedStart * (width / 56);
+    
+    return (
+      <rect
+        x={progressX}
+        y={y + height * 0.4}
+        width={progressWidth}
+        height={height * 0.2}
+        fill="#D946EF"
+        stroke="#C4B5FD"
+        strokeWidth={1}
+        rx={4}
+        ry={4}
+      />
+    );
+  };
+  
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
@@ -524,6 +616,7 @@ const Timeline = () => {
                             layout="vertical"
                             data={ganttData}
                             margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+                            barSize={20}
                           >
                             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.2)" />
                             <XAxis 
@@ -542,8 +635,9 @@ const Timeline = () => {
                             />
                             <Tooltip 
                               formatter={(value: any, name: string) => {
-                                if (name === 'actualStart' || name === 'actualEnd') return null;
-                                if (name === 'plannedStart' || name === 'plannedEnd') return null;
+                                if (name === 'planned_width') return null;
+                                if (name === 'actual_width') return null;
+                                if (name === 'progress_width') return null;
                                 if (name === 'completion') return `${value}%`;
                                 return value;
                               }}
@@ -584,59 +678,30 @@ const Timeline = () => {
                             />
                             
                             <Bar 
-                              dataKey="plannedDuration"
+                              dataKey="planned_width"
                               name="Planned"
-                              barSize={20}
-                              fill="#1EAEDB"
-                              fillOpacity={1}
+                              fill="#3B82F6"
                               stroke="#60A5FA"
                               strokeWidth={1}
-                              radius={[0, 4, 4, 0]}
-                              stackId="a"
-                              data={ganttData.map(item => ({
-                                ...item,
-                                plannedDuration: item.plannedEnd - item.plannedStart,
-                                offset: item.plannedStart
-                              }))}
+                              shape={renderPlannedBar}
                             />
                             
                             <Bar 
-                              dataKey="actualDuration" 
-                              name="Actual" 
-                              barSize={20}
+                              dataKey="actual_width"
+                              name="Actual"
                               fill="#10B981"
-                              fillOpacity={1}
                               stroke="#34D399"
                               strokeWidth={1}
-                              radius={[0, 4, 4, 0]}
-                              stackId="b"
-                              data={ganttData.map(item => ({
-                                ...item,
-                                actualDuration: item.actualEnd !== null ? 
-                                  item.actualEnd - item.actualStart : 
-                                  (item.actualStart !== null ? 1 : 0),
-                                offset: item.actualStart
-                              }))}
+                              shape={renderActualBar}
                             />
-
+                            
                             <Bar
-                              dataKey="progressBar"
+                              dataKey="progress_width"
                               name="Progress"
-                              barSize={6}
                               fill="#D946EF"
                               stroke="#C4B5FD"
                               strokeWidth={1}
-                              radius={4}
-                              stackId="c"
-                              data={ganttData.map(item => {
-                                const duration = item.plannedEnd - item.plannedStart;
-                                return {
-                                  ...item,
-                                  progressBar: item.completion > 0 ? 
-                                    (duration * (item.completion / 100)) : 0,
-                                  offset: item.plannedStart
-                                };
-                              })}
+                              shape={renderProgressBar}
                             />
                           </BarChart>
                         </ResponsiveContainer>

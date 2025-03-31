@@ -50,20 +50,20 @@ export function ProgressChart({ data }: ProgressChartProps) {
               data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.2)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.3)" />
               <XAxis 
                 dataKey="name" 
                 tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.6)' }}
               />
               <YAxis 
                 tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.6)' }}
               />
               <Tooltip 
                 contentStyle={{ 
                   backgroundColor: '#1f2937', 
-                  border: '1px solid rgba(255,255,255,0.3)', 
+                  border: '1px solid rgba(255,255,255,0.5)', 
                   borderRadius: '8px',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.7)'
                 }}
