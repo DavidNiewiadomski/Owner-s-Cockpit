@@ -1,71 +1,149 @@
 
-import React from 'react';
-import { Bell, Search, Sun, Moon } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Search, 
+  Bell, 
+  User, 
+  Settings, 
+  Menu,
+  X,
+  ChevronDown
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import { useMobile } from '@/hooks/use-mobile';
 
-interface DashboardHeaderProps {
-  onSearch?: (searchTerm: string) => void;
+export interface DashboardHeaderProps {
+  onSearch?: (term: string) => void;
+  title?: string;
+  subtitle?: string;
 }
 
-export function DashboardHeader({ onSearch }: DashboardHeaderProps) {
-  const { toast } = useToast();
-  const [isDarkMode, setIsDarkMode] = React.useState(true); // Set dark mode as default
-  const [searchTerm, setSearchTerm] = React.useState('');
+export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderProps) {
+  const [searchValue, setSearchValue] = useState('');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const isMobile = useMobile();
 
-  const toggleTheme = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-    setIsDarkMode(!isDarkMode);
-    
-    toast({
-      title: `Switched to ${!isDarkMode ? 'dark' : 'light'} mode`,
-      duration: 2000,
-    });
-  };
-
-  const handleNotificationClick = () => {
-    toast({
-      title: "No new notifications",
-      description: "You're all caught up!",
-      duration: 3000,
-    });
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearchTerm(value);
+    setSearchValue(value);
     if (onSearch) {
       onSearch(value);
     }
   };
 
   return (
-    <header className="bg-gray-800 dark:bg-gray-900 border-b border-gray-700 dark:border-gray-800 py-4 px-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center w-full max-w-md">
-          <Search className="w-4 h-4 absolute ml-3 text-gray-400" />
-          <Input 
-            type="search" 
-            placeholder="Search projects, documents..." 
-            className="pl-10 bg-gray-700 dark:bg-gray-800 border-gray-600 dark:border-gray-700 text-white"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
-        
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-gray-300 hover:text-white">
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+    <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between py-4">
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            {showMobileMenu ? <X /> : <Menu />}
           </Button>
           
-          <Button variant="ghost" size="icon" onClick={handleNotificationClick} className="text-gray-300 hover:text-white">
-            <Bell size={20} />
-          </Button>
+          {/* Title area - will only show when title is provided */}
+          {title && (
+            <div className="hidden md:block">
+              <h1 className="text-xl font-bold">{title}</h1>
+              {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+            </div>
+          )}
+        </div>
+        
+        <div className="flex flex-1 items-center justify-end md:justify-between gap-2">
+          {/* Search bar */}
+          <div className="relative max-w-md flex-1 hidden md:block ml-8">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input 
+              type="search" 
+              placeholder="Search..." 
+              className="pl-8 bg-background"
+              value={searchValue}
+              onChange={handleSearch}
+            />
+          </div>
+          
+          {/* Right-side actions */}
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500"></span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <DropdownMenuLabel className="flex items-center justify-between">
+                  <span>Notifications</span>
+                  <Badge variant="outline" className="font-normal">5 new</Badge>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {[1, 2, 3].map((i) => (
+                  <DropdownMenuItem key={i} className="flex flex-col items-start p-4 cursor-pointer">
+                    <div className="flex items-center gap-2 mb-1 w-full">
+                      <span className="font-medium">Project Update</span>
+                      <Badge variant="outline" className="ml-auto">New</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      East Tower project timeline has been updated.
+                    </p>
+                    <span className="text-xs text-muted-foreground mt-1">10 minutes ago</span>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="p-2 cursor-pointer flex justify-center">
+                  <Button variant="ghost" size="sm" className="w-full">
+                    View All Notifications
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=256&h=256&fit=crop&crop=faces" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                  <span className="hidden md:inline-flex">Jane Doe</span>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </header>

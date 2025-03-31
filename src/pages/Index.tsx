@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, 
@@ -31,7 +30,6 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { PropertyDetails } from '@/components/dashboard/PropertyDetails';
 import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
 
-// Sample data
 const projects = [
   {
     id: '1',
@@ -155,7 +153,6 @@ const documents = [
   },
 ];
 
-// Performance data
 const performanceData = [
   { name: 'Jan', value: 40 },
   { name: 'Feb', value: 45 },
@@ -166,7 +163,6 @@ const performanceData = [
   { name: 'Jul', value: 72 },
 ];
 
-// Notifications
 const notifications = [
   { id: 1, title: 'Budget Approval', message: 'East Tower budget increase approved', time: '2 hours ago', read: false },
   { id: 2, title: 'Permit Issued', message: 'Building permit for North Bridge received', time: '5 hours ago', read: false },
@@ -174,7 +170,6 @@ const notifications = [
   { id: 4, title: 'Document Updated', message: 'Project Blueprint.pdf has been updated', time: '2 days ago', read: true },
 ];
 
-// Sample property data for owner dashboard
 const propertyData = {
   propertyName: "Downtown High-Rise",
   propertyType: "Mixed-Use",
@@ -192,31 +187,27 @@ const propertyData = {
     { role: "Permit Coordinator", name: "Robert Smith", contact: "robert.smith@example.com" }
   ],
   permits: [
-    { type: "Building Permit", status: "approved", date: "Dec 20, 2023" },
-    { type: "Electrical Permit", status: "approved", date: "Jan 15, 2024" },
-    { type: "Plumbing Permit", status: "approved", date: "Jan 22, 2024" },
-    { type: "Environmental Clearance", status: "approved", date: "Nov 30, 2023" },
-    { type: "Mechanical Permit", status: "pending", date: "Submitted Mar 5, 2024" }
+    { type: "Building Permit", status: "approved" as const, date: "2023-10-15" },
+    { type: "Electrical Permit", status: "approved" as const, date: "2023-10-20" },
+    { type: "Plumbing Permit", status: "pending" as const, date: "2023-11-05" }
   ],
   inspections: [
-    { type: "Foundation Inspection", status: "passed", date: "Jan 30, 2024", notes: "All requirements met" },
-    { type: "Structural Framing", status: "passed", date: "Mar 15, 2024", notes: "Approved with minor comments" },
-    { type: "Electrical Rough-In", status: "scheduled", date: "Apr 28, 2024" },
-    { type: "Plumbing Rough-In", status: "not-scheduled" }
+    { type: "Foundation", status: "passed" as const, date: "2023-12-10", notes: "Passed with minor recommendations" },
+    { type: "Framing", status: "scheduled" as const, date: "2024-01-15" },
+    { type: "Electrical Rough-In", status: "not-scheduled" as const }
   ]
 };
 
-// Sample financial data for owner dashboard
 const financialData = {
   projectName: "Downtown High-Rise",
   totalBudget: 42500000,
   spending: [
-    { category: "Land Acquisition", amount: 12000000, color: "#4c1d95", status: "normal" },
+    { category: "Land Acquisition", amount: 12000000, color: "#4c1d95", status: "normal" as const },
     { category: "Site Preparation", amount: 2500000, color: "#2563eb", status: "under", variance: 150000 },
-    { category: "Foundation", amount: 3800000, color: "#0891b2", status: "normal" },
+    { category: "Foundation", amount: 3800000, color: "#0891b2", status: "normal" as const },
     { category: "Structural Frame", amount: 4200000, color: "#059669", status: "over", variance: 250000 },
-    { category: "Exterior", amount: 1500000, color: "#65a30d", status: "normal" },
-    { category: "Mechanical/Electrical", amount: 800000, color: "#a5b4fc", status: "normal" }
+    { category: "Exterior", amount: 1500000, color: "#65a30d", status: "normal" as const },
+    { category: "Mechanical/Electrical", amount: 800000, color: "#a5b4fc", status: "normal" as const }
   ],
   changeOrders: [
     { id: "CO-001", description: "Foundation Redesign", amount: 120000, status: "approved", date: "Jan 18, 2024" },
@@ -226,12 +217,25 @@ const financialData = {
   ]
 };
 
-const Dashboard = () => {
+const budgetCategories = [
+  { category: "Materials", amount: 2250000, color: "#10B981", status: "normal" as const },
+  { category: "Labor", amount: 1850000, color: "#3B82F6", status: "under" as const, variance: -50000 },
+  { category: "Equipment", amount: 920000, color: "#8B5CF6", status: "over" as const, variance: 75000 },
+  { category: "Permits", amount: 320000, color: "#F97316", status: "normal" as const }
+];
+
+const recentTransactions = [
+  { id: "INV-001", description: "Steel Delivery - Downtown Project", amount: 125000, status: "approved" as const, date: "2023-12-15" },
+  { id: "INV-002", description: "Concrete Work - Phase 1", amount: 85000, status: "pending" as const, date: "2023-12-18" },
+  { id: "INV-003", description: "Electrical Contractor Payment", amount: 42500, status: "approved" as const, date: "2023-12-20" },
+  { id: "INV-004", description: "Architect Fees - Design Revisions", amount: 28500, status: "rejected" as const, date: "2023-12-22" }
+];
+
+const Index = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeChart, setActiveChart] = useState(true);
 
-  // Animation effect for the chart
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveChart(prev => !prev);
@@ -274,7 +278,6 @@ const Dashboard = () => {
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            {/* AI Assistant Section */}
             <AIAssistant />
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -290,7 +293,6 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Stats Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               <StatCard 
                 title="Active Properties" 
@@ -323,7 +325,6 @@ const Dashboard = () => {
               />
             </div>
             
-            {/* Property Details Section */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-gray-100 mb-4">Featured Property Details</h2>
               <PropertyDetails 
@@ -342,11 +343,8 @@ const Dashboard = () => {
               />
             </div>
             
-            {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              {/* Projects Column */}
               <div className="lg:col-span-2 space-y-6">
-                {/* Financial Tracking */}
                 <FinancialTracking 
                   projectName={financialData.projectName}
                   totalBudget={financialData.totalBudget}
@@ -354,7 +352,6 @@ const Dashboard = () => {
                   changeOrders={financialData.changeOrders}
                 />
                 
-                {/* Performance Chart */}
                 <Card className="bg-gray-800 border-gray-700 shadow-lg overflow-hidden">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
@@ -425,9 +422,7 @@ const Dashboard = () => {
                 />
               </div>
               
-              {/* Sidebar Column */}
               <div className="space-y-6">
-                {/* Notifications */}
                 <Card className="bg-gray-800 border-gray-700 shadow-lg">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
@@ -461,7 +456,6 @@ const Dashboard = () => {
                 <h2 className="text-xl font-semibold text-gray-100">Project Timeline</h2>
                 <TimelineCard events={timelineEvents} />
                 
-                {/* Owner Action Items */}
                 <Card className="bg-gray-800 border-gray-700 shadow-lg">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg text-white">Owner Action Items</CardTitle>
@@ -535,4 +529,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Index;

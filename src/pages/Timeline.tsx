@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -9,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { TimelineCard } from '@/components/dashboard/TimelineCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { 
   Calendar, 
   Clock, 
@@ -26,7 +28,7 @@ import {
   Share2,
   PrinterIcon,
   PlusCircle,
-  Calendar as CalendarIcon,
+  CalendarIcon,
   ArrowDownUp,
   BarChart4,
   Info
@@ -237,50 +239,108 @@ const milestoneData = [
     name: 'Project Kickoff', 
     plannedDate: 'Nov 15, 2023', 
     actualDate: 'Nov 15, 2023', 
-    status: 'completed',
+    status: 'completed' as const,
     description: 'Initial meeting with all stakeholders to define project scope' 
   },
   { 
     name: 'Permits Approved', 
     plannedDate: 'Dec 05, 2023', 
     actualDate: 'Dec 20, 2023', 
-    status: 'delayed',
+    status: 'delayed' as const,
     description: 'Building permits approved by local authorities' 
   },
   { 
     name: 'Foundation Complete', 
     plannedDate: 'Jan 30, 2024', 
     actualDate: 'Jan 25, 2024', 
-    status: 'completed',
+    status: 'completed' as const,
     description: 'Foundation work completed and inspected' 
   },
   { 
     name: 'Structural Framework', 
     plannedDate: 'Mar 15, 2024', 
     actualDate: 'Mar 10, 2024', 
-    status: 'completed',
+    status: 'completed' as const,
     description: 'Main building structure completed' 
   },
   { 
     name: 'Exterior Closure', 
     plannedDate: 'Apr 30, 2024', 
     actualDate: 'In Progress', 
-    status: 'in-progress',
+    status: 'in-progress' as const,
     description: 'Building envelope and exterior walls completed' 
   },
   { 
     name: 'Roofing Complete', 
     plannedDate: 'May 30, 2024', 
     actualDate: 'Not Started', 
-    status: 'upcoming',
+    status: 'upcoming' as const,
     description: 'Roof installation and weatherproofing' 
   },
   { 
     name: 'Interior Rough-In', 
     plannedDate: 'Jul 15, 2024', 
     actualDate: 'Not Started', 
-    status: 'upcoming',
+    status: 'upcoming' as const,
     description: 'Electrical, plumbing, and HVAC rough-in work' 
+  }
+];
+
+// Gantt chart data for Downtown High-Rise project
+const ganttData = [
+  { name: 'Site Preparation', actualStart: 0, actualEnd: 4, plannedStart: 0, plannedEnd: 5, completion: 100 },
+  { name: 'Foundation', actualStart: 4, actualEnd: 8, plannedStart: 5, plannedEnd: 10, completion: 100 },
+  { name: 'Structural Framework', actualStart: 8, actualEnd: 15, plannedStart: 10, plannedEnd: 18, completion: 100 },
+  { name: 'Exterior Walls', actualStart: 15, actualEnd: 18, plannedStart: 18, plannedEnd: 22, completion: 60 },
+  { name: 'Roofing', actualStart: 18, actualEnd: null, plannedStart: 22, plannedEnd: 26, completion: 20 },
+  { name: 'Interior Rough-In', actualStart: null, actualEnd: null, plannedStart: 26, plannedEnd: 32, completion: 0 },
+  { name: 'Drywall', actualStart: null, actualEnd: null, plannedStart: 32, plannedEnd: 36, completion: 0 },
+  { name: 'Interior Finishes', actualStart: null, actualEnd: null, plannedStart: 36, plannedEnd: 42, completion: 0 },
+  { name: 'Flooring', actualStart: null, actualEnd: null, plannedStart: 42, plannedEnd: 46, completion: 0 },
+  { name: 'Painting', actualStart: null, actualEnd: null, plannedStart: 46, plannedEnd: 50, completion: 0 },
+  { name: 'Fixtures & Equipment', actualStart: null, actualEnd: null, plannedStart: 50, plannedEnd: 54, completion: 0 },
+  { name: 'Final Inspection', actualStart: null, actualEnd: null, plannedStart: 54, plannedEnd: 55, completion: 0 },
+  { name: 'Handover', actualStart: null, actualEnd: null, plannedStart: 55, plannedEnd: 56, completion: 0 }
+];
+
+// Delay metrics data
+const delayMetricsData = [
+  { name: 'Site Preparation', planned: 5, actual: 4, variance: -1 },
+  { name: 'Foundation', planned: 5, actual: 4, variance: -1 },
+  { name: 'Structural Framework', planned: 8, actual: 7, variance: -1 },
+  { name: 'Exterior Walls', planned: 4, actual: 3, variance: -1 },
+  { name: 'Roofing', planned: 4, actual: 5, variance: 1 },
+  { name: 'Interior Rough-In', planned: 6, actual: null, variance: null },
+  { name: 'Drywall', planned: 4, actual: null, variance: null },
+  { name: 'Interior Finishes', planned: 6, actual: null, variance: null },
+  { name: 'Flooring', planned: 4, actual: null, variance: null },
+  { name: 'Painting', planned: 4, actual: null, variance: null },
+  { name: 'Fixtures & Equipment', planned: 4, actual: null, variance: null },
+  { name: 'Final Inspection', planned: 1, actual: null, variance: null },
+  { name: 'Handover', planned: 1, actual: null, variance: null }
+];
+
+// Utility function to get color based on variance
+const getVarianceColor = (data: any) => {
+  if (data.variance === null) return '#9CA3AF';
+  return data.variance < 0 ? 'rgba(16, 185, 129, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+};
+
+const timelineInsights = [
+  {
+    title: 'Critical Path Impact',
+    content: 'Roofing delay of 1 week may impact Interior Rough-In schedule. Consider resource reallocation.',
+    type: 'warning' as const
+  },
+  {
+    title: 'Completion Forecast',
+    content: 'Project is currently tracking to complete 2 weeks early. Potential for early occupancy.',
+    type: 'success' as const
+  },
+  {
+    title: 'Investment Impact',
+    content: 'Early completion could provide additional rental income of $125,000 in Q3 2024.',
+    type: 'info' as const
   }
 ];
 
@@ -343,37 +403,37 @@ const Timeline = () => {
               <h2 className="text-xl font-semibold">Downtown High-Rise Timeline</h2>
               <div className="flex items-center gap-2">
                 <Button 
-                  variant={timelineView === "gantt" ? "default" : "outline"} 
                   size="sm" 
                   className="gap-1" 
-                  onClick={() => setTimelineView("gantt")}
+                  onClick={() => setTimelineView("gantt")} 
+                  variant={timelineView === "gantt" ? "default" : "outline"}
                 >
                   <BarChart4 className="h-4 w-4" />
                   <span>Gantt</span>
                 </Button>
                 <Button 
-                  variant={timelineView === "delays" ? "default" : "outline"} 
                   size="sm" 
                   className="gap-1" 
-                  onClick={() => setTimelineView("delays")}
+                  onClick={() => setTimelineView("delays")} 
+                  variant={timelineView === "delays" ? "default" : "outline"}
                 >
                   <ArrowDownUp className="h-4 w-4" />
                   <span>Delays</span>
                 </Button>
                 <Button 
-                  variant={timelineView === "milestone" ? "default" : "outline"} 
                   size="sm" 
                   className="gap-1" 
-                  onClick={() => setTimelineView("milestone")}
+                  onClick={() => setTimelineView("milestone")} 
+                  variant={timelineView === "milestone" ? "default" : "outline"}
                 >
                   <CheckCircle className="h-4 w-4" />
                   <span>Milestones</span>
                 </Button>
                 <Button 
-                  variant={timelineView === "activities" ? "default" : "outline"} 
                   size="sm" 
                   className="gap-1" 
-                  onClick={() => setTimelineView("activities")}
+                  onClick={() => setTimelineView("activities")} 
+                  variant={timelineView === "activities" ? "default" : "outline"}
                 >
                   <Calendar className="h-4 w-4" />
                   <span>Activities</span>
@@ -439,43 +499,25 @@ const Timeline = () => {
                             
                             {/* Planned schedule bars */}
                             <Bar 
-                              dataKey={(data) => data.plannedEnd - data.plannedStart} 
+                              dataKey={item => item.plannedEnd - item.plannedStart} 
                               stackId="a" 
-                              fill="rgba(59, 130, 246, 0.5)" 
                               name="Planned"
                               barSize={20}
+                              fill="rgba(59, 130, 246, 0.5)"
                               radius={[0, 4, 4, 0]}
-                              background={{ fill: "rgba(0, 0, 0, 0.05)" }}
-                            >
-                              {ganttData.map((entry, index) => (
-                                <defs key={`plannedGradient-${index}`}>
-                                  <linearGradient id={`plannedGradient-${index}`} x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="rgba(59, 130, 246, 0.2)" />
-                                    <stop offset="100%" stopColor="rgba(59, 130, 246, 0.8)" />
-                                  </linearGradient>
-                                </defs>
-                              ))}
-                            </Bar>
+                              offset={item => item.plannedStart}
+                            />
                             
-                            {/* Actual schedule bars */}
+                            {/* Actual progress bars */}
                             <Bar 
-                              dataKey={(data) => data.actualEnd !== null && data.actualStart !== null ? data.actualEnd - data.actualStart : 0} 
+                              dataKey={item => item.actualEnd !== null ? item.actualEnd - item.actualStart : (item.actualStart !== null ? 1 : 0)} 
                               stackId="b" 
-                              fill="rgba(16, 185, 129, 0.8)" 
-                              name="Actual"
+                              name="Actual" 
                               barSize={20}
-                              radius={[0, 4, 4, 0]} 
-                              background={{ fill: "transparent" }}
-                            >
-                              {ganttData.map((entry, index) => (
-                                <defs key={`actualGradient-${index}`}>
-                                  <linearGradient id={`actualGradient-${index}`} x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="rgba(16, 185, 129, 0.2)" />
-                                    <stop offset="100%" stopColor="rgba(16, 185, 129, 0.8)" />
-                                  </linearGradient>
-                                </defs>
-                              ))}
-                            </Bar>
+                              fill="rgba(16, 185, 129, 0.8)"
+                              radius={[0, 4, 4, 0]}
+                              offset={item => item.actualStart}
+                            />
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -499,32 +541,27 @@ const Timeline = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="h-[500px]">
+                      <div className="h-[600px]">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart
-                            layout="vertical"
                             data={delayMetricsData}
-                            margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+                            margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
                           >
-                            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                            <XAxis type="number" domain={[-5, 5]} tickCount={11} />
-                            <YAxis dataKey="name" type="category" width={100} />
-                            <Tooltip
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                            <XAxis dataKey="name" />
+                            <YAxis label={{ value: 'Weeks', angle: -90, position: 'insideLeft', offset: 10 }} />
+                            <Tooltip 
                               content={({ active, payload, label }) => {
                                 if (active && payload && payload.length) {
                                   const data = payload[0].payload;
                                   return (
                                     <div className="bg-background border p-2 rounded-md shadow-md">
                                       <p className="font-bold">{data.name}</p>
-                                      <p>Planned Duration: {data.planned} weeks</p>
-                                      {data.actual !== null ? (
-                                        <p>Actual Duration: {data.actual} weeks</p>
-                                      ) : (
-                                        <p>Not started</p>
-                                      )}
+                                      <p>Planned: {data.planned} weeks</p>
+                                      <p>Actual: {data.actual !== null ? `${data.actual} weeks` : 'In progress'}</p>
                                       {data.variance !== null && (
-                                        <p className={data.variance < 0 ? "text-green-500" : "text-red-500"}>
-                                          {data.variance < 0 ? `${Math.abs(data.variance)} weeks ahead` : `${data.variance} weeks behind`}
+                                        <p className={data.variance < 0 ? 'text-green-500' : 'text-red-500'}>
+                                          Variance: {data.variance < 0 ? `${Math.abs(data.variance)} weeks ahead` : `${data.variance} weeks behind`}
                                         </p>
                                       )}
                                     </div>
@@ -534,12 +571,11 @@ const Timeline = () => {
                               }}
                             />
                             <Legend />
-                            <ReferenceLine x={0} stroke="#666" />
-                            
+                            <ReferenceLine y={0} stroke="#000" />
                             <Bar 
-                              dataKey="variance" 
-                              fill={(data) => data.variance < 0 ? "rgba(16, 185, 129, 0.8)" : "rgba(239, 68, 68, 0.8)"}
-                              radius={4}
+                              dataKey="variance"
+                              name="Schedule Variance" 
+                              fill={(data) => getVarianceColor(data)}
                             />
                           </BarChart>
                         </ResponsiveContainer>
@@ -553,62 +589,66 @@ const Timeline = () => {
                     <CardHeader>
                       <CardTitle>Project Milestones</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <div className="space-y-6">
-                        {milestoneData.map((milestone, index) => (
-                          <div key={index} className="flex items-start">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0 ${
-                              milestone.status === 'completed' ? 'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400' :
-                              milestone.status === 'delayed' ? 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400' :
-                              milestone.status === 'in-progress' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' :
-                              'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-                            }`}>
-                              {milestone.status === 'completed' ? (
-                                <CheckCircle className="h-5 w-5" />
-                              ) : milestone.status === 'delayed' ? (
-                                <AlertTriangle className="h-5 w-5" />
-                              ) : milestone.status === 'in-progress' ? (
-                                <Clock className="h-5 w-5" />
-                              ) : (
-                                <Calendar className="h-5 w-5" />
-                              )}
-                            </div>
-                            
-                            <div className="flex-1">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h3 className="font-medium">{milestone.name}</h3>
-                                  <p className="text-sm text-muted-foreground">{milestone.description}</p>
+                    <CardContent className="p-0">
+                      <div className="p-6">
+                        <div className="relative">
+                          <div className="absolute left-4 top-0 h-full w-px bg-border"></div>
+                          <div className="space-y-8">
+                            {milestoneData.map((milestone, index) => (
+                              <div key={index} className="relative ml-8">
+                                <div className={`absolute -left-10 top-1 flex h-6 w-6 items-center justify-center rounded-full border ${
+                                  milestone.status === 'completed' ? 'bg-green-500 border-green-500' :
+                                  milestone.status === 'in-progress' ? 'bg-blue-500 border-blue-500' :
+                                  milestone.status === 'delayed' ? 'bg-red-500 border-red-500' :
+                                  'bg-gray-200 border-gray-400 dark:bg-gray-700 dark:border-gray-600'
+                                }`}></div>
+                                <div className="flex flex-col sm:flex-row">
+                                  <div className="mb-2 sm:mb-0 sm:w-36 font-medium">
+                                    {milestone.actualDate !== 'Not Started' ? milestone.actualDate : milestone.plannedDate}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h4 className={`font-semibold ${
+                                      milestone.status === 'delayed' ? 'text-red-500' :
+                                      milestone.status === 'completed' ? 'text-green-500' :
+                                      milestone.status === 'in-progress' ? 'text-blue-500' : ''
+                                    }`}>
+                                      {milestone.name}
+                                      
+                                      <Badge className={`ml-2 ${
+                                        milestone.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
+                                        milestone.status === 'in-progress' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
+                                        milestone.status === 'delayed' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
+                                        'bg-gray-100 text-gray-800 dark:bg-gray-700/20 dark:text-gray-300'
+                                      }`}>
+                                        {milestone.status === 'completed' ? 'Completed' :
+                                         milestone.status === 'in-progress' ? 'In Progress' :
+                                         milestone.status === 'delayed' ? 'Delayed' : 'Upcoming'}
+                                      </Badge>
+                                    </h4>
+                                    <p className="mt-1 text-muted-foreground text-sm">{milestone.description}</p>
+                                    
+                                    {milestone.actualDate !== milestone.plannedDate && milestone.status !== 'upcoming' && (
+                                      <div className="mt-2 text-xs">
+                                        <span className="font-medium">Planned: </span>
+                                        <span>{milestone.plannedDate}</span>
+                                        {milestone.status === 'delayed' && (
+                                          <span className="ml-2 text-red-500">
+                                            (Delayed)
+                                          </span>
+                                        )}
+                                        {milestone.status === 'completed' && milestone.actualDate !== milestone.plannedDate && (
+                                          <span className="ml-2 text-green-500">
+                                            (Early completion)
+                                          </span>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
-                                <Badge className={`${
-                                  milestone.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' :
-                                  milestone.status === 'delayed' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
-                                  milestone.status === 'in-progress' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
-                                  'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
-                                }`}>
-                                  {milestone.status === 'completed' ? 'Completed' :
-                                   milestone.status === 'delayed' ? 'Delayed' :
-                                   milestone.status === 'in-progress' ? 'In Progress' : 'Upcoming'}
-                                </Badge>
                               </div>
-                              
-                              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
-                                <div>
-                                  <span className="text-muted-foreground">Planned Date:</span>{' '}
-                                  <span>{milestone.plannedDate}</span>
-                                </div>
-                                <div>
-                                  <span className="text-muted-foreground">Actual Date:</span>{' '}
-                                  <span>{milestone.actualDate}</span>
-                                </div>
-                              </div>
-                              
-                              {index < milestoneData.length - 1 && (
-                                <Separator className="my-4" />
-                              )}
-                            </div>
+                            ))}
                           </div>
-                        ))}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -617,72 +657,12 @@ const Timeline = () => {
                 {timelineView === "activities" && (
                   <Card>
                     <CardHeader>
-                      <CardTitle>Recent Activities</CardTitle>
+                      <CardTitle>Recent & Upcoming Activities</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-6">
-                        {timelineData.slice(0, 5).flatMap(day => 
-                          day.events.map(event => (
-                            <div key={event.id} className="flex items-start">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 flex-shrink-0 ${getEventBadgeClass(event.type)}`}>
-                                {getEventIcon(event.type)}
-                              </div>
-                              
-                              <div className="flex-1">
-                                <div className="flex justify-between items-start">
-                                  <div>
-                                    <h3 className="font-medium">{event.title}</h3>
-                                    {event.description && (
-                                      <p className="text-sm text-muted-foreground">{event.description}</p>
-                                    )}
-                                  </div>
-                                  <div className="flex items-center">
-                                    <span className="text-sm text-muted-foreground mr-2">{day.formattedDate}</span>
-                                    <Badge variant="outline">{event.time}</Badge>
-                                  </div>
-                                </div>
-                                
-                                <div className="mt-2 flex items-center justify-between">
-                                  <div className="flex items-center gap-1">
-                                    <span className="text-sm font-medium">{event.project}</span>
-                                  </div>
-                                  
-                                  <div className="flex items-center">
-                                    {event.users ? (
-                                      <div className="flex -space-x-2">
-                                        {event.users.slice(0, 3).map((user, i) => (
-                                          <Avatar key={i} className="h-6 w-6 border-2 border-background">
-                                            <AvatarImage src={user.avatar} alt={user.name} />
-                                            <AvatarFallback className="text-xs">
-                                              {user.name.split(' ').map(n => n[0]).join('')}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        ))}
-                                        {event.users.length > 3 && (
-                                          <Avatar className="h-6 w-6 border-2 border-background">
-                                            <AvatarFallback className="text-xs bg-muted">
-                                              +{event.users.length - 3}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        )}
-                                      </div>
-                                    ) : event.user ? (
-                                      <Avatar className="h-6 w-6">
-                                        <AvatarImage src={event.user.avatar} alt={event.user.name} />
-                                        <AvatarFallback className="text-xs">
-                                          {event.user.name.split(' ').map(n => n[0]).join('')}
-                                        </AvatarFallback>
-                                      </Avatar>
-                                    ) : null}
-                                  </div>
-                                </div>
-                                
-                                <Separator className="my-4" />
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
+                      <p className="text-center text-muted-foreground py-12">
+                        Detailed activity timeline will be displayed here.
+                      </p>
                     </CardContent>
                   </Card>
                 )}
@@ -690,78 +670,113 @@ const Timeline = () => {
               
               <div>
                 <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Timeline Statistics</CardTitle>
+                  <CardHeader className="pb-2">
+                    <CardTitle>Project Summary</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>Overall Progress</span>
-                        <span className="font-medium">35%</span>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="text-sm font-medium mb-1">Status</h4>
+                        <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                          On Track with Minor Delays
+                        </Badge>
                       </div>
-                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full" style={{ width: '35%' }}></div>
-                      </div>
-                    </div>
-                    
-                    <Separator />
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Start Date</span>
-                        <span className="text-sm">Nov 15, 2023</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Estimated Completion</span>
-                        <span className="text-sm">Jun 30, 2025</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Duration</span>
-                        <span className="text-sm">19 months</span>
-                      </div>
-                    </div>
-                    
-                    <Separator />
-                    
-                    <div className="space-y-2">
-                      <h3 className="font-medium">Schedule Performance</h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="bg-muted rounded-lg p-3">
-                          <div className="text-2xl font-bold text-green-500">-2</div>
-                          <div className="text-xs text-muted-foreground mt-1">Weeks Ahead</div>
-                        </div>
-                        <div className="bg-muted rounded-lg p-3">
-                          <div className="text-2xl font-bold">89%</div>
-                          <div className="text-xs text-muted-foreground mt-1">On-Time Tasks</div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <Separator />
-                    
-                    <div>
-                      <h3 className="font-medium mb-2">Critical Milestones</h3>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 rounded-full bg-red-500 mr-2"></div>
-                            <span className="text-sm">Exterior Closure</span>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <h4 className="text-sm font-medium mb-1">Project Timeline</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-1">Start Date</p>
+                            <p className="font-medium">Nov 15, 2023</p>
                           </div>
-                          <span className="text-xs">Apr 30, 2024</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></div>
-                            <span className="text-sm">Roofing Complete</span>
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-1">End Date</p>
+                            <p className="font-medium">Jun 30, 2025</p>
                           </div>
-                          <span className="text-xs">May 30, 2024</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 rounded-full bg-gray-500 mr-2"></div>
-                            <span className="text-sm">Interior Rough-In</span>
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-1">Duration</p>
+                            <p className="font-medium">19.5 Months</p>
                           </div>
-                          <span className="text-xs">Jul 15, 2024</span>
+                          <div>
+                            <p className="text-xs text-muted-foreground mb-1">Current Phase</p>
+                            <p className="font-medium">Exterior Walls</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <h4 className="text-sm font-medium mb-2">Completion Status</h4>
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-xs">
+                            <span>Overall Progress</span>
+                            <span>35%</span>
+                          </div>
+                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
+                            <div className="bg-construction-500 h-full rounded-full" style={{ width: '35%' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <h4 className="text-sm font-medium mb-2">Financial Impact</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Budget</span>
+                            <span className="font-medium">$42,500,000</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Spent to Date</span>
+                            <span className="font-medium">$14,875,000</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Variance</span>
+                            <span className="font-medium text-green-500">-$325,000</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Projected ROI</span>
+                            <span className="font-medium">7.2%</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <h4 className="text-sm font-medium mb-2">Key Dates</h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between items-start">
+                            <div className="flex gap-2">
+                              <span className="h-5 w-5 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <Calendar className="h-3 w-3 text-yellow-800" />
+                              </span>
+                              <span className="text-muted-foreground">Next Inspection</span>
+                            </div>
+                            <span>Apr 28, 2024</span>
+                          </div>
+                          <div className="flex justify-between items-start">
+                            <div className="flex gap-2">
+                              <span className="h-5 w-5 rounded-full bg-green-100 flex items-center justify-center">
+                                <Calendar className="h-3 w-3 text-green-800" />
+                              </span>
+                              <span className="text-muted-foreground">Payment Milestone</span>
+                            </div>
+                            <span>May 15, 2024</span>
+                          </div>
+                          <div className="flex justify-between items-start">
+                            <div className="flex gap-2">
+                              <span className="h-5 w-5 rounded-full bg-blue-100 flex items-center justify-center">
+                                <Calendar className="h-3 w-3 text-blue-800" />
+                              </span>
+                              <span className="text-muted-foreground">Phase Completion</span>
+                            </div>
+                            <span>Jun 12, 2024</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -769,50 +784,49 @@ const Timeline = () => {
                 </Card>
                 
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Financial Impact</CardTitle>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base">Schedule Risk Analysis</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="bg-muted rounded-lg p-3">
-                          <div className="text-2xl font-bold text-green-500">$280K</div>
-                          <div className="text-xs text-muted-foreground mt-1">Under Budget</div>
-                        </div>
-                        <div className="bg-muted rounded-lg p-3">
-                          <div className="text-2xl font-bold">4.2%</div>
-                          <div className="text-xs text-muted-foreground mt-1">Cost Variance</div>
-                        </div>
+                      <div>
+                        <h4 className="text-sm font-medium mb-1">Current Risks</h4>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-start">
+                            <AlertTriangle className="h-4 w-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span>Roofing material delivery delay (1 week impact)</span>
+                          </li>
+                          <li className="flex items-start">
+                            <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span>Weather forecast may impact exterior work in May</span>
+                          </li>
+                        </ul>
                       </div>
                       
                       <Separator />
                       
                       <div>
-                        <h3 className="font-medium mb-2">Delay Cost Impact</h3>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm">Permit Delays</span>
-                            <span className="text-sm text-red-500">+$45,000</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm">Accelerated Structural</span>
-                            <span className="text-sm text-green-500">-$85,000</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm">Material Cost Savings</span>
-                            <span className="text-sm text-green-500">-$120,000</span>
-                          </div>
+                        <h4 className="text-sm font-medium mb-1">Investment Impact</h4>
+                        <div className="p-3 bg-muted/50 rounded-md">
+                          <p className="text-sm">Current schedule tracking projects completion 2 weeks early. This could result in:</p>
+                          <ul className="mt-2 space-y-1 text-sm">
+                            <li className="flex items-center">
+                              <ArrowRight className="h-3 w-3 text-green-500 mr-1.5" />
+                              <span>$125,000 additional rental income in Q3 2024</span>
+                            </li>
+                            <li className="flex items-center">
+                              <ArrowRight className="h-3 w-3 text-green-500 mr-1.5" />
+                              <span>0.3% increase in projected ROI to 7.5%</span>
+                            </li>
+                            <li className="flex items-center">
+                              <ArrowRight className="h-3 w-3 text-green-500 mr-1.5" />
+                              <span>Earlier tenant occupancy by July 2025</span>
+                            </li>
+                          </ul>
                         </div>
                       </div>
                       
-                      <Separator />
-                      
-                      <div>
-                        <Button variant="outline" className="w-full">
-                          <Info className="h-4 w-4 mr-2" />
-                          <span>Detailed Financial Report</span>
-                        </Button>
-                      </div>
+                      <Button variant="outline" size="sm" className="w-full">View Full Schedule Analysis</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -820,6 +834,13 @@ const Timeline = () => {
             </div>
           </Tabs>
         </main>
+        
+        {/* Add the AI Assistant component */}
+        <CollapsibleAIAssistant 
+          projectContext="Downtown High-Rise"
+          initialInsights={timelineInsights}
+          mode="construction"
+        />
       </div>
     </div>
   );
