@@ -1,5 +1,5 @@
 
-import { ToastProvider, useToast } from "@/hooks/use-toast";
+import { ToastProvider } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +14,7 @@ import Settings from "./pages/Settings";
 import Messages from "./pages/Messages";
 import Timeline from "./pages/Timeline";
 import Projects from "./pages/Projects";
+import InvestmentImpact from "./pages/InvestmentImpact";
 import NotFound from "./pages/NotFound";
 
 // Enable dark mode by default
@@ -43,6 +44,7 @@ const App = () => {
               <Route path="/messages" element={<Messages />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/projects" element={<Projects />} />
+              <Route path="/investment-impact" element={<InvestmentImpact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

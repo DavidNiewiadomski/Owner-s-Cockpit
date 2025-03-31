@@ -1,7 +1,5 @@
 
-import React from 'react'; // Added import for React
-import { useState, useEffect, useRef } from 'react';
-import { createContext, useCallback, useContext } from 'react';
+import React, { useState, createContext, useContext, useCallback } from 'react';
 
 const TOAST_LIMIT = 3;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -88,25 +86,26 @@ export function ToastProvider({ children }: ToastProviderProps) {
   );
 }
 
+// Helper toast functions
 export const toast = {
   success(props: Omit<ToasterToast, "variant">) {
-    const { addToast } = useContext(ToastContext) || {};
-    if (addToast) {
-      addToast({ ...props, variant: "success" });
+    const context = useContext(ToastContext);
+    if (context) {
+      context.addToast({ ...props, variant: "success" });
     }
   },
   
   error(props: Omit<ToasterToast, "variant">) {
-    const { addToast } = useContext(ToastContext) || {};
-    if (addToast) {
-      addToast({ ...props, variant: "destructive" });
+    const context = useContext(ToastContext);
+    if (context) {
+      context.addToast({ ...props, variant: "destructive" });
     }
   },
   
   default(props: ToasterToast) {
-    const { addToast } = useContext(ToastContext) || {};
-    if (addToast) {
-      addToast(props);
+    const context = useContext(ToastContext);
+    if (context) {
+      context.addToast(props);
     }
   },
 };
