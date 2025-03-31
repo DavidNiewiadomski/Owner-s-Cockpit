@@ -6,7 +6,7 @@ import { AIAssistant } from '@/components/ai/AIAssistant';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
-import { CirclePlus, Database, Link2, Cube, Cloud, Zap, Workflow, Code2, Shield } from 'lucide-react';
+import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 // Sample integrations data with expanded categories
@@ -88,7 +88,7 @@ const integrations = [
 // Integration categories to organize the view
 const categories = [
   { id: 'project-management', name: 'Project Management', icon: Workflow },
-  { id: 'design-modeling', name: 'Design & Modeling', icon: Cube },
+  { id: 'design-modeling', name: 'Design & Modeling', icon: Box },
   { id: 'field-management', name: 'Field Management', icon: Cloud },
   { id: 'document-management', name: 'Document Management', icon: Database },
   { id: 'analytics', name: 'Analytics', icon: Zap },
