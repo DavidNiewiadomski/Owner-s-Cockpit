@@ -1,4 +1,4 @@
 
-import { ToastProvider, useToast, toast } from "./toast";
+import { useToast, toast, ToastProvider } from "./toast/index";
 
-export { ToastProvider, useToast, toast };
+export { useToast, toast, ToastProvider };

@@ -1,5 +1,6 @@
 
-import { Action, actionTypes, State, initialState, ToasterToast } from "./toast-types";
+import { Action, actionTypes, State, ToasterToast } from "./toast-types";
+import * as React from "react";
 
 // ID Generation
 let count = 0;
@@ -86,7 +87,8 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-// Global dispatch variable (not import)
+// Create a mutable dispatch variable
+// This needs to be mutable and will be set by the context
 export let dispatchToast: React.Dispatch<Action>;
 
 // Standalone toast function

@@ -48,7 +48,7 @@ export interface State {
   toasts: ToasterToastWithId[];
 }
 
-// Export initialState which was missing
+// Export initialState
 export const initialState: State = {
   toasts: [],
 };
