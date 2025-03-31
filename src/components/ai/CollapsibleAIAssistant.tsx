@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AIAssistant } from "@/components/ai/AIAssistant";
-import { BrainCircuit, ChevronDown, ChevronUp, LightbulbIcon } from 'lucide-react';
+import { BrainCircuit, ChevronDown, ChevronUp, LightbulbIcon, MessageSquare } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type InsightType = "warning" | "success" | "info";
 
@@ -48,11 +49,11 @@ export function CollapsibleAIAssistant({
   const displayProjectName = projectContext || projectName;
   
   return (
-    <Card className={`border-construction-600/30 bg-gray-800/50 backdrop-blur-sm shadow-lg mb-6 ${className || ''}`}>
+    <Card className={`border-construction-600/30 bg-gray-800/50 backdrop-blur-sm shadow-lg mb-6 transition-all duration-300 ${className || ''}`}>
       <CardContent className="p-0">
         {/* Collapsed view - showing insights summary */}
         {!expanded && (
-          <div className="p-4">
+          <div className="p-4 animate-fade-in">
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-2">
                 <BrainCircuit className="h-5 w-5 text-construction-400" />
@@ -62,10 +63,10 @@ export function CollapsibleAIAssistant({
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setExpanded(true)}
-                className="h-8 text-construction-400 hover:text-construction-300"
+                className="h-8 text-construction-400 hover:text-construction-300 hover:bg-gray-700/50 transition-colors"
               >
-                <span className="mr-1">Expand</span>
-                <ChevronDown className="h-4 w-4" />
+                <span className="mr-1">Chat</span>
+                <MessageSquare className="h-4 w-4" />
               </Button>
             </div>
             
@@ -73,7 +74,7 @@ export function CollapsibleAIAssistant({
               {displayInsights.map((insight, index) => (
                 <div 
                   key={index} 
-                  className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border ${
+                  className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 ${
                     insight.type === "warning" ? "border-amber-700/50" : 
                     insight.type === "success" ? "border-green-700/50" : 
                     "border-blue-700/50"
@@ -96,7 +97,7 @@ export function CollapsibleAIAssistant({
         
         {/* Expanded view - showing full AI assistant */}
         {expanded && (
-          <div>
+          <div className="animate-fade-in">
             <div className="border-b border-gray-700 p-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -107,7 +108,7 @@ export function CollapsibleAIAssistant({
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setExpanded(false)}
-                  className="h-8 text-construction-400 hover:text-construction-300"
+                  className="h-8 text-construction-400 hover:text-construction-300 hover:bg-gray-700/50 transition-colors"
                 >
                   <span className="mr-1">Collapse</span>
                   <ChevronUp className="h-4 w-4" />
