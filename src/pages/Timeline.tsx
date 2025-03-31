@@ -38,6 +38,8 @@ import {
   Scan
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine, CartesianGrid } from 'recharts';
+import { ChartContainer, ChartTooltipContent, ChartTooltip } from '@/components/ui/chart';
+import { ProgressChart } from '@/components/dashboard/ProgressChart';
 
 interface RealityCaptureEvent {
   name: string;
@@ -523,20 +525,20 @@ const Timeline = () => {
                             data={ganttData}
                             margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
                           >
-                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.15)" />
+                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.2)" />
                             <XAxis 
                               type="number" 
                               domain={[0, 56]} 
                               tickCount={15} 
-                              tick={{ fill: '#e2e8f0' }}
-                              axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                              tick={{ fill: '#ffffff' }}
+                              axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
                             />
                             <YAxis 
                               dataKey="name" 
                               type="category" 
                               width={100} 
-                              tick={{ fill: '#e2e8f0' }}
-                              axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                              tick={{ fill: '#ffffff' }}
+                              axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
                             />
                             <Tooltip 
                               formatter={(value: any, name: string) => {
@@ -565,7 +567,7 @@ const Timeline = () => {
                             />
                             <Legend 
                               formatter={(value, entry) => (
-                                <span style={{ color: '#e2e8f0' }}>{value}</span>
+                                <span style={{ color: '#ffffff' }}>{value}</span>
                               )}
                             />
                             <ReferenceLine 
@@ -585,8 +587,8 @@ const Timeline = () => {
                               dataKey="plannedDuration"
                               name="Planned"
                               barSize={20}
-                              fill="#1A56DB"
-                              fillOpacity={0.85}
+                              fill="#1EAEDB"
+                              fillOpacity={1}
                               stroke="#60A5FA"
                               strokeWidth={1}
                               radius={[0, 4, 4, 0]}
@@ -602,8 +604,8 @@ const Timeline = () => {
                               dataKey="actualDuration" 
                               name="Actual" 
                               barSize={20}
-                              fill="#047857"
-                              fillOpacity={0.85}
+                              fill="#10B981"
+                              fillOpacity={1}
                               stroke="#34D399"
                               strokeWidth={1}
                               radius={[0, 4, 4, 0]}
@@ -621,7 +623,7 @@ const Timeline = () => {
                               dataKey="progressBar"
                               name="Progress"
                               barSize={6}
-                              fill="#8B5CF6"
+                              fill="#D946EF"
                               stroke="#C4B5FD"
                               strokeWidth={1}
                               radius={4}

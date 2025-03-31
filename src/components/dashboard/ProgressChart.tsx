@@ -50,22 +50,22 @@ export function ProgressChart({ data }: ProgressChartProps) {
               data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.15)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.2)" />
               <XAxis 
                 dataKey="name" 
-                tick={{ fill: '#e2e8f0', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                tick={{ fill: '#ffffff', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
               />
               <YAxis 
-                tick={{ fill: '#e2e8f0', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                tick={{ fill: '#ffffff', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.5)' }}
               />
               <Tooltip 
                 contentStyle={{ 
                   backgroundColor: '#1f2937', 
-                  border: '1px solid rgba(255,255,255,0.2)', 
+                  border: '1px solid rgba(255,255,255,0.3)', 
                   borderRadius: '8px',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.7)'
                 }}
                 labelStyle={{ color: '#fff', fontWeight: 'bold' }}
                 itemStyle={{ color: '#e2e8f0' }}
@@ -73,7 +73,7 @@ export function ProgressChart({ data }: ProgressChartProps) {
               <defs>
                 <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.9}/>
-                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.4}/>
+                  <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.6}/>
                 </linearGradient>
               </defs>
               <Area 
