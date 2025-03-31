@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -71,7 +70,7 @@ const integrations = [
     name: 'Jet.Build',
     logo: 'https://via.placeholder.com/40?text=JB',
     description: 'Construction project management software for builders with AI-powered scheduling and resource allocation.',
-    connected: false,
+    connected: true,
     category: 'Project Management',
     features: ['AI Scheduling', 'Resource Management', 'Financial Tracking']
   },
@@ -80,7 +79,7 @@ const integrations = [
     name: 'Track3D',
     logo: 'https://via.placeholder.com/40?text=T3D',
     description: 'AI-powered 3D tracking for construction progress monitoring with reality capture integration.',
-    connected: false,
+    connected: true,
     category: 'Reality Capture',
     features: ['360° Capture', 'Progress Tracking', 'As-Built Documentation']
   },
