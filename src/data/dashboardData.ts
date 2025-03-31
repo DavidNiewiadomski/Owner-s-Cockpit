@@ -1,0 +1,201 @@
+
+export const projects = [
+  {
+    id: '1',
+    title: 'East Tower Construction',
+    description: 'Multi-story residential building with 200 units in downtown area.',
+    progress: 75,
+    status: 'on-track' as const,
+    dueDate: 'Sep 30, 2024',
+    teamMembers: [
+      { name: 'Alice Smith' },
+      { name: 'Bob Johnson' },
+      { name: 'Carol Williams' },
+      { name: 'David Brown' },
+    ]
+  },
+  {
+    id: '2',
+    title: 'Westside Park Development',
+    description: 'Public park with recreational facilities and gardens.',
+    progress: 45,
+    status: 'at-risk' as const,
+    dueDate: 'Nov 15, 2024',
+    teamMembers: [
+      { name: 'Eve Taylor' },
+      { name: 'Frank Miller' },
+      { name: 'Grace Davis' },
+    ]
+  },
+  {
+    id: '3',
+    title: 'North Bridge Repair',
+    description: 'Structural repairs and renovation of existing bridge.',
+    progress: 30,
+    status: 'delayed' as const,
+    dueDate: 'Dec 10, 2024',
+    teamMembers: [
+      { name: 'Henry Wilson' },
+      { name: 'Irene Martin' },
+    ]
+  },
+];
+
+export const timelineEvents = [
+  {
+    id: '1',
+    title: 'Project Kickoff',
+    date: 'March 15, 2024',
+    description: 'Initial project meeting and scope definition',
+    status: 'completed' as const,
+    financial: {
+      amount: 0,
+      type: 'neutral' as const,
+    }
+  },
+  {
+    id: '2',
+    title: 'Design Approval',
+    date: 'April 10, 2024',
+    description: 'Final design approval by stakeholders',
+    status: 'completed' as const,
+    financial: {
+      amount: 25000,
+      type: 'under' as const,
+    }
+  },
+  {
+    id: '3',
+    title: 'Foundation Work',
+    date: 'Today',
+    description: 'Laying building foundation',
+    status: 'in-progress' as const,
+    impact: 'high' as const
+  },
+  {
+    id: '4',
+    title: 'Structural Framework',
+    date: 'August 20, 2024',
+    description: 'Building primary structural components',
+    status: 'upcoming' as const
+  },
+  {
+    id: '5',
+    title: 'Project Completion',
+    date: 'December 5, 2024',
+    status: 'upcoming' as const
+  },
+];
+
+export const documents = [
+  {
+    id: '1',
+    name: 'Project Blueprint.pdf',
+    type: 'pdf' as const,
+    size: '8.5 MB',
+    updatedAt: '2 days ago',
+    project: 'East Tower'
+  },
+  {
+    id: '2',
+    name: 'Site Survey Images.jpg',
+    type: 'image' as const,
+    size: '12.3 MB',
+    updatedAt: '3 days ago',
+    project: 'Westside Park'
+  },
+  {
+    id: '3',
+    name: 'Budget Forecast.xlsx',
+    type: 'spreadsheet' as const,
+    size: '1.2 MB',
+    updatedAt: '1 week ago',
+    project: 'North Bridge'
+  },
+  {
+    id: '4',
+    name: 'Contractor Agreement.docx',
+    type: 'text' as const,
+    size: '567 KB',
+    updatedAt: '2 weeks ago',
+    project: 'East Tower'
+  },
+];
+
+export const performanceData = [
+  { name: 'Jan', value: 40 },
+  { name: 'Feb', value: 45 },
+  { name: 'Mar', value: 55 },
+  { name: 'Apr', value: 57 },
+  { name: 'May', value: 62 },
+  { name: 'Jun', value: 68 },
+  { name: 'Jul', value: 72 },
+];
+
+export const notifications = [
+  { id: 1, title: 'Budget Approval', message: 'East Tower budget increase approved', time: '2 hours ago', read: false },
+  { id: 2, title: 'Permit Issued', message: 'Building permit for North Bridge received', time: '5 hours ago', read: false },
+  { id: 3, title: 'Inspection Scheduled', message: 'Foundation inspection set for Westside Park', time: 'Yesterday', read: true },
+  { id: 4, title: 'Document Updated', message: 'Project Blueprint.pdf has been updated', time: '2 days ago', read: true },
+];
+
+export const propertyData = {
+  propertyName: "Downtown High-Rise",
+  propertyType: "Mixed-Use",
+  location: "San Francisco, CA",
+  squareFootage: 250000,
+  floors: 23,
+  constructionStartDate: "November 15, 2023",
+  estimatedCompletionDate: "June 30, 2025",
+  currentPhase: "Structural Framework",
+  completionPercentage: 35,
+  keyContacts: [
+    { role: "Project Manager", name: "Sarah Wilson", contact: "sarah.wilson@example.com" },
+    { role: "General Contractor", name: "Alex Rodriguez", contact: "alex.rodriguez@example.com" },
+    { role: "Architect", name: "Lisa Chen", contact: "lisa.chen@example.com" },
+    { role: "Permit Coordinator", name: "Robert Smith", contact: "robert.smith@example.com" }
+  ],
+  permits: [
+    { type: "Building Permit", status: "approved" as const, date: "2023-10-15" },
+    { type: "Electrical Permit", status: "approved" as const, date: "2023-10-20" },
+    { type: "Plumbing Permit", status: "pending" as const, date: "2023-11-05" }
+  ],
+  inspections: [
+    { type: "Foundation", status: "passed" as const, date: "2023-12-10", notes: "Passed with minor recommendations" },
+    { type: "Framing", status: "scheduled" as const, date: "2024-01-15" },
+    { type: "Electrical Rough-In", status: "not-scheduled" as const }
+  ]
+};
+
+export const financialData = {
+  projectName: "Downtown High-Rise",
+  totalBudget: 42500000,
+  spending: [
+    { category: "Land Acquisition", amount: 12000000, color: "#4c1d95", status: "normal" as const },
+    { category: "Site Preparation", amount: 2500000, color: "#2563eb", status: "under" as const, variance: 150000 },
+    { category: "Foundation", amount: 3800000, color: "#0891b2", status: "normal" as const },
+    { category: "Structural Frame", amount: 4200000, color: "#059669", status: "over" as const, variance: 250000 },
+    { category: "Exterior", amount: 1500000, color: "#65a30d", status: "normal" as const },
+    { category: "Mechanical/Electrical", amount: 800000, color: "#a5b4fc", status: "normal" as const }
+  ],
+  changeOrders: [
+    { id: "CO-001", description: "Foundation Redesign", amount: 120000, status: "approved" as const, date: "Jan 18, 2024" },
+    { id: "CO-002", description: "Material Substitution Savings", amount: -45000, status: "approved" as const, date: "Feb 02, 2024" },
+    { id: "CO-003", description: "Additional HVAC Capacity", amount: 85000, status: "pending" as const, date: "Mar 25, 2024" },
+    { id: "CO-004", description: "Design Change: Interior Layout", amount: 35000, status: "rejected" as const, date: "Apr 05, 2024" }
+  ]
+};
+
+export const budgetCategories = [
+  { category: "Materials", amount: 2250000, color: "#10B981", status: "normal" as const },
+  { category: "Labor", amount: 1850000, color: "#3B82F6", status: "under" as const, variance: -50000 },
+  { category: "Equipment", amount: 920000, color: "#8B5CF6", status: "over" as const, variance: 75000 },
+  { category: "Permits", amount: 320000, color: "#F97316", status: "normal" as const }
+];
+
+export const recentTransactions = [
+  { id: "INV-001", description: "Steel Delivery - Downtown Project", amount: 125000, status: "approved" as const, date: "2023-12-15" },
+  { id: "INV-002", description: "Concrete Work - Phase 1", amount: 85000, status: "pending" as const, date: "2023-12-18" },
+  { id: "INV-003", description: "Electrical Contractor Payment", amount: 42500, status: "approved" as const, date: "2023-12-20" },
+  { id: "INV-004", description: "Architect Fees - Design Revisions", amount: 28500, status: "rejected" as const, date: "2023-12-22" }
+];
