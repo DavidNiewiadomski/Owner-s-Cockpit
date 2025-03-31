@@ -18,7 +18,7 @@ interface NotificationsCardProps {
 
 export function NotificationsCard({ notifications }: NotificationsCardProps) {
   return (
-    <Card className="bg-gray-800 border-gray-700 shadow-lg">
+    <Card className="bg-black border-gray-700 shadow-lg">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg text-white flex items-center">
@@ -33,7 +33,7 @@ export function NotificationsCard({ notifications }: NotificationsCardProps) {
       <CardContent className="p-0">
         <ul className="divide-y divide-gray-700">
           {notifications.map((notification) => (
-            <li key={notification.id} className={`p-4 ${!notification.read ? 'bg-gray-750' : ''}`}>
+            <li key={notification.id} className={`p-4 ${!notification.read ? 'bg-black' : ''}`}>
               <div className="flex items-start gap-3">
                 <div className={`w-2 h-2 mt-2 rounded-full ${!notification.read ? 'bg-construction-500' : 'bg-transparent'}`} />
                 <div>

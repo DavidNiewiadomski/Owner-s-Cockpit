@@ -30,7 +30,7 @@ export function ProgressChart({ data }: ProgressChartProps) {
   const off = gradientOffset();
 
   return (
-    <Card className="bg-gray-800 border-gray-700 shadow-lg overflow-hidden">
+    <Card className="bg-black border-gray-700 shadow-lg overflow-hidden">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg text-white flex items-center">
@@ -50,20 +50,20 @@ export function ProgressChart({ data }: ProgressChartProps) {
               data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.3)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
               <XAxis 
                 dataKey="name" 
                 tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.6)' }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
               />
               <YAxis 
                 tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.6)' }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: '#1f2937', 
-                  border: '1px solid rgba(255,255,255,0.5)', 
+                  backgroundColor: '#000000', 
+                  border: '1px solid rgba(255,255,255,0.2)', 
                   borderRadius: '8px',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.7)'
                 }}

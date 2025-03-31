@@ -44,7 +44,7 @@ export function FinancialTracking({
   const approvedChangeOrderTotal = approvedChangeOrders.reduce((sum, co) => sum + co.amount, 0);
   
   return (
-    <Card className="bg-gray-800 border-gray-700 shadow-lg">
+    <Card className="bg-black border-gray-700 shadow-lg">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg text-white flex items-center">
@@ -60,7 +60,7 @@ export function FinancialTracking({
       <CardContent>
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gray-750 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg border border-gray-800">
               <p className="text-xs text-gray-400 mb-1">Total Budget</p>
               <h3 className="text-2xl font-bold text-white">${(totalBudget / 1000000).toFixed(1)}M</h3>
               {approvedChangeOrderTotal !== 0 && (
@@ -70,17 +70,17 @@ export function FinancialTracking({
                 </p>
               )}
             </div>
-            <div className="bg-gray-750 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg border border-gray-800">
               <p className="text-xs text-gray-400 mb-1">Spent to Date</p>
               <h3 className="text-2xl font-bold text-white">${(totalSpent / 1000000).toFixed(1)}M</h3>
               <p className="text-xs mt-1 text-gray-400">
                 {percentSpent}% of total budget
               </p>
             </div>
-            <div className="bg-gray-750 p-4 rounded-lg">
+            <div className="bg-black p-4 rounded-lg border border-gray-800">
               <p className="text-xs text-gray-400 mb-1">Remaining</p>
               <h3 className="text-2xl font-bold text-white">${((totalBudget - totalSpent) / 1000000).toFixed(1)}M</h3>
-              <div className="w-full h-2 bg-gray-700 rounded-full mt-2">
+              <div className="w-full h-2 bg-gray-800 rounded-full mt-2">
                 <div 
                   className="bg-construction-500 h-full rounded-full" 
                   style={{ width: `${percentSpent}%` }}
@@ -103,7 +103,7 @@ export function FinancialTracking({
                       <span className="text-sm">{item.category}</span>
                       <span className="text-sm font-medium">${item.amount.toLocaleString()}</span>
                     </div>
-                    <div className="w-full h-1.5 bg-gray-700 rounded-full">
+                    <div className="w-full h-1.5 bg-gray-800 rounded-full">
                       <div 
                         className="h-full rounded-full" 
                         style={{ 
@@ -143,7 +143,7 @@ export function FinancialTracking({
             
             <div className="space-y-2">
               {changeOrders.slice(0, 3).map((order) => (
-                <div key={order.id} className="flex items-center p-2 rounded-md bg-gray-750 hover:bg-gray-700">
+                <div key={order.id} className="flex items-center p-2 rounded-md bg-black hover:bg-black border border-gray-800">
                   <div 
                     className={`w-1.5 h-6 rounded-sm mr-3 ${
                       order.status === 'approved' 

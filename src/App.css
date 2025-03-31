@@ -43,10 +43,17 @@
 }
 
 /* Ensure consistent black background */
-body, #app, .bg-gray-900 {
+html, body, #app, #root, main, .bg-gray-900, .bg-gray-800, .bg-gray-850, .bg-gray-950, .bg-gray-750 {
   background-color: #000000 !important;
 }
 
-.bg-gray-800, .bg-gray-850, .bg-gray-950 {
+/* Force cards and UI components to have black backgrounds */
+.card, .bg-card, [class*="bg-gray-"], .bg-background {
   background-color: #000000 !important;
+}
+
+/* Override any background opacity */
+[class*="bg-black/"] {
+  background-color: #000000 !important;
+  opacity: 1 !important;
 }

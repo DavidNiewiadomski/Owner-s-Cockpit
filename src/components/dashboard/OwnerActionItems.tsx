@@ -6,13 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function OwnerActionItems() {
   return (
-    <Card className="bg-gray-800 border-gray-700 shadow-lg">
+    <Card className="bg-black border-gray-700 shadow-lg">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg text-white">Owner Action Items</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <div className="p-3 bg-gray-750 rounded-lg border border-amber-800/30">
+          <div className="p-3 bg-black rounded-lg border border-amber-800/30">
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
               <div>
@@ -26,7 +26,7 @@ export function OwnerActionItems() {
             </div>
           </div>
           
-          <div className="p-3 bg-gray-750 rounded-lg border border-blue-800/30">
+          <div className="p-3 bg-black rounded-lg border border-blue-800/30">
             <div className="flex items-start gap-3">
               <FileText className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
               <div>
@@ -40,7 +40,7 @@ export function OwnerActionItems() {
             </div>
           </div>
           
-          <div className="p-3 bg-gray-750 rounded-lg border border-green-800/30">
+          <div className="p-3 bg-black rounded-lg border border-green-800/30">
             <div className="flex items-start gap-3">
               <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
               <div>
@@ -54,7 +54,7 @@ export function OwnerActionItems() {
             </div>
           </div>
           
-          <div className="p-3 bg-gray-750 rounded-lg border border-construction-800/30">
+          <div className="p-3 bg-black rounded-lg border border-construction-800/30">
             <div className="flex items-start gap-3">
               <Construction className="h-5 w-5 text-construction-500 flex-shrink-0 mt-0.5" />
               <div>

@@ -23,12 +23,12 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn("overflow-hidden", className)}>
+    <Card className={cn("overflow-hidden bg-black border-gray-700", className)}>
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div>
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
-            <h3 className="text-2xl font-bold mt-1">{value}</h3>
+            <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
             {description && (
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
             )}
@@ -38,8 +38,8 @@ export function StatCard({
                 <span
                   className={cn(
                     "inline-flex items-center text-xs font-medium",
-                    trend === "up" && "text-green-600",
-                    trend === "down" && "text-red-600",
+                    trend === "up" && "text-green-600 dark:text-green-400",
+                    trend === "down" && "text-red-600 dark:text-red-400",
                     trend === "neutral" && "text-gray-500"
                   )}
                 >
@@ -82,7 +82,7 @@ export function StatCard({
           </div>
           
           {Icon && (
-            <div className="p-3 rounded-full bg-construction-100 dark:bg-construction-900/20">
+            <div className="p-3 rounded-full bg-black border border-construction-800/30">
               <Icon className="w-5 h-5 text-construction-600 dark:text-construction-400" />
             </div>
           )}
