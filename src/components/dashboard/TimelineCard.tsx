@@ -9,7 +9,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Info, AlertTriangle, Clock, Calendar } from "lucide-react";
+import { Info, AlertTriangle, Clock, Calendar, Camera } from "lucide-react";
 
 interface TimelineEvent {
   id: string;
@@ -22,15 +22,26 @@ interface TimelineEvent {
     amount: number;
     type: "over" | "under" | "neutral";
   };
+  realityCapture?: {
+    available: boolean;
+    date?: string;
+    url?: string;
+  };
 }
 
 interface TimelineCardProps {
   events: TimelineEvent[];
   className?: string;
   showFinancialImpact?: boolean;
+  onViewRealityCapture?: (event: TimelineEvent) => void;
 }
 
-export function TimelineCard({ events, className, showFinancialImpact = true }: TimelineCardProps) {
+export function TimelineCard({ 
+  events, 
+  className, 
+  showFinancialImpact = true,
+  onViewRealityCapture 
+}: TimelineCardProps) {
   return (
     <Card className={cn("overflow-hidden", className)}>
       <CardHeader>
@@ -64,6 +75,12 @@ export function TimelineCard({ events, className, showFinancialImpact = true }: 
                     {event.title}
                     {event.impact === "high" && (
                       <AlertTriangle className="h-4 w-4 ml-1.5 text-amber-500" />
+                    )}
+                    {event.realityCapture?.available && (
+                      <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 flex items-center gap-1">
+                        <Camera className="h-3 w-3" />
+                        <span>Reality Capture</span>
+                      </Badge>
                     )}
                   </h3>
                 </div>
@@ -102,6 +119,18 @@ export function TimelineCard({ events, className, showFinancialImpact = true }: 
                     ${event.financial.amount.toLocaleString()}
                   </span>
                 </div>
+              )}
+              
+              {event.realityCapture?.available && onViewRealityCapture && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-2 h-8 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-0 flex items-center gap-1"
+                  onClick={() => onViewRealityCapture(event)}
+                >
+                  <Camera className="h-3.5 w-3.5" />
+                  <span>View Reality Capture</span>
+                </Button>
               )}
               
               {index < events.length - 1 && (

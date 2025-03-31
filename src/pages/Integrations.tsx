@@ -1,14 +1,16 @@
+
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { AIAssistant } from '@/components/ai/AIAssistant';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
-import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield } from 'lucide-react';
+import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield, Camera, Map, Scan, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-// Sample integrations data with expanded categories
+// Sample integrations data with expanded categories including Jet.Build and Track3D
 const integrations = [
   {
     id: '1',
@@ -66,6 +68,24 @@ const integrations = [
   },
   {
     id: '7',
+    name: 'Jet.Build',
+    logo: 'https://via.placeholder.com/40?text=JB',
+    description: 'Construction project management software for builders with AI-powered scheduling and resource allocation.',
+    connected: false,
+    category: 'Project Management',
+    features: ['AI Scheduling', 'Resource Management', 'Financial Tracking']
+  },
+  {
+    id: '8',
+    name: 'Track3D',
+    logo: 'https://via.placeholder.com/40?text=T3D',
+    description: 'AI-powered 3D tracking for construction progress monitoring with reality capture integration.',
+    connected: false,
+    category: 'Reality Capture',
+    features: ['360° Capture', 'Progress Tracking', 'As-Built Documentation']
+  },
+  {
+    id: '9',
     name: 'Procore Analytics',
     logo: 'https://play-lh.googleusercontent.com/UQBJgZn2CXmHUzJ9o6M0nhX-NwxHJJXL80xVq-LkKKlZHmTEYfZRQlkM7Ag5ZrHvgQ',
     description: 'Advanced analytics platform for construction data insights and reporting.',
@@ -74,7 +94,7 @@ const integrations = [
     features: ['Custom Dashboards', 'Performance Metrics', 'Predictive Analytics']
   },
   {
-    id: '8',
+    id: '10',
     name: 'SmartBid',
     logo: 'https://www.smartbid.co/wp-content/uploads/2020/06/smartbid-logo-menu.png',
     description: 'Subcontractor management and bidding platform for general contractors.',
@@ -84,7 +104,7 @@ const integrations = [
   }
 ];
 
-// Integration categories to organize the view
+// Integration categories to organize the view - updated with Reality Capture category
 const categories = [
   { id: 'project-management', name: 'Project Management', icon: Workflow },
   { id: 'design-modeling', name: 'Design & Modeling', icon: Box },
@@ -92,8 +112,12 @@ const categories = [
   { id: 'document-management', name: 'Document Management', icon: Database },
   { id: 'analytics', name: 'Analytics', icon: Zap },
   { id: 'procurement', name: 'Procurement', icon: Link2 },
+  { id: 'reality-capture', name: 'Reality Capture', icon: Camera },
   { id: 'other', name: 'Other Integrations', icon: Code2 }
 ];
+
+// Featured integrations that we want to highlight
+const featuredIntegrations = ['Jet.Build', 'Track3D'];
 
 const Integrations = () => {
   const { toast } = useToast();
@@ -102,16 +126,14 @@ const Integrations = () => {
 
   const handleIntegrationToggle = (name: string) => {
     toast({
-      id: crypto.randomUUID(),
-      title: `Toggle: ${name}`,
-      description: `Integration toggle successfully.`,
+      title: `${name} Integration`,
+      description: `${name} has been ${integrations.find(i => i.name === name)?.connected ? 'disconnected' : 'connected'} successfully.`,
       duration: 3000,
     });
   };
 
   const handleIntegrationAction = (action: string, name: string) => {
     toast({
-      id: crypto.randomUUID(),
       title: `${action}: ${name}`,
       description: `Integration ${action.toLowerCase()} successfully.`,
       duration: 3000,
@@ -130,6 +152,16 @@ const Integrations = () => {
     return matchesSearch && matchesCategory;
   });
 
+  // Get featured integrations to display at the top
+  const featured = filteredIntegrations.filter(integration => 
+    featuredIntegrations.includes(integration.name)
+  );
+  
+  // Get the rest of the integrations
+  const regular = filteredIntegrations.filter(integration => 
+    !featuredIntegrations.includes(integration.name)
+  );
+
   return (
     <div className="flex h-screen bg-gray-900 text-gray-100">
       <SidebarNavigation />
@@ -139,9 +171,6 @@ const Integrations = () => {
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            {/* AI Assistant Section */}
-            <AIAssistant />
-            
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
                 <h1 className="text-2xl font-bold text-white">Integrations</h1>
@@ -156,7 +185,7 @@ const Integrations = () => {
             </div>
 
             {/* Category Selection */}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
               {categories.map((category) => (
                 <Button
                   key={category.id}
@@ -202,9 +231,30 @@ const Integrations = () => {
               </CardContent>
             </Card>
             
-            {/* Integration Cards Grid */}
+            {/* Featured Integrations */}
+            {featured.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-4 text-white flex items-center">
+                  <Scan className="h-5 w-5 mr-2 text-construction-400" />
+                  Featured Integrations
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {featured.map((integration) => (
+                    <IntegrationCard 
+                      key={integration.id} 
+                      {...integration} 
+                      onToggle={() => handleIntegrationToggle(integration.name)} 
+                      className="bg-gradient-to-br from-gray-800 to-gray-900 border-construction-700/30 shadow-lg"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Regular Integration Cards Grid */}
+            <h2 className="text-xl font-semibold mb-4 text-white">All Integrations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredIntegrations.map((integration) => (
+              {regular.map((integration) => (
                 <IntegrationCard 
                   key={integration.id} 
                   {...integration} 
@@ -230,6 +280,23 @@ const Integrations = () => {
             )}
           </div>
         </main>
+        
+        <CollapsibleAIAssistant 
+          projectContext="Integrations"
+          initialInsights={[
+            {
+              title: 'Reality Capture Integration',
+              content: 'Connecting Track3D can provide 360° site captures automatically linked to your timeline milestones.',
+              type: 'info'
+            },
+            {
+              title: 'New Feature Alert',
+              content: 'Jet.Build now offers AI-powered resource allocation that can reduce schedule delays by up to 15%.',
+              type: 'success'
+            }
+          ]}
+          mode="construction"
+        />
       </div>
     </div>
   );

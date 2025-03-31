@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { TimelineCard } from '@/components/dashboard/TimelineCard';
+import { RealityCaptureViewer } from '@/components/dashboard/RealityCaptureViewer';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
@@ -30,11 +31,13 @@ import {
   CalendarIcon,
   ArrowDownUp,
   BarChart4,
-  Info
+  Info,
+  Camera,
+  Globe,
+  Scan
 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ReferenceLine, CartesianGrid } from 'recharts';
 
-// Sample timeline data
 const timelineData = [
   {
     date: new Date(),
@@ -47,6 +50,11 @@ const timelineData = [
         type: 'construction',
         project: 'Downtown High-Rise',
         description: 'Foundation concrete pour completed on schedule',
+        realityCapture: {
+          available: true,
+          date: 'Today, 9:30 AM',
+          url: 'https://matterport.com/sites/default/files/styles/atf_lightbox/public/2021-08/construction%20scan%20nav.jpg'
+        },
         user: {
           name: 'John Contractor',
           avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d'
@@ -154,7 +162,6 @@ const timelineData = [
   }
 ];
 
-// Function to get icon based on event type
 const getEventIcon = (type: string) => {
   switch (type) {
     case 'construction':
@@ -176,7 +183,6 @@ const getEventIcon = (type: string) => {
   }
 };
 
-// Function to get badge color based on event type
 const getEventBadgeClass = (type: string) => {
   switch (type) {
     case 'construction':
@@ -198,7 +204,6 @@ const getEventBadgeClass = (type: string) => {
   }
 };
 
-// Gantt chart data for Downtown High-Rise project
 const ganttData = [
   { name: 'Site Preparation', actualStart: 0, actualEnd: 4, plannedStart: 0, plannedEnd: 5, completion: 100 },
   { name: 'Foundation', actualStart: 4, actualEnd: 8, plannedStart: 5, plannedEnd: 10, completion: 100 },
@@ -215,7 +220,6 @@ const ganttData = [
   { name: 'Handover', actualStart: null, actualEnd: null, plannedStart: 55, plannedEnd: 56, completion: 0 }
 ];
 
-// Delay metrics data
 const delayMetricsData = [
   { name: 'Site Preparation', planned: 5, actual: 4, variance: -1 },
   { name: 'Foundation', planned: 5, actual: 4, variance: -1 },
@@ -232,42 +236,62 @@ const delayMetricsData = [
   { name: 'Handover', planned: 1, actual: null, variance: null }
 ];
 
-// Milestone status data for owner dashboard
 const milestoneData = [
   { 
     name: 'Project Kickoff', 
     plannedDate: 'Nov 15, 2023', 
     actualDate: 'Nov 15, 2023', 
     status: 'completed' as const,
-    description: 'Initial meeting with all stakeholders to define project scope' 
+    description: 'Initial meeting with all stakeholders to define project scope',
+    realityCapture: {
+      available: false
+    } 
   },
   { 
     name: 'Permits Approved', 
     plannedDate: 'Dec 05, 2023', 
     actualDate: 'Dec 20, 2023', 
     status: 'delayed' as const,
-    description: 'Building permits approved by local authorities' 
+    description: 'Building permits approved by local authorities',
+    realityCapture: {
+      available: false
+    } 
   },
   { 
     name: 'Foundation Complete', 
     plannedDate: 'Jan 30, 2024', 
     actualDate: 'Jan 25, 2024', 
     status: 'completed' as const,
-    description: 'Foundation work completed and inspected' 
+    description: 'Foundation work completed and inspected',
+    realityCapture: {
+      available: true,
+      date: 'Jan 25, 2024',
+      url: 'https://matterport.com/sites/default/files/2021-11/scan-gallery/scn-construction-site-nav_0.jpg'
+    } 
   },
   { 
     name: 'Structural Framework', 
     plannedDate: 'Mar 15, 2024', 
     actualDate: 'Mar 10, 2024', 
     status: 'completed' as const,
-    description: 'Main building structure completed' 
+    description: 'Main building structure completed',
+    realityCapture: {
+      available: true,
+      date: 'Mar 10, 2024',
+      url: 'https://matterport.com/sites/default/files/2021-11/scan-gallery/scn-apartments-nav.jpg'
+    } 
   },
   { 
     name: 'Exterior Closure', 
     plannedDate: 'Apr 30, 2024', 
     actualDate: 'In Progress', 
     status: 'in-progress' as const,
-    description: 'Building envelope and exterior walls completed' 
+    description: 'Building envelope and exterior walls completed',
+    realityCapture: {
+      available: true,
+      date: 'Apr 15, 2024',
+      url: 'https://matterport.com/sites/default/files/styles/atf_lightbox/public/2021-08/construction%20scan%20nav.jpg'
+    } 
   },
   { 
     name: 'Roofing Complete', 
@@ -285,7 +309,6 @@ const milestoneData = [
   }
 ];
 
-// Utility function to get color based on variance
 const getVarianceColor = (data: any) => {
   if (data.variance === null) return '#9CA3AF';
   return data.variance < 0 ? 'rgba(16, 185, 129, 0.8)' : 'rgba(239, 68, 68, 0.8)';
@@ -321,6 +344,7 @@ const renderColoredBar = (entry: any) => {
 const Timeline = () => {
   const [activeProject, setActiveProject] = useState("downtown");
   const [timelineView, setTimelineView] = useState("gantt");
+  const [realityCapture, setRealityCapture] = useState<RealityCaptureEvent | null>(null);
   
   const getPlannedDuration = (item: any) => {
     return item.plannedEnd - item.plannedStart;
@@ -328,6 +352,19 @@ const Timeline = () => {
   
   const getActualDuration = (item: any) => {
     return item.actualEnd !== null ? item.actualEnd - item.actualStart : (item.actualStart !== null ? 1 : 0);
+  };
+
+  const handleViewRealityCapture = (milestone: any) => {
+    if (milestone.realityCapture?.available) {
+      setRealityCapture({
+        name: milestone.name,
+        date: milestone.realityCapture.date,
+        url: milestone.realityCapture.url,
+        location: `${activeProject === 'downtown' ? 'Downtown High-Rise' : 
+                    activeProject === 'riverside' ? 'Riverside Complex' : 
+                    'Corporate Offices'} - ${milestone.name}`
+      });
+    }
   };
   
   return (
@@ -425,6 +462,19 @@ const Timeline = () => {
             
             <div className="grid gap-6 md:grid-cols-3">
               <div className="md:col-span-2">
+                {realityCapture ? (
+                  <RealityCaptureViewer
+                    captureUrl={realityCapture.url}
+                    captureDate={realityCapture.date}
+                    projectName={activeProject === 'downtown' ? 'Downtown High-Rise' : 
+                                activeProject === 'riverside' ? 'Riverside Complex' : 
+                                'Corporate Offices'}
+                    location={realityCapture.location}
+                    onClose={() => setRealityCapture(null)}
+                    className="mb-6"
+                  />
+                ) : null}
+                
                 {timelineView === "gantt" && (
                   <Card>
                     <CardHeader className="pb-2">
@@ -618,6 +668,13 @@ const Timeline = () => {
                                          milestone.status === 'in-progress' ? 'In Progress' :
                                          milestone.status === 'delayed' ? 'Delayed' : 'Upcoming'}
                                       </Badge>
+                                      
+                                      {milestone.realityCapture?.available && (
+                                        <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 flex items-center gap-1 cursor-pointer" onClick={() => handleViewRealityCapture(milestone)}>
+                                          <Camera className="h-3 w-3" />
+                                          <span>Reality Capture</span>
+                                        </Badge>
+                                      )}
                                     </h4>
                                     <p className="mt-1 text-muted-foreground text-sm">{milestone.description}</p>
                                     
@@ -636,6 +693,18 @@ const Timeline = () => {
                                           </span>
                                         )}
                                       </div>
+                                    )}
+                                    
+                                    {milestone.realityCapture?.available && (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="mt-2 h-7 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-0 flex items-center gap-1"
+                                        onClick={() => handleViewRealityCapture(milestone)}
+                                      >
+                                        <Camera className="h-3.5 w-3.5" />
+                                        <span>View Reality Capture</span>
+                                      </Button>
                                     )}
                                   </div>
                                 </div>
