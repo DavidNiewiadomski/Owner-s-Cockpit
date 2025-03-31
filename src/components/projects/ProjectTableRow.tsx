@@ -2,7 +2,8 @@
 import React from 'react';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Project {
   id: number;
