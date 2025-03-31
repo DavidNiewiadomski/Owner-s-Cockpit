@@ -286,40 +286,6 @@ const milestoneData = [
   }
 ];
 
-// Gantt chart data for Downtown High-Rise project
-const ganttData = [
-  { name: 'Site Preparation', actualStart: 0, actualEnd: 4, plannedStart: 0, plannedEnd: 5, completion: 100 },
-  { name: 'Foundation', actualStart: 4, actualEnd: 8, plannedStart: 5, plannedEnd: 10, completion: 100 },
-  { name: 'Structural Framework', actualStart: 8, actualEnd: 15, plannedStart: 10, plannedEnd: 18, completion: 100 },
-  { name: 'Exterior Walls', actualStart: 15, actualEnd: 18, plannedStart: 18, plannedEnd: 22, completion: 60 },
-  { name: 'Roofing', actualStart: 18, actualEnd: null, plannedStart: 22, plannedEnd: 26, completion: 20 },
-  { name: 'Interior Rough-In', actualStart: null, actualEnd: null, plannedStart: 26, plannedEnd: 32, completion: 0 },
-  { name: 'Drywall', actualStart: null, actualEnd: null, plannedStart: 32, plannedEnd: 36, completion: 0 },
-  { name: 'Interior Finishes', actualStart: null, actualEnd: null, plannedStart: 36, plannedEnd: 42, completion: 0 },
-  { name: 'Flooring', actualStart: null, actualEnd: null, plannedStart: 42, plannedEnd: 46, completion: 0 },
-  { name: 'Painting', actualStart: null, actualEnd: null, plannedStart: 46, plannedEnd: 50, completion: 0 },
-  { name: 'Fixtures & Equipment', actualStart: null, actualEnd: null, plannedStart: 50, plannedEnd: 54, completion: 0 },
-  { name: 'Final Inspection', actualStart: null, actualEnd: null, plannedStart: 54, plannedEnd: 55, completion: 0 },
-  { name: 'Handover', actualStart: null, actualEnd: null, plannedStart: 55, plannedEnd: 56, completion: 0 }
-];
-
-// Delay metrics data
-const delayMetricsData = [
-  { name: 'Site Preparation', planned: 5, actual: 4, variance: -1 },
-  { name: 'Foundation', planned: 5, actual: 4, variance: -1 },
-  { name: 'Structural Framework', planned: 8, actual: 7, variance: -1 },
-  { name: 'Exterior Walls', planned: 4, actual: 3, variance: -1 },
-  { name: 'Roofing', planned: 4, actual: 5, variance: 1 },
-  { name: 'Interior Rough-In', planned: 6, actual: null, variance: null },
-  { name: 'Drywall', planned: 4, actual: null, variance: null },
-  { name: 'Interior Finishes', planned: 6, actual: null, variance: null },
-  { name: 'Flooring', planned: 4, actual: null, variance: null },
-  { name: 'Painting', planned: 4, actual: null, variance: null },
-  { name: 'Fixtures & Equipment', planned: 4, actual: null, variance: null },
-  { name: 'Final Inspection', planned: 1, actual: null, variance: null },
-  { name: 'Handover', planned: 1, actual: null, variance: null }
-];
-
 // Utility function to get color based on variance
 const getVarianceColor = (data: any) => {
   if (data.variance === null) return '#9CA3AF';
