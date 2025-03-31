@@ -117,37 +117,36 @@ export function CollapsibleAIAssistant({
           {!expanded && (
             <div className="p-4 animate-fade-in">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {displayInsights.map((insight, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 cursor-pointer ${
-                      typeof insight === 'string' 
-                        ? "border-blue-700/50 hover:border-blue-600" 
-                        : (
-                          insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
-                          insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
-                          "border-blue-700/50 hover:border-blue-600"
-                        )
-                    }`}
-                    onClick={() => handleInsightClick(insight)}
-                  >
-                    <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
-                      typeof insight === 'string'
-                        ? "text-blue-400"
-                        : (
-                          insight.type === "warning" ? "text-amber-400" : 
-                          insight.type === "success" ? "text-green-400" : 
-                          "text-blue-400"
-                        )
-                    }`} />
-                    <div>
-                      {initialInsights && typeof insight !== 'string' && <p className="text-xs font-medium mb-1">{insight.title}</p>}
-                      <p className="text-sm text-gray-200">
-                        {typeof insight === 'string' ? insight : insight.content}
-                      </p>
+                {displayInsights.map((insight, index) => {
+                  // Handle different insight types
+                  const insightText = typeof insight === 'string' ? insight : insight.content;
+                  const insightType = typeof insight === 'string' ? 'info' : insight.type;
+                  const insightTitle = typeof insight === 'string' ? `Insight ${index + 1}` : insight.title;
+                  
+                  const colorClass = 
+                    insightType === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
+                    insightType === "success" ? "border-green-700/50 hover:border-green-600" : 
+                    "border-blue-700/50 hover:border-blue-600";
+                    
+                  const iconColorClass = 
+                    insightType === "warning" ? "text-amber-400" : 
+                    insightType === "success" ? "text-green-400" : 
+                    "text-blue-400";
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 cursor-pointer ${colorClass}`}
+                      onClick={() => handleInsightClick(insight)}
+                    >
+                      <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${iconColorClass}`} />
+                      <div>
+                        {initialInsights && <p className="text-xs font-medium mb-1">{insightTitle}</p>}
+                        <p className="text-sm text-gray-200">{insightText}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
