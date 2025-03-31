@@ -14,7 +14,6 @@ interface DashboardTabContentProps {
 }
 
 export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentProps) {
-  // Render appropriate content based on which tab is active
   if (tab === 'overview') {
     return (
       <div className="space-y-4">
