@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -184,6 +185,12 @@ const Projects = () => {
         <DashboardHeader onSearch={setSearchTerm} />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
+          {/* Moved AI Assistant to the top */}
+          <CollapsibleAIAssistant 
+            projectContext="your projects" 
+            initialInsights={projectInsights}
+          />
+          
           <div className="mb-6">
             <h1 className="text-2xl font-bold">Projects</h1>
             <p className="text-muted-foreground">Manage and track all your construction projects</p>
@@ -419,10 +426,7 @@ const Projects = () => {
           </Tabs>
         </main>
         
-        <CollapsibleAIAssistant 
-          projectContext="your projects" 
-          initialInsights={projectInsights}
-        />
+        {/* Removed CollapsibleAIAssistant from here */}
       </div>
     </div>
   );
