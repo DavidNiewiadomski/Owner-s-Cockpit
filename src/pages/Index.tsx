@@ -61,6 +61,12 @@ const Index = () => {
     `Schedule compliance is currently at ${projectId === '1' ? '95%' : projectId === '2' ? '89%' : projectId === '3' ? '92%' : '94%'} for ${selectedProject?.title || 'this project'}`
   ];
 
+  // Fix for the Type 'string | number' is not assignable to type 'number' error
+  // Ensure completionPercentage is a number
+  const completionPercentage = typeof propertyData.completionPercentage === 'string' 
+    ? parseFloat(propertyData.completionPercentage) 
+    : propertyData.completionPercentage;
+
   return (
     <div className="flex h-screen bg-black">
       <SidebarNavigation />
@@ -123,7 +129,7 @@ const Index = () => {
                 constructionStartDate={propertyData.constructionStartDate}
                 estimatedCompletionDate={propertyData.estimatedCompletionDate}
                 currentPhase={propertyData.currentPhase}
-                completionPercentage={propertyData.completionPercentage}
+                completionPercentage={completionPercentage}
                 keyContacts={propertyData.keyContacts}
                 permits={propertyData.permits}
                 inspections={propertyData.inspections}

@@ -10,19 +10,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { useToast } from '@/hooks/use-toast';
 
 export function ProjectSelector() {
   const { selectedProject, setSelectedProject, allProjects } = useProject();
-  const { toast } = useToast();
 
   const handleSelectProject = (project: typeof allProjects[0] | { id: 'all', title: 'All Projects', status: 'on-track' }) => {
     setSelectedProject(project);
-    toast({
-      title: "Project Changed",
-      description: `Now viewing ${project.title}`,
-      duration: 3000,
-    });
+    // Toast notification removed
   };
 
   if (!selectedProject) return null;
