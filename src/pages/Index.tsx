@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, 
   FileText, 
@@ -8,17 +8,22 @@ import {
   DollarSign, 
   Clock, 
   Users, 
-  AlertTriangle
+  AlertTriangle,
+  TrendingUp,
+  Bell,
+  ArrowUpRight
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
-import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { TimelineCard } from '@/components/dashboard/TimelineCard';
 import { DocumentList } from '@/components/dashboard/DocumentList';
 import { AIAssistant } from '@/components/ai/AIAssistant';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 // Sample data
 const projects = [
@@ -60,33 +65,6 @@ const projects = [
       { name: 'Henry Wilson' },
       { name: 'Irene Martin' },
     ]
-  },
-];
-
-const integrations = [
-  {
-    id: '1',
-    name: 'Procore',
-    logo: 'https://play-lh.googleusercontent.com/UQBJgZn2CXmHUzJ9o6M0nhX-NwxHJJXL80xVq-LkKKlZHmTEYfZRQlkM7Ag5ZrHvgQ',
-    description: 'Project management solution for construction.',
-    connected: true,
-    category: 'Project Management'
-  },
-  {
-    id: '2',
-    name: 'BIM 360',
-    logo: 'https://yt3.googleusercontent.com/ytc/AGIKgqPUznYGZpK-mTrPdSUyGViJ4_C1gZZMWYS-lSZE=s900-c-k-c0x00ffffff-no-rj',
-    description: 'Building Information Modeling platform.',
-    connected: true,
-    category: 'Design & Modeling'
-  },
-  {
-    id: '3',
-    name: 'PlanGrid',
-    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKspQeiAYqXLyGZaEn-jzLg6bKKmEv5mOYJ0sC5g-jQsluR0_F5zDsrRiEnMPU7zJK9UA&usqp=CAU',
-    description: 'Construction productivity software.',
-    connected: false,
-    category: 'Field Management'
   },
 ];
 
@@ -162,16 +140,37 @@ const documents = [
   },
 ];
 
+// New chart data
+const performanceData = [
+  { name: 'Jan', value: 40 },
+  { name: 'Feb', value: 45 },
+  { name: 'Mar', value: 55 },
+  { name: 'Apr', value: 57 },
+  { name: 'May', value: 62 },
+  { name: 'Jun', value: 68 },
+  { name: 'Jul', value: 72 },
+];
+
+// Notifications
+const notifications = [
+  { id: 1, title: 'Budget Approval', message: 'East Tower budget increase approved', time: '2 hours ago', read: false },
+  { id: 2, title: 'Permit Issued', message: 'Building permit for North Bridge received', time: '5 hours ago', read: false },
+  { id: 3, title: 'Inspection Scheduled', message: 'Foundation inspection set for Westside Park', time: 'Yesterday', read: true },
+  { id: 4, title: 'Document Updated', message: 'Project Blueprint.pdf has been updated', time: '2 days ago', read: true },
+];
+
 const Dashboard = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeChart, setActiveChart] = useState(true);
 
-  const handleIntegrationToggle = (name: string) => {
-    toast({
-      title: `${name} integration ${integrations.find(i => i.name === name)?.connected ? 'disconnected' : 'connected'}`,
-      duration: 3000,
-    });
-  };
+  // Animation effect for the chart
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveChart(prev => !prev);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredDocuments = searchTerm 
     ? documents.filter(doc => 
@@ -189,8 +188,18 @@ const Dashboard = () => {
     });
   };
 
+  const gradientOffset = () => {
+    const max = Math.max(...performanceData.map(i => i.value));
+    const min = Math.min(...performanceData.map(i => i.value));
+    if (max <= 0) return 0;
+    if (min >= 0) return 1;
+    return 1 - (max / (max - min));
+  };
+
+  const off = gradientOffset();
+
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-screen bg-gray-900 dark:bg-gray-900">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -203,8 +212,8 @@ const Dashboard = () => {
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-                <p className="text-gray-500 dark:text-gray-400">Welcome back to your project overview</p>
+                <h1 className="text-2xl font-bold text-gray-100">Dashboard</h1>
+                <p className="text-gray-400">Welcome back to your project overview</p>
               </div>
               <div className="mt-3 md:mt-0">
                 <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
@@ -251,7 +260,63 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
               {/* Projects Column */}
               <div className="lg:col-span-2 space-y-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Active Projects</h2>
+                {/* Performance Chart */}
+                <Card className="bg-gray-800 border-gray-700 shadow-lg overflow-hidden">
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-lg text-white flex items-center">
+                        <TrendingUp className="h-5 w-5 mr-2 text-construction-400" />
+                        Overall Performance
+                      </CardTitle>
+                      <Button size="sm" variant="ghost" className="h-8 px-2 text-gray-400 hover:text-white">
+                        <ArrowUpRight className="h-4 w-4 mr-1" />
+                        <span className="text-xs">Details</span>
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-4">
+                    <div className="h-64 w-full">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart
+                          data={performanceData}
+                          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                          <XAxis 
+                            dataKey="name" 
+                            tick={{ fill: '#aaa', fontSize: 12 }}
+                            axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          />
+                          <YAxis 
+                            tick={{ fill: '#aaa', fontSize: 12 }}
+                            axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                          />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                            labelStyle={{ color: '#fff', fontWeight: 'bold' }}
+                          />
+                          <defs>
+                            <linearGradient id="splitColor" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#38bdf8" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <Area 
+                            type="monotone" 
+                            dataKey="value" 
+                            stroke="#38bdf8" 
+                            fill="url(#splitColor)" 
+                            strokeWidth={3}
+                            className={`transition-all duration-1000 ${activeChart ? 'opacity-100' : 'opacity-80'}`}
+                            animationDuration={1500}
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {projects.map((project) => (
                     <ProjectCard key={project.id} {...project} />
@@ -268,19 +333,66 @@ const Dashboard = () => {
               
               {/* Sidebar Column */}
               <div className="space-y-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Project Timeline</h2>
+                {/* Notifications */}
+                <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-lg text-white flex items-center">
+                        <Bell className="h-5 w-5 mr-2 text-construction-400" />
+                        Notifications
+                      </CardTitle>
+                      <Button size="sm" variant="ghost" className="h-8 px-2 text-gray-400 hover:text-white">
+                        <span className="text-xs">View All</span>
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <ul className="divide-y divide-gray-700">
+                      {notifications.map((notification) => (
+                        <li key={notification.id} className={`p-4 ${!notification.read ? 'bg-gray-750' : ''}`}>
+                          <div className="flex items-start gap-3">
+                            <div className={`w-2 h-2 mt-2 rounded-full ${!notification.read ? 'bg-construction-500' : 'bg-transparent'}`} />
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-100">{notification.title}</h4>
+                              <p className="text-xs text-gray-400 mt-1">{notification.message}</p>
+                              <span className="text-xs text-gray-500 mt-1 block">{notification.time}</span>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <h2 className="text-xl font-semibold text-gray-100">Project Timeline</h2>
                 <TimelineCard events={timelineEvents} />
                 
-                <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white mt-6">Integrations</h2>
-                <div className="space-y-4">
-                  {integrations.map((integration) => (
-                    <IntegrationCard 
-                      key={integration.id} 
-                      {...integration} 
-                      onToggle={() => handleIntegrationToggle(integration.name)} 
-                    />
-                  ))}
-                </div>
+                {/* Quick Actions */}
+                <Card className="bg-gray-800 border-gray-700 shadow-lg">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg text-white">Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <Button className="w-full justify-start bg-construction-600 hover:bg-construction-700 text-white">
+                        <FileText className="h-4 w-4 mr-2" />
+                        Create New Document
+                      </Button>
+                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Schedule Meeting
+                      </Button>
+                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
+                        <AlertTriangle className="h-4 w-4 mr-2" />
+                        Report Issue
+                      </Button>
+                      <Button className="w-full justify-start bg-gray-700 hover:bg-gray-600 text-white">
+                        <BarChart3 className="h-4 w-4 mr-2" />
+                        View Analytics
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>

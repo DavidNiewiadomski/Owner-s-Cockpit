@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
+import Integrations from "./pages/Integrations";
 import NotFound from "./pages/NotFound";
 
 // Enable dark mode by default
@@ -33,9 +34,9 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/integrations" element={<Integrations />} />
             <Route path="/projects" element={<Navigate to="/" />} />
             <Route path="/timeline" element={<Navigate to="/" />} />
-            <Route path="/integrations" element={<Navigate to="/" />} />
             <Route path="/messages" element={<Navigate to="/" />} />
             <Route path="/settings" element={<Navigate to="/" />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
