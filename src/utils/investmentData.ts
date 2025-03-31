@@ -1,187 +1,165 @@
 
-// Investment metrics data
-
-export const investmentMetrics = [
+// Metrics data
+export const investmentMetricsData = [
   {
     label: 'Internal Rate of Return (IRR)',
-    original: '15.2%',
-    current: '14.1%',
-    impact: 'negative',
-    variance: '-1.1%'
+    original: '12.4%',
+    current: '10.8%',
+    impact: 'negative' as const,
+    variance: '-1.6%'
+  },
+  {
+    label: 'Return on Investment (ROI)',
+    original: '14.5%',
+    current: '11.9%',
+    impact: 'negative' as const,
+    variance: '-2.6%'
   },
   {
     label: 'Net Present Value (NPV)',
-    original: '$4.2M',
-    current: '$3.8M',
-    impact: 'negative',
-    variance: '-$0.4M'
-  },
-  {
-    label: 'Cash on Cash Return',
-    original: '8.5%',
-    current: '7.9%',
-    impact: 'negative',
-    variance: '-0.6%'
-  },
-  {
-    label: 'Payback Period',
-    original: '6.2 years',
-    current: '7.1 years',
-    impact: 'negative',
-    variance: '+0.9 years'
-  },
-  {
-    label: 'Equity Multiple',
-    original: '2.4x',
-    current: '2.2x',
-    impact: 'negative',
-    variance: '-0.2x'
+    original: '$2.45M',
+    current: '$2.12M',
+    impact: 'negative' as const,
+    variance: '-$330K'
   },
   {
     label: 'Debt Service Coverage Ratio',
-    original: '1.75',
-    current: '1.62',
-    impact: 'negative',
-    variance: '-0.13'
+    original: '1.45',
+    current: '1.28',
+    impact: 'negative' as const,
+    variance: '-0.17'
   }
 ];
 
-export const projectOptions = [
-  { value: 'all', label: 'All Projects' },
-  { value: 'east-tower', label: 'East Tower Construction' },
-  { value: 'westside', label: 'Westside Park Development' },
-  { value: 'north-bridge', label: 'North Bridge Repair' }
-];
-
-export const roiData = [
-  { name: 'Jan', projected: 7.2, actual: 7.1 },
-  { name: 'Feb', projected: 7.3, actual: 7.0 },
-  { name: 'Mar', projected: 7.4, actual: 6.8 },
-  { name: 'Apr', projected: 7.5, actual: 6.5 },
-  { name: 'May', projected: 7.6, actual: 6.3 },
-  { name: 'Jun', projected: 7.7, actual: 6.4 },
-  { name: 'Jul', projected: 7.8, actual: 6.6 },
-  { name: 'Aug', projected: 7.9, actual: 6.9 },
-  { name: 'Sep', projected: 8.0, actual: 7.2 },
-  { name: 'Oct', projected: 8.1, actual: null },
-  { name: 'Nov', projected: 8.2, actual: null },
-  { name: 'Dec', projected: 8.3, actual: null },
-];
-
-export const schedulingImpactData = [
-  { name: 'East Tower', original: 18, current: 22, variance: 4 },
-  { name: 'Westside Park', original: 12, current: 15, variance: 3 },
-  { name: 'North Bridge', original: 8, current: 14, variance: 6 },
-];
-
-export const costOverrunData = [
-  { name: 'Materials', value: 35, color: '#38bdf8' },
-  { name: 'Labor', value: 25, color: '#fb7185' },
-  { name: 'Permits/Fees', value: 15, color: '#a78bfa' },
-  { name: 'Equipment', value: 10, color: '#34d399' },
-  { name: 'Design Changes', value: 15, color: '#fbbf24' },
-];
-
-export const valuationImpactData = [
-  { month: 'Jan', value: 100 },
-  { month: 'Feb', value: 102 },
-  { month: 'Mar', value: 105 },
-  { month: 'Apr', value: 99 },
-  { month: 'May', value: 101 },
-  { month: 'Jun', value: 104 },
-  { month: 'Jul', value: 108 },
-  { month: 'Aug', value: 112 },
-  { month: 'Sep', value: 110 },
-];
-
-export const impactEvents = [
+// Impact events data
+export const impactEventsData = [
   {
     id: 1,
-    project: 'East Tower Construction',
-    event: 'Foundation delay',
-    financialImpact: '-$120,000',
-    schedulingImpact: '+4 weeks',
-    roiImpact: '-0.8%',
-    date: '2024-03-10',
+    project: 'East Tower',
+    event: 'Foundation Issue',
+    financialImpact: '-$450,000',
+    schedulingImpact: '+45 days',
+    roiImpact: '-1.2%',
+    date: '2023-03-15',
     status: 'high'
   },
   {
     id: 2,
-    project: 'Westside Park Development',
-    event: 'Material price increase',
-    financialImpact: '-$85,000',
-    schedulingImpact: '+0 weeks',
-    roiImpact: '-0.5%',
-    date: '2024-04-15',
+    project: 'West Wing',
+    event: 'Material Price Increase',
+    financialImpact: '-$320,000',
+    schedulingImpact: '+0 days',
+    roiImpact: '-0.8%',
+    date: '2023-04-22',
     status: 'medium'
   },
   {
     id: 3,
-    project: 'North Bridge Repair',
-    event: 'Equipment failure',
-    financialImpact: '-$45,000',
-    schedulingImpact: '+2 weeks',
-    roiImpact: '-0.3%',
-    date: '2024-05-22',
+    project: 'North Bridge',
+    event: 'Permit Delay',
+    financialImpact: '-$175,000',
+    schedulingImpact: '+30 days',
+    roiImpact: '-0.5%',
+    date: '2023-02-18',
     status: 'medium'
   },
   {
     id: 4,
-    project: 'East Tower Construction',
-    event: 'Design optimization',
-    financialImpact: '+$75,000',
-    schedulingImpact: '-2 weeks',
-    roiImpact: '+0.4%',
-    date: '2024-06-08',
-    status: 'positive'
+    project: 'South Avenue',
+    event: 'Design Change',
+    financialImpact: '-$280,000',
+    schedulingImpact: '+15 days',
+    roiImpact: '-0.7%',
+    date: '2023-05-09',
+    status: 'low'
   },
   {
     id: 5,
-    project: 'Westside Park Development',
-    event: 'Permit delay',
-    financialImpact: '-$35,000',
-    schedulingImpact: '+3 weeks',
-    roiImpact: '-0.2%',
-    date: '2024-07-19',
-    status: 'low'
+    project: 'Downtown Heights',
+    event: 'Labor Shortage',
+    financialImpact: '-$210,000',
+    schedulingImpact: '+25 days',
+    roiImpact: '-0.6%',
+    date: '2023-06-14',
+    status: 'medium'
   }
 ];
 
-export const mitigationStrategies = [
+// Budget overruns data
+export const budgetOverrunsData = [
+  {
+    name: 'Materials',
+    value: 35,
+    color: '#FF6384'
+  },
+  {
+    name: 'Labor',
+    value: 28,
+    color: '#36A2EB'
+  },
+  {
+    name: 'Design Changes',
+    value: 22,
+    color: '#FFCE56'
+  },
+  {
+    name: 'Permits & Approvals',
+    value: 10,
+    color: '#4BC0C0'
+  },
+  {
+    name: 'Other',
+    value: 5,
+    color: '#9966FF'
+  }
+];
+
+// Mitigation strategies data
+export const mitigationStrategiesData = [
   {
     id: 1,
-    issue: 'Schedule Delays',
-    strategy: 'Implement accelerated work schedule and parallel work streams',
-    potentialSavings: '+3 weeks',
-    costToImplement: '$45,000',
-    netRoiImpact: '+0.3%',
+    issue: 'Foundation Issue',
+    strategy: 'Value Engineer Foundation Design',
+    potentialSavings: '+$320,000',
+    costToImplement: '-$75,000',
+    netRoiImpact: '+0.7%',
     status: 'proposed'
   },
   {
     id: 2,
-    issue: 'Material Cost Inflation',
-    strategy: 'Pre-purchase critical materials and establish price lock agreements',
-    potentialSavings: '$120,000',
-    costToImplement: '$15,000',
-    netRoiImpact: '+0.6%',
-    status: 'in-progress'
-  },
-  {
-    id: 3,
-    issue: 'Labor Shortages',
-    strategy: 'Revise subcontractor agreements with performance incentives',
-    potentialSavings: '+2 weeks, $85,000',
-    costToImplement: '$30,000',
+    issue: 'Material Price Surge',
+    strategy: 'Bulk Material Purchase & Storage',
+    potentialSavings: '+$260,000',
+    costToImplement: '-$110,000',
     netRoiImpact: '+0.4%',
     status: 'in-progress'
   },
   {
+    id: 3,
+    issue: 'Schedule Delays',
+    strategy: 'Accelerated Overnight Work Schedule',
+    potentialSavings: '+$180,000',
+    costToImplement: '-$140,000',
+    netRoiImpact: '+0.1%',
+    status: 'completed'
+  },
+  {
     id: 4,
-    issue: 'Design Inefficiencies',
-    strategy: 'Value engineering review of remaining project components',
-    potentialSavings: '$210,000',
-    costToImplement: '$55,000',
-    netRoiImpact: '+0.8%',
+    issue: 'Labor Shortage',
+    strategy: 'Cross-Train Existing Teams',
+    potentialSavings: '+$210,000',
+    costToImplement: '-$90,000',
+    netRoiImpact: '+0.3%',
     status: 'proposed'
   }
+];
+
+// Project options for the dropdown
+export const projectOptions = [
+  { value: 'all', label: 'All Projects' },
+  { value: 'east-tower', label: 'East Tower' },
+  { value: 'west-wing', label: 'West Wing' },
+  { value: 'north-bridge', label: 'North Bridge' },
+  { value: 'south-avenue', label: 'South Avenue' },
+  { value: 'downtown-heights', label: 'Downtown Heights' }
 ];

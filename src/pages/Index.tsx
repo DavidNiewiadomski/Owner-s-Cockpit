@@ -9,10 +9,21 @@ const Index = () => {
   
   // Calculate project statistics
   // Use 0 as default if currentProject is undefined or is the "all" option
-  const completionPercentage = (currentProject && 'completion' in currentProject) ? Number(currentProject.completion) : 0;
-  const daysRemaining = (currentProject && 'daysRemaining' in currentProject) ? currentProject.daysRemaining : 0;
-  const budgetUtilization = (currentProject && 'budgetUtilization' in currentProject) ? currentProject.budgetUtilization : 0;
-  const teamSize = (currentProject && 'team' in currentProject) ? currentProject.team.length : 0;
+  const completionPercentage = currentProject && typeof currentProject === 'object' && 'completion' in currentProject 
+    ? Number(currentProject.completion) 
+    : 0;
+    
+  const daysRemaining = currentProject && typeof currentProject === 'object' && 'daysRemaining' in currentProject 
+    ? currentProject.daysRemaining 
+    : 0;
+    
+  const budgetUtilization = currentProject && typeof currentProject === 'object' && 'budgetUtilization' in currentProject 
+    ? currentProject.budgetUtilization 
+    : 0;
+    
+  const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject 
+    ? currentProject.team.length 
+    : 0;
   
   return (
     <div className="flex min-h-screen bg-background">
