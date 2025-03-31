@@ -7,7 +7,8 @@ import {
   Calendar,
   Construction,
   FileText,
-  ArrowDown
+  ArrowDown,
+  ListChecks
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
