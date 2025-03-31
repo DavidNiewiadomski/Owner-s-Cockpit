@@ -7,11 +7,13 @@ import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { ProjectOverview } from '@/components/dashboard/ProjectOverview';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
-type DashboardInsight = {
-  title: string;
-  content: string;
-  type: "info" | "warning" | "success";
-};
+// Simple string array for insights
+const dashboardInsights: string[] = [
+  "Budget Alert: Current cost variance is +8.2% above contingency, mainly in structural materials",
+  "Schedule Update: Project is currently tracking 3 days ahead of schedule with SPI of 1.05",
+  "Quality Control: Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday",
+  "Risk Alert: Supply chain disruption identified for facade materials, mitigation plan in development"
+];
 
 const Index = () => {
   const { currentProject, selectedProject } = useProject();
@@ -32,30 +34,6 @@ const Index = () => {
   const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject && Array.isArray(currentProject.team)
     ? currentProject.team.length 
     : 24; // Default value for demo
-
-  // Dashboard insights based on Gronk's recommendations
-  const dashboardInsights: DashboardInsight[] = [
-    {
-      title: "Budget Alert",
-      content: "Current cost variance is +8.2% above contingency, mainly in structural materials",
-      type: "warning"
-    },
-    {
-      title: "Schedule Update",
-      content: "Project is currently tracking 3 days ahead of schedule with SPI of 1.05",
-      type: "success"
-    },
-    {
-      title: "Quality Control",
-      content: "Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday",
-      type: "info"
-    },
-    {
-      title: "Risk Alert",
-      content: "Supply chain disruption identified for facade materials, mitigation plan in development",
-      type: "warning"
-    }
-  ];
   
   return (
     <div className="flex min-h-screen bg-background">
@@ -68,9 +46,8 @@ const Index = () => {
         
         <main className="flex-1 p-6">
           <CollapsibleAIAssistant 
-            projectContext="Owner's Dashboard"
+            insights={dashboardInsights}
             projectName={selectedProject?.title || "All Projects"}
-            initialInsights={dashboardInsights}
           />
           
           <ProjectOverview 

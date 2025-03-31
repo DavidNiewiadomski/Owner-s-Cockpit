@@ -6,21 +6,10 @@ import { AIAssistant } from "@/components/ai/AIAssistant";
 import { BrainCircuit, ChevronDown, ChevronUp, LightbulbIcon, MessageSquare, Mic } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
-type InsightType = "warning" | "success" | "info";
-
-interface Insight {
-  title: string;
-  content: string;
-  type: InsightType;
-}
-
 interface CollapsibleAIAssistantProps {
   projectName?: string;
   insights?: string[];
   className?: string;
-  projectContext?: string;
-  initialInsights?: Insight[];
-  mode?: string;
 }
 
 export function CollapsibleAIAssistant({ 
@@ -31,26 +20,42 @@ export function CollapsibleAIAssistant({
     "Current schedule variance is within acceptable limits",
     "Equipment rental costs are 12% over budget"
   ],
-  className,
-  projectContext,
-  initialInsights,
-  mode
+  className
 }: CollapsibleAIAssistantProps) {
   const [expanded, setExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   
-  // Transform string insights into the Insight format if initialInsights not provided
-  const displayInsights: Insight[] = initialInsights || insights.map((insight, index) => ({
-    title: `Insight ${index + 1}`,
-    content: insight,
-    type: (index % 3 === 0 ? "warning" : index % 3 === 1 ? "info" : "success") as InsightType
-  }));
-
-  // Use projectContext if provided, otherwise use projectName
-  const displayProjectName = projectContext || projectName;
+  // Determine insight type based on content for styling purposes
+  const getInsightType = (text: string): "warning" | "success" | "info" => {
+    if (text.toLowerCase().includes("alert") || text.toLowerCase().includes("risk")) {
+      return "warning";
+    } else if (text.toLowerCase().includes("update") || text.toLowerCase().includes("ahead")) {
+      return "success";
+    } else {
+      return "info";
+    }
+  };
+  
+  // Extract title from insight string if it contains a colon
+  const getInsightTitle = (text: string): string => {
+    const parts = text.split(":");
+    if (parts.length > 1) {
+      return parts[0].trim();
+    }
+    return `Insight ${Math.floor(Math.random() * 100)}`;
+  };
+  
+  // Extract content from insight string if it contains a colon
+  const getInsightContent = (text: string): string => {
+    const parts = text.split(":");
+    if (parts.length > 1) {
+      return parts.slice(1).join(":").trim();
+    }
+    return text;
+  };
   
   // Handle clicking on an insight
-  const handleInsightClick = (insight: Insight) => {
+  const handleInsightClick = () => {
     setExpanded(true);
   };
   
@@ -76,7 +81,7 @@ export function CollapsibleAIAssistant({
               <div className="flex items-center gap-2">
                 <BrainCircuit className="h-5 w-5 text-construction-400" />
                 <h3 className="font-medium text-white">
-                  {expanded ? "AI Assistant" : `AI Insights for ${displayProjectName}`}
+                  {expanded ? "AI Assistant" : `AI Insights for ${projectName}`}
                 </h3>
               </div>
               <div className="flex items-center gap-2">
@@ -117,27 +122,31 @@ export function CollapsibleAIAssistant({
           {!expanded && (
             <div className="p-4 animate-fade-in">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {displayInsights.map((insight, index) => {
+                {insights.map((insight, index) => {
+                  const type = getInsightType(insight);
+                  const title = getInsightTitle(insight);
+                  const content = getInsightContent(insight);
+                  
                   const colorClass = 
-                    insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
-                    insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
+                    type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
+                    type === "success" ? "border-green-700/50 hover:border-green-600" : 
                     "border-blue-700/50 hover:border-blue-600";
                     
                   const iconColorClass = 
-                    insight.type === "warning" ? "text-amber-400" : 
-                    insight.type === "success" ? "text-green-400" : 
+                    type === "warning" ? "text-amber-400" : 
+                    type === "success" ? "text-green-400" : 
                     "text-blue-400";
                   
                   return (
                     <div 
                       key={index} 
                       className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 cursor-pointer ${colorClass}`}
-                      onClick={() => handleInsightClick(insight)}
+                      onClick={handleInsightClick}
                     >
                       <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${iconColorClass}`} />
                       <div>
-                        <p className="text-xs font-medium mb-1">{insight.title}</p>
-                        <p className="text-sm text-gray-200">{insight.content}</p>
+                        <p className="text-xs font-medium mb-1">{title}</p>
+                        <p className="text-sm text-gray-200">{content}</p>
                       </div>
                     </div>
                   );

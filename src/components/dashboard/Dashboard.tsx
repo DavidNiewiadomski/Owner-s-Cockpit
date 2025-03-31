@@ -21,7 +21,7 @@ export function Dashboard({
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
-  // Define AI insights as an array of strings
+  // Define AI insights as simple strings
   const insights: string[] = [
     "Construction delays may impact your ROI by 2.3% annually",
     "Material cost increases have affected 3 of your projects",
