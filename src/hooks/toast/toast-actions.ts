@@ -10,6 +10,10 @@ export function genId() {
   return count.toString();
 }
 
+// Instead of exporting the dispatch function directly, we'll use a mutable reference
+// that can be updated from other modules
+export const dispatchToastRef: { current: React.Dispatch<Action> | null } = { current: null };
+
 // Timeout Management
 export const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -20,10 +24,12 @@ export const addToRemoveQueue = (toastId: string, delay: number) => {
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId);
-    dispatchToast({
-      type: actionTypes.REMOVE_TOAST,
-      toastId: toastId,
-    });
+    if (dispatchToastRef.current) {
+      dispatchToastRef.current({
+        type: actionTypes.REMOVE_TOAST,
+        toastId: toastId,
+      });
+    }
   }, delay);
 
   toastTimeouts.set(toastId, timeout);
@@ -87,20 +93,22 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-// Create a mutable dispatch variable
-// This needs to be mutable and will be set by the context
-export let dispatchToast: React.Dispatch<Action>;
-
 // Standalone toast function
 export const toast = (props: ToasterToast) => {
   const id = props.id || genId();
-  dispatchToast({
-    type: actionTypes.ADD_TOAST,
-    toast: {
-      ...props,
-      id,
-      open: true,
-    },
-  });
+  
+  if (dispatchToastRef.current) {
+    dispatchToastRef.current({
+      type: actionTypes.ADD_TOAST,
+      toast: {
+        ...props,
+        id,
+        open: true,
+      },
+    });
+  } else {
+    console.error("Toast dispatch function not set. Make sure ToastProvider is mounted.");
+  }
+  
   return id;
 };

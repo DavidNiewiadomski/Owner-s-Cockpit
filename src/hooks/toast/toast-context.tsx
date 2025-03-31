@@ -8,7 +8,7 @@ import {
   initialState,
   Action
 } from "./toast-types";
-import { reducer, dispatchToast, genId } from "./toast-actions";
+import { reducer, dispatchToastRef, genId } from "./toast-actions";
 
 // Create context
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -30,11 +30,14 @@ export function ToastProvider({
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   
-  // Set the dispatch function to the exported variable
-  // This is a mutable export that will be used by the standalone toast function
-  // We need to use ts-expect-error because TypeScript doesn't like mutable exports
-  // @ts-expect-error - This is a mutable export that's used across modules
-  dispatchToast = dispatch;
+  // Set the dispatch function reference
+  React.useEffect(() => {
+    dispatchToastRef.current = dispatch;
+    return () => {
+      // Clean up when the provider unmounts
+      dispatchToastRef.current = null;
+    };
+  }, [dispatch]);
 
   const contextValue = useMemo(
     () => ({
