@@ -9,15 +9,15 @@ const Index = () => {
   
   // Calculate project statistics with safe defaults
   const completionPercentage = currentProject && typeof currentProject === 'object' && 'completion' in currentProject 
-    ? Number(currentProject.completion) 
+    ? Number(currentProject.completion) || 0
     : 0;
     
   const daysRemaining = currentProject && typeof currentProject === 'object' && 'daysRemaining' in currentProject 
-    ? Number(currentProject.daysRemaining) 
+    ? Number(currentProject.daysRemaining) || 0
     : 0;
     
   const budgetUtilization = currentProject && typeof currentProject === 'object' && 'budgetUtilization' in currentProject 
-    ? Number(currentProject.budgetUtilization) 
+    ? Number(currentProject.budgetUtilization) || 0
     : 0;
     
   const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject && Array.isArray(currentProject.team)

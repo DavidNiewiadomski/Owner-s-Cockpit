@@ -50,7 +50,7 @@ export function Dashboard({
       />
       
       <Tabs 
-        defaultValue={activeTab} 
+        defaultValue="overview" 
         onValueChange={setActiveTab}
         className="space-y-4"
       >

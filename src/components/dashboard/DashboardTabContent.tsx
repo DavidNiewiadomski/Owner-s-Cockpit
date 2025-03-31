@@ -14,6 +14,7 @@ interface DashboardTabContentProps {
 }
 
 export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentProps) {
+  // Overview tab content
   if (tab === 'overview') {
     return (
       <div className="space-y-4">
@@ -66,6 +67,7 @@ export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentPro
     );
   }
 
+  // Timeline tab content
   if (tab === 'timeline') {
     return (
       <Card>
@@ -81,6 +83,7 @@ export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentPro
     );
   }
 
+  // Budget tab content
   if (tab === 'budget') {
     return (
       <Card>
@@ -96,6 +99,7 @@ export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentPro
     );
   }
 
+  // Team tab content
   if (tab === 'team') {
     return (
       <Card>
@@ -111,6 +115,7 @@ export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentPro
     );
   }
 
+  // Risks tab content
   if (tab === 'risks') {
     return (
       <Card>
