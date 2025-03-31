@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -166,7 +165,7 @@ const InvestmentImpact = () => {
                 colors={colors}
               />
               
-              <BudgetOverrunChart data={costOverrunData} />
+              <BudgetOverrunChart data={budgetOverrunsData} />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
