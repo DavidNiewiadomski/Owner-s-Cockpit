@@ -28,6 +28,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { PropertyDetails } from '@/components/dashboard/PropertyDetails';
+import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
 
 const projects = [
   {
