@@ -23,6 +23,17 @@ import {
   projectOptions
 } from '@/utils/investmentData';
 
+// Mock data for chart colors
+const chartColors = {
+  primary: '#3b82f6',    // blue-500
+  secondary: '#22c55e',  // green-500
+  accent: '#f97316',     // orange-500
+  warning: '#f59e0b',    // amber-500
+  info: '#06b6d4',       // cyan-500
+  background: '#171717', // neutral-900
+  gridLine: '#333333'    // neutral-700
+};
+
 // Financial risks data (adding this since it's missing from imports)
 const financialRisks = {
   all: [
@@ -32,6 +43,33 @@ const financialRisks = {
     { name: 'Supply Chain Disruption', level: 'high', impact: '$850K' }
   ]
 };
+
+// Mock schedule variance data
+const scheduleVarianceData = [
+  { project: 'East Tower', originalDuration: 120, currentDuration: 145 },
+  { project: 'Green Valley', originalDuration: 90, currentDuration: 100 },
+  { project: 'Bridge Project', originalDuration: 180, currentDuration: 190 }
+];
+
+// Mock ROI trend data
+const roiTrendData = [
+  { month: 'Jan', original: 12, current: 11.5 },
+  { month: 'Feb', original: 12.5, current: 11.8 },
+  { month: 'Mar', original: 13, current: 12 },
+  { month: 'Apr', original: 13.5, current: 12.3 },
+  { month: 'May', original: 14, current: 12.7 },
+  { month: 'Jun', original: 14.2, current: 13 }
+];
+
+// Mock property valuation data
+const propertyValuationData = [
+  { month: 'Jan', initial: 100, current: 98 },
+  { month: 'Feb', initial: 100, current: 97 },
+  { month: 'Mar', initial: 100, current: 96 },
+  { month: 'Apr', initial: 100, current: 97 },
+  { month: 'May', initial: 100, current: 99 },
+  { month: 'Jun', initial: 100, current: 101 }
+];
 
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('financial');
@@ -67,23 +105,45 @@ const InvestmentImpact = () => {
     }
   ];
   
-  // Define project metrics based on the metrics data
-  const projectMetrics = {
-    roi: '14.5',
-    roiChange: -2.6,
-    irr: '12.4',
-    irrChange: -1.6,
-    paybackPeriod: '4.8',
-    paybackChange: 0.7
+  // Define metrics for investment metrics cards
+  const roiMetrics = {
+    label: "ROI",
+    original: "16.8%",
+    current: "14.5%",
+    impact: "negative" as const,
+    variance: "-2.3%"
   };
   
-  // Use the financial risks data
+  const irrMetrics = {
+    label: "IRR",
+    original: "14.0%",
+    current: "12.4%",
+    impact: "negative" as const,
+    variance: "-1.6%"
+  };
+  
+  const paybackMetrics = {
+    label: "Payback",
+    original: "4.1 yrs",
+    current: "4.8 yrs",
+    impact: "negative" as const,
+    variance: "+0.7 yrs"
+  };
+  
+  // Filter for the selected project
   const projectRisks = financialRisks[projectId as keyof typeof financialRisks] || financialRisks.all;
   
-  // Filter impact events and mitigation strategies for the selected project
-  const filteredImpactEvents = impactEventsData;
-  const filteredMitigationStrategies = mitigationStrategiesData;
+  // Handle changes to the project selection
+  const handleProjectChange = (value: string) => {
+    console.log(`Project changed to: ${value}`);
+    // This would typically update the selected project in a context or state
+  };
   
+  // Handle download report action
+  const handleDownloadReport = () => {
+    console.log('Downloading investment impact report');
+  };
+
   useEffect(() => {
     // Update analytics or load data when project changes
     console.log(`Loading investment data for project: ${projectName}`);
@@ -111,32 +171,24 @@ const InvestmentImpact = () => {
         
         <main className="flex-1 p-6">
           <InvestmentHeader 
-            label={projectName}
-            metrics={investmentMetricsData}
+            selectedProject={projectId}
+            projectOptions={projectOptions}
+            onProjectChange={handleProjectChange}
+            onDownloadReport={handleDownloadReport}
           />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <InvestmentMetricsCard 
-              label="ROI" 
-              value={`${projectMetrics.roi}%`}
-              change={projectMetrics.roiChange}
-              description="Return on Investment"
-              positive={projectMetrics.roiChange >= 0}
+              metrics={[roiMetrics]} 
+              activeAnimation={true}
             />
             <InvestmentMetricsCard 
-              label="IRR" 
-              value={`${projectMetrics.irr}%`}
-              change={projectMetrics.irrChange}
-              description="Internal Rate of Return"
-              positive={projectMetrics.irrChange >= 0}
+              metrics={[irrMetrics]} 
+              activeAnimation={true}
             />
             <InvestmentMetricsCard 
-              label="Payback" 
-              value={`${projectMetrics.paybackPeriod} yrs`}
-              change={projectMetrics.paybackChange}
-              description="Payback Period"
-              positive={projectMetrics.paybackChange <= 0}
-              inverse={true}
+              metrics={[paybackMetrics]} 
+              activeAnimation={true}
             />
           </div>
           
@@ -150,20 +202,20 @@ const InvestmentImpact = () => {
             <TabsContent value="financial" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <BudgetOverrunChart data={budgetOverrunsData} />
-                <ScheduleVarianceChart project={projectName} />
+                <ScheduleVarianceChart data={scheduleVarianceData} colors={chartColors} />
               </div>
-              <ROITrendChart project={projectName} />
+              <ROITrendChart data={roiTrendData} colors={chartColors} />
             </TabsContent>
             
             <TabsContent value="valuation" className="space-y-6">
-              <PropertyValuationChart project={projectName} />
-              <ImpactEventsTable events={filteredImpactEvents} />
+              <PropertyValuationChart data={propertyValuationData} colors={chartColors} />
+              <ImpactEventsTable events={impactEventsData} />
             </TabsContent>
             
             <TabsContent value="risk" className="space-y-6">
-              <FinancialRiskIndicators risks={projectRisks} />
+              <FinancialRiskIndicators />
               <MitigationStrategiesTable 
-                strategies={filteredMitigationStrategies} 
+                strategies={mitigationStrategiesData} 
                 onStrategyAction={handleStrategyAction} 
               />
             </TabsContent>
