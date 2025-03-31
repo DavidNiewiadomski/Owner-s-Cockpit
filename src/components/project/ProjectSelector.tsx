@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,7 +16,7 @@ export function ProjectSelector() {
   const { selectedProject, setSelectedProject, allProjects } = useProject();
   const { toast } = useToast();
 
-  const handleSelectProject = (project: typeof allProjects[0]) => {
+  const handleSelectProject = (project: typeof allProjects[0] | { id: 'all', title: 'All Projects', status: 'on-track' }) => {
     setSelectedProject(project);
     toast({
       title: "Project Changed",
@@ -37,12 +38,20 @@ export function ProjectSelector() {
           }`}></span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
+      <DropdownMenuContent align="end" className="w-[200px] bg-black border-gray-700">
+        <DropdownMenuItem
+          onClick={() => handleSelectProject({ id: 'all', title: 'All Projects', status: 'on-track' })}
+          className="flex justify-between items-center cursor-pointer hover:bg-gray-800"
+        >
+          <span className="truncate">All Projects</span>
+          {selectedProject.id === 'all' && <Check className="h-4 w-4 ml-2" />}
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="bg-gray-700" />
         {allProjects.map((project) => (
           <DropdownMenuItem
             key={project.id}
             onClick={() => handleSelectProject(project)}
-            className="flex justify-between items-center cursor-pointer"
+            className="flex justify-between items-center cursor-pointer hover:bg-gray-800"
           >
             <span className="truncate">{project.title}</span>
             {selectedProject.id === project.id && <Check className="h-4 w-4 ml-2" />}

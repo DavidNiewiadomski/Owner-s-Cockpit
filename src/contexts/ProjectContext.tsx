@@ -13,9 +13,16 @@ export interface Project {
   teamMembers: Array<{ name: string }>;
 }
 
+// Extended type for the "All Projects" option
+export type ProjectOrAll = Project | { 
+  id: 'all'; 
+  title: 'All Projects'; 
+  status: 'on-track' | 'at-risk' | 'delayed';
+};
+
 interface ProjectContextType {
-  selectedProject: Project | null;
-  setSelectedProject: (project: Project) => void;
+  selectedProject: ProjectOrAll | null;
+  setSelectedProject: (project: ProjectOrAll) => void;
   allProjects: Project[];
 }
 
@@ -23,19 +30,23 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
   // Get from localStorage or default to the first project
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
   const [allProjects, setAllProjects] = useState<Project[]>(projects);
   
   // On first load, try to get from localStorage
   useEffect(() => {
     const savedProjectId = localStorage.getItem('selectedProjectId');
     if (savedProjectId) {
-      const project = projects.find(p => p.id === savedProjectId) || null;
-      if (project) {
-        setSelectedProject(project);
+      if (savedProjectId === 'all') {
+        setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
       } else {
-        // If saved project not found, default to first project
-        setSelectedProject(projects[0] || null);
+        const project = projects.find(p => p.id === savedProjectId) || null;
+        if (project) {
+          setSelectedProject(project);
+        } else {
+          // If saved project not found, default to first project
+          setSelectedProject(projects[0] || null);
+        }
       }
     } else {
       // If no saved project, default to first project
