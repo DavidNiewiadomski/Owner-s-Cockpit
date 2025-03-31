@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentMetricsCard } from '@/components/investment/InvestmentMetricsCard';
 import { BudgetOverrunChart } from '@/components/investment/BudgetOverrunChart';
@@ -213,7 +212,7 @@ const InvestmentImpact = () => {
             </TabsContent>
             
             <TabsContent value="risk" className="space-y-6">
-              <FinancialRiskIndicators />
+              <FinancialRiskIndicators risks={projectRisks} />
               <MitigationStrategiesTable 
                 strategies={mitigationStrategiesData} 
                 onStrategyAction={handleStrategyAction} 
