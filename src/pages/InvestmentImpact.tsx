@@ -19,14 +19,44 @@ import { MitigationStrategiesTable } from '@/components/investment/MitigationStr
 // Data imports
 import {
   projectOptions,
-  investmentMetrics,
-  roiData,
-  schedulingImpactData,
-  costOverrunData,
-  valuationImpactData,
-  impactEvents,
-  mitigationStrategies
+  investmentMetricsData,
+  impactEventsData,
+  mitigationStrategiesData,
+  budgetOverrunsData
 } from '@/utils/investmentData';
+
+// Need to create these missing data sets as they are used by components but not exported in investmentData.ts
+const roiData = [
+  { month: 'Jan', original: 14.2, current: 14.2 },
+  { month: 'Feb', original: 14.3, current: 14.0 },
+  { month: 'Mar', original: 14.4, current: 13.6 },
+  { month: 'Apr', original: 14.5, current: 13.1 },
+  { month: 'May', original: 14.6, current: 12.8 },
+  { month: 'Jun', original: 14.7, current: 12.4 },
+  { month: 'Jul', original: 14.8, current: 12.0 },
+  { month: 'Aug', original: 14.9, current: 11.9 }
+];
+
+const schedulingImpactData = [
+  { project: 'East Tower', originalDuration: 120, currentDuration: 165 },
+  { project: 'West Wing', originalDuration: 90, currentDuration: 90 },
+  { project: 'North Bridge', originalDuration: 60, currentDuration: 90 },
+  { project: 'South Avenue', originalDuration: 75, currentDuration: 90 },
+  { project: 'Downtown Heights', originalDuration: 100, currentDuration: 125 }
+];
+
+const costOverrunData = budgetOverrunsData; // Using existing budgetOverrunsData as costOverrunData 
+
+const valuationImpactData = [
+  { month: 'Jan', initial: 100, current: 100 },
+  { month: 'Feb', initial: 100, current: 99 },
+  { month: 'Mar', initial: 100, current: 97 },
+  { month: 'Apr', initial: 100, current: 95 },
+  { month: 'May', initial: 100, current: 93 },
+  { month: 'Jun', initial: 100, current: 91 },
+  { month: 'Jul', initial: 100, current: 90 },
+  { month: 'Aug', initial: 100, current: 89 }
+];
 
 const InvestmentImpact = () => {
   const { toast } = useToast();
@@ -118,7 +148,7 @@ const InvestmentImpact = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <InvestmentMetricsCard 
-                metrics={investmentMetrics}
+                metrics={investmentMetricsData}
                 activeAnimation={activeAnimation}
               />
               
@@ -128,7 +158,7 @@ const InvestmentImpact = () => {
               />
             </div>
             
-            <ImpactEventsTable events={impactEvents} />
+            <ImpactEventsTable events={impactEventsData} />
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <ScheduleVarianceChart 
@@ -149,7 +179,7 @@ const InvestmentImpact = () => {
             </div>
             
             <MitigationStrategiesTable 
-              strategies={mitigationStrategies}
+              strategies={mitigationStrategiesData}
               onStrategyAction={handleStrategyAction}
             />
           </div>
