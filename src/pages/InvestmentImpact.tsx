@@ -1,190 +1,150 @@
-import React, { useState } from 'react';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
-import { useToast } from '@/hooks/use-toast';
 
-// Component imports
+import React, { useState, useEffect } from 'react';
+import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentMetricsCard } from '@/components/investment/InvestmentMetricsCard';
-import { ROITrendChart } from '@/components/investment/ROITrendChart';
-import { ImpactEventsTable } from '@/components/investment/ImpactEventsTable';
-import { ScheduleVarianceChart } from '@/components/investment/ScheduleVarianceChart';
 import { BudgetOverrunChart } from '@/components/investment/BudgetOverrunChart';
+import { ScheduleVarianceChart } from '@/components/investment/ScheduleVarianceChart';
 import { PropertyValuationChart } from '@/components/investment/PropertyValuationChart';
 import { FinancialRiskIndicators } from '@/components/investment/FinancialRiskIndicators';
+import { ROITrendChart } from '@/components/investment/ROITrendChart';
+import { ImpactEventsTable } from '@/components/investment/ImpactEventsTable';
 import { MitigationStrategiesTable } from '@/components/investment/MitigationStrategiesTable';
-
-// Data imports
-import {
-  projectOptions,
-  investmentMetricsData,
-  impactEventsData,
-  mitigationStrategiesData,
-  budgetOverrunsData
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { useProject } from '@/contexts/ProjectContext';
+import { 
+  investmentMetrics, 
+  financialRisks,
+  impactEvents,
+  mitigationStrategies
 } from '@/utils/investmentData';
 
-// Need to create these missing data sets as they are used by components but not exported in investmentData.ts
-const roiData = [
-  { month: 'Jan', original: 14.2, current: 14.2 },
-  { month: 'Feb', original: 14.3, current: 14.0 },
-  { month: 'Mar', original: 14.4, current: 13.6 },
-  { month: 'Apr', original: 14.5, current: 13.1 },
-  { month: 'May', original: 14.6, current: 12.8 },
-  { month: 'Jun', original: 14.7, current: 12.4 },
-  { month: 'Jul', original: 14.8, current: 12.0 },
-  { month: 'Aug', original: 14.9, current: 11.9 }
-];
-
-const schedulingImpactData = [
-  { project: 'East Tower', originalDuration: 120, currentDuration: 165 },
-  { project: 'West Wing', originalDuration: 90, currentDuration: 90 },
-  { project: 'North Bridge', originalDuration: 60, currentDuration: 90 },
-  { project: 'South Avenue', originalDuration: 75, currentDuration: 90 },
-  { project: 'Downtown Heights', originalDuration: 100, currentDuration: 125 }
-];
-
-const costOverrunData = budgetOverrunsData; // Using existing budgetOverrunsData as costOverrunData 
-
-const valuationImpactData = [
-  { month: 'Jan', initial: 100, current: 100 },
-  { month: 'Feb', initial: 100, current: 99 },
-  { month: 'Mar', initial: 100, current: 97 },
-  { month: 'Apr', initial: 100, current: 95 },
-  { month: 'May', initial: 100, current: 93 },
-  { month: 'Jun', initial: 100, current: 91 },
-  { month: 'Jul', initial: 100, current: 90 },
-  { month: 'Aug', initial: 100, current: 89 }
-];
-
 const InvestmentImpact = () => {
-  const { toast } = useToast();
-  const [selectedProject, setSelectedProject] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeAnimation, setActiveAnimation] = useState(false);
+  const [activeTab, setActiveTab] = useState('financial');
+  const { selectedProject } = useProject();
+  const projectId = selectedProject?.id || 'all';
+  const projectName = selectedProject?.title || 'All Projects';
   
-  // Custom color scheme for futuristic look
-  const colors = {
-    primary: '#38bdf8',
-    secondary: '#4ade80',
-    accent: '#f43f5e',
-    warning: '#fb923c',
-    info: '#a78bfa',
-    background: 'rgba(255, 255, 255, 0.05)',
-    gridLine: 'rgba(255, 255, 255, 0.1)'
-  };
+  // Create investment insights based on the project
+  const investmentInsights = [
+    {
+      title: 'ROI Forecast',
+      content: projectId === '1' ? 'East Tower ROI forecast adjusted to 18.2% (down 1.3%) due to material cost increases' :
+               projectId === '2' ? 'Green Valley ROI holding steady at 22.1% despite schedule delays' :
+               projectId === '3' ? 'Bridge project ROI projected at 15.6%, below initial target of 17%' :
+               'Portfolio ROI forecast adjusted to 19.5% (down 0.8%) due to market conditions',
+      type: 'info' as const
+    },
+    {
+      title: 'Budget Alert',
+      content: projectId === '1' ? 'East Tower contingency fund usage at 62%, exceeding projected 40% at this stage' :
+               projectId === '2' ? 'Green Valley budget line items for landscaping exceed allocation by 23%' :
+               projectId === '3' ? 'Bridge project emergency reinforcement costs require budget reallocation' :
+               'Three projects currently exceeding quarterly budget allocation by >15%',
+      type: 'warning' as const
+    },
+    {
+      title: 'Market Impact',
+      content: projectId === '1' ? 'Luxury condo market showing 6% appreciation, positive for East Tower valuation' :
+               projectId === '2' ? 'Sustainable development tax incentives increase Green Valley projected returns' :
+               projectId === '3' ? 'Infrastructure funding increase approved, positive for Bridge project financing' :
+               'Construction material costs stabilizing, positive outlook for Q3 procurement',
+      type: 'success' as const
+    }
+  ];
   
-  // Effect for animation states
+  // Get metrics for the selected project
+  const projectMetrics = investmentMetrics[projectId as keyof typeof investmentMetrics] || investmentMetrics.all;
+  const projectRisks = financialRisks[projectId as keyof typeof financialRisks] || financialRisks.all;
+  
+  // Filter impact events and mitigation strategies for the selected project
+  const filteredImpactEvents = projectId === 'all' 
+    ? impactEvents 
+    : impactEvents.filter(event => event.projectId === projectId || event.projectId === 'all');
+    
+  const filteredMitigationStrategies = projectId === 'all'
+    ? mitigationStrategies
+    : mitigationStrategies.filter(strategy => strategy.projectId === projectId || strategy.projectId === 'all');
+  
   useEffect(() => {
-    setActiveAnimation(true);
-    
-    const interval = setInterval(() => {
-      setActiveAnimation(prev => !prev);
-    }, 8000);
-    
-    return () => clearInterval(interval);
-  }, []);
+    // Update analytics or load data when project changes
+    console.log(`Loading investment data for project: ${projectName}`);
+  }, [projectId, projectName]);
   
-  const handleStrategyAction = (id: number, action: string) => {
-    toast({
-      title: `Strategy ${action}`,
-      description: `Mitigation strategy #${id} has been ${action.toLowerCase()}`,
-      duration: 3000,
-    });
-  };
-  
-  const handleDownloadReport = () => {
-    toast({
-      title: "Report Downloading",
-      description: "Investment impact analysis report is being generated",
-      duration: 3000,
-    });
-  };
-
-  const handleViewScenario = (scenarioId: string) => {
-    toast({
-      id: crypto.randomUUID(),
-      title: "Scenario Analysis",
-      description: `Viewing detailed analysis for scenario ${scenarioId}`,
-      duration: 3000,
-    });
-  };
-
-  const handleRunSimulation = () => {
-    toast({
-      id: crypto.randomUUID(),
-      title: "Simulation In Progress",
-      description: "Running investment impact simulation with updated parameters",
-      duration: 3000,
-    });
-  };
-
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1">
         <DashboardHeader 
           title="Investment Impact" 
-          subtitle="Track the performance of your investments"
-          onSearch={setSearchTerm} 
+          subtitle="Financial analysis and risk assessment"
         />
         
-        <main className="flex-1 overflow-y-auto p-6 bg-black">
-          <div className="max-w-7xl mx-auto">
-            <CollapsibleAIAssistant 
-              projectName="investment portfolio"
-              insights={[
-                "Schedule delays have reduced projected IRR by 1.1%",
-                "Material cost increases are the primary driver of budget overruns",
-                "Implementing proposed mitigation strategies could recover 0.7% ROI",
-                "Cash flow projections indicate a 3-month delay to break-even point"
-              ]}
+        <CollapsibleAIAssistant 
+          projectContext="Investment Impact"
+          projectName={projectName}
+          initialInsights={investmentInsights}
+        />
+        
+        <main className="flex-1 p-6">
+          <InvestmentHeader 
+            projectName={projectName} 
+            metrics={projectMetrics}
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <InvestmentMetricsCard 
+              title="ROI" 
+              value={`${projectMetrics.roi}%`}
+              change={projectMetrics.roiChange}
+              description="Return on Investment"
+              positive={projectMetrics.roiChange >= 0}
             />
-            
-            <InvestmentHeader 
-              selectedProject={selectedProject}
-              projectOptions={projectOptions}
-              onProjectChange={setSelectedProject}
-              onDownloadReport={handleDownloadReport}
+            <InvestmentMetricsCard 
+              title="IRR" 
+              value={`${projectMetrics.irr}%`}
+              change={projectMetrics.irrChange}
+              description="Internal Rate of Return"
+              positive={projectMetrics.irrChange >= 0}
             />
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <InvestmentMetricsCard 
-                metrics={investmentMetricsData}
-                activeAnimation={activeAnimation}
-              />
-              
-              <ROITrendChart 
-                data={roiData}
-                colors={colors}
-              />
-            </div>
-            
-            <ImpactEventsTable events={impactEventsData} />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <ScheduleVarianceChart 
-                data={schedulingImpactData}
-                colors={colors}
-              />
-              
-              <BudgetOverrunChart data={budgetOverrunsData} />
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <PropertyValuationChart 
-                data={valuationImpactData}
-                colors={colors}
-              />
-              
-              <FinancialRiskIndicators />
-            </div>
-            
-            <MitigationStrategiesTable 
-              strategies={mitigationStrategiesData}
-              onStrategyAction={handleStrategyAction}
+            <InvestmentMetricsCard 
+              title="Payback" 
+              value={`${projectMetrics.paybackPeriod} yrs`}
+              change={projectMetrics.paybackChange}
+              description="Payback Period"
+              positive={projectMetrics.paybackChange <= 0}
+              inverse
             />
           </div>
+          
+          <Tabs defaultValue="financial" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="bg-gray-800">
+              <TabsTrigger value="financial">Financial Impact</TabsTrigger>
+              <TabsTrigger value="valuation">Property Valuation</TabsTrigger>
+              <TabsTrigger value="risk">Risk Analysis</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="financial" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <BudgetOverrunChart projectId={projectId} />
+                <ScheduleVarianceChart projectId={projectId} />
+              </div>
+              <ROITrendChart projectId={projectId} />
+            </TabsContent>
+            
+            <TabsContent value="valuation" className="space-y-6">
+              <PropertyValuationChart projectId={projectId} />
+              <ImpactEventsTable events={filteredImpactEvents} />
+            </TabsContent>
+            
+            <TabsContent value="risk" className="space-y-6">
+              <FinancialRiskIndicators risks={projectRisks} />
+              <MitigationStrategiesTable strategies={filteredMitigationStrategies} />
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
     </div>

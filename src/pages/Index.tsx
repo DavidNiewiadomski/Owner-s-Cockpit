@@ -3,6 +3,7 @@ import React from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { useProject } from '@/contexts/ProjectContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
 
 const Index = () => {
   const { currentProject } = useProject();
@@ -27,15 +28,20 @@ const Index = () => {
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
-      
-      <main className="flex-1 p-6 pt-0">
-        <Dashboard 
-          completionPercentage={completionPercentage}
-          daysRemaining={daysRemaining}
-          budgetUtilization={budgetUtilization}
-          teamSize={teamSize}
+      <div className="flex-1">
+        <DashboardHeader 
+          title="Dashboard" 
+          subtitle="Overview of your projects and properties"
         />
-      </main>
+        <main className="flex-1 p-6">
+          <Dashboard 
+            completionPercentage={completionPercentage}
+            daysRemaining={daysRemaining}
+            budgetUtilization={budgetUtilization}
+            teamSize={teamSize}
+          />
+        </main>
+      </div>
     </div>
   );
 };
