@@ -29,7 +29,6 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
   
-  // Get project-specific data based on selected project
   const projectId = selectedProject?.id || 'all';
   const timelineEvents = projectTimelineEvents[projectId as keyof typeof projectTimelineEvents] || projectTimelineEvents['all'];
   const documents = projectDocuments[projectId as keyof typeof projectDocuments] || projectDocuments['all'];
@@ -52,7 +51,6 @@ const Index = () => {
     });
   };
 
-  // Generate project-specific insights
   const projectInsights = [
     `Budget variance is currently ${projectId === '1' ? '2.7% under budget' : projectId === '2' ? '1.5% over budget' : projectId === '3' ? '0.8% under budget' : '3.2% under budget'} for ${selectedProject?.title || 'this project'}`,
     `Labor productivity is ${projectId === '1' ? '15%' : projectId === '2' ? '8%' : projectId === '3' ? '10%' : '12%'} above industry benchmark in ${selectedProject?.title || 'this project'}`,
@@ -60,8 +58,6 @@ const Index = () => {
     `Schedule compliance is currently at ${projectId === '1' ? '95%' : projectId === '2' ? '89%' : projectId === '3' ? '92%' : '94%'} for ${selectedProject?.title || 'this project'}`
   ];
 
-  // Fix for the Type 'string | number' is not assignable to type 'number' error
-  // Ensure completionPercentage is always a number
   const completionPercentage = typeof propertyData.completionPercentage === 'string' 
     ? parseFloat(propertyData.completionPercentage) 
     : propertyData.completionPercentage || 0;
