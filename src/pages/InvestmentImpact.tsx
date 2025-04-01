@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -380,7 +381,7 @@ const InvestmentImpact = () => {
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetContent 
                 side="right" 
-                className="w-[400px] sm:w-[540px] max-w-[90vw] p-0 bg-gray-900 border-gray-700 text-white overflow-hidden"
+                className="w-[400px] sm:w-[540px] max-w-[90vw] p-0 bg-transparent border-0 text-white overflow-hidden"
               >
                 <SheetHeader className="p-4 border-b border-gray-700 bg-gradient-to-r from-gray-800 to-gray-900">
                   <SheetTitle className="text-white flex items-center gap-2">
@@ -388,7 +389,7 @@ const InvestmentImpact = () => {
                     AI Investment Assistant
                   </SheetTitle>
                 </SheetHeader>
-                <div className="h-[calc(100vh-5rem)] overflow-hidden">
+                <div className="h-[calc(100vh-5rem)] overflow-hidden bg-gray-900 border-l border-gray-700">
                   <AIAssistant />
                 </div>
               </SheetContent>
