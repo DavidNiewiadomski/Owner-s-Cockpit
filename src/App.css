@@ -42,13 +42,13 @@
   color: #888;
 }
 
-/* Ensure consistent black background */
-html, body, #app, #root, main, .bg-gray-900, .bg-gray-800, .bg-gray-850, .bg-gray-950, .bg-gray-750 {
+/* Force black background everywhere */
+html, body, #app, #root, main {
   background-color: #000000 !important;
 }
 
 /* Force cards and UI components to have black backgrounds */
-.card, .bg-card, [class*="bg-gray-"], .bg-background {
+.card, .bg-card, [class*="bg-gray-"], .bg-background, .bg-gradient-radial {
   background-color: #000000 !important;
 }
 
@@ -57,3 +57,27 @@ html, body, #app, #root, main, .bg-gray-900, .bg-gray-800, .bg-gray-850, .bg-gra
   background-color: #000000 !important;
   opacity: 1 !important;
 }
+
+/* Ensure any nested elements also have black backgrounds */
+div[class*="card"], 
+div[class*="container"], 
+section, 
+header, 
+footer, 
+main, 
+nav, 
+aside {
+  background-color: #000000 !important;
+}
+
+/* Force shadcn components to have black backgrounds */
+[data-radix-popper-content-wrapper] * {
+  background-color: #000000 !important;
+}
+
+/* Override specific chart backgrounds */
+.recharts-surface,
+.recharts-default-tooltip {
+  background-color: #000000 !important;
+}
+

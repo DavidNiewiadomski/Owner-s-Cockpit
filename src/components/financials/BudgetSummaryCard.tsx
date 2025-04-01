@@ -35,14 +35,14 @@ export function BudgetSummaryCard() {
   };
   
   return (
-    <Card className="glass-card border-cyan-900/30">
-      <CardHeader>
+    <Card className="bg-black border-cyan-900/30">
+      <CardHeader className="bg-black">
         <CardTitle className="text-blue-300">Budget Summary</CardTitle>
         <CardDescription>
           Financial overview for {selectedProject?.title || "All Projects"}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="bg-black space-y-4">
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-gray-400">Original Budget:</span>
@@ -76,7 +76,7 @@ export function BudgetSummaryCard() {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="text-xs text-gray-500 border-t border-cyan-900/30">
+      <CardFooter className="bg-black text-xs text-gray-500 border-t border-cyan-900/30">
         Last updated: June 15, 2023
       </CardFooter>
     </Card>

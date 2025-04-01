@@ -28,14 +28,14 @@ export function InvoiceStatusCard() {
   };
   
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Invoicing Status</CardTitle>
+    <Card className="h-full bg-black border-cyan-900/30">
+      <CardHeader className="bg-black">
+        <CardTitle className="text-blue-300">Invoicing Status</CardTitle>
         <CardDescription>
           Financial transaction tracking for {selectedProject?.title || "All Projects"}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="bg-black space-y-6">
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Paid Invoices</span>
@@ -69,7 +69,7 @@ export function InvoiceStatusCard() {
           </div>
         </div>
         
-        <div className="pt-2 border-t">
+        <div className="pt-2 border-t border-cyan-900/30">
           <div className="flex justify-between items-center text-sm">
             <span className="font-medium">Next payment due:</span>
             <span>June 30, 2023</span>

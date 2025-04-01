@@ -80,7 +80,7 @@ const BudgetFinancials = () => {
     <div className="flex h-screen bg-black">
       <SidebarNavigation />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-black">
         <DashboardHeader onSearch={setSearchTerm} />
         
         <CollapsibleAIAssistant 
@@ -89,7 +89,7 @@ const BudgetFinancials = () => {
           initialInsights={budgetInsights}
         />
         
-        <main className="flex-1 overflow-y-auto p-6 bg-gradient-radial from-black to-gray-950">
+        <main className="flex-1 overflow-y-auto p-6 bg-black">
           <motion.div 
             className="max-w-7xl mx-auto"
             initial="hidden"
@@ -149,12 +149,12 @@ const BudgetFinancials = () => {
             </motion.div>
             
             <motion.div variants={itemVariants}>
-              <Card className="mb-6 glass-card border-cyan-900/30 hover-scale">
-                <CardHeader>
+              <Card className="mb-6 bg-black border-cyan-900/30 hover-scale">
+                <CardHeader className="bg-black">
                   <CardTitle className="text-blue-300">Detailed Cost Breakdown</CardTitle>
                   <CardDescription>Itemized costs by category for {projectName}</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="bg-black">
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
@@ -244,7 +244,7 @@ const BudgetFinancials = () => {
                     </Table>
                   </div>
                 </CardContent>
-                <CardFooter className="text-sm text-gray-500 border-t border-cyan-900/30">
+                <CardFooter className="bg-black text-sm text-gray-500 border-t border-cyan-900/30">
                   Last updated: June 15, 2023
                 </CardFooter>
               </Card>

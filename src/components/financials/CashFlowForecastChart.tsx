@@ -123,14 +123,14 @@ export function CashFlowForecastChart() {
   };
   
   return (
-    <Card className="h-full glass-card border-cyan-900/30">
-      <CardHeader>
+    <Card className="h-full bg-black border-cyan-900/30">
+      <CardHeader className="bg-black">
         <CardTitle className="text-blue-300">Cash Flow Forecast</CardTitle>
         <CardDescription>
           Monthly cash projections for {projectName}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="bg-black">
         <div className="h-[300px]">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
@@ -158,7 +158,7 @@ export function CashFlowForecastChart() {
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black/90 p-2 shadow-blue-900/20 shadow-lg backdrop-blur-sm">
+                        <div className="rounded-lg border border-cyan-800/50 bg-black p-2 shadow-blue-900/20 shadow-lg">
                           <div className="font-medium text-blue-300">{label}</div>
                           <div className="text-xs text-cyan-200 mt-1">
                             <div className="text-emerald-400">
