@@ -2,17 +2,7 @@
 import React from 'react';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
 import { useToast } from '@/hooks/use-toast';
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  progress: number;
-  status: 'on-track' | 'at-risk' | 'delayed';
-  dueDate: string;
-  teamMembers: { name: string }[];
-  priority: string;
-}
+import { Project } from '@/data/projects/projectData';
 
 interface ProjectsSectionProps {
   projects: Project[];

@@ -1,23 +1,12 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { projects } from '@/data/index';
-
-// Define the project type
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  progress: number;
-  status: 'on-track' | 'at-risk' | 'delayed';
-  dueDate: string;
-  teamMembers: Array<{ name: string }>;
-}
+import { projects, Project } from '@/data/projects/projectData';
 
 // Extended type for the "All Projects" option
 export type ProjectOrAll = Project | { 
   id: 'all'; 
   title: 'All Projects'; 
-  status: 'on-track' | 'at-risk' | 'delayed';
+  status: 'on-track' | 'at-risk' | 'delayed' | 'completed' | 'upcoming';
 };
 
 interface ProjectContextType {
