@@ -1,256 +1,249 @@
-
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { investmentAllocationData } from '@/data/investment/investmentData';
-import { Layer, Trend, Filter } from 'lucide-react';
-
-const allocationHistory = [
-  { year: '2020', Land: 30, Construction: 45, Design: 8, Permits: 7, Contingency: 8, Other: 2 },
-  { year: '2021', Land: 32, Construction: 43, Design: 9, Permits: 6, Contingency: 7, Other: 3 },
-  { year: '2022', Land: 35, Construction: 40, Design: 10, Permits: 5, Contingency: 7, Other: 3 },
-];
-
-const targetAllocation = [
-  { name: 'Land Acquisition', target: 33, actual: 35, variance: 2 },
-  { name: 'Construction', target: 42, actual: 40, variance: -2 },
-  { name: 'Design & Engineering', target: 11, actual: 10, variance: -1 },
-  { name: 'Permits & Fees', target: 4, actual: 5, variance: 1 },
-  { name: 'Contingency', target: 8, actual: 7, variance: -1 },
-  { name: 'Other', target: 2, actual: 3, variance: 1 },
-];
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
+import React from 'react';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import {
+  BarChart,
+  Building2,
+  Home,
+  Layers,
+  TrendingUp,
+  CircleDollarSign
+} from 'lucide-react';
 
 export function InvestmentAllocationContent() {
-  const [timeframe, setTimeframe] = useState('current');
-  
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
-    const RADIAN = Math.PI / 180;
-    const radius = outerRadius * 0.8;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-    
-    return (
-      <text 
-        x={x} 
-        y={y} 
-        fill="#fff"
-        textAnchor={x > cx ? 'start' : 'end'} 
-        dominantBaseline="central"
-        fontSize="12"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-        <h2 className="text-xl font-semibold text-white mb-4 sm:mb-0">Investment Allocation Breakdown</h2>
-        <div className="flex space-x-2">
-          <Button 
-            variant={timeframe === 'current' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setTimeframe('current')}
-            className={timeframe !== 'current' ? "border-gray-700 bg-gray-900" : ""}
-          >
-            Current
-          </Button>
-          <Button 
-            variant={timeframe === 'historical' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setTimeframe('historical')}
-            className={timeframe !== 'historical' ? "border-gray-700 bg-gray-900" : ""}
-          >
-            Historical
-          </Button>
-          <Button 
-            variant={timeframe === 'target' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => setTimeframe('target')}
-            className={timeframe !== 'target' ? "border-gray-700 bg-gray-900" : ""}
-          >
-            Target vs Actual
-          </Button>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="p-6 bg-gray-900 border-gray-800">
+          <h3 className="text-lg font-semibold mb-4">Investment Allocation by Property Type</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <div className="flex items-center">
+                  <Building2 className="h-4 w-4 mr-2 text-blue-500" />
+                  <span className="text-sm">Commercial</span>
+                </div>
+                <span className="text-sm font-medium">42%</span>
+              </div>
+              <Progress value={42} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <div className="flex items-center">
+                  <Home className="h-4 w-4 mr-2 text-green-500" />
+                  <span className="text-sm">Residential</span>
+                </div>
+                <span className="text-sm font-medium">28%</span>
+              </div>
+              <Progress value={28} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <div className="flex items-center">
+                  <Layers className="h-4 w-4 mr-2 text-amber-500" />
+                  <span className="text-sm">Infrastructure</span>
+                </div>
+                <span className="text-sm font-medium">18%</span>
+              </div>
+              <Progress value={18} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <div className="flex items-center">
+                  <TrendingUp className="h-4 w-4 mr-2 text-purple-500" />
+                  <span className="text-sm">Mixed-Use</span>
+                </div>
+                <span className="text-sm font-medium">12%</span>
+              </div>
+              <Progress value={12} className="h-2" />
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="p-6 bg-gray-900 border-gray-800">
+          <h3 className="text-lg font-semibold mb-4">Investment Allocation by Region</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">North America</span>
+                <span className="text-sm font-medium">45%</span>
+              </div>
+              <Progress value={45} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Europe</span>
+                <span className="text-sm font-medium">30%</span>
+              </div>
+              <Progress value={30} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Asia Pacific</span>
+                <span className="text-sm font-medium">15%</span>
+              </div>
+              <Progress value={15} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Latin America</span>
+                <span className="text-sm font-medium">10%</span>
+              </div>
+              <Progress value={10} className="h-2" />
+            </div>
+          </div>
+        </Card>
       </div>
-
-      {timeframe === 'current' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="md:col-span-2 bg-black border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-white">Current Allocation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={investmentAllocationData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={renderCustomizedLabel}
-                      outerRadius={120}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {investmentAllocationData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      formatter={(value) => [`${value}%`, '']}
-                      contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
-                    />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-black border-gray-800">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-white">Allocation Summary</CardTitle>
-              <Layer className="h-4 w-4 text-gray-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {investmentAllocationData.map((item, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div 
-                        className="w-3 h-3 rounded-full mr-2" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      />
-                      <span className="text-gray-300">{item.name}</span>
-                    </div>
-                    <Badge 
-                      variant="outline" 
-                      className="bg-gray-900/50 text-gray-200 border-gray-700"
-                    >
-                      {item.value}%
-                    </Badge>
-                  </div>
-                ))}
-                <div className="pt-4 mt-4 border-t border-gray-800">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-white">Total Investment</span>
-                    <span className="font-bold text-white">$38.2M</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      
+      <Card className="p-6 bg-gray-900 border-gray-800">
+        <h3 className="text-lg font-semibold mb-4">Investment Performance by Project Stage</h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-medium">Planning</h4>
+              <CircleDollarSign className="h-5 w-5 text-blue-400" />
+            </div>
+            <p className="text-2xl font-bold">$12.4M</p>
+            <p className="text-xs text-gray-400 mt-1">8 projects</p>
+          </div>
+          
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-medium">Development</h4>
+              <CircleDollarSign className="h-5 w-5 text-amber-400" />
+            </div>
+            <p className="text-2xl font-bold">$45.8M</p>
+            <p className="text-xs text-gray-400 mt-1">12 projects</p>
+          </div>
+          
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-medium">Construction</h4>
+              <CircleDollarSign className="h-5 w-5 text-green-400" />
+            </div>
+            <p className="text-2xl font-bold">$78.2M</p>
+            <p className="text-xs text-gray-400 mt-1">15 projects</p>
+          </div>
+          
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-sm font-medium">Operational</h4>
+              <CircleDollarSign className="h-5 w-5 text-purple-400" />
+            </div>
+            <p className="text-2xl font-bold">$103.6M</p>
+            <p className="text-xs text-gray-400 mt-1">10 projects</p>
+          </div>
         </div>
-      )}
-
-      {timeframe === 'historical' && (
-        <Card className="bg-black border-gray-800">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-white">Historical Allocation Trends</CardTitle>
-            <Button variant="outline" size="sm" className="border-gray-700 bg-gray-900">
-              <Filter className="h-4 w-4 mr-2" />
-              Filter
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="h-96">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={allocationHistory}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="year" stroke="#666" />
-                  <YAxis tickFormatter={(value) => `${value}%`} stroke="#666" />
-                  <Tooltip 
-                    formatter={(value) => [`${value}%`, '']}
-                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
-                  />
-                  <Legend />
-                  <Bar dataKey="Land" name="Land Acquisition" stackId="a" fill="#0088FE" />
-                  <Bar dataKey="Construction" name="Construction" stackId="a" fill="#00C49F" />
-                  <Bar dataKey="Design" name="Design & Engineering" stackId="a" fill="#FFBB28" />
-                  <Bar dataKey="Permits" name="Permits & Fees" stackId="a" fill="#FF8042" />
-                  <Bar dataKey="Contingency" name="Contingency" stackId="a" fill="#8884d8" />
-                  <Bar dataKey="Other" name="Other" stackId="a" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {timeframe === 'target' && (
-        <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">Target vs. Actual Allocation</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-800">
-                    <th className="py-3 text-left text-gray-400">Category</th>
-                    <th className="py-3 text-right text-gray-400">Target %</th>
-                    <th className="py-3 text-right text-gray-400">Actual %</th>
-                    <th className="py-3 text-right text-gray-400">Variance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {targetAllocation.map((item, index) => (
-                    <tr key={index} className="border-b border-gray-800">
-                      <td className="py-3 font-medium text-white">{item.name}</td>
-                      <td className="py-3 text-right text-gray-300">{item.target}%</td>
-                      <td className="py-3 text-right text-white">{item.actual}%</td>
-                      <td className="py-3 text-right">
-                        <div className="flex items-center justify-end">
-                          {item.variance > 0 ? (
-                            <Badge variant="outline" className="bg-amber-900/20 text-amber-400 border-amber-700/30">
-                              +{item.variance}%
-                            </Badge>
-                          ) : item.variance < 0 ? (
-                            <Badge variant="outline" className="bg-blue-900/20 text-blue-400 border-blue-700/30">
-                              {item.variance}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="bg-gray-900/20 text-gray-400 border-gray-700/30">
-                              0%
-                            </Badge>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-6">
-              <div className="text-sm text-gray-400 mb-2">Variance Legend</div>
-              <div className="flex space-x-4">
-                <div className="flex items-center">
-                  <Badge variant="outline" className="bg-amber-900/20 text-amber-400 border-amber-700/30 mr-2">
-                    +
-                  </Badge>
-                  <span className="text-sm text-gray-300">Over-allocated</span>
-                </div>
-                <div className="flex items-center">
-                  <Badge variant="outline" className="bg-blue-900/20 text-blue-400 border-blue-700/30 mr-2">
-                    -
-                  </Badge>
-                  <span className="text-sm text-gray-300">Under-allocated</span>
-                </div>
+      </Card>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="p-6 bg-gray-900 border-gray-800">
+          <h3 className="text-lg font-semibold mb-4">Investment by Risk Profile</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Low Risk</span>
+                <span className="text-sm font-medium">35%</span>
               </div>
+              <Progress value={35} className="h-2 bg-gray-800">
+                <div className="h-full bg-blue-500 rounded-full" />
+              </Progress>
             </div>
-          </CardContent>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Medium Risk</span>
+                <span className="text-sm font-medium">45%</span>
+              </div>
+              <Progress value={45} className="h-2 bg-gray-800">
+                <div className="h-full bg-amber-500 rounded-full" />
+              </Progress>
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">High Risk</span>
+                <span className="text-sm font-medium">20%</span>
+              </div>
+              <Progress value={20} className="h-2 bg-gray-800">
+                <div className="h-full bg-red-500 rounded-full" />
+              </Progress>
+            </div>
+          </div>
         </Card>
-      )}
+        
+        <Card className="p-6 bg-gray-900 border-gray-800">
+          <h3 className="text-lg font-semibold mb-4">Investment by Funding Source</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Equity</span>
+                <span className="text-sm font-medium">40%</span>
+              </div>
+              <Progress value={40} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Debt</span>
+                <span className="text-sm font-medium">35%</span>
+              </div>
+              <Progress value={35} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Mezzanine</span>
+                <span className="text-sm font-medium">15%</span>
+              </div>
+              <Progress value={15} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Government</span>
+                <span className="text-sm font-medium">10%</span>
+              </div>
+              <Progress value={10} className="h-2" />
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="p-6 bg-gray-900 border-gray-800">
+          <h3 className="text-lg font-semibold mb-4">Investment by Timeline</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Short-term (< 2 years)</span>
+                <span className="text-sm font-medium">25%</span>
+              </div>
+              <Progress value={25} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Medium-term (2-5 years)</span>
+                <span className="text-sm font-medium">45%</span>
+              </div>
+              <Progress value={45} className="h-2" />
+            </div>
+            
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm">Long-term (> 5 years)</span>
+                <span className="text-sm font-medium">30%</span>
+              </div>
+              <Progress value={30} className="h-2" />
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

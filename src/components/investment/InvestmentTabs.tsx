@@ -27,7 +27,7 @@ export function InvestmentTabs({
 }: InvestmentTabsProps) {
   return (
     <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
-      <TabsList className="bg-gray-900 border border-gray-800">
+      <TabsList className="bg-black border border-gray-800">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="roi">ROI Analysis</TabsTrigger>
         <TabsTrigger value="allocation">Investment Allocation</TabsTrigger>

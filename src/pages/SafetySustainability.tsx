@@ -53,7 +53,7 @@ const SafetySustainability = () => {
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
-      <ScrollArea className="h-[calc(100vh-11rem)]">
+      <ScrollArea className="h-[calc(100vh-11rem)] bg-black">
         <Tabs defaultValue="safety" className="w-full">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
             <div>
@@ -61,22 +61,22 @@ const SafetySustainability = () => {
               <p className="text-gray-400">Monitor and manage project safety and sustainability metrics</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700">
+              <Button variant="outline" size="sm" className="bg-black border-gray-700">
                 <Calendar className="h-4 w-4 mr-2" />
                 Schedule Inspection
               </Button>
-              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700">
+              <Button variant="outline" size="sm" className="bg-black border-gray-700">
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
               </Button>
-              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700">
+              <Button variant="outline" size="sm" className="bg-black border-gray-700">
                 <FileText className="h-4 w-4 mr-2" />
                 Safety Documents
               </Button>
             </div>
           </div>
           
-          <TabsList className="bg-gray-900 mb-6">
+          <TabsList className="bg-black mb-6 border border-gray-800">
             <TabsTrigger value="safety" className="data-[state=active]:bg-cyan-900 data-[state=active]:text-white">
               <ShieldCheck className="w-4 h-4 mr-2" />
               Safety
@@ -87,7 +87,7 @@ const SafetySustainability = () => {
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="safety" className="mt-0 pb-8">
+          <TabsContent value="safety" className="mt-0 pb-8 bg-black">
             <SafetyTabContent 
               safetyMetrics={safetyMetrics}
               safetyCerts={safetyCertifications}
@@ -96,7 +96,7 @@ const SafetySustainability = () => {
             />
           </TabsContent>
           
-          <TabsContent value="sustainability" className="mt-0 pb-8">
+          <TabsContent value="sustainability" className="mt-0 pb-8 bg-black">
             <SustainabilityTabContent 
               sustainabilityMetrics={sustainabilityMetrics}
               sustainabilityCerts={sustainabilityCertifications}

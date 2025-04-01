@@ -61,10 +61,10 @@ export function SustainabilityTabContent({
         initialInsights={sustainabilityInsights}
       />
       
-      <main className="flex-1 overflow-y-auto p-6">
+      <main className="flex-1 overflow-y-auto p-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Energy Efficiency</div>
                 <Zap className="h-5 w-5 text-yellow-500" />
@@ -73,7 +73,7 @@ export function SustainabilityTabContent({
               <Progress value={sustainabilityMetrics.energyEfficiency} className="h-2 mt-2" />
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Water Conservation</div>
                 <DropletIcon className="h-5 w-5 text-blue-500" />
@@ -82,7 +82,7 @@ export function SustainabilityTabContent({
               <Progress value={sustainabilityMetrics.waterConservation} className="h-2 mt-2" />
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Waste Reduction</div>
                 <Recycle className="h-5 w-5 text-green-500" />
@@ -91,7 +91,7 @@ export function SustainabilityTabContent({
               <Progress value={sustainabilityMetrics.wasteReduction} className="h-2 mt-2" />
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Renewable Energy</div>
                 <Sun className="h-5 w-5 text-amber-500" />
@@ -100,7 +100,7 @@ export function SustainabilityTabContent({
               <Progress value={sustainabilityMetrics.renewableEnergy} className="h-2 mt-2" />
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Carbon Footprint</div>
                 <Leaf className="h-5 w-5 text-green-500" />
@@ -110,7 +110,7 @@ export function SustainabilityTabContent({
             </Card>
           </div>
           
-          <Card className="p-6 bg-gray-900 border-gray-800 mb-6">
+          <Card className="p-6 bg-black border-gray-800 mb-6">
             <h2 className="text-xl font-semibold mb-4">Sustainability Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex flex-col space-y-3">
@@ -187,10 +187,10 @@ export function SustainabilityTabContent({
             </div>
           </Card>
           
-          <Card className="p-6 bg-gray-900 border-gray-800">
+          <Card className="p-6 bg-black border-gray-800">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Sustainability Certifications</h2>
-              <Button variant="outline" className="text-xs h-8 bg-gray-800 border-gray-700 hover:bg-gray-700">
+              <Button variant="outline" className="text-xs h-8 bg-black border-gray-700 hover:bg-black">
                 <FileText className="h-3.5 w-3.5 mr-1" />
                 Download Certificates
               </Button>

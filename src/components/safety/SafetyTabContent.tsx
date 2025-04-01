@@ -72,10 +72,10 @@ export function SafetyTabContent({
         initialInsights={safetyInsights}
       />
       
-      <main className="flex-1 overflow-y-auto p-6">
+      <main className="flex-1 overflow-y-auto p-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Safety Score</div>
                 <ShieldCheck className="h-5 w-5 text-green-500" />
@@ -84,7 +84,7 @@ export function SafetyTabContent({
               <Progress value={safetyMetrics.safetyScore} className="h-2 mt-2" />
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Days Without Incident</div>
                 <Check className="h-5 w-5 text-green-500" />
@@ -93,7 +93,7 @@ export function SafetyTabContent({
               <div className="text-sm text-gray-500 mt-2">Last incident: {safetyMetrics.daysWithoutIncident} days ago</div>
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Open Safety Issues</div>
                 <AlertTriangle className="h-5 w-5 text-amber-500" />
@@ -102,7 +102,7 @@ export function SafetyTabContent({
               <div className="text-sm text-gray-500 mt-2">{safetyMetrics.openSafetyIssues === 0 ? 'All clear!' : `${safetyMetrics.openSafetyIssues} issues need attention`}</div>
             </Card>
             
-            <Card className="p-4 bg-gray-900 border-gray-800">
+            <Card className="p-4 bg-black border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-sm font-medium text-gray-400">Inspections Passed</div>
                 <FileText className="h-5 w-5 text-blue-500" />
@@ -112,10 +112,10 @@ export function SafetyTabContent({
             </Card>
           </div>
           
-          <Card className="p-6 bg-gray-900 border-gray-800 mb-6">
+          <Card className="p-6 bg-black border-gray-800 mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Safety Certifications & Compliance</h2>
-              <Button variant="outline" className="text-xs h-8 bg-gray-800 border-gray-700 hover:bg-gray-700">
+              <Button variant="outline" className="text-xs h-8 bg-black border-gray-700 hover:bg-gray-900">
                 <FileText className="h-3.5 w-3.5 mr-1" />
                 View All Documents
               </Button>
@@ -152,10 +152,10 @@ export function SafetyTabContent({
             </div>
           </Card>
           
-          <Card className="p-6 bg-gray-900 border-gray-800">
+          <Card className="p-6 bg-black border-gray-800">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Recent Safety Incidents</h2>
-              <Button variant="outline" className="text-xs h-8 bg-gray-800 border-gray-700 hover:bg-gray-700">
+              <Button variant="outline" className="text-xs h-8 bg-black border-gray-700 hover:bg-gray-900">
                 <BarChart className="h-3.5 w-3.5 mr-1" />
                 View Detailed Report
               </Button>
