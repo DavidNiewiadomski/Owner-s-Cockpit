@@ -1,14 +1,14 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
-import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock, MessageSquare, LightbulbIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AIAssistant } from '@/components/ai/AIAssistant';
 
 // Define types
 interface InvestmentMetric {
@@ -120,8 +120,17 @@ const investmentInsights = [
   }
 ];
 
+type InsightType = "warning" | "success" | "info";
+
+interface Insight {
+  title: string;
+  content: string;
+  type: InsightType;
+}
+
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-black">
@@ -131,11 +140,50 @@ const InvestmentImpact = () => {
         
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
-            {/* AI Insights at the top of the page */}
-            <CollapsibleAIAssistant 
-              projectContext="Investment Impact" 
-              initialInsights={investmentInsights}
-            />
+            {/* AI Insights Card */}
+            <Card className="border-construction-600/30 bg-gray-800/50 backdrop-blur-sm shadow-lg mb-6">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="flex items-center gap-2">
+                    <LightbulbIcon className="h-5 w-5 text-construction-400" />
+                    <h3 className="font-medium text-white">AI Insights for Investment Impact</h3>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setDialogOpen(true)}
+                    className="h-8 text-construction-400 hover:text-construction-300 hover:bg-gray-700/50 transition-colors"
+                  >
+                    <span className="mr-1">Open AI Chat</span>
+                    <MessageSquare className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {investmentInsights.map((insight, index) => (
+                    <div 
+                      key={index} 
+                      className={`flex items-start gap-2 p-3 rounded-md bg-gray-750 border hover-scale transition-all duration-200 cursor-pointer ${
+                        insight.type === "warning" ? "border-amber-700/50 hover:border-amber-600" : 
+                        insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
+                        "border-blue-700/50 hover:border-blue-600"
+                      }`}
+                      onClick={() => setDialogOpen(true)}
+                    >
+                      <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
+                        insight.type === "warning" ? "text-amber-400" : 
+                        insight.type === "success" ? "text-green-400" : 
+                        "text-blue-400"
+                      }`} />
+                      <div>
+                        <p className="text-xs font-medium mb-1">{insight.title}</p>
+                        <p className="text-sm text-gray-200">{insight.content}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
@@ -341,6 +389,21 @@ const InvestmentImpact = () => {
                 </Card>
               </TabsContent>
             </Tabs>
+
+            {/* AI Chat Dialog */}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogContent className="max-w-3xl bg-gray-900 border-gray-700 text-white">
+                <DialogHeader>
+                  <DialogTitle className="text-white flex items-center gap-2">
+                    <LightbulbIcon className="h-5 w-5 text-construction-400" />
+                    AI Investment Assistant
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="h-[500px] overflow-y-auto">
+                  <AIAssistant />
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </main>
       </div>
