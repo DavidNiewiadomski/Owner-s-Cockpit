@@ -20,10 +20,10 @@ export function Dashboard({
   const [activeTab, setActiveTab] = useState('overview');
   
   // Ensure we have valid numbers for all stats
-  const safeCompletionPercentage = typeof completionPercentage === 'number' ? completionPercentage : 0;
-  const safeDaysRemaining = typeof daysRemaining === 'number' ? daysRemaining : 0;
-  const safeBudgetUtilization = typeof budgetUtilization === 'number' ? budgetUtilization : 0;
-  const safeTeamSize = typeof teamSize === 'number' ? teamSize : 0;
+  const safeCompletionPercentage = typeof completionPercentage === 'number' && !isNaN(completionPercentage) ? completionPercentage : 0;
+  const safeDaysRemaining = typeof daysRemaining === 'number' && !isNaN(daysRemaining) ? daysRemaining : 0;
+  const safeBudgetUtilization = typeof budgetUtilization === 'number' && !isNaN(budgetUtilization) ? budgetUtilization : 0;
+  const safeTeamSize = typeof teamSize === 'number' && !isNaN(teamSize) ? teamSize : 0;
   
   return (
     <div className="space-y-6">
@@ -47,19 +47,19 @@ export function Dashboard({
           <TabsTrigger value="risks">Risks</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview">
+        <TabsContent value="overview" className="mt-4">
           <DashboardTabContent tab="overview" />
         </TabsContent>
-        <TabsContent value="timeline">
+        <TabsContent value="timeline" className="mt-4">
           <DashboardTabContent tab="timeline" />
         </TabsContent>
-        <TabsContent value="budget">
+        <TabsContent value="budget" className="mt-4">
           <DashboardTabContent tab="budget" />
         </TabsContent>
-        <TabsContent value="team">
+        <TabsContent value="team" className="mt-4">
           <DashboardTabContent tab="team" />
         </TabsContent>
-        <TabsContent value="risks">
+        <TabsContent value="risks" className="mt-4">
           <DashboardTabContent tab="risks" />
         </TabsContent>
       </Tabs>

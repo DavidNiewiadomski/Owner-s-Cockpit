@@ -5,7 +5,7 @@ import { useProject } from '@/contexts/ProjectContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { ProjectOverview } from '@/components/dashboard/ProjectOverview';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
 
 // Simple string array for insights - explicitly typed as string[]
 const dashboardInsights: string[] = [
@@ -51,7 +51,8 @@ const Index = () => {
         />
         
         <main className="flex-1 p-6">
-          <CollapsibleAIAssistant 
+          {/* Replace CollapsibleAIAssistant with SimpleInsightsPanel */}
+          <SimpleInsightsPanel 
             insights={dashboardInsights}
             projectName={projectTitle}
           />

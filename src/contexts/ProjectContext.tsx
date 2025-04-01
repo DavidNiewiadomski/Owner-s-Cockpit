@@ -37,33 +37,61 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 export function ProjectProvider({ children }: { children: ReactNode }) {
   // Get from localStorage or default to the first project
   const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
-  const [allProjects, setAllProjects] = useState<Project[]>(initialProjects);
+  const [allProjects, setAllProjects] = useState<Project[]>(
+    Array.isArray(initialProjects) ? initialProjects : []
+  );
   
   // On first load, try to get from localStorage
   useEffect(() => {
-    const savedProjectId = localStorage.getItem('selectedProjectId');
-    if (savedProjectId) {
-      if (savedProjectId === 'all') {
-        setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
-      } else {
-        const project = initialProjects.find(p => p.id === savedProjectId) || null;
-        if (project) {
-          setSelectedProject(project);
+    try {
+      const savedProjectId = localStorage.getItem('selectedProjectId');
+      if (savedProjectId) {
+        if (savedProjectId === 'all') {
+          setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
         } else {
-          // If saved project not found, default to first project
-          setSelectedProject(initialProjects[0] || null);
+          const project = initialProjects.find(p => p.id === savedProjectId) || null;
+          if (project) {
+            setSelectedProject(project);
+          } else {
+            // If saved project not found, default to first project
+            setSelectedProject(
+              Array.isArray(initialProjects) && initialProjects.length > 0 
+                ? initialProjects[0] 
+                : { id: 'default', title: 'Default Project', status: 'on-track', description: '', progress: 0, dueDate: '', teamMembers: [] }
+            );
+          }
         }
+      } else {
+        // If no saved project, default to first project
+        setSelectedProject(
+          Array.isArray(initialProjects) && initialProjects.length > 0 
+            ? initialProjects[0] 
+            : { id: 'default', title: 'Default Project', status: 'on-track', description: '', progress: 0, dueDate: '', teamMembers: [] }
+        );
       }
-    } else {
-      // If no saved project, default to first project
-      setSelectedProject(initialProjects[0] || null);
+    } catch (error) {
+      console.error("Error initializing project data:", error);
+      // Fallback to a safe default
+      setSelectedProject({ 
+        id: 'default', 
+        title: 'Default Project', 
+        status: 'on-track',
+        description: '',
+        progress: 0,
+        dueDate: '',
+        teamMembers: []
+      });
     }
   }, []);
   
   // Save to localStorage when changed
   useEffect(() => {
     if (selectedProject) {
-      localStorage.setItem('selectedProjectId', selectedProject.id);
+      try {
+        localStorage.setItem('selectedProjectId', selectedProject.id);
+      } catch (error) {
+        console.error("Error saving project ID to localStorage:", error);
+      }
     }
   }, [selectedProject]);
 
@@ -73,7 +101,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     allProjects,
     // For backward compatibility with existing code
     currentProject: selectedProject,
-    projects: initialProjects
+    projects: Array.isArray(initialProjects) ? initialProjects : []
   };
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;
