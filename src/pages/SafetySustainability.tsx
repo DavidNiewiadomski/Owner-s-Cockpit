@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { 
   ShieldCheck, 
   Leaf, 
   Recycle, 
-  Plant, 
+  Flower, 
   BarChart, 
   FileText,
   Check,
@@ -30,7 +29,6 @@ const SafetySustainability = () => {
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || 'All Projects';
   
-  // Project-specific safety metrics
   const safetyMetrics = {
     incidentRate: selectedProject?.id === '1' ? 0.5 : selectedProject?.id === '2' ? 0.2 : 0.3,
     safetyScore: selectedProject?.id === '1' ? 92 : selectedProject?.id === '2' ? 97 : 95,
@@ -39,7 +37,6 @@ const SafetySustainability = () => {
     daysWithoutIncident: selectedProject?.id === '1' ? 78 : selectedProject?.id === '2' ? 145 : 112,
   };
   
-  // Project-specific sustainability metrics
   const sustainabilityMetrics = {
     energyEfficiency: selectedProject?.id === '1' ? 85 : selectedProject?.id === '2' ? 92 : 88,
     waterConservation: selectedProject?.id === '1' ? 78 : selectedProject?.id === '2' ? 90 : 82,
@@ -48,7 +45,6 @@ const SafetySustainability = () => {
     carbonFootprint: selectedProject?.id === '1' ? 70 : selectedProject?.id === '2' ? 85 : 75,
   };
   
-  // Safety certifications and compliance
   const safetyCerts = [
     { id: 1, name: 'OSHA Compliance', status: 'Verified', date: '2023-11-15', expires: '2024-11-15' },
     { id: 2, name: 'Fire Safety Inspection', status: 'Passed', date: '2023-12-02', expires: '2024-12-02' },
@@ -56,14 +52,12 @@ const SafetySustainability = () => {
     { id: 4, name: 'Emergency Systems Check', status: 'In Progress', date: '2024-02-10', expires: 'Pending' },
   ];
   
-  // Recent safety incidents
   const safetyIncidents = [
     { id: 1, title: 'Minor slip and fall', severity: 'Low', date: '2024-01-15', resolved: true, area: 'North entrance' },
     { id: 2, title: 'Equipment malfunction', severity: 'Medium', date: '2023-12-05', resolved: true, area: 'Utility room' },
     { id: 3, title: 'Exposed electrical wiring', severity: 'High', date: '2024-02-01', resolved: false, area: 'East wing, 3rd floor' },
   ];
   
-  // Sustainability certifications
   const sustainabilityCerts = [
     { id: 1, name: 'LEED Gold Certification', status: 'In Progress', target: 'Jun 2024' },
     { id: 2, name: 'Energy Star Rating', status: 'Achieved', target: '85 points' },
@@ -71,7 +65,6 @@ const SafetySustainability = () => {
     { id: 4, name: 'Sustainable Materials Sourcing', status: 'Verified', target: '90% achieved' },
   ];
   
-  // Generate project-specific insights
   const safetyInsights = [
     {
       title: 'Safety Compliance',
@@ -144,7 +137,6 @@ const SafetySustainability = () => {
             
             <main className="flex-1 overflow-y-auto p-6">
               <div className="max-w-7xl mx-auto">
-                {/* Safety Score Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <Card className="p-4 bg-gray-900 border-gray-800">
                     <div className="flex items-center justify-between mb-2">
@@ -183,7 +175,6 @@ const SafetySustainability = () => {
                   </Card>
                 </div>
                 
-                {/* Safety Certifications */}
                 <Card className="p-6 bg-gray-900 border-gray-800 mb-6">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Safety Certifications & Compliance</h2>
@@ -224,7 +215,6 @@ const SafetySustainability = () => {
                   </div>
                 </Card>
                 
-                {/* Safety Incidents */}
                 <Card className="p-6 bg-gray-900 border-gray-800">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Recent Safety Incidents</h2>
@@ -285,7 +275,6 @@ const SafetySustainability = () => {
             
             <main className="flex-1 overflow-y-auto p-6">
               <div className="max-w-7xl mx-auto">
-                {/* Sustainability Score Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                   <Card className="p-4 bg-gray-900 border-gray-800">
                     <div className="flex items-center justify-between mb-2">
@@ -326,14 +315,13 @@ const SafetySustainability = () => {
                   <Card className="p-4 bg-gray-900 border-gray-800">
                     <div className="flex items-center justify-between mb-2">
                       <div className="text-sm font-medium text-gray-400">Carbon Footprint</div>
-                      <Plant className="h-5 w-5 text-green-500" />
+                      <Leaf className="h-5 w-5 text-green-500" />
                     </div>
                     <div className="text-2xl font-bold">{sustainabilityMetrics.carbonFootprint}%</div>
                     <Progress value={sustainabilityMetrics.carbonFootprint} className="h-2 mt-2" />
                   </Card>
                 </div>
                 
-                {/* Sustainability Features */}
                 <Card className="p-6 bg-gray-900 border-gray-800 mb-6">
                   <h2 className="text-xl font-semibold mb-4">Sustainability Features</h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -400,7 +388,7 @@ const SafetySustainability = () => {
                       
                       <div className="flex items-start">
                         <div className="mr-3 mt-0.5">
-                          <Leaf className="h-5 w-5 text-green-500" />
+                          <Flower className="h-5 w-5 text-green-500" />
                         </div>
                         <div>
                           <h3 className="font-medium">Sustainable Materials</h3>
@@ -411,7 +399,6 @@ const SafetySustainability = () => {
                   </div>
                 </Card>
                 
-                {/* Sustainability Certifications */}
                 <Card className="p-6 bg-gray-900 border-gray-800">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Sustainability Certifications</h2>
