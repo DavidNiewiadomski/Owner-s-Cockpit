@@ -1,46 +1,9 @@
 
 import React from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { useProject } from '@/contexts/ProjectContext';
-import { Dashboard } from '@/components/dashboard/Dashboard';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { ProjectOverview } from '@/components/dashboard/ProjectOverview';
-import { SimpleInsightsPanel } from '@/components/dashboard/SimpleInsightsPanel';
-
-// Simple string array for insights - explicitly typed as string[]
-const dashboardInsights: string[] = [
-  "Budget Alert: Current cost variance is +8.2% above contingency, mainly in structural materials",
-  "Schedule Update: Project is currently tracking 3 days ahead of schedule with SPI of 1.05",
-  "Quality Control: Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday",
-  "Risk Alert: Supply chain disruption identified for facade materials, mitigation plan in development"
-];
 
 const Index = () => {
-  const { currentProject, selectedProject } = useProject();
-  
-  // Calculate project statistics with safe defaults
-  const completionPercentage = currentProject && typeof currentProject === 'object' && 'completion' in currentProject 
-    ? (typeof currentProject.completion === 'number' ? currentProject.completion : 
-       typeof currentProject.completion === 'string' ? parseFloat(currentProject.completion) : 65)
-    : 65; // Default value for demo
-    
-  const daysRemaining = currentProject && typeof currentProject === 'object' && 'daysRemaining' in currentProject 
-    ? (typeof currentProject.daysRemaining === 'number' ? currentProject.daysRemaining : 45)
-    : 45; // Default value for demo
-    
-  const budgetUtilization = currentProject && typeof currentProject === 'object' && 'budgetUtilization' in currentProject 
-    ? (typeof currentProject.budgetUtilization === 'number' ? currentProject.budgetUtilization : 72)
-    : 72; // Default value for demo
-    
-  const teamSize = currentProject && typeof currentProject === 'object' && 'team' in currentProject && Array.isArray(currentProject.team)
-    ? currentProject.team.length 
-    : 24; // Default value for demo
-  
-  // Safely extract project title with fallback
-  const projectTitle = selectedProject && typeof selectedProject === 'object' && 'title' in selectedProject 
-    ? String(selectedProject.title) 
-    : "East Tower Development";
-  
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
@@ -51,27 +14,55 @@ const Index = () => {
         />
         
         <main className="flex-1 p-6">
-          {/* Replace CollapsibleAIAssistant with SimpleInsightsPanel */}
-          <SimpleInsightsPanel 
-            insights={dashboardInsights}
-            projectName={projectTitle}
-          />
+          <div className="bg-card p-6 rounded-lg shadow-sm mb-6">
+            <h2 className="text-2xl font-semibold mb-4">East Tower Development</h2>
+            <p className="text-muted-foreground">Downtown Metro Area • Commercial High-Rise</p>
+            <p className="text-muted-foreground mt-2">Current Phase: Construction</p>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <div className="border rounded p-4">
+                <h3 className="font-medium">Start Date</h3>
+                <p>Jan 15, 2024</p>
+              </div>
+              <div className="border rounded p-4">
+                <h3 className="font-medium">Completion Date</h3>
+                <p>Dec 30, 2024</p>
+              </div>
+            </div>
+          </div>
           
-          <ProjectOverview 
-            projectName={projectTitle}
-            projectLocation="Downtown Metro Area"
-            projectType="Commercial High-Rise"
-            currentPhase="Construction"
-            startDate="Jan 15, 2024"
-            completionDate="Dec 30, 2024"
-          />
-          
-          <Dashboard 
-            completionPercentage={completionPercentage}
-            daysRemaining={daysRemaining}
-            budgetUtilization={budgetUtilization}
-            teamSize={teamSize}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="bg-card p-4 rounded-lg shadow-sm">
+              <h3 className="text-sm font-medium text-muted-foreground">Completion</h3>
+              <p className="text-2xl font-bold">65%</p>
+            </div>
+            <div className="bg-card p-4 rounded-lg shadow-sm">
+              <h3 className="text-sm font-medium text-muted-foreground">Days Remaining</h3>
+              <p className="text-2xl font-bold">45</p>
+            </div>
+            <div className="bg-card p-4 rounded-lg shadow-sm">
+              <h3 className="text-sm font-medium text-muted-foreground">Budget Used</h3>
+              <p className="text-2xl font-bold">72%</p>
+            </div>
+            <div className="bg-card p-4 rounded-lg shadow-sm">
+              <h3 className="text-sm font-medium text-muted-foreground">Team Size</h3>
+              <p className="text-2xl font-bold">24</p>
+            </div>
+          </div>
+
+          <div className="bg-card p-6 rounded-lg shadow-sm">
+            <h2 className="text-xl font-semibold mb-4">Project Insights</h2>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3 p-3 rounded-md bg-gray-800 border border-gray-700">
+                <p className="text-sm text-gray-300">Budget Alert: Current cost variance is +8.2% above contingency, mainly in structural materials</p>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-md bg-gray-800 border border-gray-700">
+                <p className="text-sm text-gray-300">Schedule Update: Project is currently tracking 3 days ahead of schedule with SPI of 1.05</p>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-md bg-gray-800 border border-gray-700">
+                <p className="text-sm text-gray-300">Quality Control: Recent inspection revealed 5 minor defects in electrical work, resolution expected by Friday</p>
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     </div>

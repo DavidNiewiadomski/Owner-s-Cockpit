@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
-import { DashboardTabContent } from '@/components/dashboard/DashboardTabContent';
 
 interface DashboardProps {
   completionPercentage: number;
@@ -12,10 +11,10 @@ interface DashboardProps {
 }
 
 export function Dashboard({
-  completionPercentage,
-  daysRemaining,
-  budgetUtilization,
-  teamSize
+  completionPercentage = 0,
+  daysRemaining = 0,
+  budgetUtilization = 0,
+  teamSize = 0
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
@@ -48,19 +47,34 @@ export function Dashboard({
         </TabsList>
         
         <TabsContent value="overview" className="mt-4">
-          <DashboardTabContent tab="overview" />
+          <div className="p-4 border rounded-md">
+            <h3 className="text-lg font-medium mb-2">Project Overview</h3>
+            <p>Overview content will be displayed here.</p>
+          </div>
         </TabsContent>
         <TabsContent value="timeline" className="mt-4">
-          <DashboardTabContent tab="timeline" />
+          <div className="p-4 border rounded-md">
+            <h3 className="text-lg font-medium mb-2">Project Timeline</h3>
+            <p>Timeline content will be displayed here.</p>
+          </div>
         </TabsContent>
         <TabsContent value="budget" className="mt-4">
-          <DashboardTabContent tab="budget" />
+          <div className="p-4 border rounded-md">
+            <h3 className="text-lg font-medium mb-2">Budget Information</h3>
+            <p>Budget content will be displayed here.</p>
+          </div>
         </TabsContent>
         <TabsContent value="team" className="mt-4">
-          <DashboardTabContent tab="team" />
+          <div className="p-4 border rounded-md">
+            <h3 className="text-lg font-medium mb-2">Team Members</h3>
+            <p>Team content will be displayed here.</p>
+          </div>
         </TabsContent>
         <TabsContent value="risks" className="mt-4">
-          <DashboardTabContent tab="risks" />
+          <div className="p-4 border rounded-md">
+            <h3 className="text-lg font-medium mb-2">Risk Assessment</h3>
+            <p>Risk content will be displayed here.</p>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
