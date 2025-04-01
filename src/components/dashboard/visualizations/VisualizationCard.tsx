@@ -13,28 +13,28 @@ interface VisualizationCardProps {
 
 export function VisualizationCard({ title, imageSrc, onFullScreen, className }: VisualizationCardProps) {
   return (
-    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 ${className || ''}`}>
+    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 shadow-[0_0_20px_rgba(56,189,248,0.2)] ${className || ''}`}>
       <div className="flex flex-col h-80">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
-            <Orbit className="h-5 w-5 mr-2 text-blue-400" />
-            <h3 className="text-lg font-medium text-white">{title}</h3>
+            <Orbit className="h-5 w-5 mr-2 text-cyan-400" />
+            <h3 className="text-lg font-bold text-cyan-300">{title}</h3>
           </div>
           <Button 
             variant="outline" 
             size="sm"
-            className="h-8 border-blue-700 bg-blue-900/30 hover:bg-blue-800 text-white"
+            className="h-8 border-cyan-700 bg-cyan-900/30 hover:bg-cyan-800/50 text-white font-medium"
             onClick={onFullScreen}
           >
-            <Maximize2 className="h-4 w-4 mr-1" />
+            <Maximize2 className="h-4 w-4 mr-1 text-cyan-300" />
             View Full Screen
           </Button>
         </div>
-        <div className="flex-1 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
+        <div className="flex-1 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center border border-cyan-900/20 rounded-md">
           <img 
             src={imageSrc} 
             alt={`${title} visualization`} 
-            className="h-64 object-cover opacity-60 cursor-pointer"
+            className="h-64 object-cover opacity-80 cursor-pointer hover:opacity-100 transition-opacity"
             onClick={onFullScreen}
           />
         </div>

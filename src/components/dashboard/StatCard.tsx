@@ -24,7 +24,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn(
-      "overflow-hidden bg-black border-cyan-900/60 shadow-lg animate-fade-in card-hover relative",
+      "overflow-hidden bg-black border-cyan-800/60 shadow-lg animate-fade-in card-hover relative",
       className
     )}>
       {/* Vibrant gradient top border */}
@@ -41,20 +41,20 @@ export function StatCard({
         
         <div className="flex justify-between items-start relative z-10">
           <div>
-            <p className="text-sm font-medium text-cyan-200">{title}</p>
+            <p className="text-sm font-bold text-cyan-300">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
             {description && (
-              <p className="text-sm text-white mt-1 font-medium">{description}</p>
+              <p className="text-sm text-cyan-100 mt-1 font-medium">{description}</p>
             )}
             
             {trend && (
               <div className="flex items-center mt-2">
                 <span
                   className={cn(
-                    "inline-flex items-center text-xs font-medium rounded-full px-2 py-1",
-                    trend === "up" && "bg-green-900/50 text-green-300 border border-green-500/70 shadow-[0_0_10px_rgba(34,197,94,0.3)]",
-                    trend === "down" && "bg-red-900/50 text-red-300 border border-red-500/70 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
-                    trend === "neutral" && "bg-gray-900/50 text-gray-200 border border-gray-500/70 shadow-[0_0_10px_rgba(107,114,128,0.3)]"
+                    "inline-flex items-center text-xs font-bold rounded-full px-2 py-1",
+                    trend === "up" && "bg-green-900/60 text-green-300 border border-green-500/70 shadow-[0_0_10px_rgba(34,197,94,0.3)]",
+                    trend === "down" && "bg-red-900/60 text-red-300 border border-red-500/70 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+                    trend === "neutral" && "bg-gray-900/60 text-gray-200 border border-gray-500/70 shadow-[0_0_10px_rgba(107,114,128,0.3)]"
                   )}
                 >
                   {trend === "up" && (
