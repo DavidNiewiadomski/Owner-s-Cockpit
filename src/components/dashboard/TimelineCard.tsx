@@ -43,41 +43,41 @@ export function TimelineCard({
   onViewRealityCapture 
 }: TimelineCardProps) {
   return (
-    <Card className={cn("overflow-hidden", className)}>
-      <CardHeader>
-        <CardTitle className="text-lg">Project Timeline</CardTitle>
+    <Card className={cn("overflow-hidden border-cyan-900/30 bg-gradient-to-br from-black to-zinc-900 shadow-[0_4px_30px_rgba(56,189,248,0.15)]", className)}>
+      <CardHeader className="bg-gradient-to-r from-cyan-950/50 to-transparent border-b border-cyan-900/20">
+        <CardTitle className="text-gradient text-lg">Project Timeline</CardTitle>
       </CardHeader>
-      <CardContent>
-        <ol className="relative border-l border-gray-200 dark:border-gray-700">
+      <CardContent className="p-6">
+        <ol className="relative border-l border-gradient-to-b from-cyan-500/50 via-purple-500/50 to-blue-500/50 ml-2">
           {events.map((event, index) => (
-            <li key={event.id} className="mb-6 ml-4 last:mb-0">
+            <li key={event.id} className="mb-6 ml-6 last:mb-0 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
               <div className={cn(
-                "absolute w-3 h-3 rounded-full mt-1.5 -left-1.5 border",
-                event.status === "completed" && "bg-green-500 border-green-500",
-                event.status === "in-progress" && "bg-construction-500 border-construction-500",
-                event.status === "delayed" && "bg-red-500 border-red-500",
-                event.status === "upcoming" && "bg-gray-200 border-gray-400 dark:bg-gray-700 dark:border-gray-600"
+                "absolute w-4 h-4 rounded-full mt-1.5 -left-2 border-2 animate-pulse-glow",
+                event.status === "completed" && "bg-green-500/90 border-green-400 shadow-[0_0_15px_rgba(34,197,94,0.5)]",
+                event.status === "in-progress" && "bg-blue-500/90 border-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.5)]",
+                event.status === "delayed" && "bg-red-500/90 border-red-400 shadow-[0_0_15px_rgba(239,68,68,0.5)]",
+                event.status === "upcoming" && "bg-gray-500/90 border-gray-400 shadow-[0_0_15px_rgba(107,114,128,0.5)]"
               )} />
               
               <div className="flex items-start justify-between">
                 <div>
-                  <time className="mb-1 text-sm font-normal text-gray-500 dark:text-gray-400 flex items-center">
-                    <Calendar className="h-3.5 w-3.5 mr-1" />
+                  <time className="mb-1 text-sm font-normal text-cyan-300 flex items-center">
+                    <Calendar className="h-3.5 w-3.5 mr-1 text-cyan-400" />
                     {event.date}
                   </time>
                   <h3 className={cn(
-                    "text-base font-semibold flex items-center",
-                    event.status === "completed" && "text-gray-900 dark:text-white",
-                    event.status === "in-progress" && "text-construction-600 dark:text-construction-400",
-                    event.status === "delayed" && "text-red-600 dark:text-red-400",
-                    event.status === "upcoming" && "text-gray-600 dark:text-gray-300"
+                    "text-lg font-semibold flex items-center",
+                    event.status === "completed" && "text-green-400",
+                    event.status === "in-progress" && "text-blue-400",
+                    event.status === "delayed" && "text-red-400",
+                    event.status === "upcoming" && "text-gray-300"
                   )}>
                     {event.title}
                     {event.impact === "high" && (
-                      <AlertTriangle className="h-4 w-4 ml-1.5 text-amber-500" />
+                      <AlertTriangle className="h-4 w-4 ml-1.5 text-amber-400" />
                     )}
                     {event.realityCapture && event.realityCapture.available && (
-                      <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400 flex items-center gap-1">
+                      <Badge variant="outline" className="ml-2 bg-blue-900/30 text-blue-300 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)] flex items-center gap-1 hover:bg-blue-800/40 transition-all duration-300">
                         <Camera className="h-3 w-3" />
                         <span>Reality Capture</span>
                       </Badge>
@@ -88,10 +88,10 @@ export function TimelineCard({
                 <Badge
                   className={cn(
                     "ml-2",
-                    event.status === "completed" && "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
-                    event.status === "in-progress" && "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400",
-                    event.status === "delayed" && "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400",
-                    event.status === "upcoming" && "bg-gray-100 text-gray-800 dark:bg-gray-700/20 dark:text-gray-300"
+                    event.status === "completed" && "bg-green-900/30 text-green-400 border border-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.3)]",
+                    event.status === "in-progress" && "bg-blue-900/30 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]",
+                    event.status === "delayed" && "bg-red-900/30 text-red-400 border border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
+                    event.status === "upcoming" && "bg-gray-900/30 text-gray-300 border border-gray-500/50 shadow-[0_0_10px_rgba(107,114,128,0.3)]"
                   )}
                 >
                   {event.status === "completed" && "Completed"}
@@ -102,17 +102,19 @@ export function TimelineCard({
               </div>
               
               {event.description && (
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent mt-1">
                   {event.description}
                 </p>
               )}
               
               {showFinancialImpact && event.financial && (
                 <div className="mt-2 text-sm">
-                  <span className="font-medium">Financial Impact: </span>
+                  <span className="font-medium text-gray-400">Financial Impact: </span>
                   <span className={cn(
-                    event.financial.type === "over" && "text-red-600 dark:text-red-400",
-                    event.financial.type === "under" && "text-green-600 dark:text-green-400"
+                    "font-semibold",
+                    event.financial.type === "over" && "text-red-400",
+                    event.financial.type === "under" && "text-green-400",
+                    event.financial.type === "neutral" && "text-blue-400"
                   )}>
                     {event.financial.type === "over" && "+"}
                     {event.financial.type === "under" && "-"}
@@ -125,7 +127,7 @@ export function TimelineCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="mt-2 h-8 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-0 flex items-center gap-1"
+                  className="mt-2 h-8 text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 p-0 flex items-center gap-1 border border-transparent hover:border-blue-500/40 transition-all duration-300"
                   onClick={() => onViewRealityCapture(event)}
                 >
                   <Camera className="h-3.5 w-3.5" />
@@ -134,14 +136,14 @@ export function TimelineCard({
               )}
               
               {index < events.length - 1 && (
-                <Separator className="my-4 ml-2" />
+                <Separator className="my-4 ml-2 bg-gradient-to-r from-cyan-500/30 to-transparent" />
               )}
             </li>
           ))}
         </ol>
         
-        <div className="mt-4 pt-4 border-t">
-          <Button variant="outline" size="sm" className="text-xs gap-1 w-full">
+        <div className="mt-4 pt-4 border-t border-cyan-900/30">
+          <Button variant="outline" size="sm" className="text-xs gap-1 w-full bg-gradient-to-r from-cyan-950/50 to-blue-950/50 border-cyan-800/40 text-cyan-300 hover:text-cyan-100 hover:bg-gradient-to-r hover:from-cyan-900/50 hover:to-blue-900/50 transition-all duration-300">
             <Info className="h-3.5 w-3.5" />
             <span>View Full Timeline</span>
           </Button>

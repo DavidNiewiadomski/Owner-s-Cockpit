@@ -12,7 +12,7 @@ export function DashboardStats() {
         icon={Building} 
         trend="up" 
         trendValue="2 new acquisitions" 
-        className="border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+        className="border-blue-500/40 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-all duration-300"
       />
       <StatCard 
         title="Construction Value" 
@@ -21,7 +21,7 @@ export function DashboardStats() {
         icon={DollarSign}
         trend="up" 
         trendValue="12% YOY increase" 
-        className="border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+        className="border-green-500/40 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] transition-all duration-300"
       />
       <StatCard 
         title="Total Square Footage" 
@@ -29,7 +29,7 @@ export function DashboardStats() {
         icon={Landmark}
         trend="up" 
         trendValue="215,000 sq ft in development" 
-        className="border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+        className="border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] transition-all duration-300"
       />
       <StatCard 
         title="Critical Issues" 
@@ -37,7 +37,7 @@ export function DashboardStats() {
         icon={AlertTriangle}
         trend="down" 
         trendValue="5 resolved this month" 
-        className="border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+        className="border-amber-500/40 shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-all duration-300"
       />
     </div>
   );
