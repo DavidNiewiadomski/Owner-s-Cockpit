@@ -24,11 +24,15 @@ import {
   propertyData 
 } from '@/data/index';
 import { Link } from 'react-router-dom';
+import { projects } from '@/data/projects/projectData';
 
 export function MainDashboard() {
   const { selectedProject } = useProject();
   const [isBIMViewerOpen, setIsBIMViewerOpen] = useState(false);
   const [isRealityCaptureOpen, setIsRealityCaptureOpen] = useState(false);
+
+  // Get a subset of projects for the dashboard
+  const dashboardProjects = projects.slice(0, 3);
 
   const handleViewDocument = (doc: any) => {
     // Function kept for future use
@@ -55,7 +59,7 @@ export function MainDashboard() {
       <DashboardStats />
       
       {/* Owner Quick Actions */}
-      <Card className="bg-gray-900/50 border-gray-800">
+      <Card className="bg-black border-gray-800">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg text-white">Owner Quick Actions</CardTitle>
         </CardHeader>
@@ -105,16 +109,7 @@ export function MainDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <div className="space-y-6">
-            <ProjectsSection projects={documents.map(doc => ({
-              id: doc.id,
-              title: doc.project,
-              description: doc.name,
-              progress: 65,
-              status: "on-track" as const,
-              dueDate: doc.updatedAt,
-              teamMembers: [{ name: doc.author || 'Team Member' }],
-              priority: "Medium"
-            }))} />
+            <ProjectsSection projects={dashboardProjects} />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <ProgressChart data={progressChartData} />
@@ -189,7 +184,11 @@ export function MainDashboard() {
                 </div>
                 <div className="flex-1 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center">
                   <div className="h-64 w-full flex items-center justify-center text-center p-6 cursor-pointer" onClick={openRealityCaptureViewer}>
-                    <Orbit className="h-12 w-12 text-blue-500 mb-4" />
+                    <img 
+                      src="public/lovable-uploads/e41b997b-4805-42a1-b7e3-f0d7a3ce04f9.png" 
+                      alt="Project timeline tabs" 
+                      className="h-auto max-w-full max-h-64 opacity-80 hover:opacity-100 transition-opacity"
+                    />
                   </div>
                 </div>
               </div>

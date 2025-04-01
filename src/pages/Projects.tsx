@@ -24,6 +24,16 @@ const projectInsights = [
     title: 'ROI Impact',
     content: 'Lakefront Residences sales trending 8% above projections. Expected ROI increase from 6.8% to 7.3%.',
     type: 'info' as const
+  },
+  {
+    title: 'Resource Allocation',
+    content: 'Westside Park has 3 overlapping critical path activities next week. Consider resource reallocation.',
+    type: 'warning' as const
+  },
+  {
+    title: 'Permit Approved',
+    content: 'Tech Innovation Campus final inspection permits approved. Ready for client handover.',
+    type: 'success' as const
   }
 ];
 

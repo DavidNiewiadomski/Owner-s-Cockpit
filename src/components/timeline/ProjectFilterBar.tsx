@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Filter, Share2, Download } from 'lucide-react';
+import { Calendar, ChevronDown } from 'lucide-react';
 
 interface ProjectFilterBarProps {
   activeProject: string;
@@ -12,40 +11,51 @@ interface ProjectFilterBarProps {
 
 export function ProjectFilterBar({ activeProject, onProjectChange }: ProjectFilterBarProps) {
   return (
-    <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
-      <TabsList>
-        <TabsTrigger value="downtown" onClick={() => onProjectChange('downtown')}>Downtown High-Rise</TabsTrigger>
-        <TabsTrigger value="riverside" onClick={() => onProjectChange('riverside')}>Riverside Complex</TabsTrigger>
-        <TabsTrigger value="corporate" onClick={() => onProjectChange('corporate')}>Corporate Offices</TabsTrigger>
-        <TabsTrigger value="all" onClick={() => onProjectChange('all')}>All Projects</TabsTrigger>
+    <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 mb-6">
+      <TabsList className="bg-black border border-gray-800 flex-wrap w-full">
+        <TabsTrigger 
+          value="downtown" 
+          onClick={() => onProjectChange('downtown')}
+          className={activeProject === 'downtown' ? 'bg-gray-800' : ''}
+        >
+          Downtown High-Rise
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="riverside" 
+          onClick={() => onProjectChange('riverside')}
+          className={activeProject === 'riverside' ? 'bg-gray-800' : ''}
+        >
+          Riverside Complex
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="corporate" 
+          onClick={() => onProjectChange('corporate')}
+          className={activeProject === 'corporate' ? 'bg-gray-800' : ''}
+        >
+          Corporate Offices
+        </TabsTrigger>
+        
+        <TabsTrigger 
+          value="all" 
+          onClick={() => onProjectChange('all')}
+          className={activeProject === 'all' ? 'bg-gray-800' : ''}
+        >
+          All Projects
+        </TabsTrigger>
       </TabsList>
       
-      <div className="flex items-center gap-2">
-        <Select defaultValue="timeline">
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="View Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="timeline">Timeline View</SelectItem>
-            <SelectItem value="milestone">Milestone View</SelectItem>
-            <SelectItem value="calendar">Calendar View</SelectItem>
-            <SelectItem value="critical">Critical Path</SelectItem>
-          </SelectContent>
-        </Select>
-        
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Filter className="h-4 w-4" />
-          <span>Filter</span>
+      <div className="flex space-x-2">
+        <Button variant="outline" size="sm" className="gap-1 text-sm px-3 border-gray-700">
+          <Calendar className="h-3.5 w-3.5" />
+          <span>Date Range</span>
+          <ChevronDown className="h-3.5 w-3.5 ml-1" />
         </Button>
         
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Share2 className="h-4 w-4" />
-          <span>Share</span>
-        </Button>
-        
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Download className="h-4 w-4" />
-          <span>Export</span>
+        <Button variant="outline" size="sm" className="gap-1 text-sm px-3 border-gray-700">
+          <span>More Filters</span>
+          <ChevronDown className="h-3.5 w-3.5" />
         </Button>
       </div>
     </div>

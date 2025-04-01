@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { BarChart4, ArrowDownUp, CheckCircle, Calendar } from 'lucide-react';
+import { BarChart2, Clock, Calendar, CheckSquare } from 'lucide-react';
 
 interface TimelineViewSelectorProps {
   activeView: string;
@@ -10,42 +10,45 @@ interface TimelineViewSelectorProps {
 
 export function TimelineViewSelector({ activeView, onViewChange }: TimelineViewSelectorProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center border border-gray-800 rounded-md overflow-hidden">
       <Button 
+        variant="ghost" 
         size="sm" 
-        className="gap-1" 
-        onClick={() => onViewChange("gantt")} 
-        variant={activeView === "gantt" ? "default" : "outline"}
+        onClick={() => onViewChange('gantt')} 
+        className={`h-9 px-3 ${activeView === 'gantt' ? 'bg-gray-800' : ''}`}
       >
-        <BarChart4 className="h-4 w-4" />
-        <span>Gantt</span>
+        <BarChart2 className="h-4 w-4 mr-1.5" />
+        <span className="text-xs">Gantt</span>
       </Button>
+      
       <Button 
+        variant="ghost" 
         size="sm" 
-        className="gap-1" 
-        onClick={() => onViewChange("delays")} 
-        variant={activeView === "delays" ? "default" : "outline"}
+        onClick={() => onViewChange('milestone')} 
+        className={`h-9 px-3 ${activeView === 'milestone' ? 'bg-gray-800' : ''}`}
       >
-        <ArrowDownUp className="h-4 w-4" />
-        <span>Delays</span>
+        <Calendar className="h-4 w-4 mr-1.5" />
+        <span className="text-xs">Milestones</span>
       </Button>
+      
       <Button 
+        variant="ghost" 
         size="sm" 
-        className="gap-1" 
-        onClick={() => onViewChange("milestone")} 
-        variant={activeView === "milestone" ? "default" : "outline"}
+        onClick={() => onViewChange('activities')} 
+        className={`h-9 px-3 ${activeView === 'activities' ? 'bg-gray-800' : ''}`}
       >
-        <CheckCircle className="h-4 w-4" />
-        <span>Milestones</span>
+        <CheckSquare className="h-4 w-4 mr-1.5" />
+        <span className="text-xs">Activities</span>
       </Button>
+      
       <Button 
+        variant="ghost" 
         size="sm" 
-        className="gap-1" 
-        onClick={() => onViewChange("activities")} 
-        variant={activeView === "activities" ? "default" : "outline"}
+        onClick={() => onViewChange('delays')} 
+        className={`h-9 px-3 ${activeView === 'delays' ? 'bg-gray-800' : ''}`}
       >
-        <Calendar className="h-4 w-4" />
-        <span>Activities</span>
+        <Clock className="h-4 w-4 mr-1.5" />
+        <span className="text-xs">Delays</span>
       </Button>
     </div>
   );

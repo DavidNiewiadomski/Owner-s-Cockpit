@@ -24,7 +24,18 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project) => (
           <div key={project.id} onClick={() => handleSelectProject(project)}>
-            <ProjectCard {...project} />
+            <ProjectCard 
+              id={project.id}
+              title={project.title}
+              description={project.description}
+              progress={project.progress}
+              status={project.status === "completed" || project.status === "upcoming" 
+                ? "on-track" 
+                : project.status}
+              dueDate={project.dueDate}
+              teamMembers={project.teamMembers}
+              priority={project.priority}
+            />
           </div>
         ))}
       </div>

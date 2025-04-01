@@ -40,7 +40,19 @@ export function ProjectTabs({ projects, viewMode, setViewMode, searchTerm }: Pro
     return viewMode === 'card' ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projectsToRender.map(project => (
-          <ProjectCard key={project.id} {...project} />
+          <ProjectCard 
+            key={project.id}
+            id={project.id}
+            title={project.title}
+            description={project.description}
+            progress={project.progress}
+            status={project.status === "completed" || project.status === "upcoming" 
+              ? "on-track" 
+              : project.status}
+            dueDate={project.dueDate}
+            teamMembers={project.teamMembers}
+            priority={project.priority}
+          />
         ))}
       </div>
     ) : (

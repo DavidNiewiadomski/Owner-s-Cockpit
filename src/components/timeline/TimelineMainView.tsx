@@ -61,6 +61,17 @@ export function TimelineMainView({
   onViewRealityCapture,
   onCloseRealityCapture
 }: TimelineMainViewProps) {
+  // Get the project name based on activeProject value
+  const getProjectName = () => {
+    switch(activeProject) {
+      case 'downtown': return 'Downtown High-Rise';
+      case 'riverside': return 'Riverside Complex';
+      case 'corporate': return 'Corporate Offices';
+      case 'all': return 'All Projects';
+      default: return selectedProject?.title || 'Project';
+    }
+  };
+
   return (
     <>
       <div className="mb-6 flex justify-between items-center">
@@ -84,7 +95,7 @@ export function TimelineMainView({
         />
 
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">{selectedProject?.title || 'Project'} Timeline</h2>
+          <h2 className="text-xl font-semibold">{getProjectName()} Timeline</h2>
           <TimelineViewSelector 
             activeView={timelineView} 
             onViewChange={onViewChange} 
@@ -97,7 +108,7 @@ export function TimelineMainView({
               <RealityCaptureViewer
                 captureUrl={realityCapture.url}
                 captureDate={realityCapture.date}
-                projectName={selectedProject?.title || 'Project'}
+                projectName={getProjectName()}
                 location={realityCapture.location}
                 onClose={onCloseRealityCapture}
                 className="mb-6"
@@ -116,7 +127,14 @@ export function TimelineMainView({
           </div>
           
           <div>
-            <ProjectSummary />
+            <ProjectSummary 
+              projectName={getProjectName()}
+              startDate={activeProject === 'downtown' ? "Jan 15, 2023" : "Mar 10, 2023"}
+              endDate={activeProject === 'downtown' ? "Aug 30, 2024" : "Dec 15, 2024"}
+              budget={activeProject === 'downtown' ? "$32.5M" : "$28.7M"}
+              completion={activeProject === 'downtown' ? 65 : 42}
+              lastUpdated="2 hours ago"
+            />
           </div>
         </div>
       </Tabs>
