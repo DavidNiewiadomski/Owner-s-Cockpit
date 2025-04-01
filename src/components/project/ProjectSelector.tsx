@@ -53,7 +53,7 @@ export function ProjectSelector() {
       <DropdownMenuContent className="w-48 bg-gray-900 border-gray-700 text-white">
         <DropdownMenuItem 
           onClick={() => handleProjectSelect({ id: 'all', title: 'All Projects', status: 'on-track' })}
-          className="flex items-center gap-2 hover:bg-gray-800 cursor-pointer"
+          className="flex items-center gap-2 hover:bg-purple-700/70 hover:text-white cursor-pointer transition-colors"
         >
           <span className="h-2 w-2 rounded-full bg-gray-500" />
           <span>All Projects</span>
@@ -64,7 +64,7 @@ export function ProjectSelector() {
           <DropdownMenuItem
             key={project.id}
             onClick={() => handleProjectSelect(project)}
-            className="flex items-center gap-2 hover:bg-gray-800 cursor-pointer"
+            className="flex items-center gap-2 hover:bg-purple-700/70 hover:text-white cursor-pointer transition-colors"
           >
             <span className={`h-2 w-2 rounded-full ${getStatusColor(project.status)}`} />
             <span className="truncate">{project.title}</span>
