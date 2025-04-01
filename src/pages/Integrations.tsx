@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
-import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield, Camera, Map, Scan, Globe } from 'lucide-react';
+import { Workflow, Box, Cloud, Database, Zap, Link2, Camera, Code2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { IntegrationsHeader } from '@/components/integrations/IntegrationsHeader';
+import { IntegrationCategories } from '@/components/integrations/IntegrationCategories';
+import { IntegrationSecurityCard } from '@/components/integrations/IntegrationSecurityCard';
+import { FeaturedIntegrations } from '@/components/integrations/FeaturedIntegrations';
+import { IntegrationsList } from '@/components/integrations/IntegrationsList';
 
 const integrations = [
   {
@@ -126,12 +128,9 @@ const Integrations = () => {
     });
   };
 
-  const handleIntegrationAction = (action: string, name: string) => {
-    toast({
-      title: `${action}: ${name}`,
-      description: `Integration ${action.toLowerCase()} successfully.`,
-      duration: 3000,
-    });
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory(null);
   };
 
   const filteredIntegrations = integrations.filter(integration => {
@@ -163,109 +162,31 @@ const Integrations = () => {
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-white">Integrations</h1>
-                <p className="text-gray-400">Connect your project with external tools and services</p>
-              </div>
-              <div className="mt-3 md:mt-0">
-                <Button className="bg-construction-600 hover:bg-construction-700 text-white">
-                  <CirclePlus className="h-4 w-4 mr-2" />
-                  Add New Integration
-                </Button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
-                  className={`flex items-center justify-center p-2 h-auto ${
-                    selectedCategory === category.id 
-                      ? "bg-construction-600 text-white border-construction-700" 
-                      : "bg-black text-gray-300 hover:bg-gray-900"
-                  }`}
-                  onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
-                >
-                  <category.icon className="h-4 w-4 mr-2" />
-                  <span className="text-xs">{category.name}</span>
-                </Button>
-              ))}
-            </div>
+            <IntegrationsHeader />
             
-            <Card className="bg-black border-gray-700 p-4 mb-8">
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
-                  <div className="flex items-center">
-                    <Shield className="h-12 w-12 text-construction-500 mr-4" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">Integration Security</h3>
-                      <p className="text-sm text-gray-400">All connections are secured with OAuth 2.0 and data encryption</p>
-                    </div>
-                  </div>
-                  <div className="mt-4 md:mt-0 flex gap-4 items-center">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                      <span className="text-sm text-gray-300">{integrations.filter(i => i.connected).length} Active</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-gray-500"></div>
-                      <span className="text-sm text-gray-300">{integrations.filter(i => !i.connected).length} Inactive</span>
-                    </div>
-                    <Button variant="outline" className="ml-4 text-xs h-8 border-gray-700 bg-black hover:bg-gray-900">
-                      View Audit Log
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <IntegrationCategories 
+              categories={categories} 
+              selectedCategory={selectedCategory} 
+              setSelectedCategory={setSelectedCategory} 
+            />
             
-            {featured.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4 text-white flex items-center">
-                  <Scan className="h-5 w-5 mr-2 text-construction-400" />
-                  Featured Integrations
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {featured.map((integration) => (
-                    <IntegrationCard 
-                      key={integration.id} 
-                      {...integration} 
-                      onToggle={() => handleIntegrationToggle(integration.name)} 
-                      className="bg-gradient-to-br from-black to-black border-construction-700/30 shadow-lg"
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+            <IntegrationSecurityCard 
+              activeCount={integrations.filter(i => i.connected).length}
+              inactiveCount={integrations.filter(i => !i.connected).length}
+            />
+            
+            <FeaturedIntegrations 
+              integrations={featured} 
+              onToggle={handleIntegrationToggle} 
+            />
             
             <h2 className="text-xl font-semibold mb-4 text-white">All Integrations</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {regular.map((integration) => (
-                <IntegrationCard 
-                  key={integration.id} 
-                  {...integration} 
-                  onToggle={() => handleIntegrationToggle(integration.name)} 
-                />
-              ))}
-            </div>
             
-            {filteredIntegrations.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-400 mb-4">No integrations found matching your criteria</p>
-                <Button 
-                  variant="outline" 
-                  className="text-construction-400 border-construction-600"
-                  onClick={() => {
-                    setSearchTerm('');
-                    setSelectedCategory(null);
-                  }}
-                >
-                  Clear Filters
-                </Button>
-              </div>
-            )}
+            <IntegrationsList 
+              integrations={regular}
+              onToggle={handleIntegrationToggle}
+              onClearFilters={clearFilters}
+            />
           </div>
         </main>
       </div>
