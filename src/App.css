@@ -235,6 +235,24 @@ body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, 
   font-weight: 500 !important;
 }
 
+/* Enhanced tabs styling */
+[data-state="active"].TabsTrigger,
+[data-state="active"][role="tab"],
+[role="tab"][data-state="active"] {
+  background-color: rgba(34, 211, 238, 0.2) !important;
+  color: rgb(34, 211, 238) !important;
+  border-bottom: 2px solid rgb(34, 211, 238) !important;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3) !important;
+  text-shadow: 0 0 5px rgba(34, 211, 238, 0.5) !important;
+}
+
+/* Add glow to tabs on hover */
+[role="tab"]:hover:not([data-state="active"]) {
+  background-color: rgba(34, 211, 238, 0.1) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.2s ease-in-out;
+}
+
 /* Ensure labels in charts and widgets are visible */
 .recharts-text, .recharts-label, .recharts-cartesian-axis-tick-value {
   fill: white !important;

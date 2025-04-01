@@ -27,7 +27,7 @@ const InvestmentImpact = () => {
           title="Investment Impact" 
           description="Track and analyze the financial performance of your construction projects"
           onChatOpen={() => setSheetOpen(true)}
-          className="text-white" // Add text-white class to ensure white text for better visibility
+          className="text-white"
         />
         
         <InvestmentTabs 

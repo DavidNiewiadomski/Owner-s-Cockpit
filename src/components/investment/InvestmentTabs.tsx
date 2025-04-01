@@ -30,31 +30,31 @@ export function InvestmentTabs({
       <TabsList className="bg-black border border-gray-800">
         <TabsTrigger 
           value="overview" 
-          className="text-white font-medium text-base"
+          className="text-base font-medium data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
         >
           Overview
         </TabsTrigger>
         <TabsTrigger 
           value="roi" 
-          className="text-white font-medium text-base"
+          className="text-base font-medium data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
         >
           ROI Analysis
         </TabsTrigger>
         <TabsTrigger 
           value="allocation" 
-          className="text-white font-medium text-base"
+          className="text-base font-medium data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
         >
           Investment Allocation
         </TabsTrigger>
         <TabsTrigger 
           value="properties" 
-          className="text-white font-medium text-base"
+          className="text-base font-medium data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
         >
           Properties
         </TabsTrigger>
         <TabsTrigger 
           value="risks" 
-          className="text-white font-medium text-base"
+          className="text-base font-medium data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
         >
           <AlertTriangle className="h-4 w-4 mr-2" />
           Risk Management
