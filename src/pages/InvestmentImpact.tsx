@@ -7,10 +7,9 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock, MessageSquare, LightbulbIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { AIAssistant } from '@/components/ai/AIAssistant';
 
-// Define types
 interface InvestmentMetric {
   label: string;
   original: string;
@@ -19,7 +18,6 @@ interface InvestmentMetric {
   variance: string;
 }
 
-// Data for ROI chart
 const roiData = [
   { name: 'Jan', projected: 7.2, actual: 7.0 },
   { name: 'Feb', projected: 7.3, actual: 6.9 },
@@ -35,7 +33,6 @@ const roiData = [
   { name: 'Dec', projected: 8.3, actual: 7.3 },
 ];
 
-// Data for property value chart
 const propertyValueData = [
   { name: 'Q1 2022', value: 12.5 },
   { name: 'Q2 2022', value: 13.2 },
@@ -47,7 +44,6 @@ const propertyValueData = [
   { name: 'Q4 2023', value: 17.5 },
 ];
 
-// Data for investment metrics
 const investmentMetrics: InvestmentMetric[] = [
   {
     label: 'Total Investment',
@@ -86,7 +82,6 @@ const investmentMetrics: InvestmentMetric[] = [
   }
 ];
 
-// Data for investment allocation
 const investmentAllocationData = [
   { name: 'Land Acquisition', value: 35 },
   { name: 'Construction', value: 40 },
@@ -96,7 +91,6 @@ const investmentAllocationData = [
   { name: 'Other', value: 3 },
 ];
 
-// Investment insights for the AI Assistant
 const investmentInsights = [
   {
     title: "ROI Alert",
@@ -130,7 +124,7 @@ interface Insight {
 
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-black">
@@ -140,7 +134,6 @@ const InvestmentImpact = () => {
         
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
-            {/* AI Insights Card */}
             <Card className="border-construction-600/30 bg-gray-800/50 backdrop-blur-sm shadow-lg mb-6">
               <CardContent className="p-4">
                 <div className="flex justify-between items-center mb-4">
@@ -151,7 +144,7 @@ const InvestmentImpact = () => {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    onClick={() => setDialogOpen(true)}
+                    onClick={() => setSheetOpen(true)}
                     className="h-8 text-construction-400 hover:text-construction-300 hover:bg-gray-700/50 transition-colors"
                   >
                     <span className="mr-1">Open AI Chat</span>
@@ -168,7 +161,7 @@ const InvestmentImpact = () => {
                         insight.type === "success" ? "border-green-700/50 hover:border-green-600" : 
                         "border-blue-700/50 hover:border-blue-600"
                       }`}
-                      onClick={() => setDialogOpen(true)}
+                      onClick={() => setSheetOpen(true)}
                     >
                       <LightbulbIcon className={`h-4 w-4 mt-0.5 flex-shrink-0 ${
                         insight.type === "warning" ? "text-amber-400" : 
@@ -211,7 +204,6 @@ const InvestmentImpact = () => {
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
-                {/* Key Metrics */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   <Card className="bg-black border-gray-800">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -268,7 +260,6 @@ const InvestmentImpact = () => {
                   </Card>
                 </div>
                 
-                {/* ROI Trend Chart */}
                 <Card className="bg-black border-gray-800">
                   <CardHeader>
                     <CardTitle className="text-white">Return on Investment Trend</CardTitle>
@@ -311,7 +302,6 @@ const InvestmentImpact = () => {
                   </CardContent>
                 </Card>
                 
-                {/* Investment Metrics */}
                 <Card className="bg-black border-gray-800">
                   <CardHeader>
                     <CardTitle className="text-white">Investment Metrics Comparison</CardTitle>
@@ -354,7 +344,6 @@ const InvestmentImpact = () => {
               </TabsContent>
               
               <TabsContent value="roi" className="space-y-6">
-                {/* ROI Detail content would go here */}
                 <Card className="bg-black border-gray-800">
                   <CardHeader>
                     <CardTitle className="text-white">ROI Analysis</CardTitle>
@@ -366,7 +355,6 @@ const InvestmentImpact = () => {
               </TabsContent>
               
               <TabsContent value="allocation" className="space-y-6">
-                {/* Investment Allocation content would go here */}
                 <Card className="bg-black border-gray-800">
                   <CardHeader>
                     <CardTitle className="text-white">Investment Allocation</CardTitle>
@@ -378,7 +366,6 @@ const InvestmentImpact = () => {
               </TabsContent>
               
               <TabsContent value="properties" className="space-y-6">
-                {/* Property detail content would go here */}
                 <Card className="bg-black border-gray-800">
                   <CardHeader>
                     <CardTitle className="text-white">Property Values</CardTitle>
@@ -390,20 +377,22 @@ const InvestmentImpact = () => {
               </TabsContent>
             </Tabs>
 
-            {/* AI Chat Dialog */}
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogContent className="max-w-3xl bg-gray-900 border-gray-700 text-white">
-                <DialogHeader>
-                  <DialogTitle className="text-white flex items-center gap-2">
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <SheetContent 
+                side="right" 
+                className="w-[400px] sm:w-[540px] max-w-[90vw] p-0 bg-gray-900 border-gray-700 text-white overflow-hidden"
+              >
+                <SheetHeader className="p-4 border-b border-gray-700 bg-gradient-to-r from-gray-800 to-gray-900">
+                  <SheetTitle className="text-white flex items-center gap-2">
                     <LightbulbIcon className="h-5 w-5 text-construction-400" />
                     AI Investment Assistant
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="h-[500px] overflow-y-auto">
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="h-[calc(100vh-5rem)] overflow-hidden">
                   <AIAssistant />
                 </div>
-              </DialogContent>
-            </Dialog>
+              </SheetContent>
+            </Sheet>
           </div>
         </main>
       </div>
