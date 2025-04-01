@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { AlertTriangle, ArrowUpDown, Filter, DownloadIcon, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 
 interface Risk {
   id: string;
@@ -57,6 +58,35 @@ export function RiskManagementContent({ riskData, riskByCategory }: RiskManageme
   const monitoringRisks = riskData.filter(risk => risk.status === 'Monitoring').length;
   const highRisks = riskData.filter(risk => risk.severity === 'High').length;
 
+  // Custom colors for each risk category
+  const chartConfig = {
+    Financial: { 
+      theme: { light: '#FF8042', dark: '#FF8042' },
+      label: 'Financial'
+    },
+    Regulatory: { 
+      theme: { light: '#FFBB28', dark: '#FFBB28' },
+      label: 'Regulatory'
+    },
+    Resource: { 
+      theme: { light: '#00C49F', dark: '#00C49F' },
+      label: 'Resource'
+    },
+    Design: { 
+      theme: { light: '#0088FE', dark: '#0088FE' },
+      label: 'Design'
+    },
+    Environmental: { 
+      theme: { light: '#8884d8', dark: '#8884d8' },
+      label: 'Environmental'
+    },
+    Technical: { 
+      theme: { light: '#82ca9d', dark: '#82ca9d' },
+      label: 'Technical'
+    },
+  };
+
+  // Define colors outside of render for better performance
   const COLORS = ['#FF8042', '#FFBB28', '#00C49F', '#0088FE', '#8884d8', '#82ca9d'];
 
   return (
@@ -208,30 +238,44 @@ export function RiskManagementContent({ riskData, riskByCategory }: RiskManageme
             <CardTitle className="text-white">Risk Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-80">
+              <ChartContainer config={chartConfig} className="w-full h-full">
                 <PieChart>
                   <Pie
                     data={riskByCategory}
                     cx="50%"
-                    cy="50%"
-                    labelLine={false}
+                    cy="42%"
+                    innerRadius={0}
                     outerRadius={80}
-                    fill="#8884d8"
+                    paddingAngle={2}
                     dataKey="value"
+                    nameKey="name"
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    labelLine={false}
                   >
                     {riskByCategory.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={COLORS[index % COLORS.length]} 
+                        stroke="rgba(0, 0, 0, 0.3)"
+                        strokeWidth={1}
+                      />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
-                    formatter={(value) => [`${value} risks`, '']}
+                  <Tooltip 
+                    content={<ChartTooltipContent 
+                      labelKey="name" 
+                      formatter={(value) => [`${value} risks`, '']}
+                    />} 
                   />
-                  <Legend />
                 </PieChart>
-              </ResponsiveContainer>
+                <ChartLegend 
+                  content={<ChartLegendContent nameKey="name" />} 
+                  layout="vertical"
+                  verticalAlign="bottom"
+                  wrapperStyle={{ paddingTop: "20px" }}
+                />
+              </ChartContainer>
             </div>
           </CardContent>
         </Card>
