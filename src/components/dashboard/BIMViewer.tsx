@@ -38,11 +38,10 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
 
   const handleCloseViewer = () => {
     onClose();
-    // Toast notification removed
   };
 
   const handleDownload = () => {
-    // Toast notification removed
+    // Download functionality would go here
   };
 
   return (
@@ -156,9 +155,9 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
               Download BIM
             </Button>
             <Button 
-              variant="destructive" 
+              variant="default" 
               size="sm" 
-              className="h-8 text-xs"
+              className="h-8 text-xs bg-red-800 hover:bg-red-700"
               onClick={handleCloseViewer}
             >
               Close Viewer

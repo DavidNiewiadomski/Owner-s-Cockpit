@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { useProject } from '@/contexts/ProjectContext';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { ProjectsSection } from '@/components/dashboard/ProjectsSection';
@@ -13,9 +12,9 @@ import { TimelineCard } from '@/components/dashboard/TimelineCard';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { BIMViewer } from '@/components/dashboard/BIMViewer';
 import { RealityCaptureViewer } from '@/components/dashboard/RealityCaptureViewer';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Orbit, Maximize2 } from 'lucide-react';
+import { Orbit, Maximize2, ShieldCheck, Wallet, Calendar, ListChecks } from 'lucide-react';
 import { 
   documents, 
   progressChartData, 
@@ -24,15 +23,15 @@ import {
   timelineEvents, 
   propertyData 
 } from '@/data/index';
+import { Link } from 'react-router-dom';
 
 export function MainDashboard() {
-  const { toast } = useToast();
   const { selectedProject } = useProject();
   const [isBIMViewerOpen, setIsBIMViewerOpen] = useState(false);
   const [isRealityCaptureOpen, setIsRealityCaptureOpen] = useState(false);
 
   const handleViewDocument = (doc: any) => {
-    // Toast notification removed
+    // Function kept for future use
   };
 
   const openBIMViewer = () => {
@@ -54,6 +53,41 @@ export function MainDashboard() {
   return (
     <div className="space-y-8">
       <DashboardStats />
+      
+      {/* Owner Quick Actions */}
+      <Card className="bg-gray-900/50 border-gray-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg text-white">Owner Quick Actions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Button variant="outline" asChild className="h-auto flex-col py-4 border-gray-700 hover:bg-cyan-900/20 hover:border-cyan-800 hover:text-cyan-300">
+              <Link to="/action-items">
+                <ListChecks className="h-6 w-6 mb-2 text-cyan-400" />
+                <span className="text-sm">Action Items</span>
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="h-auto flex-col py-4 border-gray-700 hover:bg-blue-900/20 hover:border-blue-800 hover:text-blue-300">
+              <Link to="/budget-financials">
+                <Wallet className="h-6 w-6 mb-2 text-blue-400" />
+                <span className="text-sm">Budget & Finances</span>
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="h-auto flex-col py-4 border-gray-700 hover:bg-green-900/20 hover:border-green-800 hover:text-green-300">
+              <Link to="/safety-sustainability">
+                <ShieldCheck className="h-6 w-6 mb-2 text-green-400" />
+                <span className="text-sm">Safety Reports</span>
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="h-auto flex-col py-4 border-gray-700 hover:bg-purple-900/20 hover:border-purple-800 hover:text-purple-300">
+              <Link to="/timeline">
+                <Calendar className="h-6 w-6 mb-2 text-purple-400" />
+                <span className="text-sm">Timeline</span>
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <DocumentList 
