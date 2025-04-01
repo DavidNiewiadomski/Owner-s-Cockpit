@@ -19,6 +19,7 @@ import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
+import { FloatingChatButton } from '@/components/ai/FloatingChatButton';
 
 function App() {
   return (
@@ -45,6 +46,9 @@ function App() {
             
             {/* Owner's AI Agent - accessible from anywhere */}
             <OwnerAgentButton />
+            
+            {/* Regular AI Chat Button */}
+            <FloatingChatButton />
 
             <Toaster />
           </div>

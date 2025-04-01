@@ -70,6 +70,15 @@ aside {
   background-color: #000000 !important;
 }
 
+/* Force header and menu elements to have black backgrounds with proper contrast */
+header, 
+.sidebar-navigation, 
+.menu-item, 
+.dropdown-content {
+  background-color: #000000 !important;
+  color: white !important;
+}
+
 /* Force shadcn components to have black backgrounds */
 [data-radix-popper-content-wrapper] * {
   background-color: #000000 !important;
