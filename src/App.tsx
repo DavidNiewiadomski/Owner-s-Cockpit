@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { ProjectProvider } from "@/contexts/ProjectContext";
+import { FloatingChatButton } from "@/components/ai/FloatingChatButton";
 import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
@@ -33,6 +34,7 @@ const PageLayout = () => {
   return (
     <>
       <Outlet />
+      <FloatingChatButton />
     </>
   );
 };
