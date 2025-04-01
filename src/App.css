@@ -74,9 +74,29 @@ aside {
 header, 
 .sidebar-navigation, 
 .menu-item, 
-.dropdown-content {
+.dropdown-content,
+.nav-item,
+.sidebar-navigation * {
   background-color: #000000 !important;
   color: white !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Additional dark mode overrides for menu elements */
+nav, nav *, 
+.nav-menu, .nav-menu *,
+.sidebar, .sidebar * {
+  background-color: #000000 !important;
+  color: white !important;
+}
+
+/* Force side navigation specifically */
+.SidebarNavigation, 
+.SidebarNavigation *,
+.DashboardHeader,
+.DashboardHeader * {
+  background-color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Force shadcn components to have black backgrounds */

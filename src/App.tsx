@@ -19,7 +19,7 @@ import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
-import { FloatingChatButton } from '@/components/ai/FloatingChatButton';
+import './App.css';
 
 function App() {
   return (
@@ -44,11 +44,8 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
             
-            {/* Owner's AI Agent - accessible from anywhere */}
+            {/* Owner's AI Agent - now on the right side */}
             <OwnerAgentButton />
-            
-            {/* Regular AI Chat Button */}
-            <FloatingChatButton />
 
             <Toaster />
           </div>
