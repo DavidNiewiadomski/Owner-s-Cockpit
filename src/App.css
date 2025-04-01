@@ -1,4 +1,3 @@
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -130,9 +129,14 @@ nav button,
   border-color: #333333 !important;
 }
 
-/* Remove duplicate scrollbars */
-.flex-1.overflow-y-auto {
-  overflow: hidden !important;
+/* Fix the overflow issue and allow proper scrolling */
+.h-screen {
+  height: 100vh;
+}
+
+.flex-1.overflow-auto, 
+.flex-1.p-6 {
+  overflow: auto !important;
 }
 
 /* Important overrides for sidebar navigation */

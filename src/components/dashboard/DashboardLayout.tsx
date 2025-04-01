@@ -22,7 +22,7 @@ export function DashboardLayout({
   onSearch = () => {}
 }: DashboardLayoutProps) {
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-black">
+    <div className="flex h-screen w-full bg-black">
       <SidebarNavigation />
       
       <div className="flex-1 flex flex-col w-full">
@@ -34,7 +34,7 @@ export function DashboardLayout({
           initialInsights={initialInsights}
         />
         
-        <main className="flex-1 p-6 bg-black overflow-y-auto w-full">
+        <main className="flex-1 p-6 bg-black overflow-auto w-full">
           <div className="max-w-full mx-auto">
             {children}
           </div>
