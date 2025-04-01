@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { AIAssistant } from '@/components/ai/AIAssistant';
+import { AIInsightsCard } from '@/components/investment/AIInsightsCard';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   ChartContainer, 
@@ -73,10 +74,35 @@ const periods = [
   { value: 'yearly', label: 'Yearly' },
 ];
 
+// Analytics insights data
+const analyticsInsights = [
+  { 
+    type: "warning", 
+    title: "Budget Alert", 
+    content: "City Center project is 8% over budget allocation for Q3." 
+  },
+  { 
+    type: "success", 
+    title: "Efficiency Improved", 
+    content: "North Bridge timeline efficiency increased by 15% this month." 
+  },
+  { 
+    type: "info", 
+    title: "Resource Trend", 
+    content: "Equipment utilization is increasing - consider reallocation." 
+  },
+  { 
+    type: "info", 
+    title: "Pattern Detected", 
+    content: "Material costs show consistent monthly increase of 3.2%." 
+  }
+];
+
 const Analytics = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPeriod, setCurrentPeriod] = useState('monthly');
   const [activeAnimation, setActiveAnimation] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   // Trigger animation effect when component mounts
   useEffect(() => {
@@ -111,8 +137,11 @@ const Analytics = () => {
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            {/* AI Assistant Section */}
-            <AIAssistant />
+            {/* AI Insights Card */}
+            <AIInsightsCard 
+              insights={analyticsInsights} 
+              onChatOpen={() => setSheetOpen(true)} 
+            />
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
