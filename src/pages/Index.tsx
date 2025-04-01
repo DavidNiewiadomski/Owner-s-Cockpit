@@ -62,10 +62,10 @@ const Index = () => {
   ];
 
   // Fix for the Type 'string | number' is not assignable to type 'number' error
-  // Ensure completionPercentage is a number
+  // Ensure completionPercentage is always a number
   const completionPercentage = typeof propertyData.completionPercentage === 'string' 
     ? parseFloat(propertyData.completionPercentage) 
-    : propertyData.completionPercentage;
+    : propertyData.completionPercentage || 0;
 
   return (
     <div className="flex h-screen bg-black">

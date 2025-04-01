@@ -10,6 +10,7 @@ import { ProjectProvider } from "@/contexts/ProjectContext";
 import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
+import BudgetFinancials from "./pages/BudgetFinancials";
 import Integrations from "./pages/Integrations";
 import Settings from "./pages/Settings";
 import Messages from "./pages/Messages";
@@ -53,6 +54,7 @@ const App = () => {
                   <Route path="/action-items" element={<ActionItems />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/budget-financials" element={<BudgetFinancials />} />
                   <Route path="/investment-impact" element={<InvestmentImpact />} />
                   <Route path="/timeline" element={<Timeline />} />
                   <Route path="/documents" element={<Documents />} />

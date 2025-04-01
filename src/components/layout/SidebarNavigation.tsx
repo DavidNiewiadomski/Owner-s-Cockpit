@@ -21,7 +21,8 @@ import {
   LayoutDashboard,
   TrendingUp,
   DollarSign,
-  ListChecks
+  ListChecks,
+  Wallet
 } from 'lucide-react';
 
 interface SidebarNavigationProps {
@@ -123,6 +124,20 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             <Link to="/analytics">
               <BarChart className="h-4 w-4" />
               {!collapsed && <span>Analytics</span>}
+            </Link>
+          </Button>
+          
+          <Button 
+            variant={isActive("/budget-financials") ? "secondary" : "ghost"} 
+            className={cn(
+              "justify-start gap-3 h-10",
+              collapsed && "w-10 justify-center pl-0"
+            )}
+            asChild
+          >
+            <Link to="/budget-financials">
+              <Wallet className="h-4 w-4" />
+              {!collapsed && <span>Budget & Financials</span>}
             </Link>
           </Button>
           
