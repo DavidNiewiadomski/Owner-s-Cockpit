@@ -1,85 +1,57 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import { ProjectProvider } from '@/contexts/ProjectContext';
+import Index from '@/pages/Index';
+import Projects from '@/pages/Projects';
+import Timeline from '@/pages/Timeline';
+import Analytics from '@/pages/Analytics';
+import BudgetFinancials from '@/pages/BudgetFinancials';
+import Documents from '@/pages/Documents';
+import Communications from '@/pages/Communications';
+import InvestmentImpact from '@/pages/InvestmentImpact';
+import ActionItems from '@/pages/ActionItems';
+import SafetySustainability from '@/pages/SafetySustainability';
+import Integrations from '@/pages/Integrations';
+import Messages from '@/pages/Messages';
+import Settings from '@/pages/Settings';
+import NotFound from '@/pages/NotFound';
+import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
+import { FloatingChatButton } from '@/components/ai/FloatingChatButton';
 
-import { ToastProvider } from "@/hooks/use-toast";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
-import { useEffect } from "react";
-import { ProjectProvider } from "@/contexts/ProjectContext";
-import { FloatingChatButton } from "@/components/ai/FloatingChatButton";
-import { AIActivityIndicator } from "@/components/ai/AIActivityIndicator";
-import Index from "./pages/Index";
-import Documents from "./pages/Documents";
-import Analytics from "./pages/Analytics";
-import BudgetFinancials from "./pages/BudgetFinancials";
-import Integrations from "./pages/Integrations";
-import Settings from "./pages/Settings";
-import Communications from "./pages/Communications";
-import Timeline from "./pages/Timeline";
-import Projects from "./pages/Projects";
-import InvestmentImpact from "./pages/InvestmentImpact";
-import ActionItems from "./pages/ActionItems";
-import NotFound from "./pages/NotFound";
-import SafetySustainability from "./pages/SafetySustainability";
-
-// Enable dark mode by default
-const enableDarkMode = () => {
-  document.documentElement.classList.add('dark');
-};
-
-const queryClient = new QueryClient();
-
-// Layout component with the global AI Assistant
-const PageLayout = () => {
+function App() {
   return (
-    <>
-      <Outlet />
-      <FloatingChatButton />
-      <AIActivityIndicator />
-    </>
-  );
-};
+    <ProjectProvider>
+      <BrowserRouter>
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/timeline" element={<Timeline />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/budget-financials" element={<BudgetFinancials />} />
+            <Route path="/documents" element={<Documents />} />
+            <Route path="/communications" element={<Communications />} />
+            <Route path="/investment-impact" element={<InvestmentImpact />} />
+            <Route path="/action-items" element={<ActionItems />} />
+            <Route path="/safety-sustainability" element={<SafetySustainability />} />
+            <Route path="/integrations" element={<Integrations />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          
+          {/* Owner's AI Agent - accessible from anywhere */}
+          <OwnerAgentButton />
+          
+          {/* Regular AI Chat Button */}
+          <FloatingChatButton />
 
-const App = () => {
-  // Set dark mode on initial load
-  useEffect(() => {
-    enableDarkMode();
-  }, []);
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <TooltipProvider>
-          <ProjectProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route element={<PageLayout />}>
-                  {/* Ensure the root path redirects to Index */}
-                  <Route path="/" element={<Index />} />
-                  <Route path="/action-items" element={<ActionItems />} />
-                  <Route path="/projects" element={<Projects />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/budget-financials" element={<BudgetFinancials />} />
-                  <Route path="/investment-impact" element={<InvestmentImpact />} />
-                  <Route path="/timeline" element={<Timeline />} />
-                  <Route path="/safety-sustainability" element={<SafetySustainability />} />
-                  <Route path="/documents" element={<Documents />} />
-                  <Route path="/communications" element={<Communications />} />
-                  <Route path="/integrations" element={<Integrations />} />
-                  <Route path="/settings" element={<Settings />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-            <Toaster />
-            <Sonner />
-          </ProjectProvider>
-        </TooltipProvider>
-      </ToastProvider>
-    </QueryClientProvider>
+          <Toaster />
+        </div>
+      </BrowserRouter>
+    </ProjectProvider>
   );
-};
+}
 
 export default App;
