@@ -13,57 +13,55 @@ import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 export function DashboardTabContent() {
   return (
     <>
-      <TabsContent value="overview">
-        <div className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="col-span-2">
-              <CardHeader>
-                <CardTitle>Project Progress</CardTitle>
-                <CardDescription>Track the progress of your active projects</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <ProjectProgress />
-              </CardContent>
-            </Card>
+      <TabsContent value="overview" className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="col-span-2">
+            <CardHeader>
+              <CardTitle>Project Progress</CardTitle>
+              <CardDescription>Track the progress of your active projects</CardDescription>
+            </CardHeader>
             
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest updates from your projects</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <RecentActivity />
-              </CardContent>
-            </Card>
+            <CardContent>
+              <ProjectProgress />
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Latest updates from your projects</CardDescription>
+            </CardHeader>
             
-            <Card>
-              <CardHeader>
-                <CardTitle>Upcoming Tasks</CardTitle>
-                <CardDescription>Tasks due in the next 7 days</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <UpcomingTasks />
-              </CardContent>
-            </Card>
+            <CardContent>
+              <RecentActivity />
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Upcoming Tasks</CardTitle>
+              <CardDescription>Tasks due in the next 7 days</CardDescription>
+            </CardHeader>
             
-            <Card className="col-span-2">
-              <CardHeader>
-                <CardTitle>Budget Overview</CardTitle>
-                <CardDescription>Financial summary of your projects</CardDescription>
-              </CardHeader>
-              
-              <CardContent>
-                <BudgetOverview />
-              </CardContent>
-            </Card>
-          </div>
+            <CardContent>
+              <UpcomingTasks />
+            </CardContent>
+          </Card>
+          
+          <Card className="col-span-2">
+            <CardHeader>
+              <CardTitle>Budget Overview</CardTitle>
+              <CardDescription>Financial summary of your projects</CardDescription>
+            </CardHeader>
+            
+            <CardContent>
+              <BudgetOverview />
+            </CardContent>
+          </Card>
         </div>
       </TabsContent>
       
-      <TabsContent value="timeline">
+      <TabsContent value="timeline" className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Project Timeline</CardTitle>
@@ -76,7 +74,7 @@ export function DashboardTabContent() {
         </Card>
       </TabsContent>
       
-      <TabsContent value="budget">
+      <TabsContent value="budget" className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Budget Details</CardTitle>
@@ -89,7 +87,7 @@ export function DashboardTabContent() {
         </Card>
       </TabsContent>
       
-      <TabsContent value="team">
+      <TabsContent value="team" className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Team Members</CardTitle>
@@ -102,7 +100,7 @@ export function DashboardTabContent() {
         </Card>
       </TabsContent>
       
-      <TabsContent value="risks">
+      <TabsContent value="risks" className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Project Risks</CardTitle>
