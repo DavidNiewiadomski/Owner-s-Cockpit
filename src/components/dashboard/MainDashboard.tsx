@@ -32,10 +32,7 @@ export function MainDashboard() {
   const [isRealityCaptureOpen, setIsRealityCaptureOpen] = useState(false);
 
   const handleViewDocument = (doc: any) => {
-    toast({
-      title: "Opening Document",
-      description: `Loading ${doc.name}...`,
-    });
+    // Toast notification removed
   };
 
   const openBIMViewer = () => {

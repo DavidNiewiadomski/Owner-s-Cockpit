@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
 
 interface BIMViewerProps {
   projectName?: string;
@@ -23,7 +22,6 @@ interface BIMViewerProps {
 export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const { toast } = useToast();
 
   React.useEffect(() => {
     // Simulate loading of the BIM model
@@ -40,17 +38,11 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
 
   const handleCloseViewer = () => {
     onClose();
-    toast({
-      title: "BIM Viewer Closed",
-      description: "You have exited the BIM viewer",
-    });
+    // Toast notification removed
   };
 
   const handleDownload = () => {
-    toast({
-      title: "Download Started",
-      description: "BIM model is being prepared for download",
-    });
+    // Toast notification removed
   };
 
   return (
