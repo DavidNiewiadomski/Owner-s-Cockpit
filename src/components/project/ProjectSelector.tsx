@@ -12,10 +12,12 @@ import { useProject, ProjectOrAll } from '@/contexts/ProjectContext';
 
 export function ProjectSelector() {
   const { selectedProject, setSelectedProject, allProjects } = useProject();
+  const [open, setOpen] = React.useState(false);
 
   // Function to handle project selection
   const handleProjectSelect = (project: ProjectOrAll) => {
     setSelectedProject(project);
+    setOpen(false);
   };
 
   // Get status color for the status indicator
@@ -37,11 +39,12 @@ export function ProjectSelector() {
   if (!selectedProject) return null;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="outline" 
           className="flex items-center justify-between gap-2 w-40 md:w-48 border-gray-700 bg-gray-900/60 text-white hover:bg-gray-800"
+          onMouseEnter={() => setOpen(true)}
         >
           <div className="flex items-center gap-2 truncate">
             <span className={`h-2 w-2 rounded-full ${getStatusColor(selectedProject.status)}`} />
@@ -50,10 +53,13 @@ export function ProjectSelector() {
           <ChevronDown className="h-4 w-4 text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 bg-gray-900 border-gray-700 text-white">
+      <DropdownMenuContent 
+        className="w-48 bg-gray-900 border-gray-700 text-white"
+        onMouseLeave={() => setOpen(false)}
+      >
         <DropdownMenuItem 
           onClick={() => handleProjectSelect({ id: 'all', title: 'All Projects', status: 'on-track' })}
-          className="flex items-center gap-2 hover:bg-purple-700/70 text-white hover:text-cyan-200 cursor-pointer transition-colors"
+          className="flex items-center gap-2 hover:bg-purple-700/70 text-white hover:text-white cursor-pointer transition-colors"
         >
           <span className="h-2 w-2 rounded-full bg-gray-500" />
           <span>All Projects</span>
@@ -64,7 +70,7 @@ export function ProjectSelector() {
           <DropdownMenuItem
             key={project.id}
             onClick={() => handleProjectSelect(project)}
-            className="flex items-center gap-2 hover:bg-purple-700/70 text-white hover:text-cyan-200 cursor-pointer transition-colors"
+            className="flex items-center gap-2 hover:bg-purple-700/70 text-white hover:text-white cursor-pointer transition-colors"
           >
             <span className={`h-2 w-2 rounded-full ${getStatusColor(project.status)}`} />
             <span className="truncate">{project.title}</span>
