@@ -11,11 +11,36 @@ import { CostVarianceChart } from "@/components/financials/CostVarianceChart";
 import { InvoiceStatusCard } from "@/components/financials/InvoiceStatusCard";
 import { CashFlowForecastChart } from "@/components/financials/CashFlowForecastChart";
 import { useProject } from "@/contexts/ProjectContext";
+import { CollapsibleAIAssistant } from "@/components/ai/CollapsibleAIAssistant";
 
 const BudgetFinancials = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || "All Projects";
+
+  // Budget-specific insights
+  const budgetInsights = [
+    {
+      title: "Budget Alert",
+      content: "Structural Framing costs are 4% over budget ($28,800)",
+      type: "warning" as const
+    },
+    {
+      title: "Cashflow Projection",
+      content: "Positive cash flow expected through Q3, with potential shortfall in October",
+      type: "info" as const
+    },
+    {
+      title: "Cost Saving",
+      content: "Interior Finishes currently under budget by $12,700 (2%)",
+      type: "success" as const
+    },
+    {
+      title: "Invoice Status",
+      content: "12 overdue invoices ($315,000) require immediate attention",
+      type: "warning" as const
+    }
+  ];
 
   return (
     <div className="flex h-screen bg-black">
@@ -23,6 +48,12 @@ const BudgetFinancials = () => {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onSearch={setSearchTerm} />
+        
+        <CollapsibleAIAssistant 
+          projectContext="Budget & Financials"
+          projectName={projectName}
+          initialInsights={budgetInsights}
+        />
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
