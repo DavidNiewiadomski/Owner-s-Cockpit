@@ -22,7 +22,7 @@ const InvestmentImpact = () => {
       projectContext="Investment Impact"
       initialInsights={investmentInsights}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4">
         <InvestmentHeader 
           title="Investment Impact" 
           description="Track and analyze the financial performance of your construction projects"
