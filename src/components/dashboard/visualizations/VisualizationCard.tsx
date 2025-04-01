@@ -8,11 +8,12 @@ interface VisualizationCardProps {
   title: string;
   imageSrc: string;
   onFullScreen: () => void;
+  className?: string;
 }
 
-export function VisualizationCard({ title, imageSrc, onFullScreen }: VisualizationCardProps) {
+export function VisualizationCard({ title, imageSrc, onFullScreen, className }: VisualizationCardProps) {
   return (
-    <Card className="bg-black border-cyan-900/30 overflow-hidden p-4">
+    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 ${className || ''}`}>
       <div className="flex flex-col h-80">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
