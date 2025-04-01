@@ -30,18 +30,18 @@ interface FinancialTrackingProps {
 }
 
 export function FinancialTracking({ 
-  projectName, 
-  totalBudget, 
-  spending, 
-  changeOrders 
+  projectName = "All Projects", 
+  totalBudget = 0, 
+  spending = [], 
+  changeOrders = []
 }: FinancialTrackingProps) {
   // Calculate total spent
-  const totalSpent = spending.reduce((sum, item) => sum + item.amount, 0);
-  const percentSpent = Math.round((totalSpent / totalBudget) * 100);
+  const totalSpent = spending?.reduce((sum, item) => sum + item.amount, 0) || 0;
+  const percentSpent = totalBudget ? Math.round((totalSpent / totalBudget) * 100) : 0;
   
   // Calculate change order totals
-  const approvedChangeOrders = changeOrders.filter(co => co.status === 'approved');
-  const approvedChangeOrderTotal = approvedChangeOrders.reduce((sum, co) => sum + co.amount, 0);
+  const approvedChangeOrders = changeOrders?.filter(co => co.status === 'approved') || [];
+  const approvedChangeOrderTotal = approvedChangeOrders?.reduce((sum, co) => sum + co.amount, 0) || 0;
   
   return (
     <Card className="bg-black border-gray-700 shadow-lg">
@@ -92,7 +92,7 @@ export function FinancialTracking({
           <div>
             <h4 className="text-sm font-medium mb-3 text-gray-300">Spending by Category</h4>
             <div className="space-y-2">
-              {spending.map((item, index) => (
+              {spending?.map((item, index) => (
                 <div key={index} className="flex items-center">
                   <div 
                     className="w-2 h-6 rounded-sm mr-3" 
@@ -107,7 +107,7 @@ export function FinancialTracking({
                       <div 
                         className="h-full rounded-full" 
                         style={{ 
-                          width: `${(item.amount / totalBudget) * 100}%`,
+                          width: `${totalBudget ? (item.amount / totalBudget) * 100 : 0}%`,
                           backgroundColor: item.color
                         }}
                       ></div>
@@ -142,7 +142,7 @@ export function FinancialTracking({
             </div>
             
             <div className="space-y-2">
-              {changeOrders.slice(0, 3).map((order) => (
+              {changeOrders?.slice(0, 3).map((order) => (
                 <div key={order.id} className="flex items-center p-2 rounded-md bg-black hover:bg-black border border-gray-800">
                   <div 
                     className={`w-1.5 h-6 rounded-sm mr-3 ${
@@ -181,9 +181,9 @@ export function FinancialTracking({
                 </div>
               ))}
               
-              {changeOrders.length > 3 && (
+              {(changeOrders?.length || 0) > 3 && (
                 <Button variant="ghost" size="sm" className="text-xs w-full mt-2">
-                  View All Change Orders ({changeOrders.length})
+                  View All Change Orders ({changeOrders?.length})
                 </Button>
               )}
             </div>

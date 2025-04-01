@@ -275,7 +275,6 @@ export const financialData = {
   ]
 };
 
-// Add projectDocuments for Documents.tsx
 export const projectDocuments = {
   "all": [
     {
