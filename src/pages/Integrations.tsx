@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
@@ -156,14 +156,11 @@ const Integrations = () => {
   );
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
-      <div className="flex-1">
-        <DashboardHeader 
-          title="Integrations" 
-          subtitle="Connect your tools and services"
-          onSearch={setSearchTerm} 
-        />
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <DashboardHeader onSearch={setSearchTerm} />
         
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">

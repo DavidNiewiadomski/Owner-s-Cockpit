@@ -13,11 +13,10 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Updated interface to match the data we have
 interface ROIDataPoint {
-  month: string;
-  original: number;
-  current: number;
+  name: string;
+  projected: number;
+  actual: number | null;
 }
 
 interface ROITrendChartProps {
@@ -48,14 +47,14 @@ export const ROITrendChart: React.FC<ROITrendChartProps> = ({ data, colors }) =>
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" stroke={colors.gridLine} />
               <XAxis 
-                dataKey="month" 
+                dataKey="name" 
                 tick={{ fill: '#aaa', fontSize: 12 }}
                 axisLine={{ stroke: colors.gridLine }}
               />
               <YAxis 
                 tick={{ fill: '#aaa', fontSize: 12 }}
                 axisLine={{ stroke: colors.gridLine }}
-                domain={[6, 16]}
+                domain={[6, 9]}
                 tickFormatter={(value) => `${value}%`}
               />
               <Tooltip 
@@ -66,20 +65,20 @@ export const ROITrendChart: React.FC<ROITrendChartProps> = ({ data, colors }) =>
               <Legend />
               <Line 
                 type="monotone" 
-                dataKey="original" 
+                dataKey="projected" 
                 stroke={colors.secondary} 
                 strokeWidth={2} 
                 activeDot={{ r: 6 }}
-                name="Original ROI"
+                name="Projected ROI"
                 animationDuration={1500}
               />
               <Line 
                 type="monotone" 
-                dataKey="current" 
+                dataKey="actual" 
                 stroke={colors.accent} 
                 strokeWidth={2} 
                 activeDot={{ r: 6 }}
-                name="Current ROI"
+                name="Actual ROI"
                 strokeDasharray="5 5"
                 animationDuration={1500}
                 animationBegin={300}

@@ -1,7 +1,10 @@
 
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
+import { DashboardTabContent } from '@/components/dashboard/DashboardTabContent';
 
 interface DashboardProps {
   completionPercentage: number;
@@ -11,31 +14,33 @@ interface DashboardProps {
 }
 
 export function Dashboard({
-  completionPercentage = 0,
-  daysRemaining = 0,
-  budgetUtilization = 0,
-  teamSize = 0
+  completionPercentage,
+  daysRemaining,
+  budgetUtilization,
+  teamSize
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
   
-  // Ensure we have valid numbers for all stats
-  const safeCompletionPercentage = typeof completionPercentage === 'number' && !isNaN(completionPercentage) ? completionPercentage : 0;
-  const safeDaysRemaining = typeof daysRemaining === 'number' && !isNaN(daysRemaining) ? daysRemaining : 0;
-  const safeBudgetUtilization = typeof budgetUtilization === 'number' && !isNaN(budgetUtilization) ? budgetUtilization : 0;
-  const safeTeamSize = typeof teamSize === 'number' && !isNaN(teamSize) ? teamSize : 0;
-  
   return (
     <div className="space-y-6">
+      <PageHeader 
+        title="Project Dashboard" 
+        description="Overview of your current construction projects"
+        actions={
+          <Button>New Project</Button>
+        }
+      />
+      
       <DashboardStats 
-        completionPercentage={safeCompletionPercentage}
-        daysRemaining={safeDaysRemaining}
-        budgetUtilization={safeBudgetUtilization}
-        teamSize={safeTeamSize}
+        completionPercentage={completionPercentage}
+        daysRemaining={daysRemaining}
+        budgetUtilization={budgetUtilization}
+        teamSize={teamSize}
       />
       
       <Tabs 
-        defaultValue="overview" 
-        onValueChange={(value) => setActiveTab(value)}
+        defaultValue={activeTab} 
+        onValueChange={setActiveTab}
         className="space-y-4"
       >
         <TabsList>
@@ -46,36 +51,7 @@ export function Dashboard({
           <TabsTrigger value="risks">Risks</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview" className="mt-4">
-          <div className="p-4 border rounded-md">
-            <h3 className="text-lg font-medium mb-2">Project Overview</h3>
-            <p>Overview content will be displayed here.</p>
-          </div>
-        </TabsContent>
-        <TabsContent value="timeline" className="mt-4">
-          <div className="p-4 border rounded-md">
-            <h3 className="text-lg font-medium mb-2">Project Timeline</h3>
-            <p>Timeline content will be displayed here.</p>
-          </div>
-        </TabsContent>
-        <TabsContent value="budget" className="mt-4">
-          <div className="p-4 border rounded-md">
-            <h3 className="text-lg font-medium mb-2">Budget Information</h3>
-            <p>Budget content will be displayed here.</p>
-          </div>
-        </TabsContent>
-        <TabsContent value="team" className="mt-4">
-          <div className="p-4 border rounded-md">
-            <h3 className="text-lg font-medium mb-2">Team Members</h3>
-            <p>Team content will be displayed here.</p>
-          </div>
-        </TabsContent>
-        <TabsContent value="risks" className="mt-4">
-          <div className="p-4 border rounded-md">
-            <h3 className="text-lg font-medium mb-2">Risk Assessment</h3>
-            <p>Risk content will be displayed here.</p>
-          </div>
-        </TabsContent>
+        <DashboardTabContent />
       </Tabs>
     </div>
   );

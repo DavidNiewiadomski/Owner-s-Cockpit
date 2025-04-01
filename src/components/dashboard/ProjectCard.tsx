@@ -2,7 +2,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Clock } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface TeamMember {
@@ -27,16 +27,8 @@ export function ProjectCard({
   dueDate,
   teamMembers,
 }: ProjectCardProps) {
-  // Safe defaults for props
-  const safeTitle = title || "";
-  const safeDescription = description || "";
-  const safeProgress = typeof progress === 'number' ? progress : 0;
-  const safeStatus = status === 'on-track' || status === 'at-risk' || status === 'delayed' ? status : 'on-track';
-  const safeDueDate = dueDate || "";
-  const safeTeamMembers = Array.isArray(teamMembers) ? teamMembers : [];
-  
   const getStatusClass = () => {
-    switch (safeStatus) {
+    switch (status) {
       case "on-track":
         return "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400";
       case "at-risk":
@@ -49,7 +41,7 @@ export function ProjectCard({
   };
 
   const getStatusLabel = () => {
-    switch (safeStatus) {
+    switch (status) {
       case "on-track":
         return "On Track";
       case "at-risk":
@@ -57,7 +49,7 @@ export function ProjectCard({
       case "delayed":
         return "Delayed";
       default:
-        return "On Track";
+        return status;
     }
   };
 
@@ -65,48 +57,48 @@ export function ProjectCard({
     <Card className="overflow-hidden border-construction-600/10 hover:border-construction-600/30 transition-colors">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{safeTitle}</CardTitle>
+          <CardTitle className="text-lg">{title}</CardTitle>
           <Badge className={getStatusClass()}>{getStatusLabel()}</Badge>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-2">{safeDescription}</p>
+        <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
       </CardHeader>
       <CardContent className="pb-2">
         <div className="space-y-4">
           <div>
             <div className="flex justify-between text-sm mb-1">
               <span>Progress</span>
-              <span>{safeProgress}%</span>
+              <span>{progress}%</span>
             </div>
-            <Progress value={safeProgress} className="h-2" />
+            <Progress value={progress} className="h-2" />
           </div>
 
           <div className="flex items-center text-sm text-muted-foreground">
             <CalendarIcon className="mr-1 h-4 w-4" />
-            <span>Due: {safeDueDate}</span>
+            <span>Due: {dueDate}</span>
           </div>
         </div>
       </CardContent>
       <CardFooter className="pt-0">
         <div className="flex justify-between items-center w-full">
           <div className="flex -space-x-2">
-            {safeTeamMembers.slice(0, 3).map((member, index) => (
+            {teamMembers.slice(0, 3).map((member, index) => (
               <Avatar key={index} className="border-2 border-background h-8 w-8">
                 {member.avatar ? (
-                  <AvatarImage src={member.avatar} alt={member.name || ""} />
+                  <AvatarImage src={member.avatar} alt={member.name} />
                 ) : (
                   <AvatarFallback>
-                    {(member.name || "")
+                    {member.name
                       .split(" ")
-                      .map((n) => n[0] || "")
+                      .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
                 )}
               </Avatar>
             ))}
-            {safeTeamMembers.length > 3 && (
+            {teamMembers.length > 3 && (
               <Avatar className="border-2 border-background h-8 w-8">
                 <AvatarFallback className="bg-muted text-muted-foreground">
-                  +{safeTeamMembers.length - 3}
+                  +{teamMembers.length - 3}
                 </AvatarFallback>
               </Avatar>
             )}

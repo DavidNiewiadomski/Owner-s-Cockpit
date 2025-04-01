@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -15,6 +16,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 
+// Sample conversation data
 interface Contact {
   id: string;
   name: string;
@@ -146,10 +148,22 @@ const messages: Message[] = [
   },
 ];
 
-const messageInsightsArray = [
-  "Communication Alert: Sarah Wilson has requested approval for Downtown High-Rise facade materials by tomorrow.",
-  "Meeting Reminder: Project status meeting with the Downtown High-Rise team scheduled for Thursday at 2pm.",
-  "Decision Impact: Approving the material change for Corporate Office Park would save $85,000 on overall budget."
+const messageInsights = [
+  {
+    title: 'Communication Alert',
+    content: 'Sarah Wilson has requested approval for Downtown High-Rise facade materials by tomorrow.',
+    type: 'warning' as const
+  },
+  {
+    title: 'Meeting Reminder',
+    content: 'Project status meeting with the Downtown High-Rise team scheduled for Thursday at 2pm.',
+    type: 'info' as const
+  },
+  {
+    title: 'Decision Impact',
+    content: 'Approving the material change for Corporate Office Park would save $85,000 on overall budget.',
+    type: 'success' as const
+  }
 ];
 
 const Messages = () => {
@@ -166,6 +180,7 @@ const Messages = () => {
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
+      // In a real application, we would send the message to an API
       console.log('Sending message:', newMessage);
       setNewMessage('');
     }
@@ -175,18 +190,16 @@ const Messages = () => {
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
       <div className="flex-1 flex flex-col">
-        <DashboardHeader 
-          title="Messages" 
-          subtitle="Communicate with your team and clients"
-          onSearch={setSearchTerm} 
-        />
+        <DashboardHeader onSearch={setSearchTerm} />
         
+        {/* Move AI Assistant to the top, right after header */}
         <CollapsibleAIAssistant
-          projectName="your messages"
-          insights={messageInsightsArray}
+          projectContext="your messages"
+          initialInsights={messageInsights}
         />
         
         <main className="flex-1 flex">
+          {/* Conversations List */}
           <div className="w-full md:w-80 lg:w-96 border-r border-border">
             <div className="p-4 border-b border-border">
               <div className="flex justify-between items-center mb-4">
@@ -275,6 +288,7 @@ const Messages = () => {
               
               <TabsContent value="unread">
                 {filteredConversations.filter(c => c.unread > 0).map(convo => (
+                  // Similar structure as above
                   <div key={convo.id} className="p-3 border-b border-border">
                     <div className="font-medium">{convo.contact.name}</div>
                     <div className="text-sm text-muted-foreground">{convo.lastMessage}</div>
@@ -284,6 +298,7 @@ const Messages = () => {
               
               <TabsContent value="pinned">
                 {filteredConversations.filter(c => c.pinned).map(convo => (
+                  // Similar structure as above
                   <div key={convo.id} className="p-3 border-b border-border">
                     <div className="font-medium">{convo.contact.name}</div>
                     <div className="text-sm text-muted-foreground">{convo.lastMessage}</div>
@@ -293,9 +308,11 @@ const Messages = () => {
             </Tabs>
           </div>
           
+          {/* Chat Window */}
           <div className="hidden md:flex flex-1 flex-col">
             {activeConversation && (
               <>
+                {/* Chat Header */}
                 <div className="px-6 py-3 border-b border-border flex items-center justify-between">
                   <div className="flex items-center">
                     <Button variant="ghost" size="icon" className="mr-2 md:hidden">
@@ -344,6 +361,7 @@ const Messages = () => {
                   </div>
                 </div>
                 
+                {/* Chat Messages */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                   {messages.map(message => (
                     <div 
@@ -390,6 +408,7 @@ const Messages = () => {
                   ))}
                 </div>
                 
+                {/* Message Input */}
                 <div className="p-4 border-t border-border">
                   <div className="flex items-end gap-2">
                     <div className="flex-1 bg-muted rounded-lg p-2">
@@ -427,6 +446,7 @@ const Messages = () => {
             )}
           </div>
           
+          {/* Empty State for Mobile */}
           <div className="flex-1 flex items-center justify-center p-6 md:hidden">
             <div className="text-center">
               <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground" />
@@ -437,6 +457,8 @@ const Messages = () => {
             </div>
           </div>
         </main>
+        
+        {/* Remove CollapsibleAIAssistant from here since we moved it to the top */}
       </div>
     </div>
   );

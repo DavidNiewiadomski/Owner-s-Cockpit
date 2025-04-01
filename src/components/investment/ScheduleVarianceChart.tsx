@@ -13,11 +13,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Updated interface to match the data we have
 interface SchedulingDataPoint {
-  project: string;
-  originalDuration: number;
-  currentDuration: number;
+  name: string;
+  original: number;
+  current: number;
+  variance: number;
 }
 
 interface ScheduleVarianceChartProps {
@@ -54,7 +54,7 @@ export const ScheduleVarianceChart: React.FC<ScheduleVarianceChartProps> = ({ da
             >
               <CartesianGrid strokeDasharray="3 3" stroke={colors.gridLine} />
               <XAxis 
-                dataKey="project" 
+                dataKey="name" 
                 tick={{ fill: '#aaa', fontSize: 12 }}
                 axisLine={{ stroke: colors.gridLine }}
               />
@@ -62,7 +62,7 @@ export const ScheduleVarianceChart: React.FC<ScheduleVarianceChartProps> = ({ da
                 tick={{ fill: '#aaa', fontSize: 12 }}
                 axisLine={{ stroke: colors.gridLine }}
                 label={{ 
-                  value: 'Days', 
+                  value: 'Months', 
                   angle: -90, 
                   position: 'insideLeft',
                   style: { fill: '#aaa' }
@@ -78,14 +78,14 @@ export const ScheduleVarianceChart: React.FC<ScheduleVarianceChartProps> = ({ da
                 wrapperStyle={{ paddingTop: '10px' }}
               />
               <Bar 
-                dataKey="originalDuration" 
+                dataKey="original" 
                 name="Original Timeline" 
                 fill={colors.primary} 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
               />
               <Bar 
-                dataKey="currentDuration" 
+                dataKey="current" 
                 name="Current Timeline" 
                 fill={colors.accent} 
                 radius={[4, 4, 0, 0]}

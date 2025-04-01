@@ -11,6 +11,10 @@ export interface Project {
   status: 'on-track' | 'at-risk' | 'delayed';
   dueDate: string;
   teamMembers: Array<{ name: string }>;
+  team?: Array<any>;
+  daysRemaining?: number;
+  budgetUtilization?: number;
+  completion?: string | number;
 }
 
 // Extended type for the "All Projects" option
@@ -24,52 +28,52 @@ interface ProjectContextType {
   selectedProject: ProjectOrAll | null;
   setSelectedProject: (project: ProjectOrAll) => void;
   allProjects: Project[];
+  currentProject: ProjectOrAll | null;
+  projects: Project[];
 }
 
-const defaultContextValue: ProjectContextType = {
-  selectedProject: null,
-  setSelectedProject: () => {},
-  allProjects: []
-};
-
-export const ProjectContext = createContext<ProjectContextType>(defaultContextValue);
+const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
+  // Get from localStorage or default to the first project
   const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
-  const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [allProjects, setAllProjects] = useState<Project[]>(initialProjects);
   
+  // On first load, try to get from localStorage
   useEffect(() => {
-    try {
-      if (Array.isArray(initialProjects)) {
-        const safeProjects = initialProjects.map(project => ({
-          id: project.id || '',
-          title: project.title || '',
-          description: project.description || '',
-          progress: typeof project.progress === 'number' ? project.progress : 0,
-          status: project.status || 'on-track',
-          dueDate: project.dueDate || '',
-          teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : []
-        }));
-        
-        setAllProjects(safeProjects);
-        
-        if (safeProjects.length > 0) {
-          setSelectedProject(safeProjects[0]);
-        }
+    const savedProjectId = localStorage.getItem('selectedProjectId');
+    if (savedProjectId) {
+      if (savedProjectId === 'all') {
+        setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
       } else {
-        console.error("initialProjects is not an array:", initialProjects);
-        setAllProjects([]);
+        const project = initialProjects.find(p => p.id === savedProjectId) || null;
+        if (project) {
+          setSelectedProject(project);
+        } else {
+          // If saved project not found, default to first project
+          setSelectedProject(initialProjects[0] || null);
+        }
       }
-    } catch (error) {
-      console.error("Error initializing project data:", error);
-      setAllProjects([]);
+    } else {
+      // If no saved project, default to first project
+      setSelectedProject(initialProjects[0] || null);
     }
   }, []);
   
+  // Save to localStorage when changed
+  useEffect(() => {
+    if (selectedProject) {
+      localStorage.setItem('selectedProjectId', selectedProject.id);
+    }
+  }, [selectedProject]);
+
   const value = {
     selectedProject,
     setSelectedProject,
-    allProjects
+    allProjects,
+    // For backward compatibility with existing code
+    currentProject: selectedProject,
+    projects: initialProjects
   };
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;

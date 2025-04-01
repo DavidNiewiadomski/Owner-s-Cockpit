@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TabsContent } from '@/components/ui/tabs';
 import { ProjectProgress } from '@/components/dashboard/ProjectProgress';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
 import { TeamMembers } from '@/components/dashboard/TeamMembers';
@@ -9,15 +10,10 @@ import { BudgetOverview } from '@/components/dashboard/BudgetOverview';
 import { ProjectTimeline } from '@/components/dashboard/ProjectTimeline';
 import { ProjectRisks } from '@/components/dashboard/ProjectRisks';
 
-interface DashboardTabContentProps {
-  tab?: string;
-}
-
-export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentProps) {
-  // Overview tab content
-  if (tab === 'overview') {
-    return (
-      <div className="space-y-4">
+export function DashboardTabContent() {
+  return (
+    <>
+      <TabsContent value="overview" className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card className="col-span-2">
             <CardHeader>
@@ -63,74 +59,59 @@ export function DashboardTabContent({ tab = 'overview' }: DashboardTabContentPro
             </CardContent>
           </Card>
         </div>
-      </div>
-    );
-  }
-
-  // Timeline tab content
-  if (tab === 'timeline') {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Timeline</CardTitle>
-          <CardDescription>Visualize your project schedule and milestones</CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          <ProjectTimeline />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Budget tab content
-  if (tab === 'budget') {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Budget Details</CardTitle>
-          <CardDescription>Detailed breakdown of project finances</CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          <BudgetOverview detailed={true} />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Team tab content
-  if (tab === 'team') {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Team Members</CardTitle>
-          <CardDescription>People working on your projects</CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          <TeamMembers />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Risks tab content
-  if (tab === 'risks') {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Risks</CardTitle>
-          <CardDescription>Identified risks and mitigation strategies</CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          <ProjectRisks />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Fallback for unknown tab value
-  return <div>No content available for this tab</div>;
+      </TabsContent>
+      
+      <TabsContent value="timeline" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Project Timeline</CardTitle>
+            <CardDescription>Visualize your project schedule and milestones</CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <ProjectTimeline />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      
+      <TabsContent value="budget" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Budget Details</CardTitle>
+            <CardDescription>Detailed breakdown of project finances</CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <BudgetOverview detailed={true} />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      
+      <TabsContent value="team" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Members</CardTitle>
+            <CardDescription>People working on your projects</CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <TeamMembers />
+          </CardContent>
+        </Card>
+      </TabsContent>
+      
+      <TabsContent value="risks" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Project Risks</CardTitle>
+            <CardDescription>Identified risks and mitigation strategies</CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <ProjectRisks />
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </>
+  );
 }

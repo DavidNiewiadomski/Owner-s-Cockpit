@@ -12,11 +12,9 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Updated interface to match the data we have
 interface ValuationDataPoint {
   month: string;
-  initial: number;
-  current: number;
+  value: number;
 }
 
 interface PropertyValuationChartProps {
@@ -60,7 +58,7 @@ export const PropertyValuationChart: React.FC<PropertyValuationChartProps> = ({ 
               <YAxis 
                 tick={{ fill: '#aaa', fontSize: 12 }}
                 axisLine={{ stroke: colors.gridLine }}
-                domain={[85, 105]}
+                domain={[95, 115]}
                 tickFormatter={(value) => `${value}%`}
               />
               <Tooltip 
@@ -76,7 +74,7 @@ export const PropertyValuationChart: React.FC<PropertyValuationChartProps> = ({ 
               </defs>
               <Area 
                 type="monotone" 
-                dataKey="current" 
+                dataKey="value" 
                 stroke={colors.info} 
                 fill="url(#colorValue)" 
                 name="Relative Property Value"
