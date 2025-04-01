@@ -83,17 +83,6 @@ export function OwnerAgentButton() {
             <span className="font-medium">{notificationText}</span>
           </Badge>
         )}
-        
-        <Badge 
-          variant="outline" 
-          className={cn(
-            "flex gap-2 items-center bg-gray-900 text-white text-sm font-medium border-blue-600/30 px-3 py-1.5 transition-all duration-300 backdrop-blur-sm shadow-lg",
-            isOpen ? "opacity-0 translate-x-12" : "opacity-100"
-          )}
-        >
-          <Headphones className="h-3.5 w-3.5 text-blue-400" />
-          <span>Voice Ready</span>
-        </Badge>
       </div>
 
       <OwnerAgent isOpen={isOpen} onOpenChange={setIsOpen} />
