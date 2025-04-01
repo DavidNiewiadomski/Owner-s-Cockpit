@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { AIInsightsCard } from '@/components/investment/AIInsightsCard';
 import { AnalyticsHeader } from '@/components/analytics/AnalyticsHeader';
 import { KeyPerformanceIndicators } from '@/components/analytics/KeyPerformanceIndicators';
@@ -52,55 +51,52 @@ const Analytics = () => {
   }, []);
 
   return (
-    <div className="flex h-screen bg-black text-gray-100">
-      <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onSearch={setSearchTerm} />
+    <DashboardLayout
+      projectContext="Analytics Dashboard"
+      initialInsights={analyticsInsights}
+      searchTerm={searchTerm}
+      onSearch={setSearchTerm}
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* AI Insights Card */}
+        <AIInsightsCard 
+          insights={analyticsInsights} 
+          onChatOpen={() => setSheetOpen(true)} 
+        />
         
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            {/* AI Insights Card */}
-            <AIInsightsCard 
-              insights={analyticsInsights} 
-              onChatOpen={() => setSheetOpen(true)} 
-            />
-            
-            <AnalyticsHeader 
-              periods={periods} 
-              currentPeriod={currentPeriod} 
-              setCurrentPeriod={setCurrentPeriod} 
-            />
+        <AnalyticsHeader 
+          periods={periods} 
+          currentPeriod={currentPeriod} 
+          setCurrentPeriod={setCurrentPeriod} 
+        />
 
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-medium text-white">Key Performance Indicators</h2>
-              <button 
-                onClick={toggleKpiView} 
-                className="text-xs text-construction-300 hover:text-construction-200"
-              >
-                {showAllKpis ? 'Show Fewer' : 'Show All'}
-              </button>
-            </div>
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-lg font-medium text-white">Key Performance Indicators</h2>
+          <button 
+            onClick={toggleKpiView} 
+            className="text-xs text-construction-300 hover:text-construction-200"
+          >
+            {showAllKpis ? 'Show Fewer' : 'Show All'}
+          </button>
+        </div>
 
-            {/* Key Performance Indicators */}
-            <KeyPerformanceIndicators 
-              kpiData={visibleKpis} 
-              activeAnimation={activeAnimation} 
-            />
-            
-            {/* Tabbed Charts Section */}
-            <AnalyticsTabs 
-              projectData={projectData}
-              timelineData={timelineData}
-              budgetData={budgetData}
-              resourceData={resourceData}
-              performanceData={performanceData}
-              colors={chartColors}
-            />
-          </div>
-        </main>
+        {/* Key Performance Indicators */}
+        <KeyPerformanceIndicators 
+          kpiData={visibleKpis} 
+          activeAnimation={activeAnimation} 
+        />
+        
+        {/* Tabbed Charts Section */}
+        <AnalyticsTabs 
+          projectData={projectData}
+          timelineData={timelineData}
+          budgetData={budgetData}
+          resourceData={resourceData}
+          performanceData={performanceData}
+          colors={chartColors}
+        />
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

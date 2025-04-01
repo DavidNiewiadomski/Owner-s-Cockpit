@@ -2,18 +2,12 @@
 import React, { useState } from 'react';
 import { 
   Plus, 
-  FilePen,
-  Trash,
-  Share2,
   Orbit
 } from 'lucide-react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import { AIAssistant } from '@/components/ai/AIAssistant';
 import { DocumentList } from '@/components/dashboard/DocumentList';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useProject } from '@/contexts/ProjectContext';
 import { projectDocuments } from '@/data/dashboardData';
 import { BIMViewer } from '@/components/dashboard/BIMViewer';
@@ -69,49 +63,41 @@ const Documents = () => {
   };
 
   return (
-    <div className="flex h-screen bg-black text-gray-100">
-      <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader onSearch={setSearchTerm} />
-        
-        <CollapsibleAIAssistant 
-          projectContext="Documents"
-          projectName={selectedProject?.title || 'All Projects'}
-          initialInsights={documentInsights}
-        />
-        
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-white">Documents</h1>
-                <p className="text-gray-400">Manage your project documents</p>
-              </div>
-              <div className="mt-3 md:mt-0 flex gap-2">
-                <Button 
-                  variant="outline" 
-                  className="bg-gray-900 hover:bg-gray-800 text-white border-gray-700"
-                  onClick={openBIMViewer}
-                >
-                  <Orbit className="w-4 h-4 mr-2 text-blue-400" />
-                  View BIM
-                </Button>
-                <Button className="bg-construction-600 hover:bg-construction-700 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Upload Document
-                </Button>
-              </div>
-            </div>
-            
-            <DocumentList 
-              documents={filteredDocuments} 
-              className="mt-6" 
-              onView={(docId) => handleFileAction('Viewed', documents.find(d => d.id === docId)?.name || '')}
-              onDownload={(docId) => handleFileAction('Downloaded', documents.find(d => d.id === docId)?.name || '')}
-            />
+    <DashboardLayout
+      projectContext="Documents"
+      projectName={selectedProject?.title || 'All Projects'}
+      initialInsights={documentInsights}
+      searchTerm={searchTerm}
+      onSearch={setSearchTerm}
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Documents</h1>
+            <p className="text-gray-400">Manage your project documents</p>
           </div>
-        </main>
+          <div className="mt-3 md:mt-0 flex gap-2">
+            <Button 
+              variant="outline" 
+              className="bg-gray-900 hover:bg-gray-800 text-white border-gray-700"
+              onClick={openBIMViewer}
+            >
+              <Orbit className="w-4 h-4 mr-2 text-blue-400" />
+              View BIM
+            </Button>
+            <Button className="bg-construction-600 hover:bg-construction-700 text-white">
+              <Plus className="w-4 h-4 mr-2" />
+              Upload Document
+            </Button>
+          </div>
+        </div>
+        
+        <DocumentList 
+          documents={filteredDocuments} 
+          className="mt-6" 
+          onView={(docId) => handleFileAction('Viewed', documents.find(d => d.id === docId)?.name || '')}
+          onDownload={(docId) => handleFileAction('Downloaded', documents.find(d => d.id === docId)?.name || '')}
+        />
       </div>
 
       <BIMViewer 
@@ -119,7 +105,7 @@ const Documents = () => {
         isOpen={isBIMViewerOpen} 
         onClose={() => setIsBIMViewerOpen(false)}
       />
-    </div>
+    </DashboardLayout>
   );
 };
 
