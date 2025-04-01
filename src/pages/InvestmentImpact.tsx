@@ -8,6 +8,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 // Define types
 interface InvestmentMetric {
@@ -95,6 +96,30 @@ const investmentAllocationData = [
   { name: 'Other', value: 3 },
 ];
 
+// Investment insights for the AI Assistant
+const investmentInsights = [
+  {
+    title: "ROI Alert",
+    content: "Current ROI is 0.3% below projection due to increased material costs",
+    type: "warning" as const
+  },
+  {
+    title: "Investment Impact",
+    content: "Property value has increased by 9.3%, outperforming market average by 2.1%",
+    type: "success" as const
+  },
+  {
+    title: "Budget Variance",
+    content: "Construction phase is currently under budget by $325,000",
+    type: "info" as const
+  },
+  {
+    title: "Market Analysis",
+    content: "Similar properties in the area have appreciated 7.2% on average this year",
+    type: "info" as const
+  }
+];
+
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -106,6 +131,12 @@ const InvestmentImpact = () => {
         
         <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
+            {/* AI Insights at the top of the page */}
+            <CollapsibleAIAssistant 
+              projectContext="Investment Impact" 
+              initialInsights={investmentInsights}
+            />
+            
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
                 <h1 className="text-2xl font-bold text-white">Investment Impact</h1>
