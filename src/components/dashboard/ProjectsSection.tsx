@@ -26,7 +26,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {validProjects.map((project) => (
           <ProjectCard 
-            key={project.id}
+            key={project.id || Math.random().toString()}
             title={project.title || ""}
             description={project.description || ""}
             progress={typeof project.progress === 'number' ? project.progress : 0}

@@ -36,6 +36,11 @@ const Index = () => {
     ? currentProject.team.length 
     : 24; // Default value for demo
   
+  // Safely extract project title with fallback
+  const projectTitle = selectedProject && typeof selectedProject === 'object' && 'title' in selectedProject 
+    ? String(selectedProject.title) 
+    : "East Tower Development";
+  
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNavigation />
@@ -48,11 +53,11 @@ const Index = () => {
         <main className="flex-1 p-6">
           <CollapsibleAIAssistant 
             insights={dashboardInsights}
-            projectName={selectedProject?.title || "All Projects"}
+            projectName={projectTitle}
           />
           
           <ProjectOverview 
-            projectName={selectedProject?.title || "East Tower Development"}
+            projectName={projectTitle}
             projectLocation="Downtown Metro Area"
             projectType="Commercial High-Rise"
             currentPhase="Construction"

@@ -30,16 +30,23 @@ export function CollapsibleAIAssistant({
 }: CollapsibleAIAssistantProps) {
   const [expanded, setExpanded] = useState(false);
   
+  // Ensure projectName is a string
+  const safeProjectName = typeof projectName === 'string' ? projectName : "your properties";
+  
+  // Ensure insights is an array of strings
+  const safeInsights = Array.isArray(insights) ? insights : [];
+  
   // Parse insights into title and content
-  const parsedInsights: InsightItem[] = insights.map(insight => {
-    const parts = insight.split(":");
+  const parsedInsights: InsightItem[] = safeInsights.map(insight => {
+    const insightStr = typeof insight === 'string' ? insight : '';
+    const parts = insightStr.split(":");
     return {
       title: parts.length > 1 ? parts[0].trim() : `Insight ${Math.floor(Math.random() * 100)}`,
-      content: parts.length > 1 ? parts.slice(1).join(":").trim() : insight,
+      content: parts.length > 1 ? parts.slice(1).join(":").trim() : insightStr,
       // Determine insight type based on content
-      type: insight.toLowerCase().includes("alert") || insight.toLowerCase().includes("risk") 
+      type: insightStr.toLowerCase().includes("alert") || insightStr.toLowerCase().includes("risk") 
         ? "warning" 
-        : insight.toLowerCase().includes("update") || insight.toLowerCase().includes("ahead")
+        : insightStr.toLowerCase().includes("update") || insightStr.toLowerCase().includes("ahead")
           ? "success"
           : "info"
     };
@@ -72,7 +79,7 @@ export function CollapsibleAIAssistant({
               <div className="flex items-center gap-2">
                 <BrainCircuit className="h-5 w-5 text-construction-400" />
                 <h3 className="font-medium text-white">
-                  {expanded ? "AI Assistant" : `AI Insights for ${projectName}`}
+                  {expanded ? "AI Assistant" : `AI Insights for ${safeProjectName}`}
                 </h3>
               </div>
               <div className="flex items-center gap-2">
