@@ -4,7 +4,8 @@ import {
   Plus, 
   FilePen,
   Trash,
-  Share2
+  Share2,
+  Orbit
 } from 'lucide-react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -15,11 +16,13 @@ import { DocumentList } from '@/components/dashboard/DocumentList';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useProject } from '@/contexts/ProjectContext';
 import { projectDocuments } from '@/data/dashboardData';
+import { BIMViewer } from '@/components/dashboard/BIMViewer';
 
 const Documents = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
+  const [isBIMViewerOpen, setIsBIMViewerOpen] = useState(false);
   
   // Get project-specific documents
   const projectId = selectedProject?.id || 'all';
@@ -61,6 +64,10 @@ const Documents = () => {
     }
   ];
 
+  const openBIMViewer = () => {
+    setIsBIMViewerOpen(true);
+  };
+
   return (
     <div className="flex h-screen bg-black text-gray-100">
       <SidebarNavigation />
@@ -82,6 +89,14 @@ const Documents = () => {
                 <p className="text-gray-400">Manage your project documents</p>
               </div>
               <div className="mt-3 md:mt-0 flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="bg-gray-900 hover:bg-gray-800 text-white border-gray-700"
+                  onClick={openBIMViewer}
+                >
+                  <Orbit className="w-4 h-4 mr-2 text-blue-400" />
+                  View BIM
+                </Button>
                 <Button className="bg-construction-600 hover:bg-construction-700 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Upload Document
@@ -98,6 +113,12 @@ const Documents = () => {
           </div>
         </main>
       </div>
+
+      <BIMViewer 
+        projectName={selectedProject?.title} 
+        isOpen={isBIMViewerOpen} 
+        onClose={() => setIsBIMViewerOpen(false)}
+      />
     </div>
   );
 };
