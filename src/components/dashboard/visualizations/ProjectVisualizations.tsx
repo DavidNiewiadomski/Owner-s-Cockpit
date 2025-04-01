@@ -11,7 +11,7 @@ export function ProjectVisualizations({ onOpenBIMViewer, onOpenRealityCaptureVie
   return (
     <>
       <h2 className="text-xl font-semibold mt-10 mb-4">Project Visualizations</h2>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-12">
         <VisualizationCard 
           title="BIM Model"
           imageSrc="https://www.constructible.trimble.com/hs-fs/hubfs/BIM%20in%20Construction.jpg"

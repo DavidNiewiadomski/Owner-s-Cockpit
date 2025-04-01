@@ -1,7 +1,9 @@
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -42,8 +44,13 @@
 }
 
 /* Force black background everywhere */
-html, body, #app, #root, main {
+html, body, #app, #root {
   background-color: #000000 !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Force cards and UI components to have black backgrounds */
@@ -132,11 +139,11 @@ nav button,
 /* Fix the overflow issue and allow proper scrolling */
 .h-screen {
   height: 100vh;
+  width: 100vw;
 }
 
-.flex-1.overflow-auto, 
 .flex-1.p-6 {
-  overflow: auto !important;
+  overflow-y: auto !important;
 }
 
 /* Important overrides for sidebar navigation */
@@ -153,4 +160,19 @@ nav button,
 
 .h-screen.sticky.top-0.border-r button:hover {
   background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Ensure the main content area uses the full width */
+main > div {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Prevent double scrollbars */
+body, html {
+  overflow: hidden !important;
+}
+
+.flex-1.flex.flex-col.w-full.overflow-hidden {
+  overflow-y: hidden !important;
 }
