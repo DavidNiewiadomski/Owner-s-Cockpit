@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react';
 import { ShieldCheck, Leaf, Download, Calendar, FileText } from 'lucide-react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProject } from '@/contexts/ProjectContext';
 import { SafetyTabContent } from '@/components/safety/SafetyTabContent';
