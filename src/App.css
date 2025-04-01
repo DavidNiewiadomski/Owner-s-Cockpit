@@ -72,31 +72,37 @@ aside {
 
 /* Force header and menu elements to have black backgrounds with proper contrast */
 header, 
+nav, 
 .sidebar-navigation, 
 .menu-item, 
 .dropdown-content,
 .nav-item,
-.sidebar-navigation * {
+.SidebarNavigation,
+.SidebarNavigation *,
+.DashboardHeader,
+.DashboardHeader * {
   background-color: #000000 !important;
   color: white !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Additional dark mode overrides for menu elements */
-nav, nav *, 
-.nav-menu, .nav-menu *,
-.sidebar, .sidebar * {
+nav button, 
+.nav-menu button,
+.sidebar button,
+.SidebarNavigation button {
   background-color: #000000 !important;
   color: white !important;
 }
 
 /* Force side navigation specifically */
-.SidebarNavigation, 
-.SidebarNavigation *,
-.DashboardHeader,
-.DashboardHeader * {
-  background-color: #000000 !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+.SidebarNavigation svg,
+.SidebarNavigation span,
+.SidebarNavigation div,
+.DashboardHeader svg,
+.DashboardHeader span, 
+.DashboardHeader div {
+  background-color: transparent !important;
 }
 
 /* Force shadcn components to have black backgrounds */
@@ -122,4 +128,25 @@ nav, nav *,
 .reality-capture-controls button {
   background-color: #000000 !important;
   border-color: #333333 !important;
+}
+
+/* Remove duplicate scrollbars */
+.flex-1.overflow-y-auto {
+  overflow: hidden !important;
+}
+
+/* Important overrides for sidebar navigation */
+.h-screen.sticky.top-0.border-r,
+.h-screen.sticky.top-0.border-r * {
+  background-color: #000000 !important;
+  color: white !important;
+}
+
+/* Ensure that the button elements in sidebar have transparent background */
+.h-screen.sticky.top-0.border-r button {
+  background-color: transparent !important;
+}
+
+.h-screen.sticky.top-0.border-r button:hover {
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }

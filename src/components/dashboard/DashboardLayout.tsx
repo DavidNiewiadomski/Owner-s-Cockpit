@@ -22,10 +22,10 @@ export function DashboardLayout({
   onSearch = () => {}
 }: DashboardLayoutProps) {
   return (
-    <div className="flex h-screen bg-black">
+    <div className="flex h-screen bg-black overflow-hidden">
       <SidebarNavigation />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col">
         <DashboardHeader onSearch={onSearch} />
 
         <CollapsibleAIAssistant 
@@ -34,7 +34,7 @@ export function DashboardLayout({
           initialInsights={initialInsights}
         />
         
-        <main className="flex-1 overflow-y-auto p-6 bg-black">
+        <main className="flex-1 p-6 bg-black overflow-y-auto">
           {children}
         </main>
       </div>
