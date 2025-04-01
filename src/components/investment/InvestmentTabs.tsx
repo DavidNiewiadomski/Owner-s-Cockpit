@@ -28,11 +28,34 @@ export function InvestmentTabs({
   return (
     <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
       <TabsList className="bg-black border border-gray-800">
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="roi">ROI Analysis</TabsTrigger>
-        <TabsTrigger value="allocation">Investment Allocation</TabsTrigger>
-        <TabsTrigger value="properties">Properties</TabsTrigger>
-        <TabsTrigger value="risks">
+        <TabsTrigger 
+          value="overview" 
+          className="text-white font-medium text-base"
+        >
+          Overview
+        </TabsTrigger>
+        <TabsTrigger 
+          value="roi" 
+          className="text-white font-medium text-base"
+        >
+          ROI Analysis
+        </TabsTrigger>
+        <TabsTrigger 
+          value="allocation" 
+          className="text-white font-medium text-base"
+        >
+          Investment Allocation
+        </TabsTrigger>
+        <TabsTrigger 
+          value="properties" 
+          className="text-white font-medium text-base"
+        >
+          Properties
+        </TabsTrigger>
+        <TabsTrigger 
+          value="risks" 
+          className="text-white font-medium text-base"
+        >
           <AlertTriangle className="h-4 w-4 mr-2" />
           Risk Management
         </TabsTrigger>
