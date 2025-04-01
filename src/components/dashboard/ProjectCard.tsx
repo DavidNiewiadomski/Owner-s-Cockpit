@@ -11,21 +11,25 @@ interface TeamMember {
 }
 
 interface ProjectCardProps {
+  id?: string;
   title: string;
   description: string;
   progress: number;
   status: "on-track" | "at-risk" | "delayed";
   dueDate: string;
   teamMembers: TeamMember[];
+  priority?: "High" | "Medium" | "Low";
 }
 
 export function ProjectCard({
+  id,
   title,
   description,
   progress,
   status,
   dueDate,
   teamMembers,
+  priority,
 }: ProjectCardProps) {
   const getStatusClass = () => {
     switch (status) {

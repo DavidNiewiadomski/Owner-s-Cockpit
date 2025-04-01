@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -74,8 +75,11 @@ const periods = [
   { value: 'yearly', label: 'Yearly' },
 ];
 
+// Import or define the Insight type from the investment data
+import { Insight } from '@/data/investment/investmentData';
+
 // Analytics insights data
-const analyticsInsights = [
+const analyticsInsights: Insight[] = [
   { 
     type: "warning", 
     title: "Budget Alert", 

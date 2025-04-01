@@ -48,9 +48,11 @@ export function ProjectSummary({
     { name: "Interior Finishing", status: "upcoming" as const },
   ];
   
+  type RiskLevel = "high" | "medium" | "low";
+  
   const risks = [
-    { name: "Material Delay", level: "medium" as const },
-    { name: "Weather Impact", level: "low" as const },
+    { name: "Material Delay", level: "medium" as RiskLevel },
+    { name: "Weather Impact", level: "low" as RiskLevel },
   ];
 
   return (
