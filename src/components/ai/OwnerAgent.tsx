@@ -1,30 +1,16 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Brain, MessageSquare, Mic, MicOff, Send, X, Mail, Phone, FileText, Calendar, Clock, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import React, { useState, useEffect } from 'react';
+import { Brain, MessageSquare, Mail, Phone, FileText, Calendar, Clock, AlertCircle } from 'lucide-react';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from "@/hooks/use-toast";
-import { cn } from '@/lib/utils';
 import { AgentActionExecutor } from '@/components/ai/AgentActionExecutor';
 import { useVoiceRecognition } from '@/hooks/useVoiceRecognition';
-
-type MessageType = 'text' | 'task' | 'summary' | 'alert';
-
-interface AgentMessage {
-  id: string;
-  content: string;
-  timestamp: string;
-  role: 'agent' | 'user';
-  type: MessageType;
-  action?: {
-    type: string;
-    status: 'pending' | 'completed' | 'failed';
-    result?: string;
-  };
-}
+import { AgentHeader } from '@/components/ai/agent/AgentHeader';
+import { AgentActionList } from '@/components/ai/agent/AgentActionList';
+import { MessageList } from '@/components/ai/agent/MessageList';
+import { MessageInput } from '@/components/ai/agent/MessageInput';
+import { AgentMessage } from '@/components/ai/agent/types';
 
 export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: (open: boolean) => void }) {
   const [messages, setMessages] = useState<AgentMessage[]>([
@@ -40,7 +26,7 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
   const [isThinking, setIsThinking] = useState(false);
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [showActions, setShowActions] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
   const { 
     isListening, 
     transcript, 
@@ -58,11 +44,6 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     { id: 'reminder', label: 'Set Reminder', icon: Clock },
     { id: 'alert', label: 'Send Alert', icon: AlertCircle },
   ];
-
-  // Scroll to bottom of messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   // Update input when voice recognition changes
   useEffect(() => {
@@ -96,7 +77,7 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     // Process the message and detect intent
     setTimeout(() => {
       const lowerCaseMessage = messageContent.toLowerCase();
-      let responseType: MessageType = 'text';
+      let responseType: 'text' | 'task' | 'summary' | 'alert' = 'text';
       let actionType = '';
       
       // Simple intent detection
@@ -242,124 +223,26 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-md p-0 border-none bg-black/90 backdrop-blur-lg overflow-hidden">
         <div className="flex flex-col h-full">
-          <SheetHeader className="p-4 border-b border-gray-800 bg-gray-900/50">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-white flex items-center">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-950 mr-2">
-                  <Brain className="w-4 h-4 text-blue-400" />
-                </div>
-                <div>
-                  <span className="text-sm text-blue-100">Owner's Agent</span>
-                  <div className="flex items-center mt-0.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-green-500 mr-1.5"></span>
-                    <span className="text-xs text-green-400">Active</span>
-                  </div>
-                </div>
-              </SheetTitle>
-              
-              <Button 
-                onClick={() => setShowActions(!showActions)} 
-                variant="ghost" 
-                size="sm" 
-                className="text-gray-400 hover:text-white"
-              >
-                Actions {showActions ? <ChevronUp className="ml-1 h-4 w-4" /> : <ChevronDown className="ml-1 h-4 w-4" />}
-              </Button>
-            </div>
-          </SheetHeader>
+          <AgentHeader 
+            showActions={showActions} 
+            toggleShowActions={() => setShowActions(!showActions)} 
+          />
           
           {showActions && (
-            <div className="p-3 bg-gray-900/30 border-b border-gray-800 grid grid-cols-3 gap-2">
-              {agentActions.map((action) => (
-                <Button 
-                  key={action.id} 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => {
-                    setInput(`I need you to ${action.label.toLowerCase()}`);
-                    setShowActions(false);
-                  }}
-                  className="h-auto py-3 flex flex-col items-center gap-1 bg-gray-900/50 border-gray-700 hover:bg-gray-800"
-                >
-                  <action.icon className="h-4 w-4 text-blue-400" />
-                  <span className="text-xs">{action.label}</span>
-                </Button>
-              ))}
-            </div>
+            <AgentActionList 
+              actions={agentActions} 
+              onSelectAction={(actionText) => {
+                setInput(actionText);
+                setShowActions(false);
+              }} 
+            />
           )}
           
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((msg) => (
-              <div 
-                key={msg.id} 
-                className={cn(
-                  "flex flex-col",
-                  msg.role === 'user' ? "items-end" : "items-start"
-                )}
-              >
-                <div className={cn(
-                  "max-w-[80%] rounded-lg p-3",
-                  msg.role === 'user' 
-                    ? "bg-blue-950/50 text-blue-50" 
-                    : "bg-gray-900/70 text-gray-50",
-                  msg.type === 'task' && "border-l-2 border-yellow-500",
-                  msg.type === 'summary' && "border-l-2 border-green-500",
-                  msg.type === 'alert' && "border-l-2 border-red-500"
-                )}>
-                  <div className="text-xs text-gray-400 mb-1">
-                    {msg.role === 'user' ? 'You' : 'Agent'} • {msg.timestamp}
-                  </div>
-                  <p className="text-sm">{msg.content}</p>
-                  
-                  {msg.action && (
-                    <div className="mt-2">
-                      <Badge 
-                        variant="outline"
-                        className={cn(
-                          "text-xs",
-                          msg.action.status === 'pending' ? "bg-yellow-950/30 text-yellow-400 border-yellow-800" :
-                          msg.action.status === 'completed' ? "bg-green-950/30 text-green-400 border-green-800" :
-                          "bg-red-950/30 text-red-400 border-red-800"
-                        )}
-                      >
-                        {msg.action.status === 'pending' && 'Pending Action'}
-                        {msg.action.status === 'completed' && 'Completed'}
-                        {msg.action.status === 'failed' && 'Failed'}
-                      </Badge>
-                      
-                      {msg.action.status === 'pending' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="mt-2 h-7 text-xs bg-blue-950/30 hover:bg-blue-900/30 border-blue-800 text-blue-400"
-                          onClick={() => completeAction(msg.action?.type || '')}
-                        >
-                          Execute Action
-                        </Button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            
-            {isThinking && (
-              <div className="flex items-start">
-                <div className="bg-gray-900/70 text-gray-50 max-w-[80%] rounded-lg p-3">
-                  <div className="text-xs text-gray-400 mb-1">
-                    Agent • Thinking...
-                  </div>
-                  <div className="flex space-x-1">
-                    <div className="h-2 w-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="h-2 w-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="h-2 w-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
+          <MessageList 
+            messages={messages}
+            isThinking={isThinking}
+            completeAction={completeAction}
+          />
           
           {activeAction && (
             <Card className="mx-4 mb-4 bg-blue-950/30 border-blue-800/50">
@@ -372,51 +255,14 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
             </Card>
           )}
           
-          <form 
-            onSubmit={handleSendMessage} 
-            className="p-4 border-t border-gray-800 bg-gray-900/30"
-          >
-            <div className="flex items-center space-x-2">
-              <div className="relative flex-1">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={isListening ? "Listening..." : "Message your assistant..."}
-                  className="bg-gray-800 border-gray-700 focus-visible:ring-blue-600 text-white pr-8"
-                  disabled={isListening}
-                />
-                {isListening && (
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
-                  </div>
-                )}
-              </div>
-              
-              {hasRecognitionSupport && (
-                <Button 
-                  type="button" 
-                  size="icon" 
-                  variant="ghost"
-                  onClick={toggleVoiceRecognition}
-                  className={cn(
-                    "rounded-full bg-gray-800 border border-gray-700 text-white h-10 w-10",
-                    isListening && "bg-red-900/30 text-red-400 border-red-800"
-                  )}
-                >
-                  {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
-                </Button>
-              )}
-              
-              <Button 
-                type="submit" 
-                size="icon" 
-                className="rounded-full bg-blue-600 hover:bg-blue-700 text-white h-10 w-10"
-                disabled={isListening || (!input.trim() && !transcript)}
-              >
-                <Send className="h-5 w-5" />
-              </Button>
-            </div>
-          </form>
+          <MessageInput
+            input={input}
+            setInput={setInput}
+            isListening={isListening}
+            hasRecognitionSupport={hasRecognitionSupport}
+            toggleVoiceRecognition={toggleVoiceRecognition}
+            handleSendMessage={handleSendMessage}
+          />
         </div>
       </SheetContent>
     </Sheet>
