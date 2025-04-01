@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Clock, DollarSign } from 'lucide-react';
+import { Clock, DollarSign, Download, HelpCircle } from 'lucide-react';
 
 interface InvestmentHeaderProps {
   title: string;
@@ -19,6 +19,10 @@ export function InvestmentHeader({ title, description }: InvestmentHeaderProps) 
         <Button variant="outline" className="border-gray-700 bg-black hover:bg-gray-900">
           <Clock className="h-4 w-4 mr-2" />
           Historical Data
+        </Button>
+        <Button variant="outline" className="border-gray-700 bg-black hover:bg-gray-900">
+          <Download className="h-4 w-4 mr-2" />
+          Export Report
         </Button>
         <Button className="bg-construction-600 hover:bg-construction-700 text-white">
           <DollarSign className="h-4 w-4 mr-2" />

@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 import { InvestmentOverviewContent } from '@/components/investment/InvestmentOverviewContent';
 import { RiskManagementContent } from '@/components/investment/RiskManagementContent';
+import { ROIAnalysisContent } from '@/components/investment/ROIAnalysisContent';
+import { InvestmentAllocationContent } from '@/components/investment/InvestmentAllocationContent';
+import { PropertiesContent } from '@/components/investment/PropertiesContent';
 import { InvestmentMetric } from '@/data/investment/investmentData';
 import { Risk, CategoryData } from '@/data/investment/riskData';
 
@@ -41,36 +43,15 @@ export function InvestmentTabs({
       </TabsContent>
       
       <TabsContent value="roi" className="space-y-6">
-        <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">ROI Analysis</CardTitle>
-          </CardHeader>
-          <CardContent className="text-gray-400">
-            <p>Detailed ROI analysis content would go here.</p>
-          </CardContent>
-        </Card>
+        <ROIAnalysisContent />
       </TabsContent>
       
       <TabsContent value="allocation" className="space-y-6">
-        <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">Investment Allocation</CardTitle>
-          </CardHeader>
-          <CardContent className="text-gray-400">
-            <p>Investment allocation breakdown would go here.</p>
-          </CardContent>
-        </Card>
+        <InvestmentAllocationContent />
       </TabsContent>
       
       <TabsContent value="properties" className="space-y-6">
-        <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">Property Values</CardTitle>
-          </CardHeader>
-          <CardContent className="text-gray-400">
-            <p>Property value analysis would go here.</p>
-          </CardContent>
-        </Card>
+        <PropertiesContent />
       </TabsContent>
       
       <TabsContent value="risks" className="space-y-6">
