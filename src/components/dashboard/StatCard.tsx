@@ -44,7 +44,7 @@ export function StatCard({
             <p className="text-sm font-medium text-cyan-300">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white bg-gradient-to-br from-white via-white/90 to-cyan-200/90 bg-clip-text text-transparent">{value}</h3>
             {description && (
-              <p className="text-sm text-gray-400 mt-1">{description}</p>
+              <p className="text-sm text-gray-300 mt-1 font-medium">{description}</p>
             )}
             
             {trend && (
@@ -54,7 +54,7 @@ export function StatCard({
                     "inline-flex items-center text-xs font-medium rounded-full px-2 py-1",
                     trend === "up" && "bg-green-900/30 text-green-400 border border-green-500/50 shadow-[0_0_10px_rgba(34,197,94,0.3)]",
                     trend === "down" && "bg-red-900/30 text-red-400 border border-red-500/50 shadow-[0_0_10px_rgba(239,68,68,0.3)]",
-                    trend === "neutral" && "bg-gray-900/30 text-gray-400 border border-gray-500/50 shadow-[0_0_10px_rgba(107,114,128,0.3)]"
+                    trend === "neutral" && "bg-gray-900/30 text-gray-300 border border-gray-500/50 shadow-[0_0_10px_rgba(107,114,128,0.3)]"
                   )}
                 >
                   {trend === "up" && (
