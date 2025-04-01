@@ -16,6 +16,7 @@ interface PerformanceRadarChartProps {
   colors: {
     primary: string;
     secondary: string;
+    gridLine: string;
   };
 }
 
