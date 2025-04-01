@@ -23,9 +23,23 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn("overflow-hidden bg-black border-cyan-900/20 shadow-lg animate-fade-in card-hover", className)}>
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start">
+    <Card className={cn(
+      "overflow-hidden bg-black border-cyan-900/20 shadow-lg animate-fade-in card-hover relative",
+      className
+    )}>
+      {/* Gradient top border */}
+      <div className={cn(
+        "h-1 w-full",
+        trend === "up" ? "bg-gradient-to-r from-green-400 to-cyan-400" :
+        trend === "down" ? "bg-gradient-to-r from-amber-400 to-red-400" :
+        "bg-gradient-to-r from-blue-400 to-cyan-400"
+      )}></div>
+      
+      <CardContent className="p-6 relative">
+        {/* Subtle background glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/5 to-blue-900/5 rounded-b-lg"></div>
+        
+        <div className="flex justify-between items-start relative z-10">
           <div>
             <p className="text-sm font-medium text-cyan-300">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
@@ -37,10 +51,10 @@ export function StatCard({
               <div className="flex items-center mt-2">
                 <span
                   className={cn(
-                    "inline-flex items-center text-xs font-medium",
-                    trend === "up" && "text-green-400",
-                    trend === "down" && "text-red-400",
-                    trend === "neutral" && "text-gray-500"
+                    "inline-flex items-center text-xs font-medium rounded-full px-2 py-1",
+                    trend === "up" && "bg-green-900/20 text-green-400 border border-green-500/30",
+                    trend === "down" && "bg-red-900/20 text-red-400 border border-red-500/30",
+                    trend === "neutral" && "bg-gray-900/20 text-gray-400 border border-gray-500/30"
                   )}
                 >
                   {trend === "up" && (
@@ -82,8 +96,8 @@ export function StatCard({
           </div>
           
           {Icon && (
-            <div className="p-3 rounded-full bg-black border border-cyan-800/30 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
-              <Icon className="w-5 h-5 text-cyan-500" />
+            <div className="p-3 rounded-full bg-black border border-cyan-800/30 shadow-[0_0_10px_rgba(56,189,248,0.3)]">
+              <Icon className="w-5 h-5 text-cyan-400" />
             </div>
           )}
         </div>
