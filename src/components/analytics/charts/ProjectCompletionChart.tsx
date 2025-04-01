@@ -22,27 +22,29 @@ interface ProjectCompletionChartProps {
 }
 
 export function ProjectCompletionChart({ projectData, colors }: ProjectCompletionChartProps) {
-  // Futuristic neon colors based on the reference image
-  const futuristicColors = {
-    primary: "#00e5ff",       // Neon cyan for completion
-    secondary: "#ff5d8f",     // Neon pink for budget
-    gridLine: "#222222",      // Dark gray
-    background: "black",
-    textColor: "#ffffff"
+  // Enhanced futuristic colors with better contrast for text legibility
+  const enhancedColors = {
+    primary: "#38bdf8",        // Bright cyan
+    secondary: "#f472b6",      // Pink-500
+    gridLine: "#1e293b",       // Slate-800
+    textPrimary: "#FFFFFF",    // Pure white for better legibility
+    textSecondary: "#C8C8C9",  // Light gray for secondary text
+    cardBg: "bg-gradient-to-br from-black to-zinc-900 border-cyan-900/30",
+    cardHeader: "bg-gradient-to-r from-cyan-950/50 to-transparent border-b border-cyan-900/20"
   };
 
   return (
-    <Card className="bg-black border-none shadow-[0_0_15px_rgba(0,229,255,0.2)]">
-      <CardHeader className="pb-2 border-b border-[#333333]">
+    <Card className={`shadow-[0_4px_30px_rgba(56,189,248,0.15)] ${enhancedColors.cardBg}`}>
+      <CardHeader className={`pb-2 ${enhancedColors.cardHeader}`}>
         <CardTitle className="text-lg text-white flex items-center">
-          <BarChart3 className="h-5 w-5 mr-2 text-[#00e5ff]" />
-          Comparing completion percentage against budget utilization
+          <BarChart3 className="h-5 w-5 mr-2 text-cyan-400" />
+          Project Completion vs Budget
         </CardTitle>
-        <CardDescription className="text-gray-400">
-          Project progress vs resources utilized
+        <CardDescription className="text-gray-200 font-medium">
+          Comparing completion percentage against budget utilization
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -50,61 +52,76 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
               margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
             >
               <defs>
-                <filter id="glow-bar">
-                  <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                <linearGradient id="colorComplete" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={enhancedColors.primary} stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor={enhancedColors.primary} stopOpacity={0.3}/>
+                </linearGradient>
+                <linearGradient id="colorBudget" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={enhancedColors.secondary} stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor={enhancedColors.secondary} stopOpacity={0.3}/>
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
                   <feMerge>
                     <feMergeNode in="coloredBlur" />
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke={futuristicColors.gridLine} vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={enhancedColors.gridLine} opacity={0.5} />
               <XAxis 
                 dataKey="name" 
-                stroke="#666666" 
-                tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: futuristicColors.gridLine }}
+                stroke="#aaa" 
+                tick={{ fill: enhancedColors.textPrimary, fontSize: 13, fontWeight: 500 }}
+                axisLine={{ stroke: enhancedColors.gridLine }}
               />
               <YAxis 
-                stroke="#666666" 
-                tick={{ fill: '#ffffff', fontSize: 12 }}
-                axisLine={{ stroke: futuristicColors.gridLine }}
-                tickLine={{ stroke: futuristicColors.gridLine }}
+                stroke="#aaa" 
+                tick={{ fill: enhancedColors.textPrimary, fontSize: 13, fontWeight: 500 }}
+                axisLine={{ stroke: enhancedColors.gridLine }}
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'rgba(0,0,0,0.8)', 
-                  border: '1px solid #333333', 
+                  backgroundColor: 'rgba(0, 0, 0, 0.85)', 
+                  border: '1px solid #334155', 
                   borderRadius: '8px',
-                  boxShadow: '0 0 10px rgba(0,229,255,0.3)'
+                  boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
+                  padding: '10px 14px',
                 }}
-                labelStyle={{ color: '#fff', fontWeight: 'bold', marginBottom: '8px' }}
-                itemStyle={{ padding: '4px 0', color: '#ffffff' }}
+                labelStyle={{ color: enhancedColors.textPrimary, fontWeight: 'bold', fontSize: '14px', marginBottom: '5px' }}
+                itemStyle={{ padding: '4px 0', color: enhancedColors.textPrimary, fontSize: '13px' }}
               />
               <Legend 
                 verticalAlign="top" 
                 height={36}
                 wrapperStyle={{ paddingTop: '10px' }}
-                formatter={(value) => <span style={{ color: '#ffffff', fontSize: '12px' }}>{value === "complete" ? "Completion %" : "Budget Used %"}</span>}
+                formatter={(value) => (
+                  <span style={{ 
+                    color: value === 'Completion %' ? enhancedColors.primary : enhancedColors.secondary, 
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    textShadow: '0 0 5px rgba(0,0,0,0.5)'
+                  }}>
+                    {value}
+                  </span>
+                )}
               />
               <Bar 
                 dataKey="complete" 
                 name="Completion %" 
-                fill={futuristicColors.primary}
+                fill="url(#colorComplete)" 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
-                filter="url(#glow-bar)"
-                fillOpacity={0.8}
+                filter="url(#glow)"
               />
               <Bar 
                 dataKey="budget" 
                 name="Budget Used %" 
-                fill={futuristicColors.secondary}
+                fill="url(#colorBudget)" 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
                 animationBegin={300}
-                filter="url(#glow-bar)"
-                fillOpacity={0.8}
+                filter="url(#glow)"
               />
             </BarChart>
           </ResponsiveContainer>

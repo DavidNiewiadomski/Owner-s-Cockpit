@@ -21,28 +21,29 @@ interface PerformanceRadarChartProps {
 }
 
 export function PerformanceRadarChart({ performanceData, colors }: PerformanceRadarChartProps) {
-  // Futuristic neon colors based on the reference image
-  const futuristicColors = {
-    primary: "#00e5ff",       // Neon cyan
-    secondary: "#ff5d8f",     // Neon pink
-    gridLine: "#1a1a1a",      // Very dark gray
-    background: "black",
-    textColor: "#ffffff",
-    cardBorder: "border-[#333333]",
+  // Enhanced futuristic colors with better contrast for legibility
+  const enhancedColors = {
+    primary: "#38bdf8",        // Bright cyan
+    secondary: "#f472b6",      // Pink-500
+    gridLine: "#1e293b",       // Slate-800
+    textPrimary: "#FFFFFF",    // Pure white for better legibility
+    textSecondary: "#C8C8C9",  // Light gray for secondary text
+    cardBg: "bg-gradient-to-br from-black to-zinc-900 border-cyan-900/30",
+    cardHeader: "bg-gradient-to-r from-cyan-950/50 to-transparent border-b border-cyan-900/20"
   };
 
   return (
-    <Card className={`bg-black border-none shadow-[0_0_15px_rgba(0,229,255,0.2)] ${futuristicColors.cardBorder}`}>
-      <CardHeader className="pb-2 border-b border-[#333333]">
+    <Card className={`shadow-[0_4px_30px_rgba(56,189,248,0.15)] ${enhancedColors.cardBg}`}>
+      <CardHeader className={`pb-2 ${enhancedColors.cardHeader}`}>
         <CardTitle className="text-lg text-white flex items-center">
-          <BarChart3 className="h-5 w-5 mr-2 text-[#00e5ff]" />
-          Multi-dimensional performance comparison
+          <BarChart3 className="h-5 w-5 mr-2 text-cyan-400" />
+          Project Performance Metrics
         </CardTitle>
-        <CardDescription className="text-gray-400">
-          Performance metrics across key project dimensions
+        <CardDescription className="text-gray-200 font-medium">
+          Multi-dimensional performance comparison
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart outerRadius={90} data={performanceData}>
@@ -55,56 +56,66 @@ export function PerformanceRadarChart({ performanceData, colors }: PerformanceRa
                   </feMerge>
                 </filter>
                 <linearGradient id="colorA" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={futuristicColors.primary} stopOpacity={0.9}/>
-                  <stop offset="95%" stopColor={futuristicColors.primary} stopOpacity={0.3}/>
+                  <stop offset="5%" stopColor={enhancedColors.primary} stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor={enhancedColors.primary} stopOpacity={0.2}/>
                 </linearGradient>
                 <linearGradient id="colorB" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={futuristicColors.secondary} stopOpacity={0.9}/>
-                  <stop offset="95%" stopColor={futuristicColors.secondary} stopOpacity={0.3}/>
+                  <stop offset="5%" stopColor={enhancedColors.secondary} stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor={enhancedColors.secondary} stopOpacity={0.2}/>
                 </linearGradient>
               </defs>
-              <PolarGrid stroke={futuristicColors.gridLine} />
+              <PolarGrid stroke={enhancedColors.gridLine} />
               <PolarAngleAxis 
                 dataKey="subject" 
-                tick={{ fill: '#ffffff', fontSize: 12 }}
-                stroke={futuristicColors.gridLine}
-                tickLine={{ stroke: futuristicColors.gridLine }}
+                tick={{ fill: enhancedColors.textPrimary, fontSize: 13, fontWeight: 500 }}
+                stroke={enhancedColors.gridLine}
+                tickLine={{ stroke: enhancedColors.gridLine }}
               />
               <Radar 
                 name="Current Projects" 
                 dataKey="A" 
-                stroke={futuristicColors.primary}
-                strokeWidth={2} 
+                stroke={enhancedColors.primary} 
+                strokeWidth={2}
                 fill="url(#colorA)" 
-                fillOpacity={0.5}
+                fillOpacity={0.6}
                 animationDuration={1500}
                 filter="url(#glow)"
               />
               <Radar 
                 name="Previous Period" 
                 dataKey="B" 
-                stroke={futuristicColors.secondary}
-                strokeWidth={2} 
+                stroke={enhancedColors.secondary} 
+                strokeWidth={2}
                 fill="url(#colorB)" 
-                fillOpacity={0.5}
+                fillOpacity={0.6}
                 animationDuration={1500}
                 animationBegin={300}
                 filter="url(#glow)"
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'rgba(0,0,0,0.8)', 
-                  border: '1px solid #333333', 
+                  backgroundColor: 'rgba(0, 0, 0, 0.85)', 
+                  border: '1px solid #334155', 
                   borderRadius: '8px',
-                  boxShadow: '0 0 10px rgba(0,229,255,0.3)'
+                  boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
+                  padding: '10px 14px',
                 }}
-                labelStyle={{ color: '#fff', fontWeight: 'bold' }}
-                itemStyle={{ color: '#ffffff' }}
+                labelStyle={{ color: '#ffffff', fontWeight: 'bold', fontSize: '14px', marginBottom: '5px' }}
+                itemStyle={{ color: '#ffffff', fontSize: '13px', padding: '3px 0' }}
               />
               <Legend 
-                formatter={(value) => <span style={{ color: '#ffffff', fontSize: '12px' }}>{value}</span>}
-                iconSize={10}
-                wrapperStyle={{ paddingTop: '10px' }}
+                formatter={(value) => (
+                  <span style={{ 
+                    color: value === 'Current Projects' ? enhancedColors.primary : enhancedColors.secondary, 
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    textShadow: '0 0 5px rgba(0,0,0,0.5)'
+                  }}>
+                    {value}
+                  </span>
+                )}
+                iconSize={12}
+                wrapperStyle={{ paddingTop: '15px' }}
               />
             </RadarChart>
           </ResponsiveContainer>
