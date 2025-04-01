@@ -36,7 +36,7 @@ export function PerformanceTabContent({
   colors 
 }: PerformanceTabContentProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Project Completion Chart */}
         <ProjectCompletionChart projectData={projectData} colors={colors} />
