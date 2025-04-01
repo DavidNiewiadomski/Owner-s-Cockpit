@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +38,11 @@ export interface PropertyDetailsProps {
 }
 
 export function PropertyDetails({ propertyData }: PropertyDetailsProps) {
+  // Add a null check before rendering
+  if (!propertyData) {
+    return null;
+  }
+
   return (
     <Card className="mt-6">
       <CardHeader>
@@ -57,7 +63,9 @@ export function PropertyDetails({ propertyData }: PropertyDetailsProps) {
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <span className="text-sm text-gray-500">Size:</span>
-                <span className="text-sm font-medium col-span-2">{propertyData.squareFootage.toLocaleString()} sq ft</span>
+                <span className="text-sm font-medium col-span-2">
+                  {propertyData.squareFootage ? propertyData.squareFootage.toLocaleString() : '0'} sq ft
+                </span>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 <span className="text-sm text-gray-500">Floors:</span>

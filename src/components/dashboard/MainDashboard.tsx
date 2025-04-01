@@ -46,8 +46,8 @@ export function MainDashboard() {
         <FinancialTracking
           projectName={financialData.projectName}
           totalBudget={financialData.totalBudget}
-          spending={financialData.spending}
-          changeOrders={financialData.changeOrders}
+          spending={financialData.spending || []}
+          changeOrders={financialData.changeOrders || []}
         />
       </div>
       
