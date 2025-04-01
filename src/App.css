@@ -48,12 +48,12 @@ html, body, #app, #root, main {
 }
 
 /* Force cards and UI components to have black backgrounds */
-.card, .bg-card, [class*="bg-gray-"], .bg-background, .bg-gradient-radial {
+.card, .bg-card, [class*="bg-gray-"], .bg-background, .bg-gradient-radial, .bg-muted {
   background-color: #000000 !important;
 }
 
 /* Override any background opacity */
-[class*="bg-black/"] {
+[class*="bg-black/"], [class*="bg-gray-900/"] {
   background-color: #000000 !important;
   opacity: 1 !important;
 }
@@ -81,3 +81,16 @@ aside {
   background-color: #000000 !important;
 }
 
+/* Reality Capture viewer specific styles */
+.reality-capture-card {
+  background-color: #000000 !important;
+}
+
+.reality-capture-card * {
+  background-color: #000000 !important;
+}
+
+.reality-capture-controls button {
+  background-color: #000000 !important;
+  border-color: #333333 !important;
+}

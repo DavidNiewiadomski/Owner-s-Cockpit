@@ -7,6 +7,8 @@ import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { useProject } from '@/contexts/ProjectContext';
 import { RealityCaptureViewer } from '@/components/dashboard/RealityCaptureViewer';
 import { ProgressChart } from '@/components/dashboard/ProgressChart';
+import { Button } from '@/components/ui/button';
+import { Camera, ArrowLeft } from 'lucide-react';
 
 // Import the refactored components
 import { GanttChart } from '@/components/timeline/GanttChart';
@@ -244,6 +246,7 @@ const Timeline = () => {
   const [activeProject, setActiveProject] = useState("downtown");
   const [timelineView, setTimelineView] = useState("gantt");
   const [realityCapture, setRealityCapture] = useState<RealityCaptureEvent | null>(null);
+  const [showRealityCaptures, setShowRealityCaptures] = useState(false);
   const { selectedProject } = useProject();
   const [milestoneData, setMilestoneData] = useState<Milestone[]>(baseMilestoneData as Milestone[]);
   const [projectSpecificInsights, setProjectSpecificInsights] = useState<string[]>([]);
@@ -297,11 +300,23 @@ const Timeline = () => {
         url: milestone.realityCapture.url,
         location: `${selectedProject?.title || 'Project'} - ${milestone.name}`
       });
+      setShowRealityCaptures(true);
     }
   };
+
+  // Filter available reality captures for direct access
+  const availableRealityCaptures = milestoneData
+    .filter(milestone => milestone.realityCapture && milestone.realityCapture.available)
+    .map(milestone => ({
+      name: milestone.name,
+      date: milestone.realityCapture?.available ? milestone.realityCapture.date : '',
+      url: milestone.realityCapture?.available ? milestone.realityCapture.url : '',
+      location: `${selectedProject?.title || 'Project'} - ${milestone.name}`,
+      status: milestone.status
+    }));
   
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-black">
       <SidebarNavigation />
       <div className="flex-1">
         <DashboardHeader onSearch={() => {}} />
@@ -313,27 +328,24 @@ const Timeline = () => {
             initialInsights={timelineInsights}
           />
 
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold">Project Timeline</h1>
-            <p className="text-muted-foreground">Monitor schedules, milestones, and progress across your projects</p>
-          </div>
-          
-          <Tabs defaultValue={activeProject} onValueChange={setActiveProject} className="mb-6">
-            <ProjectFilterBar 
-              activeProject={activeProject} 
-              onProjectChange={setActiveProject} 
-            />
+          {showRealityCaptures ? (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => setShowRealityCaptures(false)}
+                    className="mr-2"
+                  >
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                  <h1 className="text-2xl font-bold">Reality Captures</h1>
+                </div>
+                <p className="text-muted-foreground">View 360° captures of your project's progress</p>
+              </div>
 
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">{selectedProject?.title || 'Project'} Timeline</h2>
-              <TimelineViewSelector 
-                activeView={timelineView} 
-                onViewChange={setTimelineView} 
-              />
-            </div>
-            
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="md:col-span-2">
+              <div className="mb-6">
                 {realityCapture ? (
                   <RealityCaptureViewer
                     captureUrl={realityCapture.url}
@@ -343,24 +355,111 @@ const Timeline = () => {
                     onClose={() => setRealityCapture(null)}
                     className="mb-6"
                   />
-                ) : null}
-                
-                {timelineView === "gantt" && <GanttChart data={ganttData} />}
-                {timelineView === "delays" && <DelayAnalysisChart data={delayMetricsData} />}
-                {timelineView === "milestone" && (
-                  <MilestoneView 
-                    milestones={milestoneData} 
-                    onViewRealityCapture={handleViewRealityCapture} 
-                  />
+                ) : (
+                  <div className="bg-black border border-gray-800 rounded-lg p-10 text-center">
+                    <Camera className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+                    <h3 className="text-xl font-semibold mb-2">Select a Reality Capture</h3>
+                    <p className="text-muted-foreground mb-6">Choose a milestone from below to view its reality capture</p>
+                  </div>
                 )}
-                {timelineView === "activities" && <EmptyActivitiesList />}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                {availableRealityCaptures.map((capture, index) => (
+                  <div 
+                    key={index} 
+                    className={`bg-black border border-gray-800 rounded-lg overflow-hidden cursor-pointer transition-all hover:border-blue-500 ${realityCapture?.name === capture.name ? 'border-blue-500 ring-2 ring-blue-500/20' : ''}`}
+                    onClick={() => setRealityCapture(capture)}
+                  >
+                    <div className="h-32 bg-gray-900 relative">
+                      <img 
+                        src={capture.url} 
+                        alt={capture.name} 
+                        className="w-full h-full object-cover opacity-70"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Camera className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex justify-between">
+                        <h3 className="font-medium">{capture.name}</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          capture.status === 'completed' ? 'bg-green-900/30 text-green-400' :
+                          capture.status === 'in-progress' ? 'bg-blue-900/30 text-blue-400' :
+                          capture.status === 'delayed' ? 'bg-red-900/30 text-red-400' :
+                          'bg-gray-900/30 text-gray-400'
+                        }`}>
+                          {capture.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">{capture.date}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mb-6 flex justify-between items-center">
+                <div>
+                  <h1 className="text-2xl font-bold">Project Timeline</h1>
+                  <p className="text-muted-foreground">Monitor schedules, milestones, and progress across your projects</p>
+                </div>
+                <Button 
+                  className="gap-2 bg-blue-600 hover:bg-blue-700" 
+                  onClick={() => setShowRealityCaptures(true)}
+                >
+                  <Camera className="h-4 w-4" />
+                  <span>View Reality Captures</span>
+                </Button>
               </div>
               
-              <div>
-                <ProjectSummary />
-              </div>
-            </div>
-          </Tabs>
+              <Tabs defaultValue={activeProject} onValueChange={setActiveProject} className="mb-6">
+                <ProjectFilterBar 
+                  activeProject={activeProject} 
+                  onProjectChange={setActiveProject} 
+                />
+
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-semibold">{selectedProject?.title || 'Project'} Timeline</h2>
+                  <TimelineViewSelector 
+                    activeView={timelineView} 
+                    onViewChange={setTimelineView} 
+                  />
+                </div>
+                
+                <div className="grid gap-6 md:grid-cols-3">
+                  <div className="md:col-span-2">
+                    {realityCapture && !showRealityCaptures ? (
+                      <RealityCaptureViewer
+                        captureUrl={realityCapture.url}
+                        captureDate={realityCapture.date}
+                        projectName={selectedProject?.title || 'Project'}
+                        location={realityCapture.location}
+                        onClose={() => setRealityCapture(null)}
+                        className="mb-6"
+                      />
+                    ) : null}
+                    
+                    {timelineView === "gantt" && <GanttChart data={ganttData} />}
+                    {timelineView === "delays" && <DelayAnalysisChart data={delayMetricsData} />}
+                    {timelineView === "milestone" && (
+                      <MilestoneView 
+                        milestones={milestoneData} 
+                        onViewRealityCapture={handleViewRealityCapture} 
+                      />
+                    )}
+                    {timelineView === "activities" && <EmptyActivitiesList />}
+                  </div>
+                  
+                  <div>
+                    <ProjectSummary />
+                  </div>
+                </div>
+              </Tabs>
+            </>
+          )}
         </main>
       </div>
     </div>

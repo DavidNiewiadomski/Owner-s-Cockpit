@@ -51,11 +51,11 @@ export function RealityCaptureViewer({
 
   return (
     <Card className={cn(
-      "overflow-hidden transition-all duration-300 backdrop-blur-sm bg-black/30 border-gray-800",
+      "overflow-hidden transition-all duration-300 border-gray-800 bg-black",
       isFullscreen ? "fixed inset-0 z-50 m-0 rounded-none" : "h-[500px]",
       className
     )}>
-      <CardHeader className="px-4 py-3 flex flex-row items-center justify-between bg-gray-900/70 border-b border-gray-800">
+      <CardHeader className="px-4 py-3 flex flex-row items-center justify-between bg-black border-b border-gray-800">
         <div className="flex items-center">
           <Camera className="h-5 w-5 mr-2 text-blue-400" />
           <CardTitle className="text-base font-medium text-white">{projectName} Reality Capture</CardTitle>
@@ -85,11 +85,11 @@ export function RealityCaptureViewer({
         </div>
       </CardHeader>
       <CardContent className={cn(
-        "p-0 relative overflow-hidden flex items-center justify-center bg-gray-950",
+        "p-0 relative overflow-hidden flex items-center justify-center bg-black",
         isFullscreen ? "h-[calc(100vh-115px)]" : "h-[380px]"
       )}>
         {isLoading ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+          <div className="absolute inset-0 flex items-center justify-center bg-black">
             <div className="flex flex-col items-center">
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
               <p className="mt-4 text-gray-400">Loading 360° view...</p>
@@ -107,7 +107,7 @@ export function RealityCaptureViewer({
               <Button 
                 variant="secondary" 
                 size="icon" 
-                className="h-8 w-8 bg-gray-800/80 text-white border border-gray-700"
+                className="h-8 w-8 bg-black text-white border border-gray-700"
                 onClick={handleZoomIn}
               >
                 <ZoomIn className="h-4 w-4" />
@@ -115,7 +115,7 @@ export function RealityCaptureViewer({
               <Button 
                 variant="secondary" 
                 size="icon" 
-                className="h-8 w-8 bg-gray-800/80 text-white border border-gray-700"
+                className="h-8 w-8 bg-black text-white border border-gray-700"
                 onClick={handleZoomOut}
               >
                 <ZoomOut className="h-4 w-4" />
@@ -123,7 +123,7 @@ export function RealityCaptureViewer({
               <Button 
                 variant="secondary" 
                 size="icon" 
-                className="h-8 w-8 bg-gray-800/80 text-white border border-gray-700"
+                className="h-8 w-8 bg-black text-white border border-gray-700"
               >
                 <RotateCcw className="h-4 w-4" />
               </Button>
@@ -131,17 +131,17 @@ export function RealityCaptureViewer({
           </>
         )}
       </CardContent>
-      <CardFooter className="px-4 py-3 flex justify-between items-center bg-gray-900/70 border-t border-gray-800">
+      <CardFooter className="px-4 py-3 flex justify-between items-center bg-black border-t border-gray-800">
         <div className="text-sm text-gray-400">
           <span className="font-medium text-white">{location}</span>
           <span className="mx-2">•</span>
           <span className="text-xs">Captured on {captureDate}</span>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="h-8 text-xs border-gray-700 bg-gray-800 hover:bg-gray-700 text-white">
+          <Button variant="outline" size="sm" className="h-8 text-xs border-gray-700 bg-black hover:bg-gray-900 text-white">
             Previous Capture
           </Button>
-          <Button variant="outline" size="sm" className="h-8 text-xs border-blue-700 bg-blue-800/50 hover:bg-blue-700/60 text-white">
+          <Button variant="outline" size="sm" className="h-8 text-xs border-blue-700 bg-blue-900/50 hover:bg-blue-800 text-white">
             Next Capture
           </Button>
         </div>
