@@ -1,36 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
-import { 
-  AlertTriangle, 
-  Clock, 
-  Plus, 
-  Search, 
-  CheckCircle, 
-  Construction, 
-  Calendar, 
-  ListChecks,
-  ArrowDown,
-  Tag 
-} from 'lucide-react';
-import { ActionItemList } from '@/components/actionItems/ActionItemList';
+import { Plus } from 'lucide-react';
+import { ActionItemFilters } from '@/components/actionItems/ActionItemFilters';
+import { ActionItemSearch } from '@/components/actionItems/ActionItemSearch';
 import { useProject } from '@/contexts/ProjectContext';
 
 // Define project-specific action items
@@ -273,15 +248,10 @@ export default function ActionItems() {
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-white">Action Items</h1>
               <div className="flex gap-2">
-                <div className="relative w-64">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
-                  <Input
-                    placeholder="Search action items..."
-                    className="pl-8 bg-black border-gray-700"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
+                <ActionItemSearch 
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
                 <Button className="gap-1 bg-construction-600 hover:bg-construction-700">
                   <Plus className="h-4 w-4" />
                   New Item
@@ -289,129 +259,13 @@ export default function ActionItems() {
               </div>
             </div>
             
-            <Tabs defaultValue="all" className="w-full">
-              <TabsList className="bg-gray-900 border border-gray-800">
-                <TabsTrigger value="all">All Items</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="completed">Completed</TabsTrigger>
-                <TabsTrigger value="urgent">Urgent</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="all">
-                <ProjectActionItemList items={actionItems} filter="all" searchQuery={searchQuery} />
-              </TabsContent>
-              
-              <TabsContent value="pending">
-                <ProjectActionItemList items={actionItems} filter="pending" searchQuery={searchQuery} />
-              </TabsContent>
-              
-              <TabsContent value="completed">
-                <ProjectActionItemList items={actionItems} filter="completed" searchQuery={searchQuery} />
-              </TabsContent>
-              
-              <TabsContent value="urgent">
-                <ProjectActionItemList items={actionItems} filter="urgent" searchQuery={searchQuery} />
-              </TabsContent>
-            </Tabs>
+            <ActionItemFilters 
+              items={actionItems} 
+              searchQuery={searchQuery} 
+            />
           </div>
         </div>
       </main>
     </div>
   );
 }
-
-// Component to display project-specific action items
-function ProjectActionItemList({ items, filter, searchQuery }: { items: any[], filter: 'all' | 'pending' | 'completed' | 'urgent', searchQuery: string }) {
-  // Filter items based on filter type and search query
-  const filteredItems = items.filter(item => {
-    // Apply status filter
-    if (filter === 'pending' && item.status !== 'pending') return false;
-    if (filter === 'completed' && item.status !== 'completed') return false;
-    if (filter === 'urgent' && item.priority !== 'high') return false;
-    
-    // Apply search filter
-    if (searchQuery && !item.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !item.description.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !item.project.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    
-    return true;
-  });
-  
-  return (
-    <div className="space-y-4">
-      {filteredItems.length === 0 ? (
-        <Card className="bg-black border-gray-700">
-          <CardContent className="flex flex-col items-center justify-center py-10">
-            <ListChecks className="h-12 w-12 text-gray-500 mb-4" />
-            <h3 className="text-xl font-medium text-gray-200">No action items found</h3>
-            <p className="text-gray-400 mt-2">
-              {searchQuery ? 'Try a different search term' : 'All tasks are complete or filtered out'}
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        filteredItems.map(item => (
-          <Card key={item.id} className={`bg-black border-gray-700 ${item.status === 'completed' ? 'opacity-60' : ''}`}>
-            <CardContent className="p-4">
-              <div className="flex items-start gap-3">
-                <div className="pt-1">
-                  <Checkbox 
-                    checked={item.status === 'completed'}
-                    className="data-[state=checked]:bg-construction-500 data-[state=checked]:text-white"
-                  />
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center gap-3">
-                    {item.type === 'approval' ? <AlertTriangle className="h-5 w-5 text-amber-500" /> :
-                     item.type === 'review' ? <Clock className="h-5 w-5 text-blue-500" /> :
-                     item.type === 'task' ? <CheckCircle className="h-5 w-5 text-green-500" /> :
-                     <Construction className="h-5 w-5 text-construction-500" />}
-                    <h4 className={`font-medium text-gray-100 ${item.status === 'completed' ? 'line-through' : ''}`}>
-                      {item.title}
-                    </h4>
-                  </div>
-                  
-                  <p className="text-sm text-gray-400 mt-1">{item.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    <Badge variant="outline" className="text-xs bg-black text-gray-300 border-gray-600 flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {new Date(item.dueDate).toLocaleDateString()}
-                    </Badge>
-                    
-                    <Badge 
-                      className={`text-xs ${
-                        item.priority === 'high' ? 'bg-red-900/30 text-red-400 border-red-800' : 
-                        item.priority === 'medium' ? 'bg-amber-900/30 text-amber-400 border-amber-800' : 
-                        'bg-green-900/30 text-green-400 border-green-800'
-                      }`}
-                      variant="outline"
-                    >
-                      {item.priority === 'high' ? 'High Priority' : 
-                       item.priority === 'medium' ? 'Medium Priority' : 
-                       'Low Priority'}
-                    </Badge>
-                    
-                    <Badge variant="outline" className="text-xs bg-construction-900/30 text-construction-400 border-construction-800">
-                      {item.project}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                  <ArrowDown className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))
-      )}
-    </div>
-  );
-}
-
-// Missing Badge component import
-import { Badge } from '@/components/ui/badge';

@@ -71,8 +71,7 @@ export function BudgetSummaryCard() {
             <div className="absolute inset-0 w-full h-full bg-cyan-950/50"></div>
             <Progress 
               value={animatedProgress} 
-              className="h-2 relative z-10" 
-              indicatorClassName="bg-gradient-to-r from-blue-500 to-cyan-400 shadow-glow" 
+              className="h-2 relative z-10 bg-gradient-to-r from-blue-500 to-cyan-400 shadow-glow" 
             />
           </div>
         </div>
