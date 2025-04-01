@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentTabs } from '@/components/investment/InvestmentTabs';
-import { AIInsightsCard } from '@/components/investment/AIInsightsCard';
 import { AIAssistantSheet } from '@/components/investment/AIAssistantSheet';
 import { 
   investmentMetrics, 
@@ -24,14 +23,10 @@ const InvestmentImpact = () => {
       initialInsights={investmentInsights}
     >
       <div className="max-w-7xl mx-auto">
-        <AIInsightsCard 
-          insights={investmentInsights} 
-          onChatOpen={() => setSheetOpen(true)} 
-        />
-        
         <InvestmentHeader 
           title="Investment Impact" 
-          description="Track and analyze the financial performance of your construction projects" 
+          description="Track and analyze the financial performance of your construction projects"
+          onChatOpen={() => setSheetOpen(true)}
         />
         
         <InvestmentTabs 
