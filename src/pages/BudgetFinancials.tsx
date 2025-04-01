@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SidebarNavigation } from "@/components/layout/SidebarNavigation";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,11 +12,21 @@ import { InvoiceStatusCard } from "@/components/financials/InvoiceStatusCard";
 import { CashFlowForecastChart } from "@/components/financials/CashFlowForecastChart";
 import { useProject } from "@/contexts/ProjectContext";
 import { CollapsibleAIAssistant } from "@/components/ai/CollapsibleAIAssistant";
+import { motion } from "framer-motion";
 
 const BudgetFinancials = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || "All Projects";
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading data
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Budget-specific insights
   const budgetInsights = [
@@ -42,6 +52,30 @@ const BudgetFinancials = () => {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen bg-black">
       <SidebarNavigation />
@@ -55,135 +89,167 @@ const BudgetFinancials = () => {
           initialInsights={budgetInsights}
         />
         
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <main className="flex-1 overflow-y-auto p-6 bg-gradient-radial from-black to-gray-950">
+          <motion.div 
+            className="max-w-7xl mx-auto"
+            initial="hidden"
+            animate={isLoaded ? "visible" : "hidden"}
+            variants={containerVariants}
+          >
+            <motion.div 
+              className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6"
+              variants={itemVariants}
+            >
               <div>
-                <h1 className="text-2xl font-bold text-gray-100">Budget & Financials</h1>
+                <h1 className="text-2xl font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">Budget & Financials</h1>
                 <p className="text-gray-400">Financial overview and tracking for {projectName}</p>
               </div>
               <div className="mt-3 md:mt-0">
-                <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
-                  <span className="w-2 h-2 mr-1 rounded-full bg-blue-500"></span>
+                <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-indigo-900/30 text-indigo-300 border border-indigo-700/40 shadow-glow">
+                  <span className="w-2 h-2 mr-1 rounded-full bg-cyan-500 animate-pulse"></span>
                   Financial data updated daily
                 </span>
               </div>
-            </div>
+            </motion.div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <BudgetSummaryCard />
+            <motion.div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" variants={itemVariants}>
+              <motion.div 
+                className="hover-scale" 
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <BudgetSummaryCard />
+              </motion.div>
               
-              <div className="lg:col-span-2">
+              <motion.div 
+                className="lg:col-span-2 hover-scale" 
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <CostVarianceChart />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <div className="lg:col-span-2">
+            <motion.div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6" variants={itemVariants}>
+              <motion.div 
+                className="lg:col-span-2 hover-scale" 
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <CashFlowForecastChart />
-              </div>
+              </motion.div>
               
-              <InvoiceStatusCard />
-            </div>
+              <motion.div 
+                className="hover-scale" 
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <InvoiceStatusCard />
+              </motion.div>
+            </motion.div>
             
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Detailed Cost Breakdown</CardTitle>
-                <CardDescription>Itemized costs by category for {projectName}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Budget</TableHead>
-                      <TableHead>Actual</TableHead>
-                      <TableHead>Variance</TableHead>
-                      <TableHead>Variance %</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">Site Work & Foundation</TableCell>
-                      <TableCell>$425,000</TableCell>
-                      <TableCell>$412,750</TableCell>
-                      <TableCell className="text-green-500">$12,250</TableCell>
-                      <TableCell className="text-green-500">2.9%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          Under Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Structural Framing</TableCell>
-                      <TableCell>$720,000</TableCell>
-                      <TableCell>$748,800</TableCell>
-                      <TableCell className="text-red-500">-$28,800</TableCell>
-                      <TableCell className="text-red-500">-4.0%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                          Over Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Electrical Systems</TableCell>
-                      <TableCell>$345,000</TableCell>
-                      <TableCell>$341,550</TableCell>
-                      <TableCell className="text-green-500">$3,450</TableCell>
-                      <TableCell className="text-green-500">1.0%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          Under Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Plumbing & HVAC</TableCell>
-                      <TableCell>$520,000</TableCell>
-                      <TableCell>$546,000</TableCell>
-                      <TableCell className="text-red-500">-$26,000</TableCell>
-                      <TableCell className="text-red-500">-5.0%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                          Over Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Interior Finishes</TableCell>
-                      <TableCell>$635,000</TableCell>
-                      <TableCell>$622,300</TableCell>
-                      <TableCell className="text-green-500">$12,700</TableCell>
-                      <TableCell className="text-green-500">2.0%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                          Under Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Exterior Facades</TableCell>
-                      <TableCell>$390,000</TableCell>
-                      <TableCell>$409,500</TableCell>
-                      <TableCell className="text-red-500">-$19,500</TableCell>
-                      <TableCell className="text-red-500">-5.0%</TableCell>
-                      <TableCell>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                          Over Budget
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-              <CardFooter className="text-sm text-muted-foreground">
-                Last updated: June 15, 2023
-              </CardFooter>
-            </Card>
-          </div>
+            <motion.div variants={itemVariants}>
+              <Card className="mb-6 glass-card border-cyan-900/30 hover-scale">
+                <CardHeader>
+                  <CardTitle className="text-blue-300">Detailed Cost Breakdown</CardTitle>
+                  <CardDescription>Itemized costs by category for {projectName}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-b border-cyan-900/30">
+                          <TableHead className="text-gray-300">Category</TableHead>
+                          <TableHead className="text-gray-300">Budget</TableHead>
+                          <TableHead className="text-gray-300">Actual</TableHead>
+                          <TableHead className="text-gray-300">Variance</TableHead>
+                          <TableHead className="text-gray-300">Variance %</TableHead>
+                          <TableHead className="text-gray-300">Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Site Work & Foundation</TableCell>
+                          <TableCell className="text-gray-300">$425,000</TableCell>
+                          <TableCell className="text-gray-300">$412,750</TableCell>
+                          <TableCell className="text-emerald-400">$12,250</TableCell>
+                          <TableCell className="text-emerald-400">2.9%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                              Under Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Structural Framing</TableCell>
+                          <TableCell className="text-gray-300">$720,000</TableCell>
+                          <TableCell className="text-gray-300">$748,800</TableCell>
+                          <TableCell className="text-rose-400">-$28,800</TableCell>
+                          <TableCell className="text-rose-400">-4.0%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                              Over Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Electrical Systems</TableCell>
+                          <TableCell className="text-gray-300">$345,000</TableCell>
+                          <TableCell className="text-gray-300">$341,550</TableCell>
+                          <TableCell className="text-emerald-400">$3,450</TableCell>
+                          <TableCell className="text-emerald-400">1.0%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                              Under Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Plumbing & HVAC</TableCell>
+                          <TableCell className="text-gray-300">$520,000</TableCell>
+                          <TableCell className="text-gray-300">$546,000</TableCell>
+                          <TableCell className="text-rose-400">-$26,000</TableCell>
+                          <TableCell className="text-rose-400">-5.0%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                              Over Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Interior Finishes</TableCell>
+                          <TableCell className="text-gray-300">$635,000</TableCell>
+                          <TableCell className="text-gray-300">$622,300</TableCell>
+                          <TableCell className="text-emerald-400">$12,700</TableCell>
+                          <TableCell className="text-emerald-400">2.0%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                              Under Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow className="hover:bg-cyan-900/10 transition-colors">
+                          <TableCell className="font-medium text-white">Exterior Facades</TableCell>
+                          <TableCell className="text-gray-300">$390,000</TableCell>
+                          <TableCell className="text-gray-300">$409,500</TableCell>
+                          <TableCell className="text-rose-400">-$19,500</TableCell>
+                          <TableCell className="text-rose-400">-5.0%</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                              Over Budget
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+                <CardFooter className="text-sm text-gray-500 border-t border-cyan-900/30">
+                  Last updated: June 15, 2023
+                </CardFooter>
+              </Card>
+            </motion.div>
+          </motion.div>
         </main>
       </div>
     </div>

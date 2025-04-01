@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
@@ -109,8 +108,8 @@ const Index = () => {
                 <p className="text-gray-400">Real-time overview of your properties and projects</p>
               </div>
               <div className="mt-3 md:mt-0">
-                <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-                  <span className="w-2 h-2 mr-1 rounded-full bg-green-500"></span>
+                <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-emerald-900/20 text-emerald-400 border border-emerald-800/40">
+                  <span className="w-2 h-2 mr-1 rounded-full bg-emerald-500 animate-pulse"></span>
                   All projects active
                 </span>
               </div>

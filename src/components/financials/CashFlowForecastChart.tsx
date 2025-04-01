@@ -97,34 +97,35 @@ export function CashFlowForecastChart() {
     }).format(value);
   };
   
+  // Updated chart config with futuristic colors
   const chartConfig = {
     inflow: {
       label: "Cash Inflow",
       theme: {
-        light: "rgba(16, 185, 129, 0.7)",
-        dark: "rgba(16, 185, 129, 0.7)"
+        light: "rgba(52, 211, 153, 0.8)", // Teal/Emerald
+        dark: "rgba(52, 211, 153, 0.8)"
       }
     },
     outflow: {
       label: "Cash Outflow",
       theme: {
-        light: "rgba(239, 68, 68, 0.7)",
-        dark: "rgba(239, 68, 68, 0.7)"
+        light: "rgba(244, 114, 182, 0.8)", // Pink
+        dark: "rgba(244, 114, 182, 0.8)"
       }
     },
     cashBalance: {
       label: "Cash Balance",
       theme: {
-        light: "rgba(59, 130, 246, 0.9)",
-        dark: "rgba(59, 130, 246, 0.9)"
+        light: "rgba(126, 34, 206, 0.9)", // Purple
+        dark: "rgba(126, 34, 206, 0.9)"
       }
     }
   };
   
   return (
-    <Card className="h-full">
+    <Card className="h-full glass-card border-cyan-900/30">
       <CardHeader>
-        <CardTitle>Cash Flow Forecast</CardTitle>
+        <CardTitle className="text-blue-300">Cash Flow Forecast</CardTitle>
         <CardDescription>
           Monthly cash projections for {projectName}
         </CardDescription>
@@ -142,23 +143,31 @@ export function CashFlowForecastChart() {
                   bottom: 0,
                 }}
               >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="month" />
-                <YAxis tickFormatter={(value) => `$${value / 1000}k`} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
+                <XAxis 
+                  dataKey="month" 
+                  tick={{ fill: "#94a3b8" }}
+                  stroke="#475569"
+                />
+                <YAxis 
+                  tickFormatter={(value) => `$${value / 1000}k`} 
+                  tick={{ fill: "#94a3b8" }}
+                  stroke="#475569"
+                />
                 <ChartTooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="rounded-lg border bg-background p-2 shadow-sm">
-                          <div className="font-medium">{label}</div>
-                          <div className="text-xs text-muted-foreground mt-1">
-                            <div className="text-green-500">
+                        <div className="rounded-lg border border-cyan-800/50 bg-black/90 p-2 shadow-blue-900/20 shadow-lg backdrop-blur-sm">
+                          <div className="font-medium text-blue-300">{label}</div>
+                          <div className="text-xs text-cyan-200 mt-1">
+                            <div className="text-emerald-400">
                               Inflow: {formatCurrency(payload[0].payload.inflow)}
                             </div>
-                            <div className="text-red-500">
+                            <div className="text-pink-400">
                               Outflow: {formatCurrency(payload[0].payload.outflow)}
                             </div>
-                            <div className="text-blue-500 font-medium">
+                            <div className="text-purple-400 font-medium">
                               Balance: {formatCurrency(payload[0].payload.cashBalance)}
                             </div>
                           </div>
@@ -168,22 +177,44 @@ export function CashFlowForecastChart() {
                     return null;
                   }}
                 />
-                <Legend />
+                <Legend 
+                  wrapperStyle={{ paddingTop: "10px" }}
+                  formatter={(value) => <span className="text-gray-300">{value}</span>}
+                />
+                <defs>
+                  <linearGradient id="inflowGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="rgba(52, 211, 153, 0.8)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="rgba(52, 211, 153, 0.1)" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="outflowGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="rgba(244, 114, 182, 0.8)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="rgba(244, 114, 182, 0.1)" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
                 <Area
                   type="monotone"
                   dataKey="inflow"
-                  fill="var(--color-inflow)"
+                  fill="url(#inflowGradient)"
                   stroke="var(--color-inflow)"
-                  fillOpacity={0.3}
+                  fillOpacity={0.6}
+                  strokeWidth={2}
+                  activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
+                  animationDuration={1500}
+                  animationEasing="ease-out"
                 />
                 <Area
                   type="monotone"
                   dataKey="outflow"
-                  fill="var(--color-outflow)"
+                  fill="url(#outflowGradient)"
                   stroke="var(--color-outflow)" 
-                  fillOpacity={0.3}
+                  fillOpacity={0.6}
+                  strokeWidth={2}
+                  activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
+                  animationDuration={1500}
+                  animationEasing="ease-out"
+                  animationBegin={300}
                 />
-                <ReferenceLine y={0} stroke="#666" />
+                <ReferenceLine y={0} stroke="#475569" />
               </AreaChart>
             </ResponsiveContainer>
           </ChartContainer>
