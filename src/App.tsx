@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom
 import { useEffect } from "react";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import { FloatingChatButton } from "@/components/ai/FloatingChatButton";
+import { AIActivityIndicator } from "@/components/ai/AIActivityIndicator";
 import Index from "./pages/Index";
 import Documents from "./pages/Documents";
 import Analytics from "./pages/Analytics";
@@ -29,12 +30,13 @@ const enableDarkMode = () => {
 
 const queryClient = new QueryClient();
 
-// Layout component without the global AI Assistant
+// Layout component with the global AI Assistant
 const PageLayout = () => {
   return (
     <>
       <Outlet />
       <FloatingChatButton />
+      <AIActivityIndicator />
     </>
   );
 };

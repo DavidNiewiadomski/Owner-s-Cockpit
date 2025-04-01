@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ProjectTabs } from '@/components/project/ProjectTabs';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
-import { Search, Plus, Filter } from 'lucide-react';
+import { AICommandBar } from '@/components/ai/AICommandBar';
+import { AIActivityIndicator } from '@/components/ai/AIActivityIndicator';
+import { AIProjectRecommendations } from '@/components/project/AIProjectRecommendations';
+import { Search, Plus, Filter, Brain } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { projects } from '@/data/projects/projectData';
 
 const projectInsights = [
@@ -44,20 +48,31 @@ const Projects = () => {
   return (
     <div className="flex min-h-screen bg-black">
       <SidebarNavigation />
+      <AIActivityIndicator />
+      
       <div className="flex-1">
         <DashboardHeader onSearch={setSearchTerm} />
         
         <main className="container mx-auto py-6 px-4 md:px-6">
-          {/* Moved AI Assistant to the top */}
+          {/* AI Assistant at the top */}
           <CollapsibleAIAssistant 
             projectContext="your projects" 
             initialInsights={projectInsights}
           />
           
           <div className="mb-6">
-            <h1 className="text-2xl font-bold">Projects</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold">Projects</h1>
+              <Badge variant="outline" className="bg-construction-900/30 border-construction-700/30 text-construction-400 text-xs">
+                <Brain className="h-3 w-3 mr-1" />
+                AI Enhanced
+              </Badge>
+            </div>
             <p className="text-muted-foreground">Manage and track all your construction projects</p>
           </div>
+          
+          {/* AI Project Recommendations */}
+          <AIProjectRecommendations projects={projects} />
           
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div className="relative w-full md:w-auto max-w-md">
@@ -72,6 +87,8 @@ const Projects = () => {
             </div>
             
             <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
+              <AICommandBar />
+              
               <Button variant="outline" size="sm" className="gap-1 border-gray-800">
                 <Filter className="h-4 w-4" />
                 <span>Filter</span>
