@@ -1,709 +1,315 @@
 
 import React, { useState } from 'react';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
+import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
-import { useToast } from '@/hooks/use-toast';
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  Area,
-  AreaChart,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts';
-import {
-  Building,
-  ChevronDown,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  DollarSign,
-  Calendar,
-  BarChart2,
-  Layers,
-  AlertTriangle,
-  FileText,
-  Download,
-  Filter
-} from 'lucide-react';
 
-const projectOptions = [
-  { value: 'all', label: 'All Projects' },
-  { value: 'east-tower', label: 'East Tower Construction' },
-  { value: 'westside', label: 'Westside Park Development' },
-  { value: 'north-bridge', label: 'North Bridge Repair' }
-];
+// Define types
+interface InvestmentMetric {
+  label: string;
+  original: string;
+  current: string;
+  impact: "positive" | "negative";
+  variance: string;
+}
 
+// Data for ROI chart
 const roiData = [
-  { name: 'Jan', projected: 7.2, actual: 7.1 },
-  { name: 'Feb', projected: 7.3, actual: 7.0 },
+  { name: 'Jan', projected: 7.2, actual: 7.0 },
+  { name: 'Feb', projected: 7.3, actual: 6.9 },
   { name: 'Mar', projected: 7.4, actual: 6.8 },
-  { name: 'Apr', projected: 7.5, actual: 6.5 },
-  { name: 'May', projected: 7.6, actual: 6.3 },
-  { name: 'Jun', projected: 7.7, actual: 6.4 },
-  { name: 'Jul', projected: 7.8, actual: 6.6 },
-  { name: 'Aug', projected: 7.9, actual: 6.9 },
-  { name: 'Sep', projected: 8.0, actual: 7.2 },
-  { name: 'Oct', projected: 8.1, actual: null },
-  { name: 'Nov', projected: 8.2, actual: null },
-  { name: 'Dec', projected: 8.3, actual: null },
+  { name: 'Apr', projected: 7.5, actual: 6.7 },
+  { name: 'May', projected: 7.6, actual: 6.5 },
+  { name: 'Jun', projected: 7.7, actual: 6.3 },
+  { name: 'Jul', projected: 7.8, actual: 6.4 },
+  { name: 'Aug', projected: 7.9, actual: 6.6 },
+  { name: 'Sep', projected: 8.0, actual: 6.8 },
+  { name: 'Oct', projected: 8.1, actual: 7.0 },
+  { name: 'Nov', projected: 8.2, actual: 7.2 },
+  { name: 'Dec', projected: 8.3, actual: 7.3 },
 ];
 
-const schedulingImpactData = [
-  { name: 'East Tower', original: 18, current: 22, variance: 4 },
-  { name: 'Westside Park', original: 12, current: 15, variance: 3 },
-  { name: 'North Bridge', original: 8, current: 14, variance: 6 },
+// Data for property value chart
+const propertyValueData = [
+  { name: 'Q1 2022', value: 12.5 },
+  { name: 'Q2 2022', value: 13.2 },
+  { name: 'Q3 2022', value: 14.1 },
+  { name: 'Q4 2022', value: 14.5 },
+  { name: 'Q1 2023', value: 15.3 },
+  { name: 'Q2 2023', value: 16.0 },
+  { name: 'Q3 2023', value: 16.8 },
+  { name: 'Q4 2023', value: 17.5 },
 ];
 
-const costOverrunData = [
-  { name: 'Materials', value: 35, color: '#38bdf8' },
-  { name: 'Labor', value: 25, color: '#fb7185' },
-  { name: 'Permits/Fees', value: 15, color: '#a78bfa' },
-  { name: 'Equipment', value: 10, color: '#34d399' },
-  { name: 'Design Changes', value: 15, color: '#fbbf24' },
-];
-
-const valuationImpactData = [
-  { month: 'Jan', value: 100 },
-  { month: 'Feb', value: 102 },
-  { month: 'Mar', value: 105 },
-  { month: 'Apr', value: 99 },
-  { month: 'May', value: 101 },
-  { month: 'Jun', value: 104 },
-  { month: 'Jul', value: 108 },
-  { month: 'Aug', value: 112 },
-  { month: 'Sep', value: 110 },
-];
-
-const impactEvents = [
+// Data for investment metrics
+const investmentMetrics: InvestmentMetric[] = [
   {
-    id: 1,
-    project: 'East Tower Construction',
-    event: 'Foundation delay',
-    financialImpact: '-$120,000',
-    schedulingImpact: '+4 weeks',
-    roiImpact: '-0.8%',
-    date: '2024-03-10',
-    status: 'high'
+    label: 'Total Investment',
+    original: '$36.8M',
+    current: '$38.2M',
+    impact: "positive",
+    variance: '+$1.4M'
   },
   {
-    id: 2,
-    project: 'Westside Park Development',
-    event: 'Material price increase',
-    financialImpact: '-$85,000',
-    schedulingImpact: '+0 weeks',
-    roiImpact: '-0.5%',
-    date: '2024-04-15',
-    status: 'medium'
+    label: 'Yearly ROI',
+    original: '7.2%',
+    current: '6.9%',
+    impact: "negative",
+    variance: '-0.3%'
   },
   {
-    id: 3,
-    project: 'North Bridge Repair',
-    event: 'Equipment failure',
-    financialImpact: '-$45,000',
-    schedulingImpact: '+2 weeks',
-    roiImpact: '-0.3%',
-    date: '2024-05-22',
-    status: 'medium'
+    label: 'Property Value',
+    original: '$52.5M',
+    current: '$57.2M',
+    impact: "positive",
+    variance: '+$4.7M'
   },
   {
-    id: 4,
-    project: 'East Tower Construction',
-    event: 'Design optimization',
-    financialImpact: '+$75,000',
-    schedulingImpact: '-2 weeks',
-    roiImpact: '+0.4%',
-    date: '2024-06-08',
-    status: 'positive'
+    label: 'Occupancy Rate',
+    original: '92%',
+    current: '95%',
+    impact: "positive",
+    variance: '+3%'
   },
   {
-    id: 5,
-    project: 'Westside Park Development',
-    event: 'Permit delay',
-    financialImpact: '-$35,000',
-    schedulingImpact: '+3 weeks',
-    roiImpact: '-0.2%',
-    date: '2024-07-19',
-    status: 'low'
-  }
-];
-
-const investmentMetrics = [
-  {
-    label: 'Internal Rate of Return (IRR)',
-    original: '15.2%',
-    current: '14.1%',
-    impact: 'negative',
-    variance: '-1.1%'
-  },
-  {
-    label: 'Net Present Value (NPV)',
+    label: 'Operating Expenses',
     original: '$4.2M',
-    current: '$3.8M',
-    impact: 'negative',
-    variance: '-$0.4M'
-  },
-  {
-    label: 'Cash on Cash Return',
-    original: '8.5%',
-    current: '7.9%',
-    impact: 'negative',
-    variance: '-0.6%'
-  },
-  {
-    label: 'Payback Period',
-    original: '6.2 years',
-    current: '7.1 years',
-    impact: 'negative',
-    variance: '+0.9 years'
-  },
-  {
-    label: 'Equity Multiple',
-    original: '2.4x',
-    current: '2.2x',
-    impact: 'negative',
-    variance: '-0.2x'
-  },
-  {
-    label: 'Debt Service Coverage Ratio',
-    original: '1.75',
-    current: '1.62',
-    impact: 'negative',
-    variance: '-0.13'
+    current: '$4.5M',
+    impact: "negative",
+    variance: '+$0.3M'
   }
 ];
 
-const mitigationStrategies = [
-  {
-    id: 1,
-    issue: 'Schedule Delays',
-    strategy: 'Implement accelerated work schedule and parallel work streams',
-    potentialSavings: '+3 weeks',
-    costToImplement: '$45,000',
-    netRoiImpact: '+0.3%',
-    status: 'proposed'
-  },
-  {
-    id: 2,
-    issue: 'Material Cost Inflation',
-    strategy: 'Pre-purchase critical materials and establish price lock agreements',
-    potentialSavings: '$120,000',
-    costToImplement: '$15,000',
-    netRoiImpact: '+0.6%',
-    status: 'in-progress'
-  },
-  {
-    id: 3,
-    issue: 'Labor Shortages',
-    strategy: 'Revise subcontractor agreements with performance incentives',
-    potentialSavings: '+2 weeks, $85,000',
-    costToImplement: '$30,000',
-    netRoiImpact: '+0.4%',
-    status: 'in-progress'
-  },
-  {
-    id: 4,
-    issue: 'Design Inefficiencies',
-    strategy: 'Value engineering review of remaining project components',
-    potentialSavings: '$210,000',
-    costToImplement: '$55,000',
-    netRoiImpact: '+0.8%',
-    status: 'proposed'
-  }
+// Data for investment allocation
+const investmentAllocationData = [
+  { name: 'Land Acquisition', value: 35 },
+  { name: 'Construction', value: 40 },
+  { name: 'Design & Engineering', value: 10 },
+  { name: 'Permits & Fees', value: 5 },
+  { name: 'Contingency', value: 7 },
+  { name: 'Other', value: 3 },
 ];
 
 const InvestmentImpact = () => {
-  const { toast } = useToast();
-  const [selectedProject, setSelectedProject] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  const handleStrategyAction = (id: number, action: string) => {
-    toast({
-      title: `Strategy ${action}`,
-      description: `Mitigation strategy #${id} has been ${action.toLowerCase()}`,
-      duration: 3000,
-    });
-  };
-  
-  const handleDownloadReport = () => {
-    toast({
-      title: "Report Downloading",
-      description: "Investment impact analysis report is being generated",
-      duration: 3000,
-    });
-  };
-
-  const handleViewScenario = (scenarioId: string) => {
-    toast({
-      id: crypto.randomUUID(),
-      title: "Scenario Analysis",
-      description: `Viewing detailed analysis for scenario ${scenarioId}`,
-      duration: 3000,
-    });
-  };
-
-  const handleRunSimulation = () => {
-    toast({
-      id: crypto.randomUUID(),
-      title: "Simulation In Progress",
-      description: "Running investment impact simulation with updated parameters",
-      duration: 3000,
-    });
-  };
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="flex h-screen bg-black dark:bg-black">
+    <div className="flex min-h-screen bg-black">
       <SidebarNavigation />
-      
-      <div className="flex-1 flex flex-col overflow-hidden bg-black">
-        <DashboardHeader onSearch={setSearchTerm} />
+      <div className="flex-1 flex flex-col">
+        <DashboardHeader onSearch={(term) => console.log('Search term:', term)} />
         
-        <main className="flex-1 overflow-y-auto p-6 bg-black">
+        <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
-            <CollapsibleAIAssistant 
-              projectName="investment portfolio"
-              insights={[
-                "Schedule delays have reduced projected IRR by 1.1%",
-                "Material cost increases are the primary driver of budget overruns",
-                "Implementing proposed mitigation strategies could recover 0.7% ROI",
-                "Cash flow projections indicate a 3-month delay to break-even point"
-              ]}
-            />
-            
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <div>
-                <h1 className="text-2xl font-bold text-gray-100">Investment Impact Analysis</h1>
-                <p className="text-gray-400">Monitor how construction events affect your investment metrics</p>
+                <h1 className="text-2xl font-bold text-white">Investment Impact</h1>
+                <p className="text-gray-400">Track and analyze the financial performance of your construction projects</p>
               </div>
-              <div className="mt-3 md:mt-0 flex flex-col sm:flex-row gap-3">
-                <Select
-                  value={selectedProject}
-                  onValueChange={setSelectedProject}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select project" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {projectOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Button variant="outline" size="sm" className="gap-1">
-                  <Download className="h-4 w-4" />
-                  <span onClick={handleDownloadReport}>Export Report</span>
+              <div className="mt-4 md:mt-0 flex items-center space-x-2">
+                <Button variant="outline" className="border-gray-700 bg-black hover:bg-gray-900">
+                  <Clock className="h-4 w-4 mr-2" />
+                  Historical Data
+                </Button>
+                <Button className="bg-construction-600 hover:bg-construction-700 text-white">
+                  <DollarSign className="h-4 w-4 mr-2" />
+                  Financial Report
                 </Button>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full md:col-span-1">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingDown className="h-5 w-5 text-red-500" />
-                    ROI Impact Summary
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {investmentMetrics.map((metric, index) => (
-                      <div key={index} className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>{metric.label}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-gray-400 line-through">{metric.original}</span>
-                            <span className={metric.impact === 'negative' ? 'text-red-400' : 'text-green-400'}>
-                              {metric.current}
-                            </span>
-                          </div>
+            <Tabs defaultValue="overview" className="space-y-6" onValueChange={setActiveTab}>
+              <TabsList className="bg-gray-900 border border-gray-800">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="roi">ROI Analysis</TabsTrigger>
+                <TabsTrigger value="allocation">Investment Allocation</TabsTrigger>
+                <TabsTrigger value="properties">Properties</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="overview" className="space-y-6">
+                {/* Key Metrics */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <Card className="bg-black border-gray-800">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                      <CardTitle className="text-md font-medium text-gray-200">Current ROI</CardTitle>
+                      <TrendingUp className="h-4 w-4 text-construction-500" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-white">7.3%</div>
+                      <p className="text-xs text-gray-400 mt-1">Annual return on investment</p>
+                      <div className="flex items-center mt-4">
+                        <div className="text-construction-500 flex items-center text-sm">
+                          <ArrowUpIcon className="h-4 w-4 mr-1" />
+                          0.2%
                         </div>
-                        <div className="flex justify-between text-xs">
-                          <span className="text-gray-500">Variance</span>
-                          <span className={metric.impact === 'negative' ? 'text-red-400' : 'text-green-400'}>
-                            {metric.variance}
-                          </span>
-                        </div>
-                        <div className="h-1 bg-gray-700 rounded-full mt-1">
-                          <div 
-                            className={`h-1 rounded-full ${metric.impact === 'negative' ? 'bg-red-500' : 'bg-green-500'}`}
-                            style={{ width: `${metric.impact === 'negative' ? '75%' : '85%'}` }}
-                          ></div>
-                        </div>
+                        <span className="text-gray-400 text-xs ml-2">from last quarter</span>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full md:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-blue-500" />
-                    Return on Investment Trend
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={roiData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                        <XAxis 
-                          dataKey="name" 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                        />
-                        <YAxis 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          domain={[6, 9]}
-                          tickFormatter={(value) => `${value}%`}
-                        />
-                        <Tooltip 
-                          formatter={(value) => [`${value}%`, '']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff', fontWeight: 'bold' }}
-                        />
-                        <Legend />
-                        <Line 
-                          type="monotone" 
-                          dataKey="projected" 
-                          stroke="#34d399" 
-                          strokeWidth={2} 
-                          activeDot={{ r: 6 }}
-                          name="Projected ROI"
-                        />
-                        <Line 
-                          type="monotone" 
-                          dataKey="actual" 
-                          stroke="#f87171" 
-                          strokeWidth={2} 
-                          activeDot={{ r: 6 }}
-                          name="Actual ROI"
-                          strokeDasharray="5 5"
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-4">Construction Impact Events</h2>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-750">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Project</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Event</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Financial Impact</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Schedule Impact</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ROI Impact</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Severity</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-700">
-                      {impactEvents.map((event) => (
-                        <tr key={event.id} className="hover:bg-gray-750">
-                          <td className="px-4 py-3 text-sm text-gray-300">{event.project}</td>
-                          <td className="px-4 py-3 text-sm text-gray-300">{event.event}</td>
-                          <td className={`px-4 py-3 text-sm ${event.financialImpact.startsWith('-') ? 'text-red-400' : 'text-green-400'}`}>
-                            {event.financialImpact}
-                          </td>
-                          <td className={`px-4 py-3 text-sm ${event.schedulingImpact.startsWith('+') ? 'text-red-400' : 'text-green-400'}`}>
-                            {event.schedulingImpact}
-                          </td>
-                          <td className={`px-4 py-3 text-sm ${event.roiImpact.startsWith('-') ? 'text-red-400' : 'text-green-400'}`}>
-                            {event.roiImpact}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-300">{event.date}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <Badge className={
-                              event.status === 'high' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400' :
-                              event.status === 'medium' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
-                              event.status === 'low' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' :
-                              'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                            }>
-                              {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
-                            </Badge>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-black border-gray-800">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                      <CardTitle className="text-md font-medium text-gray-200">Total Investment</CardTitle>
+                      <DollarSign className="h-4 w-4 text-construction-500" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-white">$38.2M</div>
+                      <p className="text-xs text-gray-400 mt-1">Across all active projects</p>
+                      <div className="flex items-center mt-4">
+                        <div className="text-construction-500 flex items-center text-sm">
+                          <ArrowUpIcon className="h-4 w-4 mr-1" />
+                          $1.4M
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">from initial investment</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-black border-gray-800">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                      <CardTitle className="text-md font-medium text-gray-200">Value Increase</CardTitle>
+                      <Target className="h-4 w-4 text-construction-500" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-white">+9.3%</div>
+                      <p className="text-xs text-gray-400 mt-1">Year-over-year property value growth</p>
+                      <div className="flex items-center mt-4">
+                        <div className="text-construction-500 flex items-center text-sm">
+                          <ArrowUpIcon className="h-4 w-4 mr-1" />
+                          2.1%
+                        </div>
+                        <span className="text-gray-400 text-xs ml-2">above market average</span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-amber-500" />
-                    Schedule Variance Impact
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={schedulingImpactData}
-                        margin={{ top: 10, right: 30, left: 20, bottom: 40 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                        <XAxis 
-                          dataKey="name" 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                        />
-                        <YAxis 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          label={{ 
-                            value: 'Months', 
-                            angle: -90, 
-                            position: 'insideLeft',
-                            style: { fill: '#aaa' }
-                          }}
-                        />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff', fontWeight: 'bold' }}
-                        />
-                        <Legend />
-                        <Bar dataKey="original" name="Original Timeline" fill="#38bdf8" />
-                        <Bar dataKey="current" name="Current Timeline" fill="#fb7185" />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-gray-800 border-gray-700 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <DollarSign className="h-5 w-5 text-green-500" />
-                    Budget Overrun Breakdown
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={costOverrunData}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                        >
-                          {costOverrunData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
+                
+                {/* ROI Trend Chart */}
+                <Card className="bg-black border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white">Return on Investment Trend</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={roiData}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                          <XAxis dataKey="name" stroke="#666" />
+                          <YAxis 
+                            tickFormatter={(value) => `${value}%`} 
+                            domain={[6, 9]} 
+                            stroke="#666"
+                          />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} 
+                            labelStyle={{ color: '#ccc' }}
+                          />
+                          <Legend />
+                          <Line 
+                            type="monotone" 
+                            dataKey="projected" 
+                            stroke="#10B981" 
+                            activeDot={{ r: 8 }} 
+                            strokeWidth={2}
+                            name="Projected ROI"
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="actual" 
+                            stroke="#EF4444" 
+                            activeDot={{ r: 8 }} 
+                            strokeWidth={2}
+                            name="Actual ROI"
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Investment Metrics */}
+                <Card className="bg-black border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white">Investment Metrics Comparison</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-800">
+                            <th className="py-3 text-left text-gray-400">Metric</th>
+                            <th className="py-3 text-left text-gray-400">Initial</th>
+                            <th className="py-3 text-left text-gray-400">Current</th>
+                            <th className="py-3 text-left text-gray-400">Variance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {investmentMetrics.map((metric, index) => (
+                            <tr key={index} className="border-b border-gray-800">
+                              <td className="py-3 font-medium text-white">{metric.label}</td>
+                              <td className="py-3 text-gray-300">{metric.original}</td>
+                              <td className="py-3">
+                                <span className="font-medium text-white">{metric.current}</span>
+                              </td>
+                              <td className="py-3">
+                                <Badge variant="outline" className={
+                                  metric.impact === "positive" 
+                                    ? "bg-green-900/20 text-green-400 border-green-700/30" 
+                                    : "bg-red-900/20 text-red-400 border-red-700/30"
+                                }>
+                                  {metric.variance}
+                                </Badge>
+                              </td>
+                            </tr>
                           ))}
-                        </Pie>
-                        <Tooltip 
-                          formatter={(value) => [`${value}%`, 'Percentage']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff', fontWeight: 'bold' }}
-                        />
-                        <Legend />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Building className="h-5 w-5 text-blue-500" />
-                    Property Valuation Impact
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-72">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
-                        data={valuationImpactData}
-                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                        <XAxis 
-                          dataKey="month" 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                        />
-                        <YAxis 
-                          tick={{ fill: '#aaa', fontSize: 12 }}
-                          axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                          domain={[95, 115]}
-                          tickFormatter={(value) => `${value}%`}
-                        />
-                        <Tooltip 
-                          formatter={(value) => [`${value}%`, 'Relative Value']}
-                          contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff', fontWeight: 'bold' }}
-                        />
-                        <defs>
-                          <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <Area 
-                          type="monotone" 
-                          dataKey="value" 
-                          stroke="#8884d8" 
-                          fill="url(#colorValue)" 
-                          name="Relative Property Value"
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-              </Card>
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
               
-              <Card className="bg-gray-800 border-gray-700 shadow-lg col-span-full lg:col-span-1">
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5 text-amber-500" />
-                    Financial Risk Indicators
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-400">Debt Service Coverage</span>
-                        <span className="text-sm font-medium text-amber-400">1.2x</span>
-                      </div>
-                      <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-amber-500 rounded-full" style={{ width: '60%' }}></div>
-                      </div>
-                      <p className="text-xs text-gray-500">Below safe threshold (1.25x)</p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-400">Cost Variance</span>
-                        <span className="text-sm font-medium text-red-400">+12.5%</span>
-                      </div>
-                      <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-red-500 rounded-full" style={{ width: '80%' }}></div>
-                      </div>
-                      <p className="text-xs text-gray-500">Above contingency budget (10%)</p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-400">Schedule Variance</span>
-                        <span className="text-sm font-medium text-amber-400">+18%</span>
-                      </div>
-                      <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-amber-500 rounded-full" style={{ width: '70%' }}></div>
-                      </div>
-                      <p className="text-xs text-gray-500">Projected completion delay</p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-400">Loan Covenant Status</span>
-                        <span className="text-sm font-medium text-green-400">Compliance</span>
-                      </div>
-                      <div className="h-2 bg-gray-700 rounded-full">
-                        <div className="h-2 bg-green-500 rounded-full" style={{ width: '90%' }}></div>
-                      </div>
-                      <p className="text-xs text-gray-500">Within acceptable parameters</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-4">Impact Mitigation Strategies</h2>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-750">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Issue</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Mitigation Strategy</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Potential Savings</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Implementation Cost</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Net ROI Impact</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-700">
-                      {mitigationStrategies.map((strategy) => (
-                        <tr key={strategy.id} className="hover:bg-gray-750">
-                          <td className="px-4 py-3 text-sm text-gray-300">{strategy.issue}</td>
-                          <td className="px-4 py-3 text-sm text-gray-300">{strategy.strategy}</td>
-                          <td className="px-4 py-3 text-sm text-green-400">{strategy.potentialSavings}</td>
-                          <td className="px-4 py-3 text-sm text-red-400">{strategy.costToImplement}</td>
-                          <td className="px-4 py-3 text-sm text-green-400">{strategy.netRoiImpact}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <Badge className={
-                              strategy.status === 'proposed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400' :
-                              strategy.status === 'in-progress' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400' :
-                              'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                            }>
-                              {strategy.status.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                            </Badge>
-                          </td>
-                          <td className="px-4 py-3 text-sm">
-                            <div className="flex space-x-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="h-7 px-2 text-xs"
-                                onClick={() => handleStrategyAction(strategy.id, 'Approved')}
-                              >
-                                Approve
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-7 px-2 text-xs"
-                                onClick={() => handleStrategyAction(strategy.id, 'Detailed')}
-                              >
-                                Details
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+              <TabsContent value="roi" className="space-y-6">
+                {/* ROI Detail content would go here */}
+                <Card className="bg-black border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white">ROI Analysis</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-gray-400">
+                    <p>Detailed ROI analysis content would go here.</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="allocation" className="space-y-6">
+                {/* Investment Allocation content would go here */}
+                <Card className="bg-black border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white">Investment Allocation</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-gray-400">
+                    <p>Investment allocation breakdown would go here.</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="properties" className="space-y-6">
+                {/* Property detail content would go here */}
+                <Card className="bg-black border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white">Property Values</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-gray-400">
+                    <p>Property value analysis would go here.</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
         </main>
       </div>
