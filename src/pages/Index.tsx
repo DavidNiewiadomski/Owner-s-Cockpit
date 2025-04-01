@@ -59,8 +59,9 @@ const Index = () => {
     `Schedule compliance is currently at ${projectId === '1' ? '95%' : projectId === '2' ? '89%' : projectId === '3' ? '92%' : '94%'} for ${selectedProject?.title || 'this project'}`
   ];
 
+  // Fix the type error by ensuring completionPercentage is always a number
   const completionPercentage = typeof propertyData.completionPercentage === 'string' 
-    ? parseFloat(propertyData.completionPercentage) 
+    ? parseFloat(propertyData.completionPercentage) || 0 // Use 0 as fallback if parsing fails
     : propertyData.completionPercentage || 0;
 
   return (

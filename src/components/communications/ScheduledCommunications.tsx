@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, Video } from 'lucide-react';
+import { Calendar, Clock, Video, Phone } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface ScheduledEvent {

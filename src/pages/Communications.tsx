@@ -20,7 +20,7 @@ import {
   Calendar, 
   Search,
   Plus,
-  BrandSlack
+  Slack
 } from 'lucide-react';
 
 // Sample data
@@ -250,7 +250,7 @@ const Communications = () => {
               <CommunicationOption
                 title="Slack Message"
                 description="Send a message to Slack channels or users"
-                icon={BrandSlack}
+                icon={Slack}
                 iconColor="text-pink-400"
                 onClick={handleSlackClick}
               />
@@ -372,7 +372,7 @@ const Communications = () => {
           {activeDialog === 'slack' && (
             <CommunicationForm
               title="Slack Message"
-              icon={<BrandSlack className="h-5 w-5 text-pink-400" />}
+              icon={<Slack className="h-5 w-5 text-pink-400" />}
               recipientLabel="Channel or User"
               showSubject={false}
               showMessage={true}
