@@ -8,9 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface BIMViewerProps {
   projectName?: string;
@@ -21,6 +23,7 @@ interface BIMViewerProps {
 export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const { toast } = useToast();
 
   React.useEffect(() => {
     // Simulate loading of the BIM model
@@ -35,8 +38,23 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
     setIsFullscreen(!isFullscreen);
   };
 
+  const handleCloseViewer = () => {
+    onClose();
+    toast({
+      title: "BIM Viewer Closed",
+      description: "You have exited the BIM viewer",
+    });
+  };
+
+  const handleDownload = () => {
+    toast({
+      title: "Download Started",
+      description: "BIM model is being prepared for download",
+    });
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleCloseViewer()}>
       <DialogContent className={cn(
         "max-w-6xl border-gray-800 bg-black p-0",
         isFullscreen ? "fixed inset-0 w-screen h-screen max-h-screen rounded-none" : "w-full max-h-[80vh]"
@@ -62,12 +80,16 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
               variant="ghost" 
               size="icon" 
               className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-800"
-              onClick={onClose}
+              onClick={handleCloseViewer}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </DialogHeader>
+        
+        <DialogDescription className="sr-only">
+          Interactive 3D Building Information Model viewer
+        </DialogDescription>
         
         <div className={cn(
           "relative bg-black",
@@ -133,8 +155,21 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
             <span className="text-xs">Updated 3 days ago</span>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="h-8 text-xs border-blue-700 bg-blue-900/50 hover:bg-blue-800 text-white">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-8 text-xs border-blue-700 bg-blue-900/50 hover:bg-blue-800 text-white"
+              onClick={handleDownload}
+            >
               Download BIM
+            </Button>
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              className="h-8 text-xs"
+              onClick={handleCloseViewer}
+            >
+              Close Viewer
             </Button>
           </div>
         </DialogFooter>
