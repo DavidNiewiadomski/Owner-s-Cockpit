@@ -14,7 +14,7 @@ export function IntegrationSecurityCard({
   inactiveCount 
 }: IntegrationSecurityCardProps) {
   return (
-    <Card className="bg-black border-gray-800 mb-8 overflow-hidden">
+    <Card className="bg-black border-cyan-800/40 mb-8 overflow-hidden shadow-[0_0_20px_rgba(8,145,178,0.3)]">
       <CardContent className="flex flex-col md:flex-row items-start md:items-center justify-between p-6">
         <div className="flex items-center mb-4 md:mb-0">
           <div className="flex-shrink-0 p-2 rounded-lg bg-cyan-900/30 mr-4">
@@ -37,7 +37,7 @@ export function IntegrationSecurityCard({
               <span className="text-sm font-medium text-gray-200">{inactiveCount} Inactive</span>
             </div>
           </div>
-          <Button variant="outline" className="text-xs h-9 border-gray-700 bg-black hover:bg-gray-900 text-gray-200">
+          <Button variant="outline" className="text-xs h-9 border-cyan-800/30 bg-black hover:bg-gray-900 text-gray-200 hover:shadow-[0_0_10px_rgba(8,145,178,0.3)]">
             View Audit Log
           </Button>
         </div>

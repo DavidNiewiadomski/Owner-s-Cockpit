@@ -295,3 +295,51 @@ button {
   font-weight: 500 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
 }
+
+/* Global card glow effect - apply to all card/box components */
+.card,
+.Card,
+[class*="card-"],
+[class*="Card"],
+[class*="card_"],
+[class*="Card_"],
+[role="tabpanel"] > div,
+.recharts-wrapper,
+.AspectRatio {
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.2) !important;
+  border: 1px solid rgba(34, 211, 238, 0.15) !important;
+  border-radius: 8px !important;
+  transition: box-shadow 0.3s ease, transform 0.2s ease !important;
+}
+
+/* Hover effect for glowing cards */
+.card:hover,
+.Card:hover,
+[class*="card-"]:hover,
+[class*="Card"]:hover,
+[class*="card_"]:hover,
+[class*="Card_"]:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+/* Special glow for important cards */
+.important-card,
+.financial-card,
+.budget-card,
+.stats-card,
+.analytics-card,
+.dashboard-card {
+  box-shadow: 0 0 25px rgba(34, 211, 238, 0.3) !important;
+  border: 1px solid rgba(34, 211, 238, 0.25) !important;
+}
+
+/* Make sure visualization cards have proper glow */
+.visualization-card,
+[class*="-visualization"],
+.chart-container {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25) !important;
+  border: 1px solid rgba(34, 211, 238, 0.2) !important;
+  background-color: #000000 !important;
+  overflow: hidden;
+}

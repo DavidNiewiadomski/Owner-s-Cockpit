@@ -13,7 +13,7 @@ interface VisualizationCardProps {
 
 export function VisualizationCard({ title, imageSrc, onFullScreen, className }: VisualizationCardProps) {
   return (
-    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 shadow-[0_0_20px_rgba(56,189,248,0.2)] ${className || ''}`}>
+    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 shadow-[0_0_25px_rgba(34,211,238,0.3)] visualization-card ${className || ''}`}>
       <div className="flex flex-col h-80">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
@@ -23,7 +23,7 @@ export function VisualizationCard({ title, imageSrc, onFullScreen, className }: 
           <Button 
             variant="outline" 
             size="sm"
-            className="h-8 border-cyan-700 bg-cyan-900/30 hover:bg-cyan-800/50 text-white font-medium"
+            className="h-8 border-cyan-700 bg-cyan-900/30 hover:bg-cyan-800/50 text-white font-medium shadow-[0_0_10px_rgba(34,211,238,0.2)] hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
             onClick={onFullScreen}
           >
             <Maximize2 className="h-4 w-4 mr-1 text-cyan-300" />

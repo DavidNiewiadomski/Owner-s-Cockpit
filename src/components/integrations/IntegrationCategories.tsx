@@ -27,10 +27,10 @@ export function IntegrationCategories({
           <Button
             key={category.id}
             variant={selectedCategory === category.id ? "default" : "outline"}
-            className={`flex items-center justify-center px-4 py-2 h-10 ${
+            className={`flex items-center justify-center px-4 py-2 h-10 transition-all ${
               selectedCategory === category.id 
-                ? "bg-cyan-700 text-white border-cyan-600 shadow-[0_0_10px_rgba(8,145,178,0.5)]" 
-                : "bg-black text-gray-300 hover:bg-gray-900 border-gray-700"
+                ? "bg-cyan-700 text-white border-cyan-600 shadow-[0_0_15px_rgba(8,145,178,0.6)]" 
+                : "bg-black text-gray-300 hover:bg-gray-900 border-gray-700 hover:shadow-[0_0_10px_rgba(8,145,178,0.3)]"
             }`}
             onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
           >
