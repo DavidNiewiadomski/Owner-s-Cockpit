@@ -50,15 +50,15 @@ const App = () => {
               <Routes>
                 <Route element={<PageLayout />}>
                   <Route path="/" element={<Index />} />
-                  <Route path="/documents" element={<Documents />} />
+                  <Route path="/action-items" element={<ActionItems />} />
+                  <Route path="/projects" element={<Projects />} />
                   <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/investment-impact" element={<InvestmentImpact />} />
+                  <Route path="/timeline" element={<Timeline />} />
+                  <Route path="/documents" element={<Documents />} />
+                  <Route path="/messages" element={<Messages />} />
                   <Route path="/integrations" element={<Integrations />} />
                   <Route path="/settings" element={<Settings />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/timeline" element={<Timeline />} />
-                  <Route path="/projects" element={<Projects />} />
-                  <Route path="/investment-impact" element={<InvestmentImpact />} />
-                  <Route path="/action-items" element={<ActionItems />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Route>

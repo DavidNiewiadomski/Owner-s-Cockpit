@@ -85,6 +85,20 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           </Button>
           
           <Button 
+            variant={isActive("/action-items") ? "secondary" : "ghost"} 
+            className={cn(
+              "justify-start gap-3 h-10",
+              collapsed && "w-10 justify-center pl-0"
+            )}
+            asChild
+          >
+            <Link to="/action-items">
+              <ListChecks className="h-4 w-4" />
+              {!collapsed && <span>Action Items</span>}
+            </Link>
+          </Button>
+          
+          <Button 
             variant={isActive("/projects") ? "secondary" : "ghost"} 
             className={cn(
               "justify-start gap-3 h-10",
@@ -95,6 +109,34 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             <Link to="/projects">
               <Building className="h-4 w-4" />
               {!collapsed && <span>Projects</span>}
+            </Link>
+          </Button>
+          
+          <Button 
+            variant={isActive("/analytics") ? "secondary" : "ghost"} 
+            className={cn(
+              "justify-start gap-3 h-10",
+              collapsed && "w-10 justify-center pl-0"
+            )}
+            asChild
+          >
+            <Link to="/analytics">
+              <BarChart className="h-4 w-4" />
+              {!collapsed && <span>Analytics</span>}
+            </Link>
+          </Button>
+          
+          <Button 
+            variant={isActive("/investment-impact") ? "secondary" : "ghost"} 
+            className={cn(
+              "justify-start gap-3 h-10",
+              collapsed && "w-10 justify-center pl-0"
+            )}
+            asChild
+          >
+            <Link to="/investment-impact">
+              <DollarSign className="h-4 w-4" />
+              {!collapsed && <span>Investment Impact</span>}
             </Link>
           </Button>
           
@@ -112,34 +154,6 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             </Link>
           </Button>
           
-          <Button 
-            variant={isActive("/action-items") ? "secondary" : "ghost"} 
-            className={cn(
-              "justify-start gap-3 h-10",
-              collapsed && "w-10 justify-center pl-0"
-            )}
-            asChild
-          >
-            <Link to="/action-items">
-              <ListChecks className="h-4 w-4" />
-              {!collapsed && <span>Action Items</span>}
-            </Link>
-          </Button>
-          
-          <Button 
-            variant={isActive("/investment-impact") ? "secondary" : "ghost"} 
-            className={cn(
-              "justify-start gap-3 h-10",
-              collapsed && "w-10 justify-center pl-0"
-            )}
-            asChild
-          >
-            <Link to="/investment-impact">
-              <DollarSign className="h-4 w-4" />
-              {!collapsed && <span>Investment Impact</span>}
-            </Link>
-          </Button>
-
           <Button 
             variant={isActive("/documents") ? "secondary" : "ghost"} 
             className={cn(
@@ -165,20 +179,6 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             <Link to="/messages">
               <MessageSquare className="h-4 w-4" />
               {!collapsed && <span>Messages</span>}
-            </Link>
-          </Button>
-          
-          <Button 
-            variant={isActive("/analytics") ? "secondary" : "ghost"} 
-            className={cn(
-              "justify-start gap-3 h-10",
-              collapsed && "w-10 justify-center pl-0"
-            )}
-            asChild
-          >
-            <Link to="/analytics">
-              <BarChart className="h-4 w-4" />
-              {!collapsed && <span>Analytics</span>}
             </Link>
           </Button>
           
