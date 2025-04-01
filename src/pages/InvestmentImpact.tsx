@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
-import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock, MessageSquare, LightbulbIcon } from 'lucide-react';
+import { ArrowDownIcon, ArrowUpIcon, TrendingUp, DollarSign, Target, Layers, Building, Clock, MessageSquare, LightbulbIcon, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { AIAssistant } from '@/components/ai/AIAssistant';
+import { RiskManagementContent } from '@/components/investment/RiskManagementContent';
 
 interface InvestmentMetric {
   label: string;
@@ -123,6 +123,78 @@ interface Insight {
   type: InsightType;
 }
 
+const riskData = [
+  {
+    id: 'R001',
+    name: 'Material Cost Escalation',
+    severity: 'High',
+    likelihood: 'Medium',
+    impact: 'Budget overrun of 5-8%',
+    status: 'Active',
+    category: 'Financial',
+    mitigation: 'Pre-purchase of critical materials and implementation of fixed-price contracts with key suppliers.',
+    owner: 'Procurement Manager',
+    lastUpdated: '2023-04-12'
+  },
+  {
+    id: 'R002',
+    name: 'Permit Delays',
+    severity: 'Medium',
+    likelihood: 'High',
+    impact: 'Schedule delay of 1-3 months',
+    status: 'Mitigated',
+    category: 'Regulatory',
+    mitigation: 'Early engagement with regulatory bodies and retention of permit expediter.',
+    owner: 'Project Manager',
+    lastUpdated: '2023-04-05'
+  },
+  {
+    id: 'R003',
+    name: 'Labor Shortage',
+    severity: 'High',
+    likelihood: 'Medium',
+    impact: 'Schedule delay and increased labor costs',
+    status: 'Active',
+    category: 'Resource',
+    mitigation: 'Multiple subcontractor agreements and flexible scheduling arrangements.',
+    owner: 'Construction Manager',
+    lastUpdated: '2023-04-10'
+  },
+  {
+    id: 'R004',
+    name: 'Design Changes',
+    severity: 'Medium',
+    likelihood: 'Medium',
+    impact: 'Budget and schedule impact',
+    status: 'Monitoring',
+    category: 'Design',
+    mitigation: 'Detailed design review process and change management protocol implementation.',
+    owner: 'Design Manager',
+    lastUpdated: '2023-03-28'
+  },
+  {
+    id: 'R005',
+    name: 'Weather Delays',
+    severity: 'Medium',
+    likelihood: 'Low',
+    impact: 'Schedule delay of 2-4 weeks',
+    status: 'Monitoring',
+    category: 'Environmental',
+    mitigation: 'Contingency in schedule and weather protection measures for critical activities.',
+    owner: 'Site Superintendent',
+    lastUpdated: '2023-04-01'
+  }
+];
+
+const riskByCategory = [
+  { name: 'Financial', value: 4 },
+  { name: 'Regulatory', value: 2 },
+  { name: 'Resource', value: 3 },
+  { name: 'Design', value: 2 },
+  { name: 'Environmental', value: 2 },
+  { name: 'Technical', value: 1 },
+];
+
 const InvestmentImpact = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -202,6 +274,10 @@ const InvestmentImpact = () => {
                 <TabsTrigger value="roi">ROI Analysis</TabsTrigger>
                 <TabsTrigger value="allocation">Investment Allocation</TabsTrigger>
                 <TabsTrigger value="properties">Properties</TabsTrigger>
+                <TabsTrigger value="risks">
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Risk Management
+                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
@@ -375,6 +451,10 @@ const InvestmentImpact = () => {
                     <p>Property value analysis would go here.</p>
                   </CardContent>
                 </Card>
+              </TabsContent>
+              
+              <TabsContent value="risks" className="space-y-6">
+                <RiskManagementContent riskData={riskData} riskByCategory={riskByCategory} />
               </TabsContent>
             </Tabs>
 
