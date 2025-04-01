@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { projects as initialProjects } from '@/data/dashboardData';
+import { projects } from '@/data/dashboardData';
 
 // Define the project type
 export interface Project {
@@ -11,10 +11,6 @@ export interface Project {
   status: 'on-track' | 'at-risk' | 'delayed';
   dueDate: string;
   teamMembers: Array<{ name: string }>;
-  team?: Array<any>;
-  daysRemaining?: number;
-  budgetUtilization?: number;
-  completion?: string | number;
 }
 
 // Extended type for the "All Projects" option
@@ -28,8 +24,6 @@ interface ProjectContextType {
   selectedProject: ProjectOrAll | null;
   setSelectedProject: (project: ProjectOrAll) => void;
   allProjects: Project[];
-  currentProject: ProjectOrAll | null;
-  projects: Project[];
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -37,7 +31,7 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 export function ProjectProvider({ children }: { children: ReactNode }) {
   // Get from localStorage or default to the first project
   const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
-  const [allProjects, setAllProjects] = useState<Project[]>(initialProjects);
+  const [allProjects, setAllProjects] = useState<Project[]>(projects);
   
   // On first load, try to get from localStorage
   useEffect(() => {
@@ -46,17 +40,17 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       if (savedProjectId === 'all') {
         setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
       } else {
-        const project = initialProjects.find(p => p.id === savedProjectId) || null;
+        const project = projects.find(p => p.id === savedProjectId) || null;
         if (project) {
           setSelectedProject(project);
         } else {
           // If saved project not found, default to first project
-          setSelectedProject(initialProjects[0] || null);
+          setSelectedProject(projects[0] || null);
         }
       }
     } else {
       // If no saved project, default to first project
-      setSelectedProject(initialProjects[0] || null);
+      setSelectedProject(projects[0] || null);
     }
   }, []);
   
@@ -70,10 +64,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   const value = {
     selectedProject,
     setSelectedProject,
-    allProjects,
-    // For backward compatibility with existing code
-    currentProject: selectedProject,
-    projects: initialProjects
+    allProjects
   };
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;

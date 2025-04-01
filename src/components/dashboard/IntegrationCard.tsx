@@ -11,7 +11,6 @@ interface IntegrationCardProps {
   description: string;
   connected: boolean;
   category: string;
-  features?: string[];
   onToggle: () => void;
   className?: string;
 }
@@ -22,15 +21,14 @@ export function IntegrationCard({
   description,
   connected,
   category,
-  features,
   onToggle,
   className,
 }: IntegrationCardProps) {
   return (
-    <Card className={cn("overflow-hidden border-gray-700/50 bg-black/60 backdrop-blur-sm hover-scale transition-all duration-300", className)}>
+    <Card className={cn("overflow-hidden", className)}>
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded overflow-hidden bg-black border border-gray-700/50 flex items-center justify-center">
+          <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
             <img 
               src={logo} 
               alt={`${name} logo`} 
@@ -42,7 +40,7 @@ export function IntegrationCard({
           </div>
           <div>
             <CardTitle className="text-base font-semibold">{name}</CardTitle>
-            <Badge variant="outline" className="mt-1 text-xs bg-black/40 border-gray-700/50">{category}</Badge>
+            <Badge variant="outline" className="mt-1 text-xs">{category}</Badge>
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -53,28 +51,13 @@ export function IntegrationCard({
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-400">{description}</p>
-        
-        {features && features.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1">
-            {features.map((feature, index) => (
-              <Badge 
-                key={index} 
-                variant="outline" 
-                className="text-xs bg-black/40 border-gray-700/50"
-              >
-                {feature}
-              </Badge>
-            ))}
-          </div>
-        )}
-        
+        <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
         <div className="mt-4">
           <span className={cn(
             "text-xs font-medium rounded-full px-2.5 py-0.5",
             connected 
-              ? "bg-green-900/20 text-green-400 border border-green-700/30" 
-              : "bg-gray-800 text-gray-400 border border-gray-700/30"
+              ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400" 
+              : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400"
           )}>
             {connected ? "Connected" : "Disconnected"}
           </span>

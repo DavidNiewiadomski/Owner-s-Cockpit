@@ -1,61 +1,39 @@
 
 import React from 'react';
-import { Calendar, DollarSign, TrendingUp, Users } from 'lucide-react';
+import { Building, DollarSign, Landmark, AlertTriangle } from 'lucide-react';
 import { StatCard } from '@/components/dashboard/StatCard';
 
-interface DashboardStatsProps {
-  completionPercentage: number;
-  daysRemaining: number;
-  budgetUtilization: number;
-  teamSize: number;
-}
-
-export function DashboardStats({
-  completionPercentage,
-  daysRemaining,
-  budgetUtilization,
-  teamSize
-}: DashboardStatsProps) {
+export function DashboardStats() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6 animate-fade-in">
-      <StatCard
-        title="Completion"
-        value={completionPercentage}
-        format="percent"
-        icon={TrendingUp}
-        description="Overall project completion"
-        trend="up"
-        trendValue="from last month"
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <StatCard 
+        title="Active Properties" 
+        value="8" 
+        icon={Building} 
+        trend="up" 
+        trendValue="2 new acquisitions" 
       />
-      
-      <StatCard
-        title="Timeline"
-        value={daysRemaining}
-        format="days"
-        icon={Calendar}
-        description="Days remaining"
-        trend="down"
-        trendValue="fewer than expected"
-      />
-      
-      <StatCard
-        title="Budget"
-        value={budgetUtilization}
-        format="percent"
+      <StatCard 
+        title="Construction Value" 
+        value="$86.4M" 
+        description="total investment" 
         icon={DollarSign}
-        description="Budget utilization"
-        trend="down"
-        trendValue="under budget"
+        trend="up" 
+        trendValue="12% YOY increase" 
       />
-      
-      <StatCard
-        title="Team"
-        value={teamSize}
-        format="number"
-        icon={Users}
-        description="Team members"
-        trend="up"
-        trendValue="new this month"
+      <StatCard 
+        title="Total Square Footage" 
+        value="1.2M" 
+        icon={Landmark}
+        trend="up" 
+        trendValue="215,000 sq ft in development" 
+      />
+      <StatCard 
+        title="Critical Issues" 
+        value="3" 
+        icon={AlertTriangle}
+        trend="down" 
+        trendValue="5 resolved this month" 
       />
     </div>
   );

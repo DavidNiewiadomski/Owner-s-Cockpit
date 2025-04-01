@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { CirclePlus, Database, Link2, Box, Cloud, Zap, Workflow, Code2, Shield, Camera, Map, Scan, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const integrations = [
   {
@@ -170,40 +169,36 @@ const Integrations = () => {
                 <p className="text-gray-400">Connect your project with external tools and services</p>
               </div>
               <div className="mt-3 md:mt-0">
-                <Button className="bg-construction-600 hover:bg-construction-700 text-white hover-scale shadow-glow">
+                <Button className="bg-construction-600 hover:bg-construction-700 text-white">
                   <CirclePlus className="h-4 w-4 mr-2" />
                   Add New Integration
                 </Button>
               </div>
             </div>
 
-            <ScrollArea className="w-full pb-4 mb-8">
-              <div className="flex space-x-2 py-2 px-1">
-                {categories.map((category) => (
-                  <Button
-                    key={category.id}
-                    variant={selectedCategory === category.id ? "default" : "outline"}
-                    className={`flex items-center justify-center p-2 px-4 h-auto whitespace-nowrap ${
-                      selectedCategory === category.id 
-                        ? "bg-construction-600 text-white border-construction-700 shadow-glow" 
-                        : "bg-black/60 text-gray-300 hover:bg-gray-900 backdrop-blur-sm border-gray-700/50"
-                    } hover-scale transition-all duration-200`}
-                    onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
-                  >
-                    <category.icon className="h-4 w-4 mr-2" />
-                    <span>{category.name}</span>
-                  </Button>
-                ))}
-              </div>
-            </ScrollArea>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 mb-8">
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  className={`flex items-center justify-center p-2 h-auto ${
+                    selectedCategory === category.id 
+                      ? "bg-construction-600 text-white border-construction-700" 
+                      : "bg-black text-gray-300 hover:bg-gray-900"
+                  }`}
+                  onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
+                >
+                  <category.icon className="h-4 w-4 mr-2" />
+                  <span className="text-xs">{category.name}</span>
+                </Button>
+              ))}
+            </div>
             
-            <Card className="glass-card mb-8 animate-fade-in">
-              <CardContent className="p-4">
+            <Card className="bg-black border-gray-700 p-4 mb-8">
+              <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-black/80 border border-construction-600/30 shadow-glow mr-4">
-                      <Shield className="h-5 w-5 text-construction-400" />
-                    </div>
+                    <Shield className="h-12 w-12 text-construction-500 mr-4" />
                     <div>
                       <h3 className="text-lg font-semibold text-white">Integration Security</h3>
                       <p className="text-sm text-gray-400">All connections are secured with OAuth 2.0 and data encryption</p>
@@ -218,7 +213,7 @@ const Integrations = () => {
                       <div className="w-3 h-3 rounded-full bg-gray-500"></div>
                       <span className="text-sm text-gray-300">{integrations.filter(i => !i.connected).length} Inactive</span>
                     </div>
-                    <Button variant="outline" className="ml-4 text-xs h-8 border-gray-700 bg-black/60 hover:bg-gray-900 backdrop-blur-sm">
+                    <Button variant="outline" className="ml-4 text-xs h-8 border-gray-700 bg-black hover:bg-gray-900">
                       View Audit Log
                     </Button>
                   </div>
@@ -227,7 +222,7 @@ const Integrations = () => {
             </Card>
             
             {featured.length > 0 && (
-              <div className="mb-8 animate-fade-in">
+              <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-4 text-white flex items-center">
                   <Scan className="h-5 w-5 mr-2 text-construction-400" />
                   Featured Integrations
@@ -238,31 +233,30 @@ const Integrations = () => {
                       key={integration.id} 
                       {...integration} 
                       onToggle={() => handleIntegrationToggle(integration.name)} 
-                      className="glass-card shadow-glow"
+                      className="bg-gradient-to-br from-black to-black border-construction-700/30 shadow-lg"
                     />
                   ))}
                 </div>
               </div>
             )}
             
-            <h2 className="text-xl font-semibold mb-4 text-white animate-fade-in">All Integrations</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+            <h2 className="text-xl font-semibold mb-4 text-white">All Integrations</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regular.map((integration) => (
                 <IntegrationCard 
                   key={integration.id} 
                   {...integration} 
                   onToggle={() => handleIntegrationToggle(integration.name)} 
-                  className="glass-card hover-scale transition-all duration-300"
                 />
               ))}
             </div>
             
             {filteredIntegrations.length === 0 && (
-              <div className="text-center py-12 animate-fade-in">
+              <div className="text-center py-12">
                 <p className="text-gray-400 mb-4">No integrations found matching your criteria</p>
                 <Button 
                   variant="outline" 
-                  className="text-construction-400 border-construction-600 hover-scale"
+                  className="text-construction-400 border-construction-600"
                   onClick={() => {
                     setSearchTerm('');
                     setSelectedCategory(null);

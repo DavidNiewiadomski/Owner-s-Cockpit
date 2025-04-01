@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -146,24 +147,6 @@
 .hover-glow:hover {
   @apply shadow-lg;
   box-shadow: 0 0 15px rgba(5, 150, 105, 0.3);
-}
-
-/* Shadow variations for futuristic UI */
-.shadow-glow {
-  box-shadow: 0 0 10px rgba(5, 150, 105, 0.2);
-}
-
-.shadow-glow-blue {
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-}
-
-.shadow-glow-purple {
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-}
-
-/* Glass card styling for consistent futuristic look */
-.glass-card {
-  @apply backdrop-blur-md bg-black/70 border border-gray-700/50 shadow-xl;
 }
 
 /* Scrollbar styles */
