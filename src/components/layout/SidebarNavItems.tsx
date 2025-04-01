@@ -19,7 +19,7 @@ interface SidebarNavItemsProps {
 
 export function SidebarNavItems({ navItems, utilityItems, isActive, collapsed }: SidebarNavItemsProps) {
   return (
-    <div className={collapsed ? "items-center" : ""}>
+    <div className="flex flex-col w-full gap-1">
       {navItems.map((item) => (
         <SidebarNavItem
           key={item.path}
@@ -31,8 +31,7 @@ export function SidebarNavItems({ navItems, utilityItems, isActive, collapsed }:
         />
       ))}
       
-      {!collapsed && <Separator className="my-2 bg-cyan-900/30" />}
-      {collapsed && <div className="h-4"></div>}
+      <Separator className="my-2 bg-gray-800" />
       
       {utilityItems.map((item) => (
         <SidebarNavItem

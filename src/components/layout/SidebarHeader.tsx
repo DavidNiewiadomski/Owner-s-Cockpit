@@ -11,16 +11,15 @@ interface SidebarHeaderProps {
 
 export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProps) {
   return (
-    <div className="flex h-16 items-center px-4 border-b border-cyan-900/30">
+    <div className="flex h-16 items-center px-4 border-b border-gray-800">
       <Link to="/" className="flex items-center gap-2">
         {!collapsed && (
-          <div className="font-semibold text-xl leading-none">
-            <span className="text-cyan-400">Owners</span>
-            <span className="text-blue-300">Realm</span>
+          <div className="font-semibold text-xl leading-none text-white">
+            OwnersRealm
           </div>
         )}
         {collapsed && (
-          <Building className="h-6 w-6 text-cyan-400" />
+          <Building className="h-6 w-6 text-white" />
         )}
       </Link>
       <div className="ml-auto">
@@ -28,7 +27,7 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
           variant="ghost" 
           size="icon" 
           onClick={onToggleCollapse}
-          className="h-8 w-8 text-cyan-300 hover:text-cyan-200 hover:bg-cyan-950/30"
+          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-800/30"
         >
           {collapsed ? <PanelRight className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
         </Button>

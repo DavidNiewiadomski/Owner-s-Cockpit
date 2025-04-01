@@ -26,7 +26,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
   return (
     <div 
       className={cn(
-        "h-screen sticky top-0 border-r border-cyan-900/30 bg-background/80 backdrop-blur-sm z-30 transition-all duration-300 ease-in-out",
+        "h-screen sticky top-0 border-r border-gray-800 bg-black z-30 transition-all duration-300 ease-in-out",
         collapsed ? "w-16" : "w-64",
         className
       )}
@@ -36,8 +36,8 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
         onToggleCollapse={toggleCollapse} 
       />
       
-      <ScrollArea className="h-[calc(100vh-4rem)] px-3">
-        <div className={cn("flex flex-col gap-1 py-2", collapsed && "items-center")}>
+      <ScrollArea className="h-[calc(100vh-4rem)]">
+        <div className="px-3 py-2">
           <SidebarNavItems 
             navItems={navigationItems}
             utilityItems={utilityItems}

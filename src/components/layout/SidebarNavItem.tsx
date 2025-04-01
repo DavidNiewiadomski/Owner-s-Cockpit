@@ -18,14 +18,15 @@ export function SidebarNavItem({ to, icon: Icon, label, isActive, collapsed }: S
     <Button 
       variant={isActive ? "secondary" : "ghost"} 
       className={cn(
-        "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
-        collapsed && "w-10 justify-center pl-0"
+        "w-full justify-start gap-3 h-10 text-gray-200 hover:text-white hover:bg-gray-800/50",
+        isActive && "bg-gray-800/60 text-white",
+        collapsed ? "justify-center px-0" : "px-3"
       )}
       asChild
     >
-      <Link to={to}>
-        <Icon className="h-4 w-4" />
-        {!collapsed && <span>{label}</span>}
+      <Link to={to} className="flex items-center">
+        <Icon className="h-4 w-4 flex-shrink-0" />
+        {!collapsed && <span className="ml-2">{label}</span>}
       </Link>
     </Button>
   );
