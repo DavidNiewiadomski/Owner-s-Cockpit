@@ -96,10 +96,14 @@ export const chartColors = {
   gridLine: 'rgba(255, 255, 255, 0.1)'
 };
 
-// KPI Data
+// Enhanced KPI Data to include all construction performance metrics
 export const kpiData = [
-  { title: 'Completion Rate', value: '68%', trend: '+5%', color: 'bg-blue-500' },
-  { title: 'Budget Utilization', value: '72%', trend: '-2%', color: 'bg-green-500' },
-  { title: 'Quality Score', value: '88/100', trend: '+3', color: 'bg-purple-500' },
-  { title: 'Safety Rating', value: '95%', trend: '+1%', color: 'bg-orange-500' }
+  { title: 'Schedule Performance (SPI)', value: '1.05', trend: '+0.02', color: 'bg-blue-500', description: 'Planned vs earned value' },
+  { title: 'Cost Performance (CPI)', value: '0.98', trend: '-0.01', color: 'bg-green-500', description: 'Earned value vs actual cost' },
+  { title: 'On-Time Delivery', value: '87%', trend: '+3%', color: 'bg-purple-500', description: 'Milestones completed on time' },
+  { title: 'Budget Variance', value: '-2.4%', trend: '+0.5%', color: 'bg-amber-500', description: 'Planned vs actual costs' },
+  { title: 'Quality Defect Rate', value: '0.8%', trend: '-0.3%', color: 'bg-teal-500', description: 'Defects per unit of work' },
+  { title: 'Safety Incident Rate', value: '0.27', trend: '-0.05', color: 'bg-red-500', description: 'Incidents per 10,000 hours' },
+  { title: 'Customer Satisfaction', value: '4.6/5', trend: '+0.2', color: 'bg-indigo-500', description: 'From client feedback' },
+  { title: 'Resource Utilization', value: '92%', trend: '+4%', color: 'bg-orange-500', description: 'Labor & equipment efficiency' }
 ];

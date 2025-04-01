@@ -23,6 +23,14 @@ const Analytics = () => {
   const [currentPeriod, setCurrentPeriod] = useState('monthly');
   const [activeAnimation, setActiveAnimation] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [visibleKpis, setVisibleKpis] = useState(kpiData.slice(0, 4));
+  const [showAllKpis, setShowAllKpis] = useState(false);
+
+  // Toggle between showing 4 KPIs and all KPIs
+  const toggleKpiView = () => {
+    setShowAllKpis(!showAllKpis);
+    setVisibleKpis(showAllKpis ? kpiData.slice(0, 4) : kpiData);
+  };
 
   // Trigger animation effect when component mounts
   useEffect(() => {
@@ -35,6 +43,12 @@ const Analytics = () => {
       setActiveAnimation(prev => !prev);
     }, 8000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Show all KPIs by default
+  useEffect(() => {
+    setVisibleKpis(kpiData);
+    setShowAllKpis(true);
   }, []);
 
   return (
@@ -58,9 +72,19 @@ const Analytics = () => {
               setCurrentPeriod={setCurrentPeriod} 
             />
 
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-lg font-medium text-white">Key Performance Indicators</h2>
+              <button 
+                onClick={toggleKpiView} 
+                className="text-xs text-construction-300 hover:text-construction-200"
+              >
+                {showAllKpis ? 'Show Fewer' : 'Show All'}
+              </button>
+            </div>
+
             {/* Key Performance Indicators */}
             <KeyPerformanceIndicators 
-              kpiData={kpiData} 
+              kpiData={visibleKpis} 
               activeAnimation={activeAnimation} 
             />
             
