@@ -1,8 +1,21 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { BarChart, LineChart, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Bar, Line, PieChart, Pie } from 'recharts';
-import { Building2, Buildings, CircleDollarSign, CircleEllipsis, Clock, DollarSign, Home, Landmark, TrendingUp } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import {
+  BarChart, LineChart, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Bar, Line, PieChart, Pie
+} from 'recharts';
+import {
+  Building2,
+  Building,
+  CircleDollarSign,
+  CircleEllipsis,
+  Clock,
+  DollarSign,
+  Home,
+  Landmark,
+  TrendingUp
+} from 'lucide-react';
 
 // Sample data for investment allocation
 const allocationData = [
@@ -162,7 +175,7 @@ export function InvestmentAllocationContent() {
                   <td className="py-3 px-4 font-medium">{project.name}</td>
                   <td className="py-3 px-4 text-gray-300">
                     <div className="flex items-center">
-                      {project.type === 'Commercial' && <Buildings className="h-4 w-4 mr-2 text-blue-400" />}
+                      {project.type === 'Commercial' && <Building className="h-4 w-4 mr-2 text-blue-400" />}
                       {project.type === 'Residential' && <Home className="h-4 w-4 mr-2 text-green-400" />}
                       {project.type === 'Infrastructure' && <Landmark className="h-4 w-4 mr-2 text-yellow-400" />}
                       {project.type === 'Mixed-Use' && <CircleEllipsis className="h-4 w-4 mr-2 text-purple-400" />}
