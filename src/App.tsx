@@ -19,6 +19,7 @@ import Projects from "./pages/Projects";
 import InvestmentImpact from "./pages/InvestmentImpact";
 import ActionItems from "./pages/ActionItems";
 import NotFound from "./pages/NotFound";
+import SafetySustainability from "./pages/SafetySustainability";
 
 // Enable dark mode by default
 const enableDarkMode = () => {
@@ -57,6 +58,7 @@ const App = () => {
                   <Route path="/budget-financials" element={<BudgetFinancials />} />
                   <Route path="/investment-impact" element={<InvestmentImpact />} />
                   <Route path="/timeline" element={<Timeline />} />
+                  <Route path="/safety-sustainability" element={<SafetySustainability />} />
                   <Route path="/documents" element={<Documents />} />
                   <Route path="/communications" element={<Communications />} />
                   <Route path="/integrations" element={<Integrations />} />
