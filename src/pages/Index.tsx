@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -62,7 +61,7 @@ const Index = () => {
   // Fix the type error by ensuring completionPercentage is always a number
   const completionPercentage = typeof propertyData.completionPercentage === 'string' 
     ? parseFloat(propertyData.completionPercentage) || 0 // Use 0 as fallback if parsing fails
-    : propertyData.completionPercentage || 0;
+    : (propertyData.completionPercentage as number) || 0;
 
   return (
     <div className="flex h-screen bg-black">

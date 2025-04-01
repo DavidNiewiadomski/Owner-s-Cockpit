@@ -80,15 +80,15 @@ export function CostVarianceChart() {
   };
   
   return (
-    <Card className="h-full glass-card border-cyan-900/30">
-      <CardHeader>
+    <Card className="h-full bg-black border-cyan-900/30">
+      <CardHeader className="bg-black">
         <CardTitle className="text-blue-300">Cost Variances by Category</CardTitle>
         <CardDescription>
           Planned vs actual costs for {projectName}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="h-[300px]">
+      <CardContent className="bg-black">
+        <div className="h-[350px]">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -97,17 +97,18 @@ export function CostVarianceChart() {
                   top: 10,
                   right: 30,
                   left: 20,
-                  bottom: 25,
+                  bottom: 70, // Increased bottom margin to prevent text overlap
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
                 <XAxis 
                   dataKey="name" 
-                  tick={{ fontSize: 12, fill: "#94a3b8" }} 
+                  tick={{ fontSize: 11, fill: "#94a3b8" }} 
                   angle={-45}
                   textAnchor="end"
                   height={60}
                   stroke="#475569"
+                  tickMargin={10} // Added margin between text and axis
                 />
                 <YAxis 
                   tickFormatter={(value) => `$${value / 1000}k`}
@@ -119,7 +120,7 @@ export function CostVarianceChart() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black/90 p-2 shadow-blue-900/20 shadow-lg backdrop-blur-sm">
+                        <div className="rounded-lg border border-cyan-800/50 bg-black p-2 shadow-blue-900/20 shadow-lg backdrop-blur-sm">
                           <div className="font-medium text-blue-300">{payload[0].payload.name}</div>
                           <div className="text-xs text-cyan-200 mt-1">
                             <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
@@ -135,7 +136,7 @@ export function CostVarianceChart() {
                   }}
                 />
                 <Legend 
-                  wrapperStyle={{ paddingTop: "10px" }}
+                  wrapperStyle={{ paddingTop: "20px" }}
                   formatter={(value) => <span className="text-gray-300">{value}</span>}
                 />
                 <Bar 
