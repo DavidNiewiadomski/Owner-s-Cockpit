@@ -11,10 +11,6 @@ export interface Project {
   status: 'on-track' | 'at-risk' | 'delayed';
   dueDate: string;
   teamMembers: Array<{ name: string }>;
-  team?: Array<any>;
-  daysRemaining?: number;
-  budgetUtilization?: number;
-  completion?: string | number;
 }
 
 // Extended type for the "All Projects" option
@@ -28,36 +24,38 @@ interface ProjectContextType {
   selectedProject: ProjectOrAll | null;
   setSelectedProject: (project: ProjectOrAll) => void;
   allProjects: Project[];
-  currentProject: ProjectOrAll | null;
-  projects: Project[];
 }
 
-// Create a default context value to avoid the need for optional chaining
 const defaultContextValue: ProjectContextType = {
   selectedProject: null,
   setSelectedProject: () => {},
-  allProjects: [],
-  currentProject: null,
-  projects: []
+  allProjects: []
 };
 
-const ProjectContext = createContext<ProjectContextType>(defaultContextValue);
+export const ProjectContext = createContext<ProjectContextType>(defaultContextValue);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  // Initialize with safe default values
   const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   
-  // Safely handle initialProjects
   useEffect(() => {
     try {
-      // Ensure initialProjects is an array
       if (Array.isArray(initialProjects)) {
-        setAllProjects(initialProjects);
+        const safeProjects = initialProjects.map(project => ({
+          id: project.id || '',
+          title: project.title || '',
+          description: project.description || '',
+          progress: typeof project.progress === 'number' ? project.progress : 0,
+          status: project.status || 'on-track',
+          dueDate: project.dueDate || '',
+          teamMembers: Array.isArray(project.teamMembers) ? project.teamMembers : []
+        }));
         
-        // Set a default selected project
-        const firstProject = initialProjects.length > 0 ? initialProjects[0] : null;
-        setSelectedProject(firstProject);
+        setAllProjects(safeProjects);
+        
+        if (safeProjects.length > 0) {
+          setSelectedProject(safeProjects[0]);
+        }
       } else {
         console.error("initialProjects is not an array:", initialProjects);
         setAllProjects([]);
@@ -71,10 +69,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   const value = {
     selectedProject,
     setSelectedProject,
-    allProjects,
-    // For backward compatibility with existing code
-    currentProject: selectedProject,
-    projects: Array.isArray(initialProjects) ? initialProjects : []
+    allProjects
   };
 
   return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;
@@ -82,7 +77,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
 
 export function useProject() {
   const context = useContext(ProjectContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useProject must be used within a ProjectProvider');
   }
   return context;
