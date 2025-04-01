@@ -1,22 +1,37 @@
 
 import React from 'react';
-import { Check } from 'lucide-react';
-import { useProject } from '@/contexts/ProjectContext';
+import { Check, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
+import { useProject, ProjectOrAll } from '@/contexts/ProjectContext';
 
 export function ProjectSelector() {
   const { selectedProject, setSelectedProject, allProjects } = useProject();
 
-  const handleSelectProject = (project: typeof allProjects[0] | { id: 'all', title: 'All Projects', status: 'on-track' }) => {
+  // Function to handle project selection
+  const handleProjectSelect = (project: ProjectOrAll) => {
     setSelectedProject(project);
-    // Toast notification removed
+  };
+
+  // Get status color for the status indicator
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'on-track':
+        return 'bg-emerald-500';
+      case 'at-risk':
+        return 'bg-amber-500';
+      case 'delayed':
+        return 'bg-rose-500';
+      case 'completed':
+        return 'bg-blue-500';
+      default:
+        return 'bg-gray-500';
+    }
   };
 
   if (!selectedProject) return null;
@@ -24,31 +39,36 @@ export function ProjectSelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="h-9 w-auto px-3 flex justify-between items-center gap-2">
-          <span className="truncate max-w-[150px]">{selectedProject.title}</span>
-          <span className={`h-2 w-2 rounded-full ${
-            selectedProject.status === 'on-track' ? 'bg-green-500' : 
-            selectedProject.status === 'at-risk' ? 'bg-yellow-500' : 'bg-red-500'
-          }`}></span>
+        <Button 
+          variant="outline" 
+          className="flex items-center justify-between gap-2 w-40 md:w-48 border-gray-700 bg-gray-900/60 text-white hover:bg-gray-800"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <span className={`h-2 w-2 rounded-full ${getStatusColor(selectedProject.status)}`} />
+            <span className="truncate">{selectedProject.title}</span>
+          </div>
+          <ChevronDown className="h-4 w-4 text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px] bg-black border-gray-700">
-        <DropdownMenuItem
-          onClick={() => handleSelectProject({ id: 'all', title: 'All Projects', status: 'on-track' })}
-          className="flex justify-between items-center cursor-pointer hover:bg-gray-800"
+      <DropdownMenuContent className="w-48 bg-gray-900 border-gray-700 text-white">
+        <DropdownMenuItem 
+          onClick={() => handleProjectSelect({ id: 'all', title: 'All Projects', status: 'on-track' })}
+          className="flex items-center gap-2 hover:bg-gray-800 cursor-pointer"
         >
-          <span className="truncate">All Projects</span>
-          {selectedProject.id === 'all' && <Check className="h-4 w-4 ml-2" />}
+          <span className="h-2 w-2 rounded-full bg-gray-500" />
+          <span>All Projects</span>
+          {selectedProject.id === 'all' && <Check className="h-4 w-4 ml-auto" />}
         </DropdownMenuItem>
-        <DropdownMenuSeparator className="bg-gray-700" />
+        
         {allProjects.map((project) => (
           <DropdownMenuItem
             key={project.id}
-            onClick={() => handleSelectProject(project)}
-            className="flex justify-between items-center cursor-pointer hover:bg-gray-800"
+            onClick={() => handleProjectSelect(project)}
+            className="flex items-center gap-2 hover:bg-gray-800 cursor-pointer"
           >
+            <span className={`h-2 w-2 rounded-full ${getStatusColor(project.status)}`} />
             <span className="truncate">{project.title}</span>
-            {selectedProject.id === project.id && <Check className="h-4 w-4 ml-2" />}
+            {selectedProject.id === project.id && <Check className="h-4 w-4 ml-auto" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
