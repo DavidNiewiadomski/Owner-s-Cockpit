@@ -14,7 +14,14 @@ import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
 import { BIMViewer } from '@/components/dashboard/BIMViewer';
 import { RealityCaptureViewer } from '@/components/dashboard/RealityCaptureViewer';
 import { Card } from '@/components/ui/card';
-import { documents, progressChartData, integrationData, financialData, timelineEvents, propertyData } from '@/data/dashboardData';
+import { 
+  documents, 
+  progressChartData, 
+  integrationData, 
+  financialData, 
+  timelineEvents, 
+  propertyData 
+} from '@/data/index';
 
 export function MainDashboard() {
   const { toast } = useToast();
@@ -93,9 +100,7 @@ export function MainDashboard() {
             </Card>
           </div>
           
-          <PropertyDetails 
-            propertyData={propertyData}
-          />
+          <PropertyDetails propertyData={propertyData} />
         </>
       )}
     </div>

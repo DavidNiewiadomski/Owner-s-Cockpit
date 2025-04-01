@@ -1,6 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { projects } from '@/data/dashboardData';
+import { projects } from '@/data/index';
 
 // Define the project type
 export interface Project {
