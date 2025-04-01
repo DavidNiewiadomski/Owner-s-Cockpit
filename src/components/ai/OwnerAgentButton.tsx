@@ -77,21 +77,21 @@ export function OwnerAgentButton() {
         {hasNotification && (
           <Badge 
             variant="outline" 
-            className="bg-black/80 text-xs border-blue-600/30 px-2 py-1 transition-all duration-300 backdrop-blur-sm"
+            className="bg-gray-900 text-white text-sm border-blue-600/30 px-3 py-1.5 transition-all duration-300 backdrop-blur-sm shadow-lg"
           >
-            <Sparkles className="h-3 w-3 mr-1 text-blue-400" />
-            <span>{notificationText}</span>
+            <Sparkles className="h-3.5 w-3.5 mr-1.5 text-blue-400" />
+            <span className="font-medium">{notificationText}</span>
           </Badge>
         )}
         
         <Badge 
           variant="outline" 
           className={cn(
-            "flex gap-1 items-center bg-black/80 text-xs border-blue-600/30 px-2 py-1 transition-all duration-300 backdrop-blur-sm",
+            "flex gap-2 items-center bg-gray-900 text-white text-sm font-medium border-blue-600/30 px-3 py-1.5 transition-all duration-300 backdrop-blur-sm shadow-lg",
             isOpen ? "opacity-0 translate-x-12" : "opacity-100"
           )}
         >
-          <Headphones className="h-3 w-3 text-blue-400" />
+          <Headphones className="h-3.5 w-3.5 text-blue-400" />
           <span>Voice Ready</span>
         </Badge>
       </div>
