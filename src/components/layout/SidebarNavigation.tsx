@@ -10,7 +10,6 @@ import {
   FileText, 
   BarChart, 
   Settings, 
-  MessageSquare, 
   Calendar, 
   Building, 
   Layers, 
@@ -22,7 +21,12 @@ import {
   TrendingUp,
   DollarSign,
   ListChecks,
-  Wallet
+  Wallet,
+  Phone,
+  Mail,
+  Video,
+  Share2,
+  MessageSquare
 } from 'lucide-react';
 
 interface SidebarNavigationProps {
@@ -40,21 +44,21 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
   return (
     <div 
       className={cn(
-        "h-screen sticky top-0 border-r bg-background/80 backdrop-blur-sm z-30 transition-all duration-300 ease-in-out",
+        "h-screen sticky top-0 border-r border-cyan-900/30 bg-background/80 backdrop-blur-sm z-30 transition-all duration-300 ease-in-out",
         collapsed ? "w-16" : "w-64",
         className
       )}
     >
-      <div className="flex h-16 items-center px-4 border-b">
+      <div className="flex h-16 items-center px-4 border-b border-cyan-900/30">
         <Link to="/" className="flex items-center gap-2">
           {!collapsed && (
             <div className="font-semibold text-xl leading-none">
-              <span className="text-construction-600">Build</span>
-              <span>Master</span>
+              <span className="text-cyan-400">Owners</span>
+              <span className="text-blue-300">Realm</span>
             </div>
           )}
           {collapsed && (
-            <Building className="h-6 w-6 text-construction-600" />
+            <Building className="h-6 w-6 text-cyan-400" />
           )}
         </Link>
         <div className="ml-auto">
@@ -62,7 +66,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             variant="ghost" 
             size="icon" 
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8"
+            className="h-8 w-8 text-cyan-300 hover:text-cyan-200 hover:bg-cyan-950/30"
           >
             {collapsed ? <PanelRight className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
           </Button>
@@ -74,7 +78,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -88,7 +92,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/action-items") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -102,7 +106,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/projects") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -116,7 +120,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/analytics") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -130,7 +134,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/budget-financials") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -144,7 +148,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/investment-impact") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -158,7 +162,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/timeline") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -172,7 +176,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/documents") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -184,26 +188,26 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           </Button>
           
           <Button 
-            variant={isActive("/messages") ? "secondary" : "ghost"} 
+            variant={isActive("/communications") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
           >
-            <Link to="/messages">
+            <Link to="/communications">
               <MessageSquare className="h-4 w-4" />
-              {!collapsed && <span>Messages</span>}
+              {!collapsed && <span>Communications</span>}
             </Link>
           </Button>
           
-          {!collapsed && <Separator className="my-2" />}
+          {!collapsed && <Separator className="my-2 bg-cyan-900/30" />}
           {collapsed && <div className="h-4"></div>}
           
           <Button 
             variant={isActive("/integrations") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild
@@ -217,7 +221,7 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
           <Button 
             variant={isActive("/settings") ? "secondary" : "ghost"} 
             className={cn(
-              "justify-start gap-3 h-10",
+              "justify-start gap-3 h-10 text-blue-200 hover:text-blue-100 hover:bg-blue-950/30",
               collapsed && "w-10 justify-center pl-0"
             )}
             asChild

@@ -13,7 +13,7 @@ import Analytics from "./pages/Analytics";
 import BudgetFinancials from "./pages/BudgetFinancials";
 import Integrations from "./pages/Integrations";
 import Settings from "./pages/Settings";
-import Messages from "./pages/Messages";
+import Communications from "./pages/Communications";
 import Timeline from "./pages/Timeline";
 import Projects from "./pages/Projects";
 import InvestmentImpact from "./pages/InvestmentImpact";
@@ -58,7 +58,7 @@ const App = () => {
                   <Route path="/investment-impact" element={<InvestmentImpact />} />
                   <Route path="/timeline" element={<Timeline />} />
                   <Route path="/documents" element={<Documents />} />
-                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/communications" element={<Communications />} />
                   <Route path="/integrations" element={<Integrations />} />
                   <Route path="/settings" element={<Settings />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
