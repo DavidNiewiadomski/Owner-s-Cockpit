@@ -97,36 +97,36 @@ export function CashFlowForecastChart() {
     }).format(value);
   };
   
-  // Updated chart config with futuristic colors
+  // Updated chart config with more vibrant futuristic colors
   const chartConfig = {
     inflow: {
       label: "Cash Inflow",
       theme: {
-        light: "rgba(52, 211, 153, 0.8)", // Teal/Emerald
-        dark: "rgba(52, 211, 153, 0.8)"
+        light: "rgba(56, 189, 248, 0.8)", // Bright cyan
+        dark: "rgba(56, 189, 248, 0.8)"
       }
     },
     outflow: {
       label: "Cash Outflow",
       theme: {
-        light: "rgba(244, 114, 182, 0.8)", // Pink
-        dark: "rgba(244, 114, 182, 0.8)"
+        light: "rgba(217, 70, 239, 0.8)", // Magenta
+        dark: "rgba(217, 70, 239, 0.8)"
       }
     },
     cashBalance: {
       label: "Cash Balance",
       theme: {
-        light: "rgba(126, 34, 206, 0.9)", // Purple
-        dark: "rgba(126, 34, 206, 0.9)"
+        light: "rgba(139, 92, 246, 0.9)", // Vivid purple
+        dark: "rgba(139, 92, 246, 0.9)"
       }
     }
   };
   
   return (
-    <Card className="h-full bg-black border-cyan-900/30">
+    <Card className="h-full bg-black border-cyan-900/30 shadow-[0_4px_20px_rgba(56,189,248,0.15)] animate-fade-in">
       <CardHeader className="bg-black">
-        <CardTitle className="text-blue-300">Cash Flow Forecast</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-cyan-300">Cash Flow Forecast</CardTitle>
+        <CardDescription className="text-gray-400">
           Monthly cash projections for {projectName}
         </CardDescription>
       </CardHeader>
@@ -158,10 +158,10 @@ export function CashFlowForecastChart() {
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black p-2 shadow-blue-900/20 shadow-lg">
-                          <div className="font-medium text-blue-300">{label}</div>
-                          <div className="text-xs text-cyan-200 mt-1">
-                            <div className="text-emerald-400">
+                        <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
+                          <div className="font-medium text-cyan-300 mb-1">{label}</div>
+                          <div className="text-sm space-y-1">
+                            <div className="text-sky-400">
                               Inflow: {formatCurrency(payload[0].payload.inflow)}
                             </div>
                             <div className="text-pink-400">
@@ -183,12 +183,12 @@ export function CashFlowForecastChart() {
                 />
                 <defs>
                   <linearGradient id="inflowGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="rgba(52, 211, 153, 0.8)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="rgba(52, 211, 153, 0.1)" stopOpacity={0.1}/>
+                    <stop offset="5%" stopColor="rgba(56, 189, 248, 0.8)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="rgba(56, 189, 248, 0.1)" stopOpacity={0.1}/>
                   </linearGradient>
                   <linearGradient id="outflowGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="rgba(244, 114, 182, 0.8)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="rgba(244, 114, 182, 0.1)" stopOpacity={0.1}/>
+                    <stop offset="5%" stopColor="rgba(217, 70, 239, 0.8)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="rgba(217, 70, 239, 0.1)" stopOpacity={0.1}/>
                   </linearGradient>
                 </defs>
                 <Area

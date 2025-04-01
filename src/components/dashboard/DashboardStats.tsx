@@ -5,13 +5,14 @@ import { StatCard } from '@/components/dashboard/StatCard';
 
 export function DashboardStats() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 animate-fade-in">
       <StatCard 
         title="Active Properties" 
         value="8" 
         icon={Building} 
         trend="up" 
         trendValue="2 new acquisitions" 
+        className="border-blue-900/20"
       />
       <StatCard 
         title="Construction Value" 
@@ -20,6 +21,7 @@ export function DashboardStats() {
         icon={DollarSign}
         trend="up" 
         trendValue="12% YOY increase" 
+        className="border-green-900/20"
       />
       <StatCard 
         title="Total Square Footage" 
@@ -27,6 +29,7 @@ export function DashboardStats() {
         icon={Landmark}
         trend="up" 
         trendValue="215,000 sq ft in development" 
+        className="border-purple-900/20"
       />
       <StatCard 
         title="Critical Issues" 
@@ -34,6 +37,7 @@ export function DashboardStats() {
         icon={AlertTriangle}
         trend="down" 
         trendValue="5 resolved this month" 
+        className="border-amber-900/20"
       />
     </div>
   );

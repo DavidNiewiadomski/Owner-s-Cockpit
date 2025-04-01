@@ -61,29 +61,29 @@ export function CostVarianceChart() {
     }).format(value);
   };
   
-  // Updated chart config with futuristic colors
+  // Updated chart config with even more vibrant futuristic colors
   const chartConfig = {
     planned: {
       label: "Planned",
       theme: {
-        light: "rgba(56, 189, 248, 0.9)", // Bright cyan
-        dark: "rgba(56, 189, 248, 0.9)"
+        light: "rgba(139, 92, 246, 0.9)", // Vivid purple
+        dark: "rgba(139, 92, 246, 0.9)"
       }
     },
     actual: {
       label: "Actual",
       theme: {
-        light: "rgba(168, 85, 247, 0.9)", // Bright purple
-        dark: "rgba(168, 85, 247, 0.9)"
+        light: "rgba(14, 165, 233, 0.9)", // Ocean blue
+        dark: "rgba(14, 165, 233, 0.9)"
       }
     }
   };
   
   return (
-    <Card className="h-full bg-black border-cyan-900/30">
+    <Card className="h-full bg-black border-cyan-900/30 shadow-[0_4px_20px_rgba(56,189,248,0.15)] animate-fade-in">
       <CardHeader className="bg-black">
-        <CardTitle className="text-blue-300">Cost Variances by Category</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-cyan-300">Cost Variances by Category</CardTitle>
+        <CardDescription className="text-gray-400">
           Planned vs actual costs for {projectName}
         </CardDescription>
       </CardHeader>
@@ -120,9 +120,9 @@ export function CostVarianceChart() {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black p-2 shadow-blue-900/20 shadow-lg backdrop-blur-sm">
-                          <div className="font-medium text-blue-300">{payload[0].payload.name}</div>
-                          <div className="text-xs text-cyan-200 mt-1">
+                        <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
+                          <div className="font-medium text-cyan-300 mb-1">{payload[0].payload.name}</div>
+                          <div className="text-sm text-cyan-200 space-y-1">
                             <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
                             <div>Actual: {formatCurrency(payload[0].payload.actual)}</div>
                             <div className={payload[0].payload.variance >= 0 ? "text-emerald-400" : "text-rose-400"}>

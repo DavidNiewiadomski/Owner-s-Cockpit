@@ -10,7 +10,7 @@ interface ProjectVisualizationsProps {
 export function ProjectVisualizations({ onOpenBIMViewer, onOpenRealityCaptureViewer }: ProjectVisualizationsProps) {
   return (
     <>
-      <h2 className="text-xl font-semibold mt-10 mb-4">Project Visualizations</h2>
+      <h2 className="text-xl font-semibold mt-10 mb-4 text-cyan-300 animate-fade-in">Project Visualizations</h2>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-12">
         <VisualizationCard 
           title="BIM Model"

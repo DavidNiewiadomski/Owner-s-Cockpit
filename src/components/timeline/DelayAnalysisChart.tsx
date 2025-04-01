@@ -17,20 +17,20 @@ interface DelayAnalysisChartProps {
 
 export function DelayAnalysisChart({ data }: DelayAnalysisChartProps) {
   const getVarianceColor = (data: any) => {
-    if (data.variance === null) return '#9CA3AF';
+    if (data.variance === null) return 'rgba(148, 163, 184, 0.8)';
     return data.variance < 0 ? 'rgba(16, 185, 129, 0.8)' : 'rgba(239, 68, 68, 0.8)';
   };
 
   return (
-    <Card>
+    <Card className="shadow-lg border-cyan-900/30 bg-black animate-fade-in">
       <CardHeader className="pb-2">
-        <CardTitle className="flex justify-between items-center">
+        <CardTitle className="flex justify-between items-center text-cyan-300">
           <span>Schedule Variance Analysis</span>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+            <Badge variant="outline" className="bg-green-900/30 text-green-400 border-green-500/50">
               Ahead of Schedule
             </Badge>
-            <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
+            <Badge variant="outline" className="bg-red-900/30 text-red-400 border-red-500/50">
               Behind Schedule
             </Badge>
           </div>
@@ -43,18 +43,26 @@ export function DelayAnalysisChart({ data }: DelayAnalysisChartProps) {
               data={data}
               margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="name" />
-              <YAxis label={{ value: 'Weeks', angle: -90, position: 'insideLeft', offset: 10 }} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
+              <XAxis 
+                dataKey="name" 
+                tick={{ fill: '#94a3b8', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(59, 130, 246, 0.3)' }}
+              />
+              <YAxis 
+                label={{ value: 'Weeks', angle: -90, position: 'insideLeft', offset: 10, fill: '#94a3b8' }} 
+                tick={{ fill: '#94a3b8', fontSize: 12 }}
+                axisLine={{ stroke: 'rgba(59, 130, 246, 0.3)' }}
+              />
               <Tooltip 
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
                     const data = payload[0].payload;
                     return (
-                      <div className="bg-background border p-2 rounded-md shadow-md">
-                        <p className="font-bold">{data.name}</p>
-                        <p>Planned: {data.planned} weeks</p>
-                        <p>Actual: {data.actual !== null ? `${data.actual} weeks` : 'In progress'}</p>
+                      <div className="bg-black border border-cyan-800/50 p-3 rounded-md shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+                        <p className="font-bold text-cyan-300">{data.name}</p>
+                        <p className="text-gray-300">Planned: <span className="text-blue-400">{data.planned} weeks</span></p>
+                        <p className="text-gray-300">Actual: <span className="text-purple-400">{data.actual !== null ? `${data.actual} weeks` : 'In progress'}</span></p>
                         {data.variance !== null && (
                           <p className={data.variance < 0 ? 'text-green-500' : 'text-red-500'}>
                             Variance: {data.variance < 0 ? `${Math.abs(data.variance)} weeks ahead` : `${data.variance} weeks behind`}
@@ -66,16 +74,20 @@ export function DelayAnalysisChart({ data }: DelayAnalysisChartProps) {
                   return null;
                 }}
               />
-              <Legend />
-              <ReferenceLine y={0} stroke="#000" />
+              <Legend 
+                wrapperStyle={{ paddingTop: "10px" }}
+                formatter={(value) => <span className="text-gray-300">{value}</span>}
+              />
+              <ReferenceLine y={0} stroke="rgba(59, 130, 246, 0.5)" />
               <Bar 
                 dataKey="variance"
                 name="Schedule Variance" 
                 fill="rgba(59, 130, 246, 0.5)"
+                animationDuration={1500}
                 shape={(props) => {
                   const { x, y, width, height, payload } = props;
                   const color = getVarianceColor(payload);
-                  return <rect x={x} y={y} width={width} height={height} fill={color} />;
+                  return <rect x={x} y={y} width={width} height={height} fill={color} />
                 }}
               />
             </BarChart>

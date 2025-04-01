@@ -89,7 +89,7 @@ nav,
 .DashboardHeader * {
   background-color: #000000 !important;
   color: white !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
 }
 
 /* Additional dark mode overrides for menu elements */
@@ -159,7 +159,7 @@ nav button,
 }
 
 .h-screen.sticky.top-0.border-r button:hover {
-  background-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(56, 189, 248, 0.1) !important;
 }
 
 /* Ensure the main content area uses the full width */
@@ -175,4 +175,48 @@ body, html {
 
 .flex-1.flex.flex-col.w-full.overflow-hidden {
   overflow-y: hidden !important;
+}
+
+/* Animation utilities */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+  100% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.shadow-glow {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+/* Text gradient for titles */
+.text-gradient {
+  background: linear-gradient(90deg, #38bdf8, #8B5CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effects for important elements */
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
 }

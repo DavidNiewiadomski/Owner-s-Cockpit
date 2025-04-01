@@ -23,14 +23,14 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn("overflow-hidden bg-black border-gray-700", className)}>
+    <Card className={cn("overflow-hidden bg-black border-cyan-900/20 shadow-lg animate-fade-in card-hover", className)}>
       <CardContent className="p-6">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+            <p className="text-sm font-medium text-cyan-300">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
             {description && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{description}</p>
+              <p className="text-sm text-gray-400 mt-1">{description}</p>
             )}
             
             {trend && (
@@ -38,8 +38,8 @@ export function StatCard({
                 <span
                   className={cn(
                     "inline-flex items-center text-xs font-medium",
-                    trend === "up" && "text-green-600 dark:text-green-400",
-                    trend === "down" && "text-red-600 dark:text-red-400",
+                    trend === "up" && "text-green-400",
+                    trend === "down" && "text-red-400",
                     trend === "neutral" && "text-gray-500"
                   )}
                 >
@@ -82,8 +82,8 @@ export function StatCard({
           </div>
           
           {Icon && (
-            <div className="p-3 rounded-full bg-black border border-construction-800/30">
-              <Icon className="w-5 h-5 text-construction-600 dark:text-construction-400" />
+            <div className="p-3 rounded-full bg-black border border-cyan-800/30 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
+              <Icon className="w-5 h-5 text-cyan-500" />
             </div>
           )}
         </div>
