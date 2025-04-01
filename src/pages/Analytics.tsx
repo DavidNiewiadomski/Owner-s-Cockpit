@@ -11,8 +11,8 @@ import {
   resourceData, 
   performanceData, 
   chartColors,
-  analyticsInsights, 
-  kpiData
+  kpiData,
+  analyticsInsights
 } from '@/data/analytics/analyticsData';
 
 // Define periods for the Analytics header

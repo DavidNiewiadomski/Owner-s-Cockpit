@@ -1,12 +1,15 @@
 
 // Analytics data
 
-// Chart colors
+// Chart colors with all required properties
 export const chartColors = {
   primary: "#38bdf8",
   secondary: "#f87171",
-  tertiary: "#4ade80",
-  background: "#262626"
+  accent: "#4ade80",
+  warning: "#fbbf24",
+  info: "#60a5fa",
+  background: "#262626",
+  gridLine: "#1e293b"
 };
 
 // Insights for analytics
@@ -60,48 +63,48 @@ export const kpiData = [
   }
 ];
 
-// Project data for analytics charts
-export const projectData = {
-  completed: 65,
-  inProgress: 23,
-  upcoming: 12,
-  delayed: 8
-};
+// Project data for analytics charts formatted as an array
+export const projectData = [
+  { name: "Project A", complete: 65, budget: 70, issues: 3, efficiency: 88 },
+  { name: "Project B", complete: 48, budget: 52, issues: 5, efficiency: 76 },
+  { name: "Project C", complete: 72, budget: 68, issues: 2, efficiency: 92 },
+  { name: "Project D", complete: 35, budget: 40, issues: 7, efficiency: 65 }
+];
 
-// Timeline data
+// Timeline data with required properties
 export const timelineData = [
-  { name: 'Jan', planned: 10, actual: 8 },
-  { name: 'Feb', planned: 20, actual: 22 },
-  { name: 'Mar', planned: 30, actual: 35 },
-  { name: 'Apr', planned: 45, actual: 48 },
-  { name: 'May', planned: 60, actual: 57 },
-  { name: 'Jun', planned: 75, actual: 78 },
-  { name: 'Jul', planned: 90, actual: 87 }
+  { month: 'Jan', actual: 8, projected: 10, variance: -2 },
+  { month: 'Feb', actual: 22, projected: 20, variance: 2 },
+  { month: 'Mar', actual: 35, projected: 30, variance: 5 },
+  { month: 'Apr', actual: 48, projected: 45, variance: 3 },
+  { month: 'May', actual: 57, projected: 60, variance: -3 },
+  { month: 'Jun', actual: 78, projected: 75, variance: 3 },
+  { month: 'Jul', actual: 87, projected: 90, variance: -3 }
 ];
 
-// Budget data
+// Budget data with value and fill properties
 export const budgetData = [
-  { name: 'Labor', planned: 350000, actual: 340000 },
-  { name: 'Materials', planned: 250000, actual: 280000 },
-  { name: 'Equipment', planned: 150000, actual: 145000 },
-  { name: 'Subcontractors', planned: 200000, actual: 210000 },
-  { name: 'Other', planned: 50000, actual: 47000 }
+  { name: 'Labor', value: 35, fill: '#38bdf8' },
+  { name: 'Materials', value: 25, fill: '#f87171' },
+  { name: 'Equipment', value: 15, fill: '#4ade80' },
+  { name: 'Subcontractors', value: 20, fill: '#a855f7' },
+  { name: 'Other', value: 5, fill: '#fbbf24' }
 ];
 
-// Resource data
+// Resource data with capacity
 export const resourceData = [
-  { name: 'Crew A', allocated: 45, utilized: 42 },
-  { name: 'Crew B', allocated: 35, utilized: 38 },
-  { name: 'Crew C', allocated: 25, utilized: 22 },
-  { name: 'Equipment', allocated: 60, utilized: 55 },
-  { name: 'Materials', allocated: 85, utilized: 82 }
+  { name: 'Crew A', planned: 45, actual: 42, capacity: 50 },
+  { name: 'Crew B', planned: 35, actual: 38, capacity: 40 },
+  { name: 'Crew C', planned: 25, actual: 22, capacity: 30 },
+  { name: 'Equipment', planned: 60, actual: 55, capacity: 65 },
+  { name: 'Materials', planned: 85, actual: 82, capacity: 90 }
 ];
 
-// Performance data
+// Performance data with required properties
 export const performanceData = [
-  { name: 'Quality', score: 92, baseline: 85 },
-  { name: 'Schedule', score: 88, baseline: 80 },
-  { name: 'Budget', score: 78, baseline: 85 },
-  { name: 'Safety', score: 95, baseline: 90 },
-  { name: 'Client Satisfaction', score: 89, baseline: 85 }
+  { subject: 'Quality', A: 92, B: 85, fullMark: 100 },
+  { subject: 'Schedule', A: 88, B: 80, fullMark: 100 },
+  { subject: 'Budget', A: 78, B: 85, fullMark: 100 },
+  { subject: 'Safety', A: 95, B: 90, fullMark: 100 },
+  { subject: 'Client Satisfaction', A: 89, B: 85, fullMark: 100 }
 ];
