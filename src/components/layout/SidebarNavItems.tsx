@@ -63,13 +63,15 @@ export function SidebarNavItems({
         if (item.path === '/export') {
           return (
             <ExportMenu key={item.path}>
-              <SidebarNavItem
-                to="#"
-                icon={item.icon}
-                label={item.label}
-                isActive={false}
-                collapsed={collapsed}
-              />
+              <div className="w-full">
+                <SidebarNavItem
+                  to="#"
+                  icon={item.icon}
+                  label={item.label}
+                  isActive={false}
+                  collapsed={collapsed}
+                />
+              </div>
             </ExportMenu>
           );
         }

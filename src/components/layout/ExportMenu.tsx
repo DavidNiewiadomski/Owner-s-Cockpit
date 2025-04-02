@@ -46,7 +46,7 @@ export function ExportMenu({ children }: ExportMenuProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger className="w-full focus:outline-none">
         {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent 
