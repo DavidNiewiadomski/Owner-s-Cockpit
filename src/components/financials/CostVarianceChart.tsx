@@ -87,77 +87,75 @@ export function CostVarianceChart() {
           Planned vs actual costs for {projectName}
         </CardDescription>
       </CardHeader>
-      <CardContent className="bg-black">
-        <div className="h-[350px]">
-          <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={data}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 20,
-                  bottom: 70, // Increased bottom margin to prevent text overlap
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
-                <XAxis 
-                  dataKey="name" 
-                  tick={{ fontSize: 11, fill: "#94a3b8" }} 
-                  angle={-45}
-                  textAnchor="end"
-                  height={60}
-                  stroke="#475569"
-                  tickMargin={10} // Added margin between text and axis
-                />
-                <YAxis 
-                  tickFormatter={(value) => `$${value / 1000}k`}
-                  width={60}
-                  tick={{ fill: "#94a3b8" }}
-                  stroke="#475569"
-                />
-                <ChartTooltip 
-                  content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
-                          <div className="font-medium text-cyan-300 mb-1">{payload[0].payload.name}</div>
-                          <div className="text-sm text-cyan-200 space-y-1">
-                            <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
-                            <div>Actual: {formatCurrency(payload[0].payload.actual)}</div>
-                            <div className={payload[0].payload.variance >= 0 ? "text-emerald-400" : "text-rose-400"}>
-                              Variance: {formatCurrency(payload[0].payload.variance)}
-                            </div>
+      <CardContent className="bg-black p-4">
+        <div className="h-[350px] w-full">
+          <ChartContainer config={chartConfig} aspectRatio="auto">
+            <BarChart
+              data={data}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 20,
+                bottom: 70, // Increased bottom margin to prevent text overlap
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
+              <XAxis 
+                dataKey="name" 
+                tick={{ fontSize: 11, fill: "#94a3b8" }} 
+                angle={-45}
+                textAnchor="end"
+                height={60}
+                stroke="#475569"
+                tickMargin={10} // Added margin between text and axis
+              />
+              <YAxis 
+                tickFormatter={(value) => `$${value / 1000}k`}
+                width={60}
+                tick={{ fill: "#94a3b8" }}
+                stroke="#475569"
+              />
+              <ChartTooltip 
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
+                        <div className="font-medium text-cyan-300 mb-1">{payload[0].payload.name}</div>
+                        <div className="text-sm text-cyan-200 space-y-1">
+                          <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
+                          <div>Actual: {formatCurrency(payload[0].payload.actual)}</div>
+                          <div className={payload[0].payload.variance >= 0 ? "text-emerald-400" : "text-rose-400"}>
+                            Variance: {formatCurrency(payload[0].payload.variance)}
                           </div>
                         </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <Legend 
-                  wrapperStyle={{ paddingTop: "20px" }}
-                  formatter={(value) => <span className="text-gray-300">{value}</span>}
-                />
-                <Bar 
-                  dataKey="planned" 
-                  fill="var(--color-planned)" 
-                  name="Planned" 
-                  radius={[4, 4, 0, 0]} 
-                  animationDuration={1500}
-                  animationEasing="ease-out"
-                />
-                <Bar 
-                  dataKey="actual" 
-                  fill="var(--color-actual)" 
-                  name="Actual" 
-                  radius={[4, 4, 0, 0]} 
-                  animationDuration={1500}
-                  animationEasing="ease-out"
-                  animationBegin={300}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: "20px" }}
+                formatter={(value) => <span className="text-gray-300">{value}</span>}
+              />
+              <Bar 
+                dataKey="planned" 
+                fill="var(--color-planned)" 
+                name="Planned" 
+                radius={[4, 4, 0, 0]} 
+                animationDuration={1500}
+                animationEasing="ease-out"
+              />
+              <Bar 
+                dataKey="actual" 
+                fill="var(--color-actual)" 
+                name="Actual" 
+                radius={[4, 4, 0, 0]} 
+                animationDuration={1500}
+                animationEasing="ease-out"
+                animationBegin={300}
+              />
+            </BarChart>
           </ChartContainer>
         </div>
       </CardContent>

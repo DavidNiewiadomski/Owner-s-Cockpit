@@ -130,93 +130,91 @@ export function CashFlowForecastChart() {
           Monthly cash projections for {projectName}
         </CardDescription>
       </CardHeader>
-      <CardContent className="bg-black">
-        <div className="h-[300px]">
-          <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={data}
-                margin={{
-                  top: 10,
-                  right: 30,
-                  left: 0,
-                  bottom: 0,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
-                <XAxis 
-                  dataKey="month" 
-                  tick={{ fill: "#94a3b8" }}
-                  stroke="#475569"
-                />
-                <YAxis 
-                  tickFormatter={(value) => `$${value / 1000}k`} 
-                  tick={{ fill: "#94a3b8" }}
-                  stroke="#475569"
-                />
-                <ChartTooltip
-                  content={({ active, payload, label }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
-                          <div className="font-medium text-cyan-300 mb-1">{label}</div>
-                          <div className="text-sm space-y-1">
-                            <div className="text-sky-400">
-                              Inflow: {formatCurrency(payload[0].payload.inflow)}
-                            </div>
-                            <div className="text-pink-400">
-                              Outflow: {formatCurrency(payload[0].payload.outflow)}
-                            </div>
-                            <div className="text-purple-400 font-medium">
-                              Balance: {formatCurrency(payload[0].payload.cashBalance)}
-                            </div>
+      <CardContent className="bg-black p-4">
+        <div className="h-[300px] w-full">
+          <ChartContainer config={chartConfig} aspectRatio="auto">
+            <AreaChart
+              data={data}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
+              <XAxis 
+                dataKey="month" 
+                tick={{ fill: "#94a3b8" }}
+                stroke="#475569"
+              />
+              <YAxis 
+                tickFormatter={(value) => `$${value / 1000}k`} 
+                tick={{ fill: "#94a3b8" }}
+                stroke="#475569"
+              />
+              <ChartTooltip
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
+                        <div className="font-medium text-cyan-300 mb-1">{label}</div>
+                        <div className="text-sm space-y-1">
+                          <div className="text-sky-400">
+                            Inflow: {formatCurrency(payload[0].payload.inflow)}
+                          </div>
+                          <div className="text-pink-400">
+                            Outflow: {formatCurrency(payload[0].payload.outflow)}
+                          </div>
+                          <div className="text-purple-400 font-medium">
+                            Balance: {formatCurrency(payload[0].payload.cashBalance)}
                           </div>
                         </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                <Legend 
-                  wrapperStyle={{ paddingTop: "10px" }}
-                  formatter={(value) => <span className="text-gray-300">{value}</span>}
-                />
-                <defs>
-                  <linearGradient id="inflowGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="rgba(56, 189, 248, 0.8)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="rgba(56, 189, 248, 0.1)" stopOpacity={0.1}/>
-                  </linearGradient>
-                  <linearGradient id="outflowGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="rgba(217, 70, 239, 0.8)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="rgba(217, 70, 239, 0.1)" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <Area
-                  type="monotone"
-                  dataKey="inflow"
-                  fill="url(#inflowGradient)"
-                  stroke="var(--color-inflow)"
-                  fillOpacity={0.6}
-                  strokeWidth={2}
-                  activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
-                  animationDuration={1500}
-                  animationEasing="ease-out"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="outflow"
-                  fill="url(#outflowGradient)"
-                  stroke="var(--color-outflow)" 
-                  fillOpacity={0.6}
-                  strokeWidth={2}
-                  activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
-                  animationDuration={1500}
-                  animationEasing="ease-out"
-                  animationBegin={300}
-                />
-                <ReferenceLine y={0} stroke="#475569" />
-              </AreaChart>
-            </ResponsiveContainer>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: "10px" }}
+                formatter={(value) => <span className="text-gray-300">{value}</span>}
+              />
+              <defs>
+                <linearGradient id="inflowGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(56, 189, 248, 0.8)" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="rgba(56, 189, 248, 0.1)" stopOpacity={0.1}/>
+                </linearGradient>
+                <linearGradient id="outflowGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(217, 70, 239, 0.8)" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="rgba(217, 70, 239, 0.1)" stopOpacity={0.1}/>
+                </linearGradient>
+              </defs>
+              <Area
+                type="monotone"
+                dataKey="inflow"
+                fill="url(#inflowGradient)"
+                stroke="var(--color-inflow)"
+                fillOpacity={0.6}
+                strokeWidth={2}
+                activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
+                animationDuration={1500}
+                animationEasing="ease-out"
+              />
+              <Area
+                type="monotone"
+                dataKey="outflow"
+                fill="url(#outflowGradient)"
+                stroke="var(--color-outflow)" 
+                fillOpacity={0.6}
+                strokeWidth={2}
+                activeDot={{ r: 6, strokeWidth: 1, stroke: "#fff" }}
+                animationDuration={1500}
+                animationEasing="ease-out"
+                animationBegin={300}
+              />
+              <ReferenceLine y={0} stroke="#475569" />
+            </AreaChart>
           </ChartContainer>
         </div>
       </CardContent>
