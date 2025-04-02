@@ -7,9 +7,9 @@ import { ProjectVisualizations } from '@/components/dashboard/visualizations/Pro
 import { OwnerQuickActions } from '@/components/dashboard/actions/OwnerQuickActions';
 import { ViewerModals } from '@/components/dashboard/modals/ViewerModals';
 import { DashboardSections } from '@/components/dashboard/sections/DashboardSections';
-import { recentDocuments } from '@/data/documents/documentData';
-import { projectData } from '@/data/projects/projectData';
-import { notificationItems } from '@/data/notifications/notificationData';
+import { documents as recentDocuments } from '@/data/documents/documentData';
+import { projects } from '@/data/projects/projectData';
+import { notifications } from '@/data/notifications/notificationData';
 
 export function MainDashboard() {
   const { selectedProject } = useProject();
@@ -38,7 +38,7 @@ export function MainDashboard() {
       
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
         <div className="xl:col-span-2">
-          <ProjectsSection projects={projectData.slice(0, 2)} />
+          <ProjectsSection projects={projects.slice(0, 2)} />
         </div>
         <div>
           <OwnerQuickActions />
@@ -47,7 +47,7 @@ export function MainDashboard() {
       
       <DashboardSections 
         recentDocuments={recentDocuments} 
-        notifications={notificationItems} 
+        notifications={notifications} 
       />
       
       <ProjectVisualizations 
@@ -57,7 +57,7 @@ export function MainDashboard() {
       
       <ViewerModals 
         isBIMViewerOpen={isBIMViewerOpen}
-        isRealityCaptureViewerOpen={isRealityCaptureViewerOpen}
+        isRealityCaptureOpen={isRealityCaptureViewerOpen}
         onCloseBIMViewer={handleCloseBIMViewer}
         onCloseRealityCaptureViewer={handleCloseRealityCaptureViewer}
       />
