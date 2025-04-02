@@ -4,6 +4,7 @@ import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { InvestmentHeader } from '@/components/investment/InvestmentHeader';
 import { InvestmentTabs } from '@/components/investment/InvestmentTabs';
 import { AIAssistantSheet } from '@/components/investment/AIAssistantSheet';
+import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
 import { 
   investmentMetrics, 
   investmentInsights 
@@ -22,27 +23,29 @@ const InvestmentImpact = () => {
       projectContext="Investment Impact"
       initialInsights={investmentInsights}
     >
-      <div className="max-w-7xl mx-auto px-4">
-        <InvestmentHeader 
-          title="Investment Impact" 
-          description="Track and analyze the financial performance of your construction projects"
-          onChatOpen={() => setSheetOpen(true)}
-          className="text-white"
-        />
-        
-        <InvestmentTabs 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab} 
-          investmentMetrics={investmentMetrics} 
-          riskData={riskData} 
-          riskByCategory={riskByCategory} 
-        />
+      <CustomizablePageLayout pageId="investment">
+        <div className="max-w-7xl mx-auto px-4">
+          <InvestmentHeader 
+            title="Investment Impact" 
+            description="Track and analyze the financial performance of your construction projects"
+            onChatOpen={() => setSheetOpen(true)}
+            className="text-white"
+          />
+          
+          <InvestmentTabs 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            investmentMetrics={investmentMetrics} 
+            riskData={riskData} 
+            riskByCategory={riskByCategory} 
+          />
 
-        <AIAssistantSheet 
-          isOpen={sheetOpen} 
-          onOpenChange={setSheetOpen} 
-        />
-      </div>
+          <AIAssistantSheet 
+            isOpen={sheetOpen} 
+            onOpenChange={setSheetOpen} 
+          />
+        </div>
+      </CustomizablePageLayout>
     </DashboardLayout>
   );
 };

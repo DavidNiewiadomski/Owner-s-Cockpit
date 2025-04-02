@@ -4,6 +4,7 @@ import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { AnalyticsHeader } from '@/components/analytics/AnalyticsHeader';
 import { AnalyticsTabs } from '@/components/analytics/AnalyticsTabs';
 import { KeyPerformanceIndicators } from '@/components/analytics/KeyPerformanceIndicators';
+import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
 import { 
   projectData, 
   timelineData, 
@@ -41,27 +42,29 @@ const Analytics = () => {
       projectContext="Analytics"
       initialInsights={analyticsInsights}
     >
-      <div className="max-w-7xl mx-auto">
-        <AnalyticsHeader 
-          periods={periods}
-          currentPeriod={currentPeriod}
-          setCurrentPeriod={setCurrentPeriod}
-        />
-        
-        <KeyPerformanceIndicators 
-          kpiData={kpiData} 
-          activeAnimation={activeAnimation}
-        />
-        
-        <AnalyticsTabs 
-          projectData={projectData}
-          timelineData={timelineData}
-          budgetData={budgetData}
-          resourceData={resourceData}
-          performanceData={performanceData}
-          colors={chartColors}
-        />
-      </div>
+      <CustomizablePageLayout pageId="analytics">
+        <div className="max-w-7xl mx-auto">
+          <AnalyticsHeader 
+            periods={periods}
+            currentPeriod={currentPeriod}
+            setCurrentPeriod={setCurrentPeriod}
+          />
+          
+          <KeyPerformanceIndicators 
+            kpiData={kpiData} 
+            activeAnimation={activeAnimation}
+          />
+          
+          <AnalyticsTabs 
+            projectData={projectData}
+            timelineData={timelineData}
+            budgetData={budgetData}
+            resourceData={resourceData}
+            performanceData={performanceData}
+            colors={chartColors}
+          />
+        </div>
+      </CustomizablePageLayout>
     </DashboardLayout>
   );
 };

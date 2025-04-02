@@ -4,6 +4,7 @@ import { useProject } from '@/contexts/ProjectContext';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MainDashboard } from '@/components/dashboard/MainDashboard';
 import { dashboardInsights } from '@/data/dashboardData';
+import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
 
 const Index = () => {
   const { selectedProject } = useProject();
@@ -17,7 +18,9 @@ const Index = () => {
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
-      <MainDashboard />
+      <CustomizablePageLayout pageId="dashboard">
+        <MainDashboard />
+      </CustomizablePageLayout>
     </DashboardLayout>
   );
 };

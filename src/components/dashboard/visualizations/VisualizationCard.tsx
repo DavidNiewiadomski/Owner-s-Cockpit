@@ -13,7 +13,7 @@ interface VisualizationCardProps {
 
 export function VisualizationCard({ title, imageSrc, onFullScreen, className }: VisualizationCardProps) {
   return (
-    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 shadow-[0_0_25px_rgba(34,211,238,0.3)] visualization-card ${className || ''}`}>
+    <Card className={`bg-black border-cyan-900/30 overflow-hidden p-4 shadow-[0_0_25px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all duration-300 visualization-card ${className || ''}`}>
       <div className="flex flex-col h-80">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
