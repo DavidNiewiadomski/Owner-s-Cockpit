@@ -1,143 +1,399 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Building, PlusCircle, MapPin, ChevronRight } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Building2, Map, Filter, ArrowUpDown, Grid, LayoutList } from 'lucide-react';
+import { propertyValueData } from '@/data/investment/investmentData';
 
-interface Property {
-  id: string;
-  name: string;
-  type: string;
-  location: string;
-  value: string;
-  sqft: string;
-  status: string;
-  image?: string;
-}
+// Sample properties data
+const propertiesData = [
+  { 
+    id: 'P001', 
+    name: 'Highland Tower', 
+    location: 'Downtown, Capital City', 
+    type: 'Commercial',
+    initialValue: 12500000,
+    currentValue: 15300000,
+    valueChange: 22.4,
+    occupancy: 92,
+    roi: 8.6,
+    status: 'Complete',
+    image: '/lovable-uploads/77247687-71e8-4da5-b76a-df619aae257e.png' // Highland Tower image from screenshot
+  },
+  { 
+    id: 'P002', 
+    name: 'Riverfront Plaza', 
+    location: 'North District, Capital City', 
+    type: 'Mixed Use',
+    initialValue: 8700000,
+    currentValue: 10200000,
+    valueChange: 17.2,
+    occupancy: 87,
+    roi: 7.8,
+    status: 'Complete',
+    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80' // White modern commercial building
+  },
+  { 
+    id: 'P003', 
+    name: 'Parkside Residences', 
+    location: 'West End, Capital City', 
+    type: 'Residential',
+    initialValue: 5300000,
+    currentValue: 6850000,
+    valueChange: 29.2,
+    occupancy: 96,
+    roi: 9.3,
+    status: 'Complete',
+    image: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=800&q=80' // Elegant residential building
+  },
+  { 
+    id: 'P004', 
+    name: 'Tech Hub Campus', 
+    location: 'Innovation District, Capital City', 
+    type: 'Commercial',
+    initialValue: 7900000,
+    currentValue: 8800000,
+    valueChange: 11.4,
+    occupancy: 78,
+    roi: 6.2,
+    status: 'In Progress',
+    image: 'https://images.unsplash.com/photo-1551038247-3d9af20df552?auto=format&fit=crop&w=800&q=80' // Modern blue tech building
+  },
+  { 
+    id: 'P005', 
+    name: 'Green Valley Estates', 
+    location: 'Suburban Area, Capital City', 
+    type: 'Residential',
+    initialValue: 4200000,
+    currentValue: 5050000,
+    valueChange: 20.2,
+    occupancy: 88,
+    roi: 7.5,
+    status: 'In Progress',
+    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80' // White residential complex
+  },
+];
 
-interface PropertiesContentProps {
-  properties?: Property[];
-  allocationData?: any[];
-}
+// Property value forecast data
+const valueForecastData = [
+  { year: '2020', value: 10.2 },
+  { year: '2021', value: 11.5 },
+  { year: '2022', value: 12.8 },
+  { year: '2023', value: 14.6 },
+  { year: '2024', value: 16.2 },
+  { year: '2025', value: 17.8, forecast: true },
+  { year: '2026', value: 19.5, forecast: true },
+  { year: '2027', value: 21.3, forecast: true },
+];
 
-export function PropertiesContent({ properties, allocationData }: PropertiesContentProps) {
-  // Sample property data if none is provided
-  const sampleProperties: Property[] = [
-    {
-      id: 'prop-1',
-      name: 'Eastside Tower',
-      type: 'Commercial',
-      location: 'Downtown Metro',
-      value: '$14.2M',
-      sqft: '32,500',
-      status: 'Active',
-      image: '/lovable-uploads/c889f81b-9be7-422a-a305-f7b1d0b80459.png'
-    },
-    {
-      id: 'prop-2',
-      name: 'Parkview Residences',
-      type: 'Residential',
-      location: 'North Heights',
-      value: '$8.7M',
-      sqft: '24,800',
-      status: 'Under Construction',
-      image: '/lovable-uploads/e41b997b-4805-42a1-b7e3-f0d7a3ce04f9.png'
-    },
-    {
-      id: 'prop-3',
-      name: 'Westside Center',
-      type: 'Mixed-Use',
-      location: 'Innovation District',
-      value: '$22.1M',
-      sqft: '45,700',
-      status: 'Planning',
-      image: '/lovable-uploads/c70400be-777a-4fcb-ac1d-96541af42708.png'
+// Property by type distribution
+const propertyTypeData = [
+  { name: 'Commercial', value: 45 },
+  { name: 'Residential', value: 32 },
+  { name: 'Mixed Use', value: 18 },
+  { name: 'Industrial', value: 5 },
+];
+
+export function PropertiesContent() {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortField, setSortField] = useState<string>('currentValue');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc');
     }
-  ];
+  };
 
-  // Use provided properties or fallback to sample data
-  const displayProperties = properties || sampleProperties;
+  const sortedProperties = [...propertiesData].sort((a, b) => {
+    const aValue = a[sortField as keyof typeof a];
+    const bValue = b[sortField as keyof typeof b];
+    
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortDirection === 'asc' 
+        ? aValue.localeCompare(bValue) 
+        : bValue.localeCompare(aValue);
+    }
+    
+    return 0;
+  });
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-white">Property Portfolio</h2>
-        <Button variant="outline" size="sm" className="text-xs h-8 border-cyan-900/40 text-cyan-300">
-          <PlusCircle className="h-3.5 w-3.5 mr-1" />
-          Add Property
-        </Button>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+        <h2 className="text-xl font-semibold text-white mb-4 sm:mb-0">Property Portfolio</h2>
+        <div className="flex space-x-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="border-gray-700 bg-gray-900"
+            onClick={() => setViewMode('grid')}
+          >
+            <Grid className={`h-4 w-4 ${viewMode === 'grid' ? 'text-white' : 'text-gray-400'}`} />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="border-gray-700 bg-gray-900"
+            onClick={() => setViewMode('list')}
+          >
+            <LayoutList className={`h-4 w-4 ${viewMode === 'list' ? 'text-white' : 'text-gray-400'}`} />
+          </Button>
+          <Button variant="outline" size="sm" className="border-gray-700 bg-gray-900">
+            <Filter className="h-4 w-4 mr-2" />
+            Filter
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {displayProperties.map((property) => (
-          <Card 
-            key={property.id} 
-            className="bg-black border-cyan-900/30 overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-          >
-            <div className="h-48 overflow-hidden relative">
-              <img 
-                src={property.image || `https://via.placeholder.com/600x300?text=${encodeURIComponent(property.name)}`} 
-                alt={property.name} 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute top-2 right-2">
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedProperties.map((property) => (
+            <Card key={property.id} className="bg-black border-gray-800 overflow-hidden">
+              <div className="aspect-video bg-gray-900 relative">
+                <img 
+                  src={property.image} 
+                  alt={property.name} 
+                  className="object-cover w-full h-full"
+                />
                 <Badge 
-                  className={`
-                    ${property.status === 'Active' 
-                      ? 'bg-green-500/80' 
-                      : property.status === 'Under Construction' 
-                        ? 'bg-yellow-500/80' 
-                        : 'bg-blue-500/80'
-                    } text-white`
-                  }
+                  className={`absolute top-2 right-2 ${
+                    property.status === 'Complete' 
+                      ? 'bg-green-900/70 text-green-400' 
+                      : 'bg-amber-900/70 text-amber-400'
+                  }`}
                 >
                   {property.status}
                 </Badge>
               </div>
-            </div>
-            
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <div>
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-start">
                   <CardTitle className="text-lg text-white">{property.name}</CardTitle>
-                  <CardDescription className="flex items-center mt-1 text-gray-400">
-                    <MapPin className="h-3.5 w-3.5 mr-1" />
-                    {property.location}
-                  </CardDescription>
+                  <Badge variant="outline" className="bg-blue-900/20 text-blue-400 border-blue-700/30">
+                    {property.type}
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="bg-cyan-950/40 text-cyan-300 border-cyan-800/50">
-                  {property.type}
-                </Badge>
+                <div className="flex items-center text-gray-400 text-sm">
+                  <Map className="h-3 w-3 mr-1" />
+                  {property.location}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="text-gray-400 mb-1">Current Value</div>
+                    <div className="text-white font-semibold">${(property.currentValue / 1000000).toFixed(1)}M</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-400 mb-1">Value Change</div>
+                    <div className="text-green-400 font-semibold">+{property.valueChange}%</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-400 mb-1">Occupancy</div>
+                    <div className="text-white font-semibold">{property.occupancy}%</div>
+                  </div>
+                  <div>
+                    <div className="text-gray-400 mb-1">ROI</div>
+                    <div className="text-white font-semibold">{property.roi}%</div>
+                  </div>
+                </div>
+                <Button className="w-full mt-4 bg-construction-600 hover:bg-construction-700">View Details</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <Card className="bg-black border-gray-800">
+          <CardContent className="p-0">
+            <div className="rounded-md border border-gray-800">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-gray-900/50">
+                    <TableHead className="text-gray-400" onClick={() => handleSort('name')}>
+                      <div className="flex items-center cursor-pointer">
+                        Property
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('type')}>
+                      <div className="flex items-center cursor-pointer">
+                        Type
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('currentValue')}>
+                      <div className="flex items-center cursor-pointer">
+                        Value
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('valueChange')}>
+                      <div className="flex items-center cursor-pointer">
+                        Change
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('occupancy')}>
+                      <div className="flex items-center cursor-pointer">
+                        Occupancy
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('roi')}>
+                      <div className="flex items-center cursor-pointer">
+                        ROI
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400" onClick={() => handleSort('status')}>
+                      <div className="flex items-center cursor-pointer">
+                        Status
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </div>
+                    </TableHead>
+                    <TableHead className="text-gray-400">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sortedProperties.map((property) => (
+                    <TableRow key={property.id} className="hover:bg-gray-900/50">
+                      <TableCell>
+                        <div className="flex items-center">
+                          <Building2 className="h-4 w-4 mr-2 text-gray-400" />
+                          <div>
+                            <div className="font-medium text-white">{property.name}</div>
+                            <div className="text-xs text-gray-400">{property.location}</div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="bg-blue-900/20 text-blue-400 border-blue-700/30">
+                          {property.type}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-medium text-white">
+                        ${(property.currentValue / 1000000).toFixed(1)}M
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-700/30">
+                          +{property.valueChange}%
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-medium text-white">{property.occupancy}%</TableCell>
+                      <TableCell className="font-medium text-white">{property.roi}%</TableCell>
+                      <TableCell>
+                        <Badge className={
+                          property.status === 'Complete' 
+                            ? 'bg-green-900/70 text-green-400' 
+                            : 'bg-amber-900/70 text-amber-400'
+                        }>
+                          {property.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm">View</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="bg-black border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white">Property Value Forecast</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={valueForecastData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                  <XAxis dataKey="year" stroke="#666" />
+                  <YAxis 
+                    tickFormatter={(value) => `$${value}M`} 
+                    stroke="#666"
+                  />
+                  <Tooltip 
+                    formatter={(value) => [`$${value}M`, 'Value']}
+                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
+                    labelStyle={{ color: '#ccc' }}
+                  />
+                  <defs>
+                    <linearGradient id="valueGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="forecastGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#d946ef" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#d946ef" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <Area 
+                    type="monotone" 
+                    dataKey="value" 
+                    stroke="#0ea5e9" 
+                    fill="url(#valueGradient)" 
+                    fillOpacity={1}
+                    strokeWidth={2}
+                    name="Historical Value"
+                    activeDot={{ r: 8 }}
+                    isAnimationActive={true}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-center mt-4 text-sm text-gray-400">
+              <div className="flex items-center mr-4">
+                <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                <span>Historical Value</span>
               </div>
-            </CardHeader>
-            
-            <CardContent>
-              <div className="grid grid-cols-2 gap-y-2 mb-4">
-                <div>
-                  <p className="text-xs text-gray-500">Value</p>
-                  <p className="text-sm font-semibold text-white">{property.value}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Square Footage</p>
-                  <p className="text-sm font-semibold text-white">{property.sqft} sq ft</p>
-                </div>
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                <span>Projected Value</span>
               </div>
-              
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="w-full justify-between border border-cyan-900/30 hover:bg-cyan-950/30 text-cyan-300"
-              >
-                <span className="flex items-center">
-                  <Building className="h-3.5 w-3.5 mr-1.5" />
-                  View Details
-                </span>
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-black border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white">Property Type Distribution</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={propertyTypeData}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#333" horizontal={false} />
+                  <XAxis type="number" tickFormatter={(value) => `${value}%`} stroke="#666" />
+                  <YAxis type="category" dataKey="name" stroke="#666" />
+                  <Tooltip 
+                    formatter={(value) => [`${value}%`, '']}
+                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
+                  />
+                  <Bar dataKey="value" fill="#10B981" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
