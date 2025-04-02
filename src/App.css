@@ -235,11 +235,12 @@ body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, 
 .Badge,
 .badge,
 [class*="badge-"] {
-  font-weight: 600 !important;
-  padding: 0.25rem 0.5rem !important;
+  font-weight: 700 !important;
+  padding: 0.25rem 0.75rem !important;
   border-radius: 0.375rem !important;
-  text-shadow: none !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  letter-spacing: 0.02em !important;
 }
 
 /* Status colors with improved contrast */
@@ -247,27 +248,30 @@ body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, 
 .status-completed,
 [data-status="on-track"],
 [data-status="completed"] {
-  background-color: rgba(34, 197, 94, 0.3) !important;
-  color: rgb(187, 247, 208) !important;
-  border: 1px solid rgba(34, 197, 94, 0.5) !important;
+  background-color: rgb(22, 163, 74) !important;
+  color: white !important;
+  border: 1px solid rgb(21, 128, 61) !important;
+  font-weight: 700 !important;
 }
 
 .status-at-risk,
 .status-warning,
 [data-status="at-risk"],
 [data-status="warning"] {
-  background-color: rgba(234, 179, 8, 0.3) !important;
-  color: rgb(254, 240, 138) !important;
-  border: 1px solid rgba(234, 179, 8, 0.5) !important;
+  background-color: rgb(234, 179, 8) !important;
+  color: black !important;
+  border: 1px solid rgb(202, 138, 4) !important;
+  font-weight: 700 !important;
 }
 
 .status-delayed,
 .status-danger,
 [data-status="delayed"],
 [data-status="danger"] {
-  background-color: rgba(239, 68, 68, 0.3) !important;
-  color: rgb(254, 202, 202) !important;
-  border: 1px solid rgba(239, 68, 68, 0.5) !important;
+  background-color: rgb(220, 38, 38) !important;
+  color: white !important;
+  border: 1px solid rgb(185, 28, 28) !important;
+  font-weight: 700 !important;
 }
 
 /* Improved visibility for tabs, buttons, and cards */
@@ -466,4 +470,17 @@ small,
 .status-indicator.red {
   background-color: rgb(239, 68, 68) !important;
   box-shadow: 0 0 6px rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Override any badge styling that might interfere */
+.bg-green-200.text-green-900,
+.bg-yellow-200.text-yellow-900,
+.bg-red-200.text-red-900 {
+  text-shadow: none !important;
+}
+
+/* Ensure text in all badges is well-contrasted */
+.badge, [class*="badge"] {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  letter-spacing: 0.02em !important;
 }

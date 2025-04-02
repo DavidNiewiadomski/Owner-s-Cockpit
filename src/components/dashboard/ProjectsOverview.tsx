@@ -30,30 +30,30 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'on-track':
-        return 'bg-green-500';
+        return 'bg-green-600';
       case 'at-risk':
         return 'bg-yellow-500';
       case 'delayed':
-        return 'bg-red-500';
+        return 'bg-red-600';
       case 'completed':
-        return 'bg-blue-500';
+        return 'bg-blue-600';
       case 'upcoming':
-        return 'bg-purple-500';
+        return 'bg-purple-600';
       default:
-        return 'bg-gray-500';
+        return 'bg-gray-600';
     }
   };
 
   // Get priority badge styles
   const getPriorityBadge = (priority: string) => {
     if (priority === "High") {
-      return "bg-red-900/60 text-red-200 border-red-700/50 font-semibold";
+      return "bg-red-700 text-white border-red-600 font-bold";
     } else if (priority === "Medium") {
-      return "bg-yellow-900/60 text-yellow-200 border-yellow-700/50 font-semibold";
+      return "bg-yellow-600 text-white border-yellow-500 font-bold";
     } else if (priority === "Low") {
-      return "bg-green-900/60 text-green-200 border-green-700/50 font-semibold";
+      return "bg-green-700 text-white border-green-600 font-bold";
     }
-    return "bg-gray-900/60 text-gray-200 border-gray-700/50 font-semibold";
+    return "bg-gray-700 text-white border-gray-600 font-bold";
   };
 
   return (
@@ -75,7 +75,7 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
                 <p className="text-xs text-gray-300">{project.description}</p>
               </div>
               <span className={cn(
-                "text-xs px-2 py-1 rounded-full border",
+                "text-xs px-3 py-1 rounded-full border",
                 getPriorityBadge(project.priority)
               )}>
                 {project.priority}
@@ -97,10 +97,12 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
             <div className="flex justify-between items-center">
               <div className="flex items-center">
                 <div className={cn(
-                  "w-2 h-2 rounded-full mr-2",
+                  "w-3 h-3 rounded-full mr-2",
                   getStatusColor(project.status)
                 )}></div>
-                <span className="text-xs text-gray-200 capitalize font-medium">{project.status.replace('-', ' ')}</span>
+                <span className="text-xs text-white font-medium uppercase tracking-wide">
+                  {project.status.replace('-', ' ')}
+                </span>
               </div>
               <span className="text-xs text-gray-300 font-medium">Due {formatDate(project.dueDate)}</span>
             </div>

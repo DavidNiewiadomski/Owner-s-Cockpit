@@ -34,11 +34,11 @@ export function ProjectCard({
   const getStatusClass = () => {
     switch (status) {
       case "on-track":
-        return "bg-green-200 text-green-900 dark:bg-green-800 dark:text-green-100 font-semibold";
+        return "bg-green-600 text-white font-bold px-3 py-1 shadow-lg border border-green-500";
       case "at-risk":
-        return "bg-yellow-200 text-yellow-900 dark:bg-yellow-800 dark:text-yellow-100 font-semibold";
+        return "bg-yellow-500 text-black font-bold px-3 py-1 shadow-lg border border-yellow-400";
       case "delayed":
-        return "bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-100 font-semibold";
+        return "bg-red-600 text-white font-bold px-3 py-1 shadow-lg border border-red-500";
       default:
         return "";
     }
