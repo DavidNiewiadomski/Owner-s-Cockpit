@@ -17,7 +17,7 @@ interface RealityCaptureViewerProps {
 }
 
 export function RealityCaptureViewer({
-  captureUrl = 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2531&q=80',
+  captureUrl = '/lovable-uploads/c889f81b-9be7-422a-a305-f7b1d0b80459.png',
   captureDate = 'April 15, 2024',
   projectName = 'Downtown High-Rise',
   location = 'Floor 3 - East Wing',

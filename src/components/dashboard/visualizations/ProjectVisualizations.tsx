@@ -20,7 +20,7 @@ export function ProjectVisualizations({ onOpenBIMViewer, onOpenRealityCaptureVie
         />
         <VisualizationCard 
           title="Reality Capture"
-          imageSrc="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2531&q=80"
+          imageSrc="/lovable-uploads/c889f81b-9be7-422a-a305-f7b1d0b80459.png"
           onFullScreen={onOpenRealityCaptureViewer}
           className="shadow-[0_0_20px_rgba(168,85,247,0.3)] border-purple-900/40 hover:border-purple-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)]"
         />
