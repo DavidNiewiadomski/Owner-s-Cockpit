@@ -20,8 +20,12 @@ interface DashboardSectionsProps {
 export function DashboardSections({ recentDocuments, notifications }: DashboardSectionsProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-      <RecentDocuments documents={recentDocuments} />
-      <NotificationsCard notifications={notifications} />
+      <div className="shadow-glow">
+        <RecentDocuments documents={recentDocuments} />
+      </div>
+      <div className="shadow-glow">
+        <NotificationsCard notifications={notifications} />
+      </div>
     </div>
   );
 }

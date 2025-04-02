@@ -223,10 +223,51 @@ body, html {
 /* Force text to be visible and high contrast */
 body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, label {
   color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .text-muted-foreground, .text-gray-400, .text-gray-500 {
   color: #e0e0e0 !important;
+}
+
+/* Improved visibility for status badges */
+[class*="status-badge"],
+.Badge,
+.badge,
+[class*="badge-"] {
+  font-weight: 600 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+  text-shadow: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Status colors with improved contrast */
+.status-on-track,
+.status-completed,
+[data-status="on-track"],
+[data-status="completed"] {
+  background-color: rgba(34, 197, 94, 0.3) !important;
+  color: rgb(187, 247, 208) !important;
+  border: 1px solid rgba(34, 197, 94, 0.5) !important;
+}
+
+.status-at-risk,
+.status-warning,
+[data-status="at-risk"],
+[data-status="warning"] {
+  background-color: rgba(234, 179, 8, 0.3) !important;
+  color: rgb(254, 240, 138) !important;
+  border: 1px solid rgba(234, 179, 8, 0.5) !important;
+}
+
+.status-delayed,
+.status-danger,
+[data-status="delayed"],
+[data-status="danger"] {
+  background-color: rgba(239, 68, 68, 0.3) !important;
+  color: rgb(254, 202, 202) !important;
+  border: 1px solid rgba(239, 68, 68, 0.5) !important;
 }
 
 /* Improved visibility for tabs, buttons, and cards */
@@ -240,7 +281,7 @@ body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, 
 [data-state="active"][role="tab"],
 [role="tab"][data-state="active"] {
   background-color: rgba(34, 211, 238, 0.2) !important;
-  color: rgb(34, 211, 238) !important;
+  color: rgb(186, 230, 253) !important;
   border-bottom: 2px solid rgb(34, 211, 238) !important;
   box-shadow: 0 0 15px rgba(34, 211, 238, 0.3) !important;
   text-shadow: 0 0 5px rgba(34, 211, 238, 0.5) !important;
@@ -276,7 +317,7 @@ button {
   color: white !important;
   background-color: rgba(0, 0, 0, 0.7) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
 }
 
 /* Improve card content visibility */
@@ -342,4 +383,87 @@ button {
   border: 1px solid rgba(34, 211, 238, 0.2) !important;
   background-color: #000000 !important;
   overflow: hidden;
+}
+
+/* Better badge contrast for statuses */
+.bg-green-100.text-green-800,
+[class*="green-badge"] {
+  background-color: rgba(22, 163, 74, 0.3) !important;
+  color: rgb(220, 252, 231) !important;
+  border: 1px solid rgba(22, 163, 74, 0.5) !important;
+  font-weight: 600 !important;
+}
+
+.bg-yellow-100.text-yellow-800,
+[class*="yellow-badge"] {
+  background-color: rgba(202, 138, 4, 0.3) !important;
+  color: rgb(254, 249, 195) !important;
+  border: 1px solid rgba(202, 138, 4, 0.5) !important;
+  font-weight: 600 !important;
+}
+
+.bg-red-100.text-red-800,
+[class*="red-badge"] {
+  background-color: rgba(220, 38, 38, 0.3) !important;
+  color: rgb(254, 226, 226) !important;
+  border: 1px solid rgba(220, 38, 38, 0.5) !important;
+  font-weight: 600 !important;
+}
+
+/* Card gradients for better visibility */
+.card,
+[class*="card-"],
+[class*="Card"],
+.recharts-wrapper {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.95)) !important;
+}
+
+/* Text contrast utilities */
+.text-white {
+  font-weight: 500 !important;
+}
+
+.text-gray-300, 
+.text-gray-400 {
+  color: #d1d5db !important;
+}
+
+/* Add outline to small text for better readability */
+small, 
+.text-xs, 
+.text-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Add background contrast to items in lists for better readability */
+.list-item,
+[class*="item-"],
+[class*="list-item"],
+[role="listitem"] {
+  background-color: rgba(17, 24, 39, 0.6) !important;
+  border: 1px solid rgba(75, 85, 99, 0.3) !important;
+}
+
+/* Enhanced status indicator colors */
+.status-indicator {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+  margin-right: 6px !important;
+}
+
+.status-indicator.green {
+  background-color: rgb(34, 197, 94) !important;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6) !important;
+}
+
+.status-indicator.yellow {
+  background-color: rgb(234, 179, 8) !important;
+  box-shadow: 0 0 6px rgba(234, 179, 8, 0.6) !important;
+}
+
+.status-indicator.red {
+  background-color: rgb(239, 68, 68) !important;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6) !important;
 }

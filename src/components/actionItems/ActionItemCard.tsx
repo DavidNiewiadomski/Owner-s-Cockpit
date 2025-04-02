@@ -55,7 +55,7 @@ export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
   };
 
   return (
-    <Card key={item.id} className={`bg-black border-gray-700 ${item.status === 'completed' ? 'opacity-60' : ''}`}>
+    <Card key={item.id} className={`bg-black border-gray-700 ${item.status === 'completed' ? 'opacity-80' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <div className="pt-1">
@@ -69,24 +69,24 @@ export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
           <div className="flex-1">
             <div className="flex items-center gap-3">
               {getTypeIcon(item.type)}
-              <h4 className={`font-medium text-gray-100 ${item.status === 'completed' ? 'line-through' : ''}`}>
+              <h4 className={`font-medium text-white ${item.status === 'completed' ? 'line-through opacity-70' : ''}`}>
                 {item.title}
               </h4>
             </div>
             
-            <p className="text-sm text-gray-400 mt-1">{item.description}</p>
+            <p className="text-sm text-gray-300 mt-1">{item.description}</p>
             
             <div className="flex flex-wrap gap-2 mt-3">
-              <Badge variant="outline" className="text-xs bg-black text-gray-300 border-gray-600 flex items-center gap-1">
+              <Badge variant="outline" className="text-xs bg-gray-900 text-gray-200 border-gray-600 flex items-center gap-1 font-medium">
                 <Calendar className="h-3 w-3" />
                 {getRelativeDateString(item.dueDate)}
               </Badge>
               
               <Badge 
-                className={`text-xs ${
-                  item.priority === 'high' ? 'bg-red-900/30 text-red-400 border-red-800' : 
-                  item.priority === 'medium' ? 'bg-amber-900/30 text-amber-400 border-amber-800' : 
-                  'bg-green-900/30 text-green-400 border-green-800'
+                className={`text-xs font-medium ${
+                  item.priority === 'high' ? 'bg-red-900/50 text-red-200 border-red-700' : 
+                  item.priority === 'medium' ? 'bg-amber-900/50 text-amber-200 border-amber-700' : 
+                  'bg-green-900/50 text-green-200 border-green-700'
                 }`}
                 variant="outline"
               >
@@ -95,13 +95,13 @@ export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
                  'Low Priority'}
               </Badge>
               
-              <Badge variant="outline" className="text-xs bg-construction-900/30 text-construction-400 border-construction-800">
+              <Badge variant="outline" className="text-xs bg-construction-900/50 text-construction-200 border-construction-700 font-medium">
                 {item.project}
               </Badge>
             </div>
           </div>
           
-          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+          <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
             <ArrowDown className="h-4 w-4" />
           </Button>
         </div>

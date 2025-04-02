@@ -58,8 +58,8 @@ export function MainDashboard() {
       <ViewerModals 
         isBIMViewerOpen={isBIMViewerOpen}
         isRealityCaptureOpen={isRealityCaptureViewerOpen}
-        onCloseBIMViewer={handleCloseBIMViewer}
-        onCloseRealityCaptureViewer={handleCloseRealityCaptureViewer}
+        closeBIMViewer={handleCloseBIMViewer}
+        closeRealityCaptureViewer={handleCloseRealityCaptureViewer}
       />
     </>
   );

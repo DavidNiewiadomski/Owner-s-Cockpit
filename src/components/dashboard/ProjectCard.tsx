@@ -34,11 +34,11 @@ export function ProjectCard({
   const getStatusClass = () => {
     switch (status) {
       case "on-track":
-        return "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400";
+        return "bg-green-200 text-green-900 dark:bg-green-800 dark:text-green-100 font-semibold";
       case "at-risk":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400";
+        return "bg-yellow-200 text-yellow-900 dark:bg-yellow-800 dark:text-yellow-100 font-semibold";
       case "delayed":
-        return "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400";
+        return "bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-100 font-semibold";
       default:
         return "";
     }
@@ -61,24 +61,24 @@ export function ProjectCard({
     <Card className="overflow-hidden border-construction-600/10 hover:border-construction-600/30 transition-colors">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle className="text-lg font-bold text-white">{title}</CardTitle>
           <Badge className={getStatusClass()}>{getStatusLabel()}</Badge>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
+        <p className="text-sm text-gray-300 line-clamp-2 mt-1">{description}</p>
       </CardHeader>
       <CardContent className="pb-2">
         <div className="space-y-4">
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span>Progress</span>
-              <span>{progress}%</span>
+              <span className="font-medium text-white">Progress</span>
+              <span className="font-medium text-white">{progress}%</span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
 
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-sm text-gray-300">
             <CalendarIcon className="mr-1 h-4 w-4" />
-            <span>Due: {dueDate}</span>
+            <span className="font-medium">Due: {dueDate}</span>
           </div>
         </div>
       </CardContent>
@@ -90,7 +90,7 @@ export function ProjectCard({
                 {member.avatar ? (
                   <AvatarImage src={member.avatar} alt={member.name} />
                 ) : (
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-construction-600 text-white">
                     {member.name
                       .split(" ")
                       .map((n) => n[0])
@@ -101,14 +101,14 @@ export function ProjectCard({
             ))}
             {teamMembers.length > 3 && (
               <Avatar className="border-2 border-background h-8 w-8">
-                <AvatarFallback className="bg-muted text-muted-foreground">
+                <AvatarFallback className="bg-construction-600 text-white">
                   +{teamMembers.length - 3}
                 </AvatarFallback>
               </Avatar>
             )}
           </div>
           
-          <a href="#" className="text-sm text-construction-600 dark:text-construction-400 hover:underline">View Details</a>
+          <a href="#" className="text-sm text-construction-400 hover:text-construction-300 hover:underline font-medium">View Details</a>
         </div>
       </CardFooter>
     </Card>

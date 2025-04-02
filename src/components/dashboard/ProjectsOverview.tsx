@@ -47,20 +47,20 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
   // Get priority badge styles
   const getPriorityBadge = (priority: string) => {
     if (priority === "High") {
-      return "bg-red-900/30 text-red-400 border-red-700/30";
+      return "bg-red-900/60 text-red-200 border-red-700/50 font-semibold";
     } else if (priority === "Medium") {
-      return "bg-yellow-900/30 text-yellow-400 border-yellow-700/30";
+      return "bg-yellow-900/60 text-yellow-200 border-yellow-700/50 font-semibold";
     } else if (priority === "Low") {
-      return "bg-green-900/30 text-green-400 border-green-700/30";
+      return "bg-green-900/60 text-green-200 border-green-700/50 font-semibold";
     }
-    return "bg-gray-900/30 text-gray-400 border-gray-700/30";
+    return "bg-gray-900/60 text-gray-200 border-gray-700/50 font-semibold";
   };
 
   return (
     <div className="bg-black border border-gray-800 rounded-lg shadow-lg p-5">
       <div className="flex justify-between items-center mb-5">
         <h3 className="text-lg font-semibold text-white">Active Projects</h3>
-        <button className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center">
+        <button className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center font-medium">
           <span>View All</span>
           <ArrowRight className="ml-1 h-3 w-3" />
         </button>
@@ -68,11 +68,11 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
       
       <div className="space-y-5">
         {projects.map((project) => (
-          <div key={project.id} className="p-4 bg-gray-900/50 border border-gray-800 rounded-lg">
+          <div key={project.id} className="p-4 bg-gray-900/80 border border-gray-800 rounded-lg">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h4 className="font-medium text-white">{project.title}</h4>
-                <p className="text-xs text-gray-400">{project.description}</p>
+                <h4 className="font-medium text-white text-base">{project.title}</h4>
+                <p className="text-xs text-gray-300">{project.description}</p>
               </div>
               <span className={cn(
                 "text-xs px-2 py-1 rounded-full border",
@@ -84,8 +84,8 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
             
             <div className="mb-3">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-400">Progress</span>
-                <span className="text-white">{project.progress}%</span>
+                <span className="text-gray-300 font-medium">Progress</span>
+                <span className="text-white font-medium">{project.progress}%</span>
               </div>
               <Progress 
                 value={project.progress} 
@@ -100,9 +100,9 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
                   "w-2 h-2 rounded-full mr-2",
                   getStatusColor(project.status)
                 )}></div>
-                <span className="text-xs text-gray-300 capitalize">{project.status.replace('-', ' ')}</span>
+                <span className="text-xs text-gray-200 capitalize font-medium">{project.status.replace('-', ' ')}</span>
               </div>
-              <span className="text-xs text-gray-400">Due {formatDate(project.dueDate)}</span>
+              <span className="text-xs text-gray-300 font-medium">Due {formatDate(project.dueDate)}</span>
             </div>
           </div>
         ))}
