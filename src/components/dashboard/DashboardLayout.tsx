@@ -47,8 +47,6 @@ export function DashboardLayout({
           projectContext={projectContext}
           projectName={projectName}
           initialInsights={initialInsights}
-          isExpanded={aiExpanded}
-          onExpandChange={setAiExpanded}
         />
         
         <main className="flex-1 p-6 bg-black overflow-y-auto w-full">
@@ -61,7 +59,7 @@ export function DashboardLayout({
       {customizeOpen && (
         <CustomizationMenu 
           isOpen={customizeOpen} 
-          onOpenChange={setCustomizeOpen}
+          onClose={() => setCustomizeOpen(false)}
           pageId={projectContext.toLowerCase()}
         />
       )}
