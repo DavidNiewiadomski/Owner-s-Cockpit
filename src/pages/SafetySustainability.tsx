@@ -15,7 +15,6 @@ import {
   sustainabilityCertifications
 } from '@/data/safetyData';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { AIInsightsCard } from '@/components/investment/AIInsightsCard';
 
 const SafetySustainability = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -71,14 +70,7 @@ const SafetySustainability = () => {
       onSearch={setSearchTerm}
     >
       <ScrollArea className="h-[calc(100vh-11rem)] bg-black">
-        <div className="px-6 pt-6 pb-2">
-          <AIInsightsCard 
-            insights={combinedInsights} 
-            onChatOpen={() => setIsAIChatOpen(true)} 
-          />
-        </div>
-        
-        <Tabs defaultValue="safety" className="w-full px-6">
+        <Tabs defaultValue="safety" className="w-full px-6 py-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
             <div>
               <h1 className="text-2xl font-bold text-white mb-1">Safety & Sustainability</h1>
