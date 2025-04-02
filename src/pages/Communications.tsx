@@ -9,10 +9,9 @@ import { CommunicationStats } from '@/components/communications/CommunicationSta
 import { 
   recentCommunications, 
   scheduledEvents, 
-  communicationInsights,
-  Communication,
-  ScheduledEvent
-} from '@/data/communications/communicationData';
+  communicationInsights
+} from '@/data';
+import type { Communication, ScheduledEvent } from '@/data';
 
 const Communications = () => {
   const [searchTerm, setSearchTerm] = useState('');

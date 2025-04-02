@@ -3,7 +3,7 @@
 import { propertyData } from './property/propertyData';
 import { timelineEvents } from './timeline/timelineData';
 import { documents, projectDocuments } from './documents/documentData';
-import { projects, Project } from './projects/projectData';
+import { projects } from './projects/projectData';
 import { notifications, dashboardInsights } from './notifications/notificationData';
 import { integrationData, allIntegrations } from './integrations/integrationData';
 import { progressChartData } from './charts/chartData';
@@ -11,19 +11,23 @@ import { financialData } from './financials/financialData';
 import { 
   recentCommunications, 
   scheduledEvents, 
-  communicationInsights,
+  communicationInsights
+} from './communications/communicationData';
+
+// Import types
+import type { Project } from './projects/projectData';
+import type { 
   Communication,
   ScheduledEvent
 } from './communications/communicationData';
 
-// Export everything
+// Export data
 export {
   propertyData,
   timelineEvents,
   documents,
   projectDocuments,
   projects,
-  Project,
   notifications,
   dashboardInsights,
   integrationData,
@@ -33,6 +37,7 @@ export {
   recentCommunications,
   scheduledEvents,
   communicationInsights,
-  Communication,
-  ScheduledEvent
 };
+
+// Export types
+export type { Project, Communication, ScheduledEvent };

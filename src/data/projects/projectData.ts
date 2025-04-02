@@ -12,7 +12,7 @@ export interface Project {
   location?: string;
   phase?: string;
   teamMembers: { name: string; avatar?: string }[];
-  priority: string;
+  priority: "High" | "Medium" | "Low";
 }
 
 export const projects = [
@@ -32,7 +32,7 @@ export const projects = [
       { name: "Sarah Johnson" },
       { name: "Michael Chen" }
     ],
-    priority: "High"
+    priority: "High" as const
   },
   {
     id: "2",
@@ -50,7 +50,7 @@ export const projects = [
       { name: "Emily Parker" },
       { name: "David Wilson" }
     ],
-    priority: "Medium"
+    priority: "Medium" as const
   },
   {
     id: "3",
@@ -68,6 +68,6 @@ export const projects = [
       { name: "Robert Lee" },
       { name: "Jennifer Smith" }
     ],
-    priority: "High"
+    priority: "High" as const
   }
 ];

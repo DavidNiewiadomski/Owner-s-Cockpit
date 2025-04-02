@@ -5,7 +5,7 @@ export interface Communication {
   date: string;
   sender: string;
   recipient: string;
-  type: string;
+  type: "email" | "message" | "call" | "meeting" | "video" | "document";
   status: string;
   content: string;
   contact?: string;
@@ -18,7 +18,7 @@ export interface ScheduledEvent {
   title: string;
   date: string;
   time: string;
-  type: string;
+  type: "meeting" | "call" | "video" | "presentation" | "inspection" | "recurring";
   participants: string[];
   location: string;
   description: string;
