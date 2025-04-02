@@ -3,31 +3,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RecentCommunications } from '@/components/communications/RecentCommunications';
 import { ScheduledCommunications } from '@/components/communications/ScheduledCommunications';
-
-interface Communication {
-  id: string;
-  type: 'email' | 'call' | 'meeting' | 'video' | 'message';
-  contact: {
-    name: string;
-    avatar?: string;
-  };
-  subject?: string;
-  excerpt?: string;
-  date: string;
-  time: string;
-  project: string;
-}
-
-interface ScheduledEvent {
-  id: string;
-  title: string;
-  type: 'meeting' | 'call' | 'video';
-  date: string;
-  time: string;
-  duration: string;
-  participants: string[];
-  project: string;
-}
+import type { Communication, ScheduledEvent } from '@/data';
 
 interface CommunicationTabsProps {
   communications: Communication[];

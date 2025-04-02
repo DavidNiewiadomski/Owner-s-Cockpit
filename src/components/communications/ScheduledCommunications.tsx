@@ -1,31 +1,27 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Clock, Video, Phone } from 'lucide-react';
+import { Calendar, Clock, Video, Phone, Presentation, FileText, RotateCcw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-
-interface ScheduledEvent {
-  id: string;
-  title: string;
-  type: 'meeting' | 'call' | 'video';
-  date: string;
-  time: string;
-  duration: string;
-  participants: string[];
-  project?: string;
-}
+import type { ScheduledEvent } from '@/data';
 
 interface ScheduledCommunicationsProps {
   events: ScheduledEvent[];
 }
 
 export function ScheduledCommunications({ events }: ScheduledCommunicationsProps) {
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: ScheduledEvent['type']) => {
     switch (type) {
       case 'video':
         return <Video className="h-4 w-4 text-red-400" />;
       case 'call':
         return <Phone className="h-4 w-4 text-yellow-400" />;
+      case 'presentation':
+        return <Presentation className="h-4 w-4 text-indigo-400" />;
+      case 'inspection':
+        return <FileText className="h-4 w-4 text-green-400" />;
+      case 'recurring':
+        return <RotateCcw className="h-4 w-4 text-blue-400" />;
       case 'meeting':
       default:
         return <Calendar className="h-4 w-4 text-purple-400" />;
@@ -68,7 +64,7 @@ export function ScheduledCommunications({ events }: ScheduledCommunicationsProps
                     
                     <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
-                      <span>{event.time} ({event.duration})</span>
+                      <span>{event.time} {event.duration && `(${event.duration})`}</span>
                     </div>
                   </div>
                   
