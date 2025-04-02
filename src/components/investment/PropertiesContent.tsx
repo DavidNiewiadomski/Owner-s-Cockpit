@@ -18,7 +18,7 @@ interface Property {
 
 interface PropertiesContentProps {
   properties?: Property[];
-  allocationData?: any[]; // This prop is needed to fix the type error
+  allocationData?: any[];
 }
 
 export function PropertiesContent({ properties, allocationData }: PropertiesContentProps) {
