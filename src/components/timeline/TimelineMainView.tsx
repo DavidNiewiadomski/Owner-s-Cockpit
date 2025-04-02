@@ -115,16 +115,18 @@ export function TimelineMainView({
               />
             ) : null}
             
-            <div className="relative overflow-hidden rounded-xl border border-gray-800 bg-black p-1">
-              {timelineView === "gantt" && <GanttChart data={ganttData} />}
-              {timelineView === "delays" && <DelayAnalysisChart data={delayMetricsData} />}
-              {timelineView === "milestone" && (
-                <MilestoneView 
-                  milestones={milestoneData} 
-                  onViewRealityCapture={onViewRealityCapture} 
-                />
-              )}
-              {timelineView === "activities" && <EmptyActivitiesList />}
+            <div className="relative overflow-hidden rounded-xl border border-gray-800 bg-black p-4 min-h-[400px]">
+              <div className="h-full w-full">
+                {timelineView === "gantt" && <GanttChart data={ganttData} />}
+                {timelineView === "delays" && <DelayAnalysisChart data={delayMetricsData} />}
+                {timelineView === "milestone" && (
+                  <MilestoneView 
+                    milestones={milestoneData} 
+                    onViewRealityCapture={onViewRealityCapture} 
+                  />
+                )}
+                {timelineView === "activities" && <EmptyActivitiesList />}
+              </div>
             </div>
           </div>
           
