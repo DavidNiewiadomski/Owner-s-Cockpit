@@ -1,28 +1,10 @@
 
-// This file is maintained for backward compatibility
-// Import and re-export everything from the new data structure
-import {
-  propertyData,
-  timelineEvents,
-  documents,
-  projectDocuments,
-  projects,
-  notifications,
-  dashboardInsights,
-  integrationData,
-  progressChartData,
-  financialData
-} from './index';
+import { documents } from './documents/documentData';
 
-export {
-  propertyData,
-  timelineEvents,
-  documents,
-  projectDocuments,
-  projects,
-  notifications,
-  dashboardInsights,
-  integrationData,
-  progressChartData,
-  financialData
+// Project documents lookup by project ID
+export const projectDocuments = {
+  'all': documents,
+  '1': documents.filter(doc => doc.project === 'Riverfront Tower'),
+  '2': documents.filter(doc => doc.project === 'Westview Residences'),
+  '3': documents.filter(doc => doc.project === 'Harbor Bridge'),
 };
