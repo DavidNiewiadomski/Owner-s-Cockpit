@@ -3,9 +3,10 @@ import React from 'react';
 import { File, FileText, Image, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface Document {
+export interface Document {
   id: string;
-  title: string;
+  title?: string;
+  name?: string;
   type: string;
   date: string;
   size: string;
@@ -40,7 +41,7 @@ export function RecentDocuments({ documents }: RecentDocumentsProps) {
                 {getDocumentIcon(doc.type)}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-200">{doc.title}</p>
+                <p className="text-sm font-medium text-gray-200">{doc.title || doc.name}</p>
                 <p className="text-xs text-gray-500">{doc.date} • {doc.size}</p>
               </div>
             </div>

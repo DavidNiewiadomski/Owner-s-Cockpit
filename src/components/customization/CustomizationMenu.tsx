@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Sheet, 
@@ -9,36 +10,34 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { 
   BarChart3, 
-  PieChart, 
-  LineChart, 
-  ListChecks, 
   Table, 
   FileText, 
-  Sparkles,
-  Loader2
+  Sparkles
 } from 'lucide-react';
 
-interface CustomizationMenuProps {
+// Import the refactored components
+import { MenuFormFields } from './menu/MenuFormFields';
+import { ChartTabContent } from './menu/ChartTabContent';
+import { TableTabContent } from './menu/TableTabContent';
+import { ReportTabContent } from './menu/ReportTabContent';
+import { AITabContent } from './menu/AITabContent';
+
+export interface CustomizationMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onAddContent?: (content: any) => void;
   pageId?: string;
 }
 
-export function CustomizationMenu({ isOpen, onClose, onAddContent, pageId = 'dashboard' }: CustomizationMenuProps) {
+export function CustomizationMenu({ 
+  isOpen, 
+  onClose, 
+  onAddContent, 
+  pageId = 'dashboard' 
+}: CustomizationMenuProps) {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('chart');
   const [title, setTitle] = useState('');
@@ -204,134 +203,37 @@ export function CustomizationMenu({ isOpen, onClose, onAddContent, pageId = 'das
               </TabsTrigger>
             </TabsList>
             
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-gray-300">Title</Label>
-                <Input 
-                  id="title" 
-                  placeholder="Enter a title" 
-                  className="bg-gray-900 border-cyan-900/30"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="description" className="text-gray-300">Description (optional)</Label>
-                <Input 
-                  id="description" 
-                  placeholder="Enter a description" 
-                  className="bg-gray-900 border-cyan-900/30"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-              
-              <TabsContent value="chart" className="space-y-4 mt-4">
-                <div className="space-y-2">
-                  <Label htmlFor="chart-type" className="text-gray-300">Chart Type</Label>
-                  <Select value={chartType} onValueChange={setChartType}>
-                    <SelectTrigger id="chart-type" className="bg-gray-900 border-cyan-900/30">
-                      <SelectValue placeholder="Select chart type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-900 border-cyan-900/30">
-                      <SelectItem value="bar">
-                        <div className="flex items-center">
-                          <BarChart3 className="h-4 w-4 mr-2 text-cyan-400" />
-                          Bar Chart
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="line">
-                        <div className="flex items-center">
-                          <LineChart className="h-4 w-4 mr-2 text-green-400" />
-                          Line Chart
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="pie">
-                        <div className="flex items-center">
-                          <PieChart className="h-4 w-4 mr-2 text-purple-400" />
-                          Pie Chart
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <Button 
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 shadow-[0_0_15px_rgba(8,145,178,0.4)]"
-                  onClick={handleAddChart}
-                >
-                  Add Chart
-                </Button>
-              </TabsContent>
-              
-              <TabsContent value="table" className="space-y-4 mt-4">
-                <div className="p-4 border border-cyan-900/30 rounded-md bg-gray-900/50">
-                  <p className="text-sm text-gray-400">
-                    Create a custom table with sample data. In a full implementation, 
-                    you would define columns and connect to data sources.
-                  </p>
-                </div>
-                
-                <Button 
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 shadow-[0_0_15px_rgba(8,145,178,0.4)]"
-                  onClick={handleAddTable}
-                >
-                  <Table className="h-4 w-4 mr-2" />
-                  Add Table
-                </Button>
-              </TabsContent>
-              
-              <TabsContent value="report" className="space-y-4 mt-4">
-                <div className="p-4 border border-cyan-900/30 rounded-md bg-gray-900/50">
-                  <p className="text-sm text-gray-400">
-                    Create a custom report with formatted text and data. In a full implementation,
-                    you would be able to format text and add data visualizations.
-                  </p>
-                </div>
-                
-                <Button 
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 shadow-[0_0_15px_rgba(8,145,178,0.4)]"
-                  onClick={handleAddReport}
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  Add Report
-                </Button>
-              </TabsContent>
-              
-              <TabsContent value="ai" className="space-y-4 mt-4">
-                <div className="space-y-2">
-                  <Label htmlFor="ai-prompt" className="text-gray-300">
-                    What would you like to see?
-                  </Label>
-                  <Textarea 
-                    id="ai-prompt" 
-                    placeholder="E.g., Show me a chart of construction costs over time, Create a summary of pending tasks, Generate a risk assessment report..."
-                    className="min-h-[120px] bg-gray-900 border-cyan-900/30"
-                    value={aiPrompt}
-                    onChange={(e) => setAiPrompt(e.target.value)}
-                  />
-                </div>
-                
-                <Button 
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 shadow-[0_0_15px_rgba(8,145,178,0.4)]"
-                  onClick={handleAddAIContent}
-                  disabled={isGenerating}
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Generate Content
-                    </>
-                  )}
-                </Button>
-              </TabsContent>
-            </div>
+            <MenuFormFields 
+              title={title}
+              setTitle={setTitle}
+              description={description}
+              setDescription={setDescription}
+            />
+            
+            <TabsContent value="chart" className="mt-0">
+              <ChartTabContent 
+                chartType={chartType}
+                setChartType={setChartType}
+                onAddChart={handleAddChart}
+              />
+            </TabsContent>
+            
+            <TabsContent value="table" className="mt-0">
+              <TableTabContent onAddTable={handleAddTable} />
+            </TabsContent>
+            
+            <TabsContent value="report" className="mt-0">
+              <ReportTabContent onAddReport={handleAddReport} />
+            </TabsContent>
+            
+            <TabsContent value="ai" className="mt-0">
+              <AITabContent 
+                aiPrompt={aiPrompt}
+                setAiPrompt={setAiPrompt}
+                isGenerating={isGenerating}
+                onAddAIContent={handleAddAIContent}
+              />
+            </TabsContent>
           </Tabs>
         </div>
         

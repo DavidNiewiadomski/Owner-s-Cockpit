@@ -5,7 +5,7 @@ import { timelineEvents } from './timeline/timelineEvents';
 import { documents, projectDocuments } from './documents/documentData';
 import { projects } from './projects/projectData';
 import { notifications, dashboardInsights } from './notifications/notificationData';
-import { integrationData } from './integrations/integrationData';
+import { integrationData, allIntegrations } from './integrations/integrationData';
 import { progressChartData } from './charts/chartData';
 import { financialData } from './financials/financialData';
 
@@ -19,6 +19,7 @@ export {
   notifications,
   dashboardInsights,
   integrationData,
+  allIntegrations,
   progressChartData,
   financialData
 };
