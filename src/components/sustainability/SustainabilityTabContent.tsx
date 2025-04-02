@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Leaf, Recycle, Flower, FileText, Zap, DropletIcon, Wind, Sun, ThermometerIcon } from 'lucide-react';
 import { Card } from '@/components/ui/card';
