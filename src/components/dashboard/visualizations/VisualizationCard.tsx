@@ -34,7 +34,7 @@ export function VisualizationCard({ title, imageSrc, onFullScreen, className }: 
           <img 
             src={imageSrc} 
             alt={`${title} visualization`} 
-            className="h-full w-full object-cover opacity-80 cursor-pointer hover:opacity-100 transition-opacity"
+            className="h-full w-full object-cover opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
             onClick={onFullScreen}
           />
         </div>

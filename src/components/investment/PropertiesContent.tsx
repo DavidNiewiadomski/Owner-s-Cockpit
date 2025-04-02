@@ -21,7 +21,7 @@ const propertiesData = [
     occupancy: 92,
     roi: 8.6,
     status: 'Complete',
-    image: '/lovable-uploads/84a355bb-2782-4715-9c27-a42a59fb9fce.png'
+    image: '/lovable-uploads/77247687-71e8-4da5-b76a-df619aae257e.png' // Highland Tower image from screenshot
   },
   { 
     id: 'P002', 
@@ -34,7 +34,7 @@ const propertiesData = [
     occupancy: 87,
     roi: 7.8,
     status: 'Complete',
-    image: '/placeholder.svg'
+    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80' // White modern commercial building
   },
   { 
     id: 'P003', 
@@ -47,7 +47,7 @@ const propertiesData = [
     occupancy: 96,
     roi: 9.3,
     status: 'Complete',
-    image: '/placeholder.svg'
+    image: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=800&q=80' // Elegant residential building
   },
   { 
     id: 'P004', 
@@ -60,7 +60,7 @@ const propertiesData = [
     occupancy: 78,
     roi: 6.2,
     status: 'In Progress',
-    image: '/placeholder.svg'
+    image: 'https://images.unsplash.com/photo-1551038247-3d9af20df552?auto=format&fit=crop&w=800&q=80' // Modern blue tech building
   },
   { 
     id: 'P005', 
@@ -73,7 +73,7 @@ const propertiesData = [
     occupancy: 88,
     roi: 7.5,
     status: 'In Progress',
-    image: '/placeholder.svg'
+    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80' // White residential complex
   },
 ];
 
