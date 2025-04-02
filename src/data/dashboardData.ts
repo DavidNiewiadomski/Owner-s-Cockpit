@@ -1,5 +1,6 @@
 
 import { documents } from './documents/documentData';
+import { dashboardInsights } from './notifications/notificationData';
 
 // Project documents lookup by project ID
 export const projectDocuments = {
@@ -8,3 +9,5 @@ export const projectDocuments = {
   '2': documents.filter(doc => doc.project === 'Westview Residences'),
   '3': documents.filter(doc => doc.project === 'Harbor Bridge'),
 };
+
+export { dashboardInsights };
