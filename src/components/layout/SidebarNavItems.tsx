@@ -13,7 +13,6 @@ interface NavItem {
 interface SidebarNavItemsProps {
   navItems: NavItem[];
   utilityItems: NavItem[];
-  customizationItems: NavItem[];
   isActive: (path: string) => boolean;
   collapsed: boolean;
   onCustomizeClick?: () => void;
@@ -23,7 +22,6 @@ interface SidebarNavItemsProps {
 export function SidebarNavItems({ 
   navItems, 
   utilityItems,
-  customizationItems,
   isActive, 
   collapsed,
   onCustomizeClick,
@@ -33,12 +31,6 @@ export function SidebarNavItems({
     if (path === '/customize' && onCustomizeClick) {
       e.preventDefault();
       onCustomizeClick();
-      return;
-    }
-    
-    if (path === '/assistant' && onAssistantClick) {
-      e.preventDefault();
-      onAssistantClick();
       return;
     }
   };
@@ -66,24 +58,9 @@ export function SidebarNavItems({
           label={item.label}
           isActive={isActive(item.path)}
           collapsed={collapsed}
+          onClick={item.path === '/customize' ? (e) => handleSpecialItemClick(item.path, e) : undefined}
         />
       ))}
-
-      <Separator className="my-2 bg-gray-800" />
-      
-      <div className="mt-2">
-        {customizationItems.map((item) => (
-          <SidebarNavItem
-            key={item.path}
-            to={item.path}
-            icon={item.icon}
-            label={item.label}
-            isActive={isActive(item.path)}
-            collapsed={collapsed}
-            onClick={(e) => handleSpecialItemClick(item.path, e)}
-          />
-        ))}
-      </div>
     </div>
   );
 }

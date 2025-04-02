@@ -12,8 +12,7 @@ import {
   MessageSquare, 
   Layers, 
   Settings,
-  Brush,
-  Brain
+  Brush
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -79,18 +78,10 @@ export const utilityItems = [
     path: "/settings",
     label: "Settings",
     icon: Settings
-  }
-];
-
-export const customizationItems = [
+  },
   {
     path: "/customize",
     label: "Customize",
     icon: Brush
-  },
-  {
-    path: "/assistant",
-    label: "AI Assistant",
-    icon: Brain
   }
 ];
