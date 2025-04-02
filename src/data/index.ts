@@ -8,6 +8,11 @@ import { notifications, dashboardInsights } from './notifications/notificationDa
 import { integrationData, allIntegrations } from './integrations/integrationData';
 import { progressChartData } from './charts/chartData';
 import { financialData } from './financials/financialData';
+import { 
+  recentCommunications, 
+  scheduledEvents, 
+  communicationInsights 
+} from './communications/communicationData';
 
 // Export everything
 export {
@@ -21,5 +26,8 @@ export {
   integrationData,
   allIntegrations,
   progressChartData,
-  financialData
+  financialData,
+  recentCommunications,
+  scheduledEvents,
+  communicationInsights
 };
