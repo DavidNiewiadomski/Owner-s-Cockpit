@@ -15,9 +15,32 @@ interface SidebarNavItemsProps {
   utilityItems: NavItem[];
   isActive: (path: string) => boolean;
   collapsed: boolean;
+  onCustomizeClick?: () => void;
+  onAssistantClick?: () => void;
 }
 
-export function SidebarNavItems({ navItems, utilityItems, isActive, collapsed }: SidebarNavItemsProps) {
+export function SidebarNavItems({ 
+  navItems, 
+  utilityItems, 
+  isActive, 
+  collapsed,
+  onCustomizeClick,
+  onAssistantClick
+}: SidebarNavItemsProps) {
+  const handleSpecialItemClick = (path: string, e: React.MouseEvent) => {
+    if (path === '/customize' && onCustomizeClick) {
+      e.preventDefault();
+      onCustomizeClick();
+      return;
+    }
+    
+    if (path === '/assistant' && onAssistantClick) {
+      e.preventDefault();
+      onAssistantClick();
+      return;
+    }
+  };
+
   return (
     <div className="flex flex-col w-full gap-1">
       {navItems.map((item) => (
@@ -41,6 +64,7 @@ export function SidebarNavItems({ navItems, utilityItems, isActive, collapsed }:
           label={item.label}
           isActive={isActive(item.path)}
           collapsed={collapsed}
+          onClick={(e) => handleSpecialItemClick(item.path, e)}
         />
       ))}
     </div>

@@ -11,9 +11,24 @@ interface SidebarNavItemProps {
   label: string;
   isActive: boolean;
   collapsed: boolean;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
-export function SidebarNavItem({ to, icon: Icon, label, isActive, collapsed }: SidebarNavItemProps) {
+export function SidebarNavItem({ 
+  to, 
+  icon: Icon, 
+  label, 
+  isActive, 
+  collapsed,
+  onClick
+}: SidebarNavItemProps) {
+  const content = (
+    <>
+      <Icon className="h-4 w-4 flex-shrink-0" />
+      {!collapsed && <span className="ml-2">{label}</span>}
+    </>
+  );
+
   return (
     <Button 
       variant={isActive ? "secondary" : "ghost"} 
@@ -22,12 +37,18 @@ export function SidebarNavItem({ to, icon: Icon, label, isActive, collapsed }: S
         isActive && "bg-gray-800/60 text-white",
         collapsed ? "justify-center px-0" : "px-3"
       )}
-      asChild
+      onClick={onClick}
+      asChild={!onClick}
     >
-      <Link to={to} className="flex items-center">
-        <Icon className="h-4 w-4 flex-shrink-0" />
-        {!collapsed && <span className="ml-2">{label}</span>}
-      </Link>
+      {onClick ? (
+        <div className="flex items-center cursor-pointer">
+          {content}
+        </div>
+      ) : (
+        <Link to={to} className="flex items-center">
+          {content}
+        </Link>
+      )}
     </Button>
   );
 }

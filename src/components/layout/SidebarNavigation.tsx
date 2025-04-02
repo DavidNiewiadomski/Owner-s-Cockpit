@@ -9,9 +9,15 @@ import { navigationItems, utilityItems } from './sidebarConfig';
 
 interface SidebarNavigationProps {
   className?: string;
+  onCustomizeClick?: () => void;
+  onAssistantClick?: () => void;
 }
 
-export function SidebarNavigation({ className }: SidebarNavigationProps) {
+export function SidebarNavigation({ 
+  className,
+  onCustomizeClick,
+  onAssistantClick
+}: SidebarNavigationProps) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   
@@ -43,6 +49,8 @@ export function SidebarNavigation({ className }: SidebarNavigationProps) {
             utilityItems={utilityItems}
             isActive={isActive}
             collapsed={collapsed}
+            onCustomizeClick={onCustomizeClick}
+            onAssistantClick={onAssistantClick}
           />
         </div>
       </ScrollArea>
