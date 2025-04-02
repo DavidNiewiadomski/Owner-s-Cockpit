@@ -96,9 +96,9 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
               <div className="h-full w-full flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
                 <div className="relative w-full h-full">
                   <img 
-                    src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1788&q=80" 
+                    src="/lovable-uploads/c70400be-777a-4fcb-ac1d-96541af42708.png" 
                     alt="BIM model visualization" 
-                    className="absolute inset-0 w-full h-full object-cover opacity-70"
+                    className="absolute inset-0 w-full h-full object-cover opacity-90"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
                     <Orbit className="h-12 w-12 text-blue-500 mb-4" />
