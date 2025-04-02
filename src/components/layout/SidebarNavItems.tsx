@@ -36,6 +36,11 @@ export function SidebarNavItems({
       e.preventDefault();
       onCustomizeClick();
     }
+    
+    if (path === '/ai-assistant' && onAssistantClick) {
+      e.preventDefault();
+      onAssistantClick();
+    }
   };
 
   return (
@@ -64,7 +69,6 @@ export function SidebarNavItems({
                 label={item.label}
                 isActive={false}
                 collapsed={collapsed}
-                onClick={(e) => e.preventDefault()}
               />
             </ExportMenu>
           );

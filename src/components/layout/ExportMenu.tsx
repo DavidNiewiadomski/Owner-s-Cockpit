@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'react-router-dom';
@@ -52,7 +51,7 @@ export function ExportMenu({ children }: ExportMenuProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-56 bg-gray-900 border border-gray-700 text-gray-200"
+        className="w-56 bg-gray-900 border border-gray-700 text-gray-200 z-50"
       >
         {reports.map((report) => (
           <DropdownMenuItem 
