@@ -111,7 +111,10 @@ export function InvestmentTabs({
       </TabsContent>
 
       <TabsContent value="properties">
-        <PropertiesContent allocationData={allocationData} />
+        <PropertiesContent 
+          properties={[]} 
+          allocationData={allocationData} 
+        />
       </TabsContent>
     </Tabs>
   );
