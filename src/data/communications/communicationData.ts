@@ -1,145 +1,89 @@
 
-export interface Communication {
-  id: string;
-  type: 'email' | 'call' | 'meeting' | 'video' | 'message';
-  contact: {
-    name: string;
-    avatar?: string;
-  };
-  subject?: string;
-  excerpt?: string;
-  date: string;
-  time: string;
-  project: string;
-}
-
-export interface ScheduledEvent {
-  id: string;
-  title: string;
-  type: 'meeting' | 'call' | 'video';
-  date: string;
-  time: string;
-  duration: string;
-  participants: string[];
-  project: string;
-}
-
-export interface CommunicationInsight {
-  title: string;
-  content: string;
-  type: 'warning' | 'info' | 'success';
-}
-
-export const recentCommunications: Communication[] = [
+export const recentCommunications = [
   {
-    id: '1',
-    type: 'email',
-    contact: {
-      name: 'Sarah Wilson',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    subject: 'Downtown Project Update',
-    excerpt: 'Just wanted to update you on the latest developments with the facade materials for the Downtown High-Rise project...',
-    date: 'Today',
-    time: '10:30 AM',
-    project: 'Downtown High-Rise'
+    id: "com-1",
+    title: "Weekly Progress Update",
+    date: "2024-03-15",
+    sender: "Project Manager",
+    recipient: "All Stakeholders",
+    type: "email",
+    status: "sent",
+    content: "The project is progressing according to schedule. Foundation work is complete and structural steel is going up."
   },
   {
-    id: '2',
-    type: 'call',
-    contact: {
-      name: 'Alex Rodriguez',
-      avatar: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    subject: 'Budget Discussion',
-    date: 'Yesterday',
-    time: '3:45 PM',
-    project: 'Riverside Complex'
+    id: "com-2",
+    title: "Budget Approval Request",
+    date: "2024-03-12",
+    sender: "Financial Director",
+    recipient: "Owner",
+    type: "document",
+    status: "pending",
+    content: "Requesting approval for additional $50K for unexpected soil remediation."
   },
   {
-    id: '3',
-    type: 'meeting',
-    contact: {
-      name: 'Project Team Meeting',
-    },
-    subject: 'Weekly Progress Update',
-    excerpt: 'Discussed timeline adjustments and resource allocation for the next phase of the East Tower project.',
-    date: 'May 15',
-    time: '2:00 PM',
-    project: 'East Tower'
-  },
-  {
-    id: '4',
-    type: 'video',
-    contact: {
-      name: 'Lisa Chen',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    subject: 'Design Review',
-    date: 'May 12',
-    time: '11:15 AM',
-    project: 'Corporate Office Park'
-  },
-  {
-    id: '5',
-    type: 'message',
-    contact: {
-      name: 'Mark Johnson',
-    },
-    excerpt: 'The updated project timeline with the latest milestones has been approved by the board.',
-    date: 'May 10',
-    time: '4:20 PM',
-    project: 'Waterfront Development'
+    id: "com-3",
+    title: "Design Change Meeting",
+    date: "2024-03-10",
+    sender: "Lead Architect",
+    recipient: "Design Team",
+    type: "meeting",
+    status: "completed",
+    content: "Meeting to discuss facade material changes required due to supply chain issues."
   }
 ];
 
-export const scheduledEvents: ScheduledEvent[] = [
+export const scheduledEvents = [
   {
-    id: '1',
-    title: 'Weekly Project Status Meeting',
-    type: 'meeting',
-    date: 'Tomorrow',
-    time: '10:00 AM',
-    duration: '1h',
-    participants: ['Sarah Wilson', 'Alex Rodriguez', 'Lisa Chen', 'Mark Johnson'],
-    project: 'Downtown High-Rise'
+    id: "evt-1",
+    title: "Weekly Progress Meeting",
+    date: "2024-03-22",
+    time: "10:00 AM",
+    type: "recurring",
+    participants: ["Project Manager", "Construction Lead", "Owner Rep"],
+    location: "Construction Office",
+    description: "Weekly update on project progress, issues, and upcoming work."
   },
   {
-    id: '2',
-    title: 'Budget Review Call',
-    type: 'call',
-    date: 'May 20',
-    time: '2:30 PM',
-    duration: '45m',
-    participants: ['Alex Rodriguez', 'Finance Team'],
-    project: 'Riverside Complex'
+    id: "evt-2",
+    title: "Stakeholder Presentation",
+    date: "2024-04-05",
+    time: "2:00 PM",
+    type: "presentation",
+    participants: ["Executive Team", "Investors", "Project Team"],
+    location: "Virtual",
+    description: "Quarterly presentation on project status, financials, and timeline."
   },
   {
-    id: '3',
-    title: 'Design Team Presentation',
-    type: 'video',
-    date: 'May 22',
-    time: '11:00 AM',
-    duration: '1h 30m',
-    participants: ['Lisa Chen', 'Design Team', 'Stakeholders'],
-    project: 'East Tower'
+    id: "evt-3",
+    title: "Site Inspection",
+    date: "2024-03-28",
+    time: "9:00 AM",
+    type: "inspection",
+    participants: ["Building Inspector", "Project Manager", "Contractor"],
+    location: "Construction Site",
+    description: "Formal inspection of structural components before proceeding to next phase."
   }
 ];
 
-export const communicationInsights: CommunicationInsight[] = [
+export const communicationInsights = [
   {
-    title: 'Response Needed',
-    content: 'Alex Rodriguez is waiting for your approval on the revised budget for Riverside Complex.',
-    type: 'warning'
+    title: "Response Times",
+    content: "Average response time to critical issues has improved by 15% this month.",
+    type: "success" as const
   },
   {
-    title: 'Meeting Reminder',
-    content: 'Weekly project status meeting scheduled for tomorrow at 10am with the Downtown High-Rise team.',
-    type: 'info'
+    title: "Stakeholder Engagement",
+    content: "Owner involvement has increased by 23% compared to previous projects.",
+    type: "info" as const
   },
   {
-    title: 'Communication Suggestion',
-    content: 'You haven\'t updated the Waterfront Development team in 5 days. Consider scheduling a check-in.',
-    type: 'info'
+    title: "Communication Channels",
+    content: "Email remains the most effective channel with 87% open rate for project updates.",
+    type: "info" as const
+  },
+  {
+    title: "Meeting Efficiency",
+    content: "Progress meetings now average 30 minutes, down from 45 minutes last quarter.",
+    type: "success" as const
   }
 ];

@@ -1,7 +1,7 @@
 
 // Re-export all data from the separate files
 import { propertyData } from './property/propertyData';
-import { timelineEvents } from './timeline/timelineEvents';
+import { timelineEvents } from './timeline/timelineData';
 import { documents, projectDocuments } from './documents/documentData';
 import { projects } from './projects/projectData';
 import { notifications, dashboardInsights } from './notifications/notificationData';
