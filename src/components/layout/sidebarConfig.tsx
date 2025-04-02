@@ -1,14 +1,17 @@
 
 import { 
-  BarChart2, 
+  LayoutDashboard, 
+  ListChecks, 
+  Building, 
+  BarChart, 
+  Wallet, 
+  DollarSign, 
   Calendar, 
+  ShieldCheck, 
   FileText, 
-  Home, 
-  Layers, 
   MessageSquare, 
-  Settings, 
-  Zap, 
-  HandCoins,
+  Layers, 
+  Settings,
   Brush,
   Brain
 } from 'lucide-react';
@@ -17,12 +20,32 @@ export const navigationItems = [
   {
     path: "/",
     label: "Dashboard",
-    icon: Home
+    icon: LayoutDashboard
+  },
+  {
+    path: "/action-items",
+    label: "Action Items",
+    icon: ListChecks
   },
   {
     path: "/projects",
     label: "Projects",
-    icon: Layers
+    icon: Building
+  },
+  {
+    path: "/analytics",
+    label: "Analytics",
+    icon: BarChart
+  },
+  {
+    path: "/budget-financials",
+    label: "Budget & Financials",
+    icon: Wallet
+  },
+  {
+    path: "/investment-impact",
+    label: "Investment Impact",
+    icon: DollarSign
   },
   {
     path: "/timeline",
@@ -30,43 +53,36 @@ export const navigationItems = [
     icon: Calendar
   },
   {
+    path: "/safety-sustainability",
+    label: "Safety & Sustainability",
+    icon: ShieldCheck
+  },
+  {
     path: "/documents",
     label: "Documents",
     icon: FileText
   },
   {
-    path: "/budget-financials",
-    label: "Budget",
-    icon: BarChart2
-  },
-  {
-    path: "/investment-impact",
-    label: "Investment",
-    icon: HandCoins
-  },
-  {
-    path: "/safety-sustainability",
-    label: "Safety",
-    icon: Zap
-  },
-  {
-    path: "/analytics",
-    label: "Analytics",
-    icon: BarChart2
+    path: "/communications",
+    label: "Communications",
+    icon: MessageSquare
   }
 ];
 
 export const utilityItems = [
   {
-    path: "/messages",
-    label: "Messages",
-    icon: MessageSquare
+    path: "/integrations",
+    label: "Integrations",
+    icon: Layers
   },
   {
     path: "/settings",
     label: "Settings",
     icon: Settings
-  },
+  }
+];
+
+export const customizationItems = [
   {
     path: "/customize",
     label: "Customize",
