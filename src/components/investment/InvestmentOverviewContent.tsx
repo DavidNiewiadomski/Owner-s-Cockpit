@@ -15,9 +15,16 @@ interface InvestmentMetric {
 interface InvestmentOverviewContentProps {
   investmentMetrics: InvestmentMetric[];
   propertyValueData?: any[];
+  insights?: any[];
+  onChatOpen?: () => void;
 }
 
-export function InvestmentOverviewContent({ investmentMetrics, propertyValueData = [] }: InvestmentOverviewContentProps) {
+export function InvestmentOverviewContent({ 
+  investmentMetrics, 
+  propertyValueData = [],
+  insights = [],
+  onChatOpen = () => {}
+}: InvestmentOverviewContentProps) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
@@ -80,7 +87,7 @@ export function InvestmentOverviewContent({ investmentMetrics, propertyValueData
           </CardContent>
         </Card>
         
-        <AIInsightsCard />
+        <AIInsightsCard insights={insights} onChatOpen={onChatOpen} />
       </div>
     </div>
   );

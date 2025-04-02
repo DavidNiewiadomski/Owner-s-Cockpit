@@ -36,6 +36,10 @@ const InvestmentImpact = () => {
   const roiData = generateRoiData(currentPeriod);
   const propertyValueData = generatePropertyValueData(currentPeriod);
 
+  const handleOpenChat = () => {
+    setSheetOpen(true);
+  };
+
   return (
     <DashboardLayout
       projectContext="Investment Impact"
@@ -46,7 +50,7 @@ const InvestmentImpact = () => {
           <InvestmentHeader 
             title="Investment Impact" 
             description="Track and analyze the financial performance of your construction projects"
-            onChatOpen={() => setSheetOpen(true)}
+            onChatOpen={handleOpenChat}
             periods={periods}
             currentPeriod={currentPeriod}
             setCurrentPeriod={setCurrentPeriod}
@@ -56,12 +60,14 @@ const InvestmentImpact = () => {
           <InvestmentTabs 
             activeTab={activeTab} 
             setActiveTab={setActiveTab} 
-            investmentMetrics={investmentMetrics} 
+            investmentMetrics={investmentMetrics}
+            investmentInsights={investmentInsights}
             riskData={riskData} 
             riskByCategory={riskByCategory}
             roiData={roiData}
             propertyValueData={propertyValueData}
             allocationData={investmentAllocationData}
+            onChatOpen={handleOpenChat}
           />
 
           <AIAssistantSheet 

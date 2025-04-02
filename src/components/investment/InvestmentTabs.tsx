@@ -15,26 +15,36 @@ interface InvestmentMetric {
   variance: string;
 }
 
+interface Insight {
+  title: string;
+  content: string;
+  type: "info" | "warning" | "success";
+}
+
 interface InvestmentTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   investmentMetrics: InvestmentMetric[];
+  investmentInsights?: Insight[];
   riskData: any[];
   riskByCategory: any[];
   roiData?: any[];
   propertyValueData?: any[];
   allocationData?: any[];
+  onChatOpen?: () => void;
 }
 
 export function InvestmentTabs({ 
   activeTab, 
   setActiveTab,
   investmentMetrics,
+  investmentInsights = [],
   riskData,
   riskByCategory,
   roiData,
   propertyValueData,
-  allocationData
+  allocationData,
+  onChatOpen = () => {}
 }: InvestmentTabsProps) {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-10">
@@ -75,6 +85,8 @@ export function InvestmentTabs({
         <InvestmentOverviewContent 
           investmentMetrics={investmentMetrics} 
           propertyValueData={propertyValueData}
+          insights={investmentInsights}
+          onChatOpen={onChatOpen}
         />
       </TabsContent>
 
@@ -99,7 +111,7 @@ export function InvestmentTabs({
       </TabsContent>
 
       <TabsContent value="properties">
-        <PropertiesContent />
+        <PropertiesContent allocationData={allocationData} />
       </TabsContent>
     </Tabs>
   );
