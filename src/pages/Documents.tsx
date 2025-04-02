@@ -100,11 +100,13 @@ const Documents = () => {
         />
       </div>
 
-      <BIMViewer 
-        projectName={selectedProject?.title} 
-        isOpen={isBIMViewerOpen} 
-        onClose={() => setIsBIMViewerOpen(false)}
-      />
+      {isBIMViewerOpen && (
+        <BIMViewer 
+          projectName={selectedProject?.title} 
+          isOpen={isBIMViewerOpen} 
+          onClose={() => setIsBIMViewerOpen(false)}
+        />
+      )}
     </DashboardLayout>
   );
 };

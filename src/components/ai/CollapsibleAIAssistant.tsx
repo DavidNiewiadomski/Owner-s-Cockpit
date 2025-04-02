@@ -77,30 +77,32 @@ export function CollapsibleAIAssistant({
               </Button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {displayInsights.map((insight, index) => (
-                <div 
-                  key={index} 
-                  className={`flex items-start gap-2.5 p-3.5 rounded-lg bg-gradient-to-br from-gray-850 to-gray-900 hover-scale transition-all duration-200 cursor-pointer ${
-                    insight.type === "warning" ? "border-l-2 border-amber-500/50 shadow-[0_4px_15px_rgba(251,191,36,0.1)]" : 
-                    insight.type === "success" ? "border-l-2 border-green-500/50 shadow-[0_4px_15px_rgba(74,222,128,0.1)]" : 
-                    "border-l-2 border-blue-500/50 shadow-[0_4px_15px_rgba(59,130,246,0.1)]"
-                  }`}
-                  onClick={() => handleInsightClick(insight)}
-                >
-                  <div className={`p-1.5 rounded-full ${
-                    insight.type === "warning" ? "bg-amber-950/50 text-amber-400" : 
-                    insight.type === "success" ? "bg-green-950/50 text-green-400" : 
-                    "bg-blue-950/50 text-blue-400"
-                  }`}>
-                    <LightbulbIcon className="h-3.5 w-3.5 flex-shrink-0" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 overflow-x-auto">
+              <div className="flex space-x-3 min-w-max">
+                {displayInsights.map((insight, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-start gap-2.5 p-3.5 rounded-lg bg-gradient-to-br from-gray-850 to-gray-900 hover-scale transition-all duration-200 cursor-pointer min-w-[250px] max-w-[300px] ${
+                      insight.type === "warning" ? "border-l-2 border-amber-500/50 shadow-[0_4px_15px_rgba(251,191,36,0.1)]" : 
+                      insight.type === "success" ? "border-l-2 border-green-500/50 shadow-[0_4px_15px_rgba(74,222,128,0.1)]" : 
+                      "border-l-2 border-blue-500/50 shadow-[0_4px_15px_rgba(59,130,246,0.1)]"
+                    }`}
+                    onClick={() => handleInsightClick(insight)}
+                  >
+                    <div className={`p-1.5 rounded-full ${
+                      insight.type === "warning" ? "bg-amber-950/50 text-amber-400" : 
+                      insight.type === "success" ? "bg-green-950/50 text-green-400" : 
+                      "bg-blue-950/50 text-blue-400"
+                    }`}>
+                      <LightbulbIcon className="h-3.5 w-3.5 flex-shrink-0" />
+                    </div>
+                    <div>
+                      {initialInsights && <p className="text-xs font-semibold mb-1 text-white">{insight.title}</p>}
+                      <p className="text-sm text-gray-300 leading-snug">{typeof insight === 'string' ? insight : insight.content}</p>
+                    </div>
                   </div>
-                  <div>
-                    {initialInsights && <p className="text-xs font-semibold mb-1 text-white">{insight.title}</p>}
-                    <p className="text-sm text-gray-300 leading-snug">{typeof insight === 'string' ? insight : insight.content}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
