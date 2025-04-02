@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { CustomizationMenu } from './CustomizationMenu';
 import { CustomContentSection } from './CustomContentSection';
@@ -7,15 +7,21 @@ import { CustomContentSection } from './CustomContentSection';
 interface CustomizablePageLayoutProps {
   children: React.ReactNode;
   pageId: string;
+  isCustomizationMenuOpen?: boolean;
+  setIsCustomizationMenuOpen?: (isOpen: boolean) => void;
 }
 
-export function CustomizablePageLayout({ children, pageId }: CustomizablePageLayoutProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export function CustomizablePageLayout({ 
+  children, 
+  pageId, 
+  isCustomizationMenuOpen = false, 
+  setIsCustomizationMenuOpen 
+}: CustomizablePageLayoutProps) {
   const [customContents, setCustomContents] = useLocalStorage<any[]>(`${pageId}-custom-contents`, []);
 
   const addCustomContent = (content: any) => {
     setCustomContents([...customContents, { ...content, id: Date.now().toString() }]);
-    setIsMenuOpen(false);
+    setIsCustomizationMenuOpen?.(false);
   };
 
   const removeCustomContent = (id: string) => {
@@ -46,8 +52,8 @@ export function CustomizablePageLayout({ children, pageId }: CustomizablePageLay
       )}
       
       <CustomizationMenu 
-        isOpen={isMenuOpen} 
-        onClose={() => setIsMenuOpen(false)}
+        isOpen={isCustomizationMenuOpen} 
+        onClose={() => setIsCustomizationMenuOpen?.(false)}
         onAddContent={addCustomContent}
       />
     </div>

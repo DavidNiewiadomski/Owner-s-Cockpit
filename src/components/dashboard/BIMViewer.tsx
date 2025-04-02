@@ -93,20 +93,19 @@ export function BIMViewer({ projectName = 'Project', isOpen, onClose }: BIMViewe
             </div>
           ) : (
             <div className="h-full w-full relative overflow-hidden">
-              {/* Placeholder for 3D BIM model - in a real app, this would be a Three.js canvas */}
               <div className="h-full w-full flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
                 <div className="relative w-full h-full">
                   <img 
-                    src="https://www.constructible.trimble.com/hs-fs/hubfs/BIM%20in%20Construction.jpg" 
-                    alt="BIM model placeholder" 
-                    className="absolute inset-0 w-full h-full object-cover opacity-60"
+                    src="/lovable-uploads/84a355bb-2782-4715-9c27-a42a59fb9fce.png" 
+                    alt="BIM model visualization" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-70"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
                     <Orbit className="h-12 w-12 text-blue-500 mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">Interactive BIM Model</h3>
                     <p className="text-gray-300 max-w-md">
-                      This is a placeholder for an interactive 3D BIM model. In a production environment, 
-                      this would be rendered using Three.js or a specialized BIM viewer library.
+                      This is a visualization of your building information model. In a production environment, 
+                      this would be fully interactive using Three.js or a specialized BIM viewer library.
                     </p>
                   </div>
                 </div>
