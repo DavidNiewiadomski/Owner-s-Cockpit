@@ -40,7 +40,7 @@ export function DashboardLayout({
         onCustomizeClick={handleCustomizeClick}
       />
       
-      <div className="flex-1 flex flex-col w-full overflow-hidden">
+      <div className="flex-1 flex flex-col w-full overflow-auto">
         <DashboardHeader onSearch={onSearch} />
 
         <CollapsibleAIAssistant 
@@ -49,7 +49,7 @@ export function DashboardLayout({
           initialInsights={initialInsights}
         />
         
-        <main className="flex-1 p-6 bg-black overflow-y-auto w-full">
+        <main className="flex-1 p-6 bg-black w-full">
           <div className="w-full mx-auto">
             {children}
           </div>
