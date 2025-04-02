@@ -1,143 +1,70 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   LineChart, 
   Line, 
-  BarChart,
-  Bar,
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
+  Legend, 
   ResponsiveContainer, 
-  Legend,
-  ReferenceLine
+  ReferenceLine 
 } from 'recharts';
-import { TrendingUp, DollarSign, Clock, ArrowDownIcon, ArrowUpIcon } from 'lucide-react';
-import { roiData } from '@/data/investment/investmentData';
 
-const roiBreakdownData = [
-  { name: 'Site A', initial: 400000, current: 520000, roi: 30 },
-  { name: 'Site B', initial: 300000, current: 370000, roi: 23.3 },
-  { name: 'Site C', initial: 200000, current: 260000, roi: 30 },
-  { name: 'Site D', initial: 270000, current: 310000, roi: 14.8 },
-  { name: 'Site E', initial: 180000, current: 230000, roi: 27.8 },
-];
-
-const monthlyReturnsData = [
-  { month: 'Jan', return: 5.2, benchmark: 4.8 },
-  { month: 'Feb', return: 5.7, benchmark: 4.9 },
-  { month: 'Mar', return: 5.1, benchmark: 5.0 },
-  { month: 'Apr', return: 4.8, benchmark: 5.1 },
-  { month: 'May', return: 5.5, benchmark: 5.2 },
-  { month: 'Jun', return: 6.2, benchmark: 5.3 },
-  { month: 'Jul', return: 6.8, benchmark: 5.4 },
-  { month: 'Aug', return: 7.1, benchmark: 5.5 },
-  { month: 'Sep', return: 7.4, benchmark: 5.6 },
-];
-
-interface InvestmentStats {
-  title: string;
-  value: string;
-  trend: "up" | "down" | "neutral";
-  trendValue: string;
-  icon: React.ElementType;
+interface ROIAnalysisContentProps {
+  roiData?: any[];
+  propertyValueData?: any[];
 }
 
-const investmentStats: InvestmentStats[] = [
-  {
-    title: "Current ROI",
-    value: "7.3%",
-    trend: "up",
-    trendValue: "+0.2% from last quarter",
-    icon: TrendingUp
-  },
-  {
-    title: "Annualized Return",
-    value: "9.2%",
-    trend: "up",
-    trendValue: "+1.5% year-over-year",
-    icon: DollarSign
-  },
-  {
-    title: "Payback Period",
-    value: "5.2 years",
-    trend: "down",
-    trendValue: "-0.3 years from projection",
-    icon: Clock
-  }
-];
-
-export function ROIAnalysisContent() {
+export function ROIAnalysisContent({ roiData = [], propertyValueData = [] }: ROIAnalysisContentProps) {
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {investmentStats.map((stat, index) => (
-          <Card key={index} className="bg-black border-gray-800">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-md font-medium text-gray-200">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-construction-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-white">{stat.value}</div>
-              <div className="flex items-center mt-4">
-                <div className={`flex items-center text-sm ${
-                  stat.trend === "up" 
-                    ? "text-green-500" 
-                    : stat.trend === "down" 
-                      ? "text-amber-500"
-                      : "text-gray-400"
-                }`}>
-                  {stat.trend === "up" ? (
-                    <ArrowUpIcon className="h-4 w-4 mr-1" />
-                  ) : stat.trend === "down" ? (
-                    <ArrowDownIcon className="h-4 w-4 mr-1" />
-                  ) : null}
-                  {stat.trendValue}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
       <Card className="bg-black border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-white">ROI Projection vs. Actual</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-lg">ROI Performance Analysis</CardTitle>
+          <CardDescription className="text-gray-400">
+            Comparison of projected vs. actual returns on investment
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={roiData}>
+              <LineChart
+                data={roiData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis dataKey="name" stroke="#666" />
+                <XAxis dataKey="name" tick={{ fill: '#ccc' }} />
                 <YAxis 
                   tickFormatter={(value) => `${value}%`} 
-                  domain={[6, 9]} 
-                  stroke="#666"
+                  domain={['dataMin - 0.5', 'dataMax + 0.5']}
+                  tick={{ fill: '#ccc' }}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} 
-                  labelStyle={{ color: '#ccc' }}
+                  formatter={(value) => [`${value}%`, '']}
+                  contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
                 />
                 <Legend />
+                <ReferenceLine y={7.0} stroke="#a855f7" strokeDasharray="3 3" label={{ value: 'Target ROI', position: 'insideBottomRight', fill: '#a855f7' }} />
                 <Line 
                   type="monotone" 
                   dataKey="projected" 
-                  stroke="#10B981" 
-                  activeDot={{ r: 8 }} 
+                  name="Projected ROI" 
+                  stroke="#4ade80" 
                   strokeWidth={2}
-                  name="Projected ROI"
+                  dot={{ r: 4, strokeWidth: 1 }}
+                  activeDot={{ r: 6 }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="actual" 
-                  stroke="#EF4444" 
-                  activeDot={{ r: 8 }} 
+                  name="Actual ROI" 
+                  stroke="#38bdf8" 
                   strokeWidth={2}
-                  name="Actual ROI"
+                  dot={{ r: 4, strokeWidth: 1 }}
+                  activeDot={{ r: 6 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -147,76 +74,54 @@ export function ROIAnalysisContent() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">Monthly Returns vs. Benchmark</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-white text-lg">Return Distribution</CardTitle>
+            <CardDescription className="text-gray-400">
+              Breakdown of returns by property type and location
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={monthlyReturnsData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                  <XAxis dataKey="month" stroke="#666" />
-                  <YAxis 
-                    tickFormatter={(value) => `${value}%`} 
-                    stroke="#666"
-                  />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} 
-                    labelStyle={{ color: '#ccc' }}
-                    formatter={(value) => [`${value}%`, '']}
-                  />
-                  <Legend />
-                  <Bar dataKey="return" name="Your Returns" fill="#38bdf8" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="benchmark" name="Market Benchmark" fill="#fb7185" radius={[4, 4, 0, 0]} />
-                  <ReferenceLine y={5.5} stroke="#666" strokeDasharray="3 3" />
-                </BarChart>
-              </ResponsiveContainer>
+          <CardContent className="h-80">
+            {/* Distribution chart would go here */}
+            <div className="flex items-center justify-center h-full border border-dashed border-gray-700 rounded-md">
+              <p className="text-gray-500">Return distribution visualization</p>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-black border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white">ROI by Property</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-white text-lg">Value Growth Rate</CardTitle>
+            <CardDescription className="text-gray-400">
+              Property value appreciation over time
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-800">
-                    <th className="py-3 text-left text-gray-400">Property</th>
-                    <th className="py-3 text-right text-gray-400">Initial Value</th>
-                    <th className="py-3 text-right text-gray-400">Current Value</th>
-                    <th className="py-3 text-right text-gray-400">ROI</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {roiBreakdownData.map((item, index) => (
-                    <tr key={index} className="border-b border-gray-800">
-                      <td className="py-3 font-medium text-white">{item.name}</td>
-                      <td className="py-3 text-right text-gray-300">${(item.initial).toLocaleString()}</td>
-                      <td className="py-3 text-right text-white">${(item.current).toLocaleString()}</td>
-                      <td className="py-3 text-right">
-                        <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-700/30">
-                          {item.roi.toFixed(1)}%
-                        </Badge>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="border-t border-gray-700">
-                    <td className="py-3 font-medium text-white">Total Average</td>
-                    <td className="py-3 text-right text-gray-300">$1,350,000</td>
-                    <td className="py-3 text-right text-white">$1,690,000</td>
-                    <td className="py-3 text-right">
-                      <Badge variant="outline" className="bg-green-900/20 text-green-400 border-green-700/30">
-                        25.2%
-                      </Badge>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={propertyValueData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                  <XAxis dataKey="name" tick={{ fill: '#ccc' }} />
+                  <YAxis 
+                    tickFormatter={(value) => `$${value}M`}
+                    tick={{ fill: '#ccc' }}
+                  />
+                  <Tooltip 
+                    formatter={(value) => [`$${value}M`, 'Property Value']}
+                    contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="value" 
+                    name="Property Value" 
+                    stroke="#f472b6" 
+                    strokeWidth={2}
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>

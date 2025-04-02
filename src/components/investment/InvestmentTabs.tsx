@@ -1,84 +1,105 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle } from 'lucide-react';
-import { InvestmentOverviewContent } from '@/components/investment/InvestmentOverviewContent';
-import { RiskManagementContent } from '@/components/investment/RiskManagementContent';
-import { ROIAnalysisContent } from '@/components/investment/ROIAnalysisContent';
-import { InvestmentAllocationContent } from '@/components/investment/InvestmentAllocationContent';
-import { PropertiesContent } from '@/components/investment/PropertiesContent';
-import { InvestmentMetric } from '@/data/investment/investmentData';
-import { Risk, CategoryData } from '@/data/investment/riskData';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { InvestmentOverviewContent } from './InvestmentOverviewContent';
+import { ROIAnalysisContent } from './ROIAnalysisContent';
+import { InvestmentAllocationContent } from './InvestmentAllocationContent';
+import { RiskManagementContent } from './RiskManagementContent';
+import { PropertiesContent } from './PropertiesContent';
+
+interface InvestmentMetric {
+  label: string;
+  original: string;
+  current: string;
+  impact: "positive" | "negative";
+  variance: string;
+}
 
 interface InvestmentTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   investmentMetrics: InvestmentMetric[];
-  riskData: Risk[];
-  riskByCategory: CategoryData[];
+  riskData: any[];
+  riskByCategory: any[];
+  roiData?: any[];
+  propertyValueData?: any[];
+  allocationData?: any[];
 }
 
 export function InvestmentTabs({ 
   activeTab, 
-  setActiveTab, 
-  investmentMetrics, 
-  riskData, 
-  riskByCategory 
+  setActiveTab,
+  investmentMetrics,
+  riskData,
+  riskByCategory,
+  roiData,
+  propertyValueData,
+  allocationData
 }: InvestmentTabsProps) {
   return (
-    <Tabs defaultValue="overview" className="space-y-8" onValueChange={setActiveTab}>
-      <TabsList className="bg-gray-900/40 border border-gray-800 rounded-md p-1 w-full flex justify-between overflow-x-auto">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-10">
+      <TabsList className="flex overflow-x-auto w-full mb-6 bg-black border border-gray-800 rounded-lg p-1">
         <TabsTrigger 
           value="overview" 
-          className="text-base font-medium px-4 py-2 data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+          className="data-[state=active]:bg-construction-600 data-[state=active]:text-white"
         >
           Overview
         </TabsTrigger>
         <TabsTrigger 
           value="roi" 
-          className="text-base font-medium px-4 py-2 data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+          className="data-[state=active]:bg-construction-600 data-[state=active]:text-white"
         >
           ROI Analysis
         </TabsTrigger>
         <TabsTrigger 
           value="allocation" 
-          className="text-base font-medium px-4 py-2 data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+          className="data-[state=active]:bg-construction-600 data-[state=active]:text-white"
         >
-          Investment Allocation
+          Allocation
+        </TabsTrigger>
+        <TabsTrigger 
+          value="risk" 
+          className="data-[state=active]:bg-construction-600 data-[state=active]:text-white"
+        >
+          Risk Management
         </TabsTrigger>
         <TabsTrigger 
           value="properties" 
-          className="text-base font-medium px-4 py-2 data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+          className="data-[state=active]:bg-construction-600 data-[state=active]:text-white"
         >
           Properties
         </TabsTrigger>
-        <TabsTrigger 
-          value="risks" 
-          className="text-base font-medium px-4 py-2 data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
-        >
-          <AlertTriangle className="h-4 w-4 mr-2" />
-          Risk Management
-        </TabsTrigger>
       </TabsList>
-      
-      <TabsContent value="overview" className="space-y-6 animate-in fade-in-50 duration-300">
-        <InvestmentOverviewContent investmentMetrics={investmentMetrics} />
+
+      <TabsContent value="overview">
+        <InvestmentOverviewContent 
+          investmentMetrics={investmentMetrics} 
+          propertyValueData={propertyValueData}
+        />
       </TabsContent>
-      
-      <TabsContent value="roi" className="space-y-6 animate-in fade-in-50 duration-300">
-        <ROIAnalysisContent />
+
+      <TabsContent value="roi">
+        <ROIAnalysisContent 
+          roiData={roiData}
+          propertyValueData={propertyValueData}
+        />
       </TabsContent>
-      
-      <TabsContent value="allocation" className="space-y-6 animate-in fade-in-50 duration-300">
-        <InvestmentAllocationContent />
+
+      <TabsContent value="allocation">
+        <InvestmentAllocationContent 
+          allocationData={allocationData} 
+        />
       </TabsContent>
-      
-      <TabsContent value="properties" className="space-y-6 animate-in fade-in-50 duration-300">
+
+      <TabsContent value="risk">
+        <RiskManagementContent 
+          riskData={riskData} 
+          riskByCategory={riskByCategory} 
+        />
+      </TabsContent>
+
+      <TabsContent value="properties">
         <PropertiesContent />
-      </TabsContent>
-      
-      <TabsContent value="risks" className="space-y-6 animate-in fade-in-50 duration-300">
-        <RiskManagementContent riskData={riskData} riskByCategory={riskByCategory} />
       </TabsContent>
     </Tabs>
   );

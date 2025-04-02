@@ -31,9 +31,9 @@ export function AnalyticsHeader({
               key={period.value}
               variant="ghost" 
               size="sm"
-              className={`px-3 py-1 text-xs rounded-sm ${
+              className={`px-3 py-1 text-xs rounded-sm transition-all duration-300 ${
                 currentPeriod === period.value 
-                  ? 'bg-construction-900/40 text-construction-300' 
+                  ? 'bg-construction-900/40 text-construction-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]' 
                   : 'text-gray-400 hover:text-white'
               }`}
               onClick={() => setCurrentPeriod(period.value)}

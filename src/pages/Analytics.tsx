@@ -5,16 +5,16 @@ import { AnalyticsHeader } from '@/components/analytics/AnalyticsHeader';
 import { AnalyticsTabs } from '@/components/analytics/AnalyticsTabs';
 import { KeyPerformanceIndicators } from '@/components/analytics/KeyPerformanceIndicators';
 import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
-import { 
-  projectData, 
-  timelineData, 
-  budgetData, 
-  resourceData, 
-  performanceData, 
-  chartColors,
-  kpiData,
-  analyticsInsights
-} from '@/data/analytics/analyticsData';
+import { chartColors } from '@/data/analytics/analyticsData';
+import {
+  generateKpiData,
+  generateProjectData,
+  generateTimelineData,
+  generateBudgetData,
+  generateResourceData,
+  generatePerformanceData,
+  generateInsights
+} from '@/data/analytics/analyticsDataByPeriod';
 
 // Define periods for the Analytics header
 const periods = [
@@ -27,6 +27,15 @@ const periods = [
 const Analytics = () => {
   const [currentPeriod, setCurrentPeriod] = useState('monthly');
   const [activeAnimation, setActiveAnimation] = useState(false);
+  
+  // Generate data based on the current period
+  const kpiData = generateKpiData(currentPeriod);
+  const projectData = generateProjectData(currentPeriod);
+  const timelineData = generateTimelineData(currentPeriod);
+  const budgetData = generateBudgetData(currentPeriod);
+  const resourceData = generateResourceData(currentPeriod);
+  const performanceData = generatePerformanceData(currentPeriod);
+  const analyticsInsights = generateInsights(currentPeriod);
 
   // Effect to switch between animation states for pulse effect
   useEffect(() => {
