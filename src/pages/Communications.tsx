@@ -9,7 +9,9 @@ import { CommunicationStats } from '@/components/communications/CommunicationSta
 import { 
   recentCommunications, 
   scheduledEvents, 
-  communicationInsights 
+  communicationInsights,
+  Communication,
+  ScheduledEvent
 } from '@/data/communications/communicationData';
 
 const Communications = () => {

@@ -1,5 +1,32 @@
 
-export const recentCommunications = [
+export interface Communication {
+  id: string;
+  title: string;
+  date: string;
+  sender: string;
+  recipient: string;
+  type: string;
+  status: string;
+  content: string;
+  contact?: string;
+  time?: string;
+  project?: string;
+}
+
+export interface ScheduledEvent {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  type: string;
+  participants: string[];
+  location: string;
+  description: string;
+  duration?: string;
+  project?: string;
+}
+
+export const recentCommunications: Communication[] = [
   {
     id: "com-1",
     title: "Weekly Progress Update",
@@ -8,7 +35,10 @@ export const recentCommunications = [
     recipient: "All Stakeholders",
     type: "email",
     status: "sent",
-    content: "The project is progressing according to schedule. Foundation work is complete and structural steel is going up."
+    content: "The project is progressing according to schedule. Foundation work is complete and structural steel is going up.",
+    contact: "Project Manager",
+    time: "10:30 AM",
+    project: "East Tower"
   },
   {
     id: "com-2",
@@ -18,7 +48,10 @@ export const recentCommunications = [
     recipient: "Owner",
     type: "document",
     status: "pending",
-    content: "Requesting approval for additional $50K for unexpected soil remediation."
+    content: "Requesting approval for additional $50K for unexpected soil remediation.",
+    contact: "Financial Director",
+    time: "2:15 PM",
+    project: "Westside Park"
   },
   {
     id: "com-3",
@@ -28,11 +61,14 @@ export const recentCommunications = [
     recipient: "Design Team",
     type: "meeting",
     status: "completed",
-    content: "Meeting to discuss facade material changes required due to supply chain issues."
+    content: "Meeting to discuss facade material changes required due to supply chain issues.",
+    contact: "Lead Architect",
+    time: "3:00 PM",
+    project: "East Tower"
   }
 ];
 
-export const scheduledEvents = [
+export const scheduledEvents: ScheduledEvent[] = [
   {
     id: "evt-1",
     title: "Weekly Progress Meeting",
@@ -41,7 +77,9 @@ export const scheduledEvents = [
     type: "recurring",
     participants: ["Project Manager", "Construction Lead", "Owner Rep"],
     location: "Construction Office",
-    description: "Weekly update on project progress, issues, and upcoming work."
+    description: "Weekly update on project progress, issues, and upcoming work.",
+    duration: "1 hour",
+    project: "East Tower"
   },
   {
     id: "evt-2",
@@ -51,7 +89,9 @@ export const scheduledEvents = [
     type: "presentation",
     participants: ["Executive Team", "Investors", "Project Team"],
     location: "Virtual",
-    description: "Quarterly presentation on project status, financials, and timeline."
+    description: "Quarterly presentation on project status, financials, and timeline.",
+    duration: "2 hours",
+    project: "All Projects"
   },
   {
     id: "evt-3",
@@ -61,7 +101,9 @@ export const scheduledEvents = [
     type: "inspection",
     participants: ["Building Inspector", "Project Manager", "Contractor"],
     location: "Construction Site",
-    description: "Formal inspection of structural components before proceeding to next phase."
+    description: "Formal inspection of structural components before proceeding to next phase.",
+    duration: "3 hours",
+    project: "North Bridge"
   }
 ];
 
