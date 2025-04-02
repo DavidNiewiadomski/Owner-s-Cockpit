@@ -34,14 +34,16 @@ export function MainDashboard() {
   
   return (
     <>
+      {/* Owner Quick Actions moved to the top */}
+      <div className="mb-8">
+        <OwnerQuickActions />
+      </div>
+      
       <DashboardStats />
       
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-        <div className="xl:col-span-2">
+        <div className="xl:col-span-3">
           <ProjectsSection projects={projects.slice(0, 2)} />
-        </div>
-        <div>
-          <OwnerQuickActions />
         </div>
       </div>
       
