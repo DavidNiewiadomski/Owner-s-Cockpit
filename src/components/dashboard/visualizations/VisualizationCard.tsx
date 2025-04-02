@@ -30,7 +30,7 @@ export function VisualizationCard({ title, imageSrc, onFullScreen, className }: 
             View Full Screen
           </Button>
         </div>
-        <div className="flex-1 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center border border-cyan-900/20 rounded-md">
+        <div className="flex-1 bg-gradient-to-b from-gray-900 to-black flex items-center justify-center border border-cyan-900/20 rounded-md overflow-hidden">
           <img 
             src={imageSrc} 
             alt={`${title} visualization`} 
