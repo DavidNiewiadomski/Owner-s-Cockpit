@@ -24,12 +24,12 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn(
-      "overflow-hidden bg-gradient-to-br from-black to-gray-850 border border-cyan-800/40 shadow-lg animate-fade-in",
+      "overflow-hidden bg-gradient-to-br from-gray-900 to-black border-cyan-900/20 shadow-lg animate-fade-in hover:translate-y-[-2px] transition-all duration-300",
       className
     )}>
       {/* Vibrant gradient top border */}
       <div className={cn(
-        "h-1 w-full",
+        "h-1.5 w-full",
         trend === "up" ? "bg-gradient-to-r from-emerald-400 to-green-500" :
         trend === "down" ? "bg-gradient-to-r from-red-400 to-rose-500" :
         "bg-gradient-to-r from-blue-400 to-cyan-500"
@@ -38,20 +38,20 @@ export function StatCard({
       <CardContent className="p-5">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-sm font-medium text-cyan-300">{title}</p>
+            <p className="text-sm font-medium text-cyan-400">{title}</p>
             <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
             {description && (
-              <p className="text-sm text-cyan-100/90 mt-1">{description}</p>
+              <p className="text-sm text-cyan-200/80 mt-1">{description}</p>
             )}
             
             {trend && (
-              <div className="flex items-center mt-2">
+              <div className="flex items-center mt-2.5">
                 <span
                   className={cn(
-                    "inline-flex items-center text-xs font-medium rounded-full px-2 py-0.5",
-                    trend === "up" && "bg-green-900/30 text-green-300 border border-green-500/40",
-                    trend === "down" && "bg-red-900/30 text-red-300 border border-red-500/40",
-                    trend === "neutral" && "bg-gray-900/30 text-gray-200 border border-gray-500/40"
+                    "inline-flex items-center text-xs font-medium rounded-full px-2.5 py-1",
+                    trend === "up" && "bg-green-900/40 text-green-300 border border-green-500/40",
+                    trend === "down" && "bg-red-900/40 text-red-300 border border-red-500/40",
+                    trend === "neutral" && "bg-gray-900/40 text-gray-200 border border-gray-500/40"
                   )}
                 >
                   {trend === "up" && (
@@ -93,8 +93,8 @@ export function StatCard({
           </div>
           
           {Icon && (
-            <div className="p-2.5 rounded-full bg-black/50 border border-cyan-500/30">
-              <Icon className="h-5 w-5 text-cyan-300" />
+            <div className="p-2.5 rounded-full bg-gradient-to-br from-black to-gray-900 border border-cyan-700/30 shadow-[0_0_15px_rgba(8,145,178,0.2)]">
+              <Icon className="h-5 w-5 text-cyan-400" />
             </div>
           )}
         </div>

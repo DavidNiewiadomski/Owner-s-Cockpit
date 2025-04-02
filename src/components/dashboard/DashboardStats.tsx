@@ -12,7 +12,7 @@ export function DashboardStats() {
         icon={Building} 
         trend="up" 
         trendValue="2 new acquisitions" 
-        className="shadow-[0_4px_15px_rgba(56,189,248,0.2)]"
+        className="shadow-[0_8px_30px_rgba(56,189,248,0.15)]"
       />
       <StatCard 
         title="Construction Value" 
@@ -21,7 +21,7 @@ export function DashboardStats() {
         icon={DollarSign}
         trend="up" 
         trendValue="12% YOY increase" 
-        className="shadow-[0_4px_15px_rgba(34,197,94,0.2)]"
+        className="shadow-[0_8px_30px_rgba(34,197,94,0.15)]"
       />
       <StatCard 
         title="Total Square Footage" 
@@ -29,7 +29,7 @@ export function DashboardStats() {
         icon={Landmark}
         trend="up" 
         trendValue="215,000 sq ft in development" 
-        className="shadow-[0_4px_15px_rgba(168,85,247,0.2)]"
+        className="shadow-[0_8px_30px_rgba(168,85,247,0.15)]"
       />
       <StatCard 
         title="Critical Issues" 
@@ -37,7 +37,7 @@ export function DashboardStats() {
         icon={AlertTriangle}
         trend="down" 
         trendValue="5 resolved this month" 
-        className="shadow-[0_4px_15px_rgba(245,158,11,0.2)]"
+        className="shadow-[0_8px_30px_rgba(245,158,11,0.15)]"
       />
     </div>
   );
