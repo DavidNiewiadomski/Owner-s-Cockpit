@@ -9,6 +9,7 @@ import { CustomizablePageLayout } from '@/components/customization/CustomizableP
 const Index = () => {
   const { selectedProject } = useProject();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCustomizationMenuOpen, setIsCustomizationMenuOpen] = useState(false);
   
   return (
     <DashboardLayout
@@ -17,9 +18,20 @@ const Index = () => {
       initialInsights={dashboardInsights}
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
+      onCustomizeClick={() => setIsCustomizationMenuOpen(true)}
     >
       <CustomizablePageLayout pageId="dashboard">
         <MainDashboard />
+        {isCustomizationMenuOpen && (
+          <CustomizationMenu
+            isOpen={isCustomizationMenuOpen}
+            onClose={() => setIsCustomizationMenuOpen(false)}
+            onAddContent={(content) => {
+              // Handle adding content
+              setIsCustomizationMenuOpen(false);
+            }}
+          />
+        )}
       </CustomizablePageLayout>
     </DashboardLayout>
   );

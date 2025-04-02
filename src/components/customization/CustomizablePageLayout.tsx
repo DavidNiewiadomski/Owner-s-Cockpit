@@ -1,10 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { PlusCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { CustomizationMenu } from './CustomizationMenu';
 import { CustomContentSection } from './CustomContentSection';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface CustomizablePageLayoutProps {
   children: React.ReactNode;
@@ -46,17 +44,6 @@ export function CustomizablePageLayout({ children, pageId }: CustomizablePageLay
           />
         </div>
       )}
-      
-      <div className="fixed bottom-24 right-6 z-40">
-        <Button
-          onClick={() => setIsMenuOpen(true)}
-          className="h-12 w-12 rounded-full shadow-lg bg-cyan-600 hover:bg-cyan-700 text-white font-medium shadow-[0_0_15px_rgba(8,145,178,0.5)]"
-          size="icon"
-          aria-label="Add Custom Content"
-        >
-          <PlusCircle className="h-6 w-6" />
-        </Button>
-      </div>
       
       <CustomizationMenu 
         isOpen={isMenuOpen} 
