@@ -5,7 +5,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { ToastProvider } from '@/hooks/toast';
 import { ProjectProvider } from '@/contexts/ProjectContext';
 import Index from '@/pages/Index';
-import Projects from '@/pages/Projects';
 import Timeline from '@/pages/Timeline';
 import Analytics from '@/pages/Analytics';
 import BudgetFinancials from '@/pages/BudgetFinancials';
@@ -29,7 +28,6 @@ function App() {
           <div className="app">
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/projects" element={<Projects />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/budget-financials" element={<BudgetFinancials />} />

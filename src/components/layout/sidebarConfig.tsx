@@ -2,7 +2,6 @@
 import { 
   LayoutDashboard, 
   ListChecks, 
-  Building, 
   BarChart, 
   Wallet, 
   DollarSign, 
@@ -25,11 +24,6 @@ export const navigationItems = [
     path: "/action-items",
     label: "Action Items",
     icon: ListChecks
-  },
-  {
-    path: "/projects",
-    label: "Projects",
-    icon: Building
   },
   {
     path: "/analytics",
