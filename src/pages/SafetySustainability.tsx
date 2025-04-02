@@ -15,44 +15,70 @@ import {
   sustainabilityCertifications
 } from '@/data/safetyData';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-
-const safetyInsights = [
-  {
-    title: 'Incident Rate Trending Down',
-    content: 'Safety incidents have decreased 15% compared to last quarter, exceeding industry benchmarks.',
-    type: 'success' as const,
-  },
-  {
-    title: 'Certification Renewal',
-    content: 'OSHA workplace safety certification renewal is due in 45 days. Schedule inspection to prepare.',
-    type: 'warning' as const,
-  },
-  {
-    title: 'Sustainability Achievement',
-    content: 'Downtown High-Rise project is on track to achieve LEED Platinum certification.',
-    type: 'info' as const,
-  },
-];
+import { AIInsightsCard } from '@/components/investment/AIInsightsCard';
 
 const SafetySustainability = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || 'All Projects';
+  const [isAIChatOpen, setIsAIChatOpen] = useState(false);
   
   // Get metrics based on selected project
   const safetyMetrics = getSafetyMetrics(selectedProject?.id);
   const sustainabilityMetrics = getSustainabilityMetrics(selectedProject?.id);
 
+  const combinedInsights = [
+    {
+      title: 'Safety Compliance',
+      content: projectName === 'East Tower' ? 'OSHA inspection date approaching in 15 days. Schedule pre-inspection review.' :
+               projectName === 'Westview Residences' ? 'Fire safety standards exceed requirements by 15%. Consider documenting as case study.' :
+               projectName === 'Harbor Bridge' ? 'Worker safety orientation completion rate at 92%. 8 team members need follow-up.' :
+               'Safety protocol compliance rate at 95%. 2 open issues need to be addressed.',
+      type: 'warning' as const
+    },
+    {
+      title: 'Incident Prevention',
+      content: projectName === 'East Tower' ? 'Recent safety drill showed 2 minute improvement in evacuation time.' :
+               projectName === 'Westview Residences' ? 'Zero incidents reported in the last 145 days - new project record!' :
+               projectName === 'Harbor Bridge' ? 'Wind safety protocols activated 8 times this month. Review effectiveness.' :
+               'Safety equipment inspection due in 3 days. Schedule has been sent to team leads.',
+      type: 'info' as const
+    },
+    {
+      title: 'Energy Efficiency',
+      content: projectName === 'East Tower' ? 'Solar panel installation complete. Expected 22% reduction in grid usage.' :
+               projectName === 'Westview Residences' ? 'Smart HVAC system showing 18% efficiency gain over projected values.' :
+               projectName === 'Harbor Bridge' ? 'LED lighting upgrade complete. 35% energy reduction confirmed.' :
+               'Building energy performance exceeding targets by 12%. Continue monitoring during summer months.',
+      type: 'success' as const
+    },
+    {
+      title: 'Material Sourcing',
+      content: projectName === 'East Tower' ? '82% of materials sourced within 300 miles, exceeding 75% target.' :
+               projectName === 'Westview Residences' ? 'Reclaimed wood installation complete, saving 125 mature trees.' :
+               projectName === 'Harbor Bridge' ? 'Low-carbon concrete performance exceeding structural requirements by 15%.' :
+               'Sustainable material sourcing at 85% against 80% target. Supplier documentation updated.',
+      type: 'success' as const
+    }
+  ];
+
   return (
     <DashboardLayout
       projectContext="Safety & Sustainability"
       projectName={projectName}
-      initialInsights={safetyInsights}
+      initialInsights={combinedInsights}
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
       <ScrollArea className="h-[calc(100vh-11rem)] bg-black">
-        <Tabs defaultValue="safety" className="w-full">
+        <div className="px-6 pt-6 pb-2">
+          <AIInsightsCard 
+            insights={combinedInsights} 
+            onChatOpen={() => setIsAIChatOpen(true)} 
+          />
+        </div>
+        
+        <Tabs defaultValue="safety" className="w-full px-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
             <div>
               <h1 className="text-2xl font-bold text-white mb-1">Safety & Sustainability</h1>
