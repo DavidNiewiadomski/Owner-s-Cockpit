@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProject } from '@/contexts/ProjectContext';
 import { SafetyTabContent } from '@/components/safety/SafetyTabContent';
 import { SustainabilityTabContent } from '@/components/sustainability/SustainabilityTabContent';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { 
   getSafetyMetrics, 
@@ -69,29 +68,29 @@ const SafetySustainability = () => {
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
-      <ScrollArea className="h-[calc(100vh-11rem)] bg-black">
-        <Tabs defaultValue="safety" className="w-full px-6 py-6">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-white mb-1">Safety & Sustainability</h1>
-              <p className="text-gray-400">Monitor and manage project safety and sustainability metrics</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" size="sm" className="bg-black border-gray-700">
-                <Calendar className="h-4 w-4 mr-2" />
-                Schedule Inspection
-              </Button>
-              <Button variant="outline" size="sm" className="bg-black border-gray-700">
-                <Download className="h-4 w-4 mr-2" />
-                Export Report
-              </Button>
-              <Button variant="outline" size="sm" className="bg-black border-gray-700">
-                <FileText className="h-4 w-4 mr-2" />
-                Safety Documents
-              </Button>
-            </div>
+      <div className="px-6 py-6 bg-black">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-white mb-1">Safety & Sustainability</h1>
+            <p className="text-gray-400">Monitor and manage project safety and sustainability metrics</p>
           </div>
-          
+          <div className="flex flex-wrap gap-2">
+            <Button variant="outline" size="sm" className="bg-black border-gray-700">
+              <Calendar className="h-4 w-4 mr-2" />
+              Schedule Inspection
+            </Button>
+            <Button variant="outline" size="sm" className="bg-black border-gray-700">
+              <Download className="h-4 w-4 mr-2" />
+              Export Report
+            </Button>
+            <Button variant="outline" size="sm" className="bg-black border-gray-700">
+              <FileText className="h-4 w-4 mr-2" />
+              Safety Documents
+            </Button>
+          </div>
+        </div>
+        
+        <Tabs defaultValue="safety" className="w-full">
           <TabsList className="bg-black mb-6 border border-gray-800">
             <TabsTrigger value="safety" className="data-[state=active]:bg-cyan-900 data-[state=active]:text-white">
               <ShieldCheck className="w-4 h-4 mr-2" />
@@ -120,7 +119,7 @@ const SafetySustainability = () => {
             />
           </TabsContent>
         </Tabs>
-      </ScrollArea>
+      </div>
     </DashboardLayout>
   );
 };
