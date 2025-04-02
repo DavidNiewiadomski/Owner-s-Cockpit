@@ -33,7 +33,7 @@ export function MainDashboard() {
   };
   
   return (
-    <>
+    <div className="overflow-y-auto pb-8">
       {/* Owner Quick Actions moved to the top */}
       <div className="mb-8">
         <OwnerQuickActions />
@@ -63,6 +63,6 @@ export function MainDashboard() {
         closeBIMViewer={handleCloseBIMViewer}
         closeRealityCaptureViewer={handleCloseRealityCaptureViewer}
       />
-    </>
+    </div>
   );
 }

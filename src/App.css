@@ -1,3 +1,4 @@
+
 #root {
   width: 100%;
   height: 100%;
@@ -49,7 +50,6 @@ html, body, #app, #root {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 /* Force cards and UI components to have black backgrounds */
@@ -141,8 +141,10 @@ nav button,
   width: 100vw;
 }
 
+/* Enable scrolling on the main content area */
 .flex-1.p-6 {
   overflow-y: auto !important;
+  max-height: calc(100vh - 64px);
 }
 
 /* Important overrides for sidebar navigation */
@@ -172,8 +174,26 @@ body, html {
   overflow: hidden !important;
 }
 
+/* Fix overscroll issue */
 .flex-1.flex.flex-col.w-full.overflow-hidden {
   overflow-y: hidden !important;
+}
+
+/* Ensure main area is scrollable */
+main.flex-1.p-6.bg-black.overflow-y-auto.w-full {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 64px);
+}
+
+/* Allow Communications page to scroll */
+.Communications main {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 64px);
+}
+
+/* Allow Projects page to scroll */
+.Projects main {
+  overflow-y: auto !important;
 }
 
 /* Animation utilities */
