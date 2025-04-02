@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Sheet, 
@@ -35,10 +34,11 @@ import {
 interface CustomizationMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddContent: (content: any) => void;
+  onAddContent?: (content: any) => void;
+  pageId?: string;
 }
 
-export function CustomizationMenu({ isOpen, onClose, onAddContent }: CustomizationMenuProps) {
+export function CustomizationMenu({ isOpen, onClose, onAddContent, pageId = 'dashboard' }: CustomizationMenuProps) {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('chart');
   const [title, setTitle] = useState('');
@@ -57,20 +57,23 @@ export function CustomizationMenu({ isOpen, onClose, onAddContent }: Customizati
       return;
     }
 
-    onAddContent({
-      type: 'chart',
-      title,
-      description,
-      chartType,
-      // Sample data for chart visualization
-      data: [
-        { name: 'Jan', value: 400 },
-        { name: 'Feb', value: 300 },
-        { name: 'Mar', value: 600 },
-        { name: 'Apr', value: 800 },
-        { name: 'May', value: 500 }
-      ]
-    });
+    if (onAddContent) {
+      onAddContent({
+        type: 'chart',
+        title,
+        description,
+        chartType,
+        pageId,
+        // Sample data for chart visualization
+        data: [
+          { name: 'Jan', value: 400 },
+          { name: 'Feb', value: 300 },
+          { name: 'Mar', value: 600 },
+          { name: 'Apr', value: 800 },
+          { name: 'May', value: 500 }
+        ]
+      });
+    }
 
     resetForm();
   };
@@ -85,18 +88,21 @@ export function CustomizationMenu({ isOpen, onClose, onAddContent }: Customizati
       return;
     }
 
-    onAddContent({
-      type: 'table',
-      title,
-      description,
-      columns: ['Name', 'Status', 'Progress', 'Due Date'],
-      // Sample data for table visualization
-      rows: [
-        ['Project Alpha', 'Active', '75%', '2023-10-15'],
-        ['Project Beta', 'Pending', '30%', '2023-11-20'],
-        ['Project Gamma', 'Completed', '100%', '2023-09-05']
-      ]
-    });
+    if (onAddContent) {
+      onAddContent({
+        type: 'table',
+        title,
+        description,
+        pageId,
+        columns: ['Name', 'Status', 'Progress', 'Due Date'],
+        // Sample data for table visualization
+        rows: [
+          ['Project Alpha', 'Active', '75%', '2023-10-15'],
+          ['Project Beta', 'Pending', '30%', '2023-11-20'],
+          ['Project Gamma', 'Completed', '100%', '2023-09-05']
+        ]
+      });
+    }
 
     resetForm();
   };
@@ -111,12 +117,15 @@ export function CustomizationMenu({ isOpen, onClose, onAddContent }: Customizati
       return;
     }
 
-    onAddContent({
-      type: 'report',
-      title,
-      description,
-      content: 'This is a sample report content. In a real implementation, this would be actual report data.'
-    });
+    if (onAddContent) {
+      onAddContent({
+        type: 'report',
+        title,
+        description,
+        pageId,
+        content: 'This is a sample report content. In a real implementation, this would be actual report data.'
+      });
+    }
 
     resetForm();
   };
@@ -137,13 +146,16 @@ export function CustomizationMenu({ isOpen, onClose, onAddContent }: Customizati
     setTimeout(() => {
       setIsGenerating(false);
       
-      onAddContent({
-        type: 'ai',
-        title: title || 'AI Generated Content',
-        description: description || 'Content generated based on your prompt',
-        prompt: aiPrompt,
-        content: `This is a sample AI-generated content based on: "${aiPrompt}". In a real implementation, this would come from an AI service.`
-      });
+      if (onAddContent) {
+        onAddContent({
+          type: 'ai',
+          title: title || 'AI Generated Content',
+          description: description || 'Content generated based on your prompt',
+          prompt: aiPrompt,
+          pageId,
+          content: `This is a sample AI-generated content based on: "${aiPrompt}". In a real implementation, this would come from an AI service.`
+        });
+      }
 
       toast({
         title: "Content generated",
