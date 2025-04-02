@@ -31,7 +31,6 @@ export function SidebarNavItems({
     if (path === '/customize' && onCustomizeClick) {
       e.preventDefault();
       onCustomizeClick();
-      return;
     }
   };
 
