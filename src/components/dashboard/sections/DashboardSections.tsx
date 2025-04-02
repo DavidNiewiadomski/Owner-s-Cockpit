@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DocumentList } from '@/components/dashboard/DocumentList';
 import { FinancialTracking } from '@/components/dashboard/FinancialTracking';
