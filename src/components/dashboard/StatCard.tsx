@@ -24,7 +24,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn(
-      "overflow-hidden bg-black border-cyan-800/60 shadow-lg animate-fade-in card-hover relative",
+      "overflow-hidden bg-gradient-to-br from-black to-gray-900 border-cyan-800/60 shadow-lg animate-fade-in card-hover relative",
       className
     )}>
       {/* Vibrant gradient top border */}
@@ -36,7 +36,7 @@ export function StatCard({
       )}></div>
       
       <CardContent className="p-6 relative">
-        {/* Enhanced background glow effect */}
+        {/* Full-card glow effect instead of partial */}
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 to-blue-900/20 rounded-b-lg"></div>
         
         <div className="flex justify-between items-start relative z-10">
