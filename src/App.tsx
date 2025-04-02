@@ -39,6 +39,7 @@ function App() {
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/export" element={<NotFound />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             

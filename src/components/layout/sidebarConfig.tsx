@@ -11,7 +11,8 @@ import {
   MessageSquare, 
   Layers, 
   Settings,
-  Brush
+  Brush,
+  Download
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -77,5 +78,10 @@ export const utilityItems = [
     path: "/customize",
     label: "Customize",
     icon: Brush
+  },
+  {
+    path: "/export",
+    label: "Export",
+    icon: Download
   }
 ];

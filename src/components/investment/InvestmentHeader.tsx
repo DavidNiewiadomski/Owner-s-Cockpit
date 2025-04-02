@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Clock, DollarSign, Download, MessageSquare } from 'lucide-react';
+import { Clock, MessageSquare } from 'lucide-react';
 
 interface InvestmentHeaderProps {
   title: string;
@@ -22,10 +22,6 @@ export function InvestmentHeader({ title, description, onChatOpen, className }: 
           <Clock className="h-4 w-4 mr-2" />
           Historical Data
         </Button>
-        <Button variant="outline" className="border-gray-700 bg-black hover:bg-gray-900 text-white h-10">
-          <Download className="h-4 w-4 mr-2" />
-          Export Report
-        </Button>
         {onChatOpen && (
           <Button 
             variant="outline" 
@@ -36,10 +32,6 @@ export function InvestmentHeader({ title, description, onChatOpen, className }: 
             AI Chat
           </Button>
         )}
-        <Button className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium h-10">
-          <DollarSign className="h-4 w-4 mr-2" />
-          Financial Report
-        </Button>
       </div>
     </div>
   );
