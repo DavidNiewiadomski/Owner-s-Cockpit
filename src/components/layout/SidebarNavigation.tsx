@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -18,6 +17,7 @@ export function SidebarNavigation({
   onCustomizeClick,
   onAssistantClick
 }: SidebarNavigationProps) {
+  
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   
