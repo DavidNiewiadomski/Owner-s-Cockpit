@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Document } from '@/components/dashboard/RecentDocuments';
 import { RecentDocuments } from '@/components/dashboard/RecentDocuments';
 import { NotificationsCard } from '@/components/dashboard/NotificationsCard';
+import { Document } from '@/data/documents/documentData';
 
 interface Notification {
   id: number;

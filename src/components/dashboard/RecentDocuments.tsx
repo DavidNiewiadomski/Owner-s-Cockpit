@@ -32,7 +32,7 @@ export function RecentDocuments({ documents }: RecentDocumentsProps) {
                 {getDocumentIcon(doc.type)}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-200">{doc.title || doc.name}</p>
+                <p className="text-sm font-medium text-gray-200">{doc.name}</p>
                 <div className="flex items-center text-xs text-gray-500">
                   <Folder className="h-3 w-3 mr-1 text-cyan-400" />
                   <span className="mr-2">{doc.folder}</span> • {doc.date} • {doc.size}
