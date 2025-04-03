@@ -16,11 +16,11 @@ import { useProject } from '@/contexts/ProjectContext';
 export default function ContractsInsurance() {
   const [activeTab, setActiveTab] = useState('contracts');
   const [searchTerm, setSearchTerm] = useState('');
-  const { activeProject } = useProject();
+  const { selectedProject } = useProject();
   
   // Get data based on active project
-  const projectContracts = getContractsByProject(activeProject.id);
-  const projectInsurances = getInsurancesByProject(activeProject.id);
+  const projectContracts = getContractsByProject(selectedProject.id);
+  const projectInsurances = getInsurancesByProject(selectedProject.id);
   
   // Get all milestones for the current project's contracts
   const projectMilestones = projectContracts.flatMap(contract => 
@@ -28,7 +28,7 @@ export default function ContractsInsurance() {
   );
   
   return (
-    <DashboardLayout projectContext="Contracts & Insurance" projectName={activeProject.name}>
+    <DashboardLayout projectContext="Contracts & Insurance" projectName={selectedProject.title}>
       <div className="max-w-7xl mx-auto">
         <ContractsHeader activeTab={activeTab} />
         

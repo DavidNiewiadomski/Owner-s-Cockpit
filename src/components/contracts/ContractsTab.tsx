@@ -5,7 +5,7 @@ import { ContractsTable } from './ContractsTable';
 import { ContractMilestonesTable } from './ContractMilestonesTable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileContract, CalendarClock, DollarSign } from 'lucide-react';
+import { FileText, CalendarClock, DollarSign } from 'lucide-react';
 
 interface ContractsTabProps {
   contracts: Contract[];
@@ -29,7 +29,7 @@ export function ContractsTab({ contracts, milestones }: ContractsTabProps) {
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center text-gray-400">
-              <FileContract className="h-4 w-4 mr-2 text-cyan-400" />
+              <FileText className="h-4 w-4 mr-2 text-cyan-400" />
               Active Contracts
             </CardDescription>
             <CardTitle className="text-2xl text-white">

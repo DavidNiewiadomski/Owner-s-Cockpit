@@ -24,7 +24,7 @@ interface ContractsHeaderProps {
 }
 
 export function ContractsHeader({ activeTab }: ContractsHeaderProps) {
-  const { activeProject } = useProject();
+  const { selectedProject } = useProject();
   
   return (
     <div className="space-y-4">
@@ -34,7 +34,7 @@ export function ContractsHeader({ activeTab }: ContractsHeaderProps) {
             {activeTab === 'contracts' ? 'Contracts' : 'Insurance'} & Risk Management
           </h1>
           <p className="text-gray-400">
-            Manage and monitor {activeTab === 'contracts' ? 'contracts' : 'insurance policies'} for {activeProject.name}
+            Manage and monitor {activeTab === 'contracts' ? 'contracts' : 'insurance policies'} for {selectedProject.title}
           </p>
         </div>
         

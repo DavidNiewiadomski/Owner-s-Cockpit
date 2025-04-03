@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   ListChecks, 
@@ -13,7 +12,6 @@ import {
   Settings,
   Brush,
   Download,
-  FileContract,
   ScrollText
 } from 'lucide-react';
 
