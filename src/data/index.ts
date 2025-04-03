@@ -32,7 +32,7 @@ import type {
   Contract,
   Insurance,
   ContractMilestone
-} from './contracts/contractsData';
+} from './contracts/types';
 
 // Export data
 export {
