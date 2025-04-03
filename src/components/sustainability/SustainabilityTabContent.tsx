@@ -17,12 +17,10 @@ export function SustainabilityTabContent({
   sustainabilityCerts
 }: SustainabilityTabContentProps) {
   return (
-    <main className="flex-1 overflow-y-auto p-6 bg-black">
-      <div className="max-w-7xl mx-auto">
-        <SustainabilityMetricsCards metrics={sustainabilityMetrics} />
-        <SustainabilityFeatures />
-        <SustainabilityCertificationsTable certifications={sustainabilityCerts} />
-      </div>
-    </main>
+    <div className="max-w-7xl mx-auto">
+      <SustainabilityMetricsCards metrics={sustainabilityMetrics} />
+      <SustainabilityFeatures />
+      <SustainabilityCertificationsTable certifications={sustainabilityCerts} />
+    </div>
   );
 }

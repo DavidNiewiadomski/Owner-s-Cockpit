@@ -42,12 +42,10 @@ export function SafetyTabContent({
   safetyIncidents
 }: SafetyTabContentProps) {
   return (
-    <main className="flex-1 overflow-y-auto p-6 bg-black">
-      <div className="max-w-7xl mx-auto">
-        <SafetyMetricsCards safetyMetrics={safetyMetrics} />
-        <SafetyCertificationsTable certifications={safetyCerts} />
-        <SafetyIncidentsTable incidents={safetyIncidents} />
-      </div>
-    </main>
+    <div className="max-w-7xl mx-auto">
+      <SafetyMetricsCards safetyMetrics={safetyMetrics} />
+      <SafetyCertificationsTable certifications={safetyCerts} />
+      <SafetyIncidentsTable incidents={safetyIncidents} />
+    </div>
   );
 }
