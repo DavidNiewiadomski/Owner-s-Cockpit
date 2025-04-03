@@ -3,7 +3,7 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { SidebarNavItem } from './SidebarNavItem';
 import { Separator } from '@/components/ui/separator';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ExportMenu } from './ExportMenu';
 
 interface NavItem {
@@ -30,17 +30,24 @@ export function SidebarNavItems({
   onAssistantClick
 }: SidebarNavItemsProps) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSpecialItemClick = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    // Handle special cases
     if (path === '/customize' && onCustomizeClick) {
-      e.preventDefault();
       onCustomizeClick();
+      return;
     }
     
     if (path === '/ai-assistant' && onAssistantClick) {
-      e.preventDefault();
       onAssistantClick();
+      return;
     }
+    
+    // For regular navigation paths, use navigate
+    navigate(path);
   };
 
   return (
@@ -76,6 +83,7 @@ export function SidebarNavItems({
           );
         }
         
+        // For other utility items (settings, integrations, customize)
         return (
           <SidebarNavItem
             key={item.path}
@@ -84,7 +92,8 @@ export function SidebarNavItems({
             label={item.label}
             isActive={isActive(item.path)}
             collapsed={collapsed}
-            onClick={(e) => handleSpecialItemClick(item.path, e)}
+            onClick={item.path === '/customize' || item.path === '/ai-assistant' ? 
+              (e) => handleSpecialItemClick(item.path, e) : undefined}
           />
         );
       })}

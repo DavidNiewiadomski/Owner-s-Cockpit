@@ -26,7 +26,8 @@ export function ContractsHeader({ activeTab }: ContractsHeaderProps) {
       {/* Add AI Insights component at the top */}
       <CollapsibleAIAssistant 
         projectContext="Contracts & Insurance"
-        insights={contractInsights}
+        projectName={projectName}
+        initialInsights={contractInsights}
       />
       
       <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center mt-6">

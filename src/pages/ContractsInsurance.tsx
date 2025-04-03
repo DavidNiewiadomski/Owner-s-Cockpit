@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { ContractsHeader } from '@/components/contracts/ContractsHeader';
@@ -24,14 +25,6 @@ export default function ContractsInsurance() {
   const [projectContracts, setProjectContracts] = useState([]);
   const [projectInsurances, setProjectInsurances] = useState([]);
   const [projectMilestones, setProjectMilestones] = useState([]);
-  
-  // AI insights for contracts and insurance
-  const contractInsights = [
-    "2 contracts are expiring in the next 30 days",
-    "Builder's Risk insurance policy is due for renewal",
-    "4 unresolved payment milestones require attention",
-    "Westview Residences has 3 active change orders pending approval"
-  ];
   
   useEffect(() => {
     try {
@@ -70,10 +63,9 @@ export default function ContractsInsurance() {
     <DashboardLayout 
       projectContext="Contracts & Insurance" 
       projectName={projectName}
-      initialInsights={[]} // Set to empty array instead of commenting out
+      initialInsights={[]} // Passing empty array to prevent DashboardLayout from showing its own CollapsibleAIAssistant
     >
       <div className="max-w-7xl mx-auto">
-        {/* Keep only this one AI insights component */}
         <div className="mb-6">
           <ContractsHeader activeTab={activeTab} />
         </div>
