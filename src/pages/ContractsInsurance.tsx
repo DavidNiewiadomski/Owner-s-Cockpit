@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { ContractsHeader } from '@/components/contracts/ContractsHeader';
@@ -10,7 +9,6 @@ import {
 } from '@/data/contracts/contractsData';
 import { useProject } from '@/contexts/ProjectContext';
 import { useToast } from '@/hooks/use-toast';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 export default function ContractsInsurance() {
   const [activeTab, setActiveTab] = useState('contracts');
@@ -72,15 +70,13 @@ export default function ContractsInsurance() {
     <DashboardLayout 
       projectContext="Contracts & Insurance" 
       projectName={projectName}
-      // Remove initialInsights to avoid duplicate AI assistant
+      initialInsights={[]} // Set to empty array instead of commenting out
     >
       <div className="max-w-7xl mx-auto">
-        <CollapsibleAIAssistant 
-          projectContext="Contracts & Insurance"
-          insights={contractInsights}
-        />
-        
-        <ContractsHeader activeTab={activeTab} />
+        {/* Keep only this one AI insights component */}
+        <div className="mb-6">
+          <ContractsHeader activeTab={activeTab} />
+        </div>
         
         <div className="mt-8">
           <ContractsPageTabs 
