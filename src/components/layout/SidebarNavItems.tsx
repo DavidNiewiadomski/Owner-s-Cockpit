@@ -83,7 +83,23 @@ export function SidebarNavItems({
           );
         }
         
-        // For other utility items (settings, integrations, customize)
+        // For special utility items (customize, ai-assistant)
+        if ((item.path === '/customize' && onCustomizeClick) || 
+            (item.path === '/ai-assistant' && onAssistantClick)) {
+          return (
+            <SidebarNavItem
+              key={item.path}
+              to="#"
+              icon={item.icon}
+              label={item.label}
+              isActive={false}
+              collapsed={collapsed}
+              onClick={(e) => handleSpecialItemClick(item.path, e)}
+            />
+          );
+        }
+        
+        // For other utility items
         return (
           <SidebarNavItem
             key={item.path}
@@ -92,8 +108,6 @@ export function SidebarNavItems({
             label={item.label}
             isActive={isActive(item.path)}
             collapsed={collapsed}
-            onClick={item.path === '/customize' || item.path === '/ai-assistant' ? 
-              (e) => handleSpecialItemClick(item.path, e) : undefined}
           />
         );
       })}

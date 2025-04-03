@@ -59,13 +59,12 @@ export function DashboardLayout({
         </main>
       </div>
       
-      {customizeOpen && (
-        <CustomizationMenu 
-          isOpen={customizeOpen} 
-          onClose={() => setCustomizeOpen(false)}
-          pageId={projectContext.toLowerCase()}
-        />
-      )}
+      {/* Customization Menu */}
+      <CustomizationMenu 
+        isOpen={customizeOpen} 
+        onClose={() => setCustomizeOpen(false)} 
+        pageId={projectContext.toLowerCase()}
+      />
     </div>
   );
 }

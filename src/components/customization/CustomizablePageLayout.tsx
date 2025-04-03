@@ -1,28 +1,18 @@
 
 import React from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { CustomizationMenu } from './CustomizationMenu';
 import { CustomContentSection } from './CustomContentSection';
 
 interface CustomizablePageLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   pageId: string;
-  isCustomizationMenuOpen?: boolean;
-  setIsCustomizationMenuOpen?: (isOpen: boolean) => void;
 }
 
 export function CustomizablePageLayout({ 
   children, 
-  pageId, 
-  isCustomizationMenuOpen = false, 
-  setIsCustomizationMenuOpen 
+  pageId
 }: CustomizablePageLayoutProps) {
   const [customContents, setCustomContents] = useLocalStorage<any[]>(`${pageId}-custom-contents`, []);
-
-  const addCustomContent = (content: any) => {
-    setCustomContents([...customContents, { ...content, id: Date.now().toString() }]);
-    setIsCustomizationMenuOpen?.(false);
-  };
 
   const removeCustomContent = (id: string) => {
     setCustomContents(customContents.filter(content => content.id !== id));
@@ -50,12 +40,6 @@ export function CustomizablePageLayout({
           />
         </div>
       )}
-      
-      <CustomizationMenu 
-        isOpen={isCustomizationMenuOpen} 
-        onClose={() => setIsCustomizationMenuOpen?.(false)}
-        onAddContent={addCustomContent}
-      />
     </div>
   );
 }
