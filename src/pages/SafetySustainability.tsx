@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShieldCheck, Leaf, Download, Calendar, FileText } from 'lucide-react';
+import { ShieldCheck, Leaf, Calendar, FileText } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useProject } from '@/contexts/ProjectContext';
 import { SafetyTabContent } from '@/components/safety/SafetyTabContent';
@@ -78,10 +78,6 @@ const SafetySustainability = () => {
             <Button variant="outline" size="sm" className="bg-black border-gray-700">
               <Calendar className="h-4 w-4 mr-2" />
               Schedule Inspection
-            </Button>
-            <Button variant="outline" size="sm" className="bg-black border-gray-700">
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
             </Button>
             <Button variant="outline" size="sm" className="bg-black border-gray-700">
               <FileText className="h-4 w-4 mr-2" />
