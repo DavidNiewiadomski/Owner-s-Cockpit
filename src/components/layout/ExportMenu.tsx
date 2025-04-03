@@ -29,6 +29,7 @@ export function ExportMenu({ children }: ExportMenuProps) {
     { id: 'documents', name: 'Documents List', path: '/documents' },
     { id: 'communications', name: 'Communications Report', path: '/communications' },
     { id: 'actions', name: 'Action Items Report', path: '/action-items' },
+    { id: 'contracts', name: 'Contracts & Insurance Report', path: '/contracts-insurance' },
   ];
 
   // Handle export action

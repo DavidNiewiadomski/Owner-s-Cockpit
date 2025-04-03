@@ -10,6 +10,7 @@ import {
 } from '@/data/contracts/contractsData';
 import { useProject } from '@/contexts/ProjectContext';
 import { useToast } from '@/hooks/use-toast';
+import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 
 export default function ContractsInsurance() {
   const [activeTab, setActiveTab] = useState('contracts');
@@ -25,6 +26,14 @@ export default function ContractsInsurance() {
   const [projectContracts, setProjectContracts] = useState([]);
   const [projectInsurances, setProjectInsurances] = useState([]);
   const [projectMilestones, setProjectMilestones] = useState([]);
+  
+  // AI insights for contracts and insurance
+  const contractInsights = [
+    "2 contracts are expiring in the next 30 days",
+    "Builder's Risk insurance policy is due for renewal",
+    "4 unresolved payment milestones require attention",
+    "Westview Residences has 3 active change orders pending approval"
+  ];
   
   useEffect(() => {
     try {
@@ -62,6 +71,11 @@ export default function ContractsInsurance() {
   return (
     <DashboardLayout projectContext="Contracts & Insurance" projectName={projectName}>
       <div className="max-w-7xl mx-auto">
+        <CollapsibleAIAssistant 
+          projectContext="Contracts & Insurance"
+          insights={contractInsights}
+        />
+        
         <ContractsHeader activeTab={activeTab} />
         
         <div className="mt-8">

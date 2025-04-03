@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText, ShieldCheck } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useProject } from '@/contexts/ProjectContext';
 
 interface ContractsHeaderProps {
@@ -27,14 +27,7 @@ export function ContractsHeader({ activeTab }: ContractsHeaderProps) {
         </p>
       </div>
       
-      <div className="flex space-x-3">
-        <Button 
-          variant="outline" 
-          className="bg-gray-800 border-gray-700 text-gray-200 hover:bg-gray-700 hover:text-white"
-        >
-          <FileText className="h-4 w-4 mr-2" />
-          Export
-        </Button>
+      <div>
         <Button className="bg-cyan-600 hover:bg-cyan-700 text-white">
           <Plus className="h-4 w-4 mr-2" />
           {activeTab === 'contracts' ? 'New Contract' : 'New Policy'}
