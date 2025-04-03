@@ -5,7 +5,8 @@ import {
   File, 
   FileSpreadsheet, 
   Download,
-  Eye
+  Eye,
+  Folder
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { 
@@ -23,15 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
-interface Document {
-  id: string;
-  name: string;
-  type: "pdf" | "image" | "spreadsheet" | "text";
-  size: string;
-  updatedAt: string;
-  project: string;
-}
+import { Document } from "@/data/documents/documentData";
 
 interface DocumentListProps {
   documents: Document[];
@@ -66,13 +59,14 @@ export function DocumentList({ documents, className, onView, onDownload }: Docum
   return (
     <Card className={cn("overflow-hidden border-cyan-800/40 shadow-[0_0_15px_rgba(56,189,248,0.15)]", className)}>
       <CardHeader className="bg-gradient-to-b from-gray-900 to-black border-b border-cyan-900/30">
-        <CardTitle className="text-lg font-bold text-cyan-300">Recent Documents</CardTitle>
+        <CardTitle className="text-lg font-bold text-cyan-300">All Documents</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-cyan-900/30">
               <TableHead className="text-left text-cyan-100 font-bold">Name</TableHead>
+              <TableHead className="text-cyan-100 font-bold">Folder</TableHead>
               <TableHead className="text-cyan-100 font-bold">Project</TableHead>
               <TableHead className="text-cyan-100 font-bold">Updated</TableHead>
               <TableHead className="text-cyan-100 font-bold">Size</TableHead>
@@ -86,6 +80,12 @@ export function DocumentList({ documents, className, onView, onDownload }: Docum
                   <div className="flex items-center">
                     {getDocumentIcon(doc.type)}
                     <span className="ml-2 font-medium text-white">{doc.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-cyan-100">
+                  <div className="flex items-center">
+                    <Folder className="w-4 h-4 text-cyan-400 mr-2" />
+                    {doc.folder}
                   </div>
                 </TableCell>
                 <TableCell className="text-cyan-100">{doc.project}</TableCell>

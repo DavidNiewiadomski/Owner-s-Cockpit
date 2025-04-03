@@ -1,17 +1,8 @@
 
 import React from 'react';
-import { File, FileText, Image, Download } from 'lucide-react';
+import { File, FileText, Image, Download, Folder } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-export interface Document {
-  id: string;
-  title?: string;
-  name?: string;
-  type: string;
-  date: string;
-  size: string;
-  author: string;
-}
+import { Document } from '@/data/documents/documentData';
 
 interface RecentDocumentsProps {
   documents: Document[];
@@ -42,7 +33,10 @@ export function RecentDocuments({ documents }: RecentDocumentsProps) {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-200">{doc.title || doc.name}</p>
-                <p className="text-xs text-gray-500">{doc.date} • {doc.size}</p>
+                <div className="flex items-center text-xs text-gray-500">
+                  <Folder className="h-3 w-3 mr-1 text-cyan-400" />
+                  <span className="mr-2">{doc.folder}</span> • {doc.date} • {doc.size}
+                </div>
               </div>
             </div>
             <Download className="h-4 w-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
