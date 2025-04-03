@@ -22,3 +22,16 @@
 .shadow-purple {
   box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3);
 }
+
+.shadow-yellow {
+  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.3);
+}
+
+.shadow-red {
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+/* Dialog effect */
+.dialog-glow {
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
+}
