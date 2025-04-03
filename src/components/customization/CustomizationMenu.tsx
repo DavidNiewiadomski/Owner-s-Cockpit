@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { 
   Sheet, 
   SheetContent, 
@@ -11,12 +12,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { 
   BarChart3, 
   Table, 
   FileText, 
   Sparkles
 } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 // Import the refactored components
 import { MenuFormFields } from './menu/MenuFormFields';
@@ -28,23 +31,48 @@ import { AITabContent } from './menu/AITabContent';
 export interface CustomizationMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddContent?: (content: any) => void;
   pageId?: string;
 }
 
 export function CustomizationMenu({ 
   isOpen, 
-  onClose, 
-  onAddContent, 
-  pageId = 'dashboard' 
+  onClose,
+  pageId: propPageId
 }: CustomizationMenuProps) {
   const { toast } = useToast();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('chart');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [chartType, setChartType] = useState('bar');
   const [aiPrompt, setAiPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  
+  // Derive the current page ID from the location path
+  const currentPageId = location.pathname.replace('/', '') || 'dashboard';
+  // Use the prop pageId if provided, otherwise use the current page
+  const pageId = propPageId || currentPageId;
+  
+  // Get custom contents for the current page from local storage
+  const [customContents, setCustomContents] = useLocalStorage<any[]>(`${pageId}-custom-contents`, []);
+
+  const addContent = (content: any) => {
+    const newContent = {
+      ...content,
+      id: uuidv4(), // Generate a unique ID
+      pageId,
+      createdAt: new Date().toISOString()
+    };
+    
+    setCustomContents([...customContents, newContent]);
+    
+    toast({
+      title: "Content added",
+      description: `${content.title} has been added to your ${pageId}`,
+    });
+    
+    onClose();
+  };
 
   const handleAddChart = () => {
     if (!title) {
@@ -56,23 +84,20 @@ export function CustomizationMenu({
       return;
     }
 
-    if (onAddContent) {
-      onAddContent({
-        type: 'chart',
-        title,
-        description,
-        chartType,
-        pageId,
-        // Sample data for chart visualization
-        data: [
-          { name: 'Jan', value: 400 },
-          { name: 'Feb', value: 300 },
-          { name: 'Mar', value: 600 },
-          { name: 'Apr', value: 800 },
-          { name: 'May', value: 500 }
-        ]
-      });
-    }
+    addContent({
+      type: 'chart',
+      title,
+      description,
+      chartType,
+      // Sample data for chart visualization
+      data: [
+        { name: 'Jan', value: 400 },
+        { name: 'Feb', value: 300 },
+        { name: 'Mar', value: 600 },
+        { name: 'Apr', value: 800 },
+        { name: 'May', value: 500 }
+      ]
+    });
 
     resetForm();
   };
@@ -87,21 +112,18 @@ export function CustomizationMenu({
       return;
     }
 
-    if (onAddContent) {
-      onAddContent({
-        type: 'table',
-        title,
-        description,
-        pageId,
-        columns: ['Name', 'Status', 'Progress', 'Due Date'],
-        // Sample data for table visualization
-        rows: [
-          ['Project Alpha', 'Active', '75%', '2023-10-15'],
-          ['Project Beta', 'Pending', '30%', '2023-11-20'],
-          ['Project Gamma', 'Completed', '100%', '2023-09-05']
-        ]
-      });
-    }
+    addContent({
+      type: 'table',
+      title,
+      description,
+      columns: ['Name', 'Status', 'Progress', 'Due Date'],
+      // Sample data for table visualization
+      rows: [
+        ['Project Alpha', 'Active', '75%', '2023-10-15'],
+        ['Project Beta', 'Pending', '30%', '2023-11-20'],
+        ['Project Gamma', 'Completed', '100%', '2023-09-05']
+      ]
+    });
 
     resetForm();
   };
@@ -116,15 +138,12 @@ export function CustomizationMenu({
       return;
     }
 
-    if (onAddContent) {
-      onAddContent({
-        type: 'report',
-        title,
-        description,
-        pageId,
-        content: 'This is a sample report content. In a real implementation, this would be actual report data.'
-      });
-    }
+    addContent({
+      type: 'report',
+      title,
+      description,
+      content: 'This is a sample report content. In a real implementation, this would be actual report data.'
+    });
 
     resetForm();
   };
@@ -145,20 +164,12 @@ export function CustomizationMenu({
     setTimeout(() => {
       setIsGenerating(false);
       
-      if (onAddContent) {
-        onAddContent({
-          type: 'ai',
-          title: title || 'AI Generated Content',
-          description: description || 'Content generated based on your prompt',
-          prompt: aiPrompt,
-          pageId,
-          content: `This is a sample AI-generated content based on: "${aiPrompt}". In a real implementation, this would come from an AI service.`
-        });
-      }
-
-      toast({
-        title: "Content generated",
-        description: "AI has created content based on your prompt",
+      addContent({
+        type: 'ai',
+        title: title || 'AI Generated Content',
+        description: description || 'Content generated based on your prompt',
+        prompt: aiPrompt,
+        content: `This is a sample AI-generated content based on: "${aiPrompt}". In a real implementation, this would come from an AI service.`
       });
 
       resetForm();
@@ -172,13 +183,20 @@ export function CustomizationMenu({
     setAiPrompt('');
   };
 
+  // Reset form when the menu is opened
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="w-[400px] sm:max-w-[540px] bg-gray-950 border-cyan-900/50 shadow-[0_0_25px_rgba(34,211,238,0.3)]">
         <SheetHeader className="pb-4 border-b border-cyan-900/30">
           <SheetTitle className="text-xl text-cyan-300">Add Custom Content</SheetTitle>
           <SheetDescription className="text-gray-300">
-            Create and add custom content to your dashboard
+            Create and add custom content to {pageId === 'dashboard' ? 'your dashboard' : `the ${pageId} page`}
           </SheetDescription>
         </SheetHeader>
         

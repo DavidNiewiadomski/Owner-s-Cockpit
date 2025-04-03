@@ -4,6 +4,7 @@ import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { CustomizationMenu } from '@/components/customization/CustomizationMenu';
+import { useLocation } from 'react-router-dom';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -24,6 +25,10 @@ export function DashboardLayout({
 }: DashboardLayoutProps) {
   const [aiExpanded, setAiExpanded] = useState(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
+  const location = useLocation();
+  
+  // Get the current page ID from the location path
+  const currentPageId = location.pathname.replace('/', '') || 'dashboard';
   
   const handleAssistantClick = () => {
     setAiExpanded(!aiExpanded);
@@ -63,7 +68,7 @@ export function DashboardLayout({
       <CustomizationMenu 
         isOpen={customizeOpen} 
         onClose={() => setCustomizeOpen(false)} 
-        pageId={projectContext.toLowerCase()}
+        pageId={currentPageId}
       />
     </div>
   );
