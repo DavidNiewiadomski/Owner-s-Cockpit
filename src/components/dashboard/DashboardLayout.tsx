@@ -48,18 +48,22 @@ export function DashboardLayout({
       <div className="flex-1 flex flex-col w-full overflow-hidden">
         <DashboardHeader onSearch={onSearch} />
 
-        {/* Only render the CollapsibleAIAssistant if initialInsights has items */}
-        {initialInsights.length > 0 && (
-          <CollapsibleAIAssistant 
-            projectContext={projectContext}
-            projectName={projectName}
-            initialInsights={initialInsights}
-          />
-        )}
-        
-        <main className="flex-1 p-6 bg-black overflow-y-auto w-full">
-          <div className="w-full mx-auto">
-            {children}
+        <main className="flex-1 overflow-y-auto w-full bg-black">
+          {/* Only render the CollapsibleAIAssistant if initialInsights has items */}
+          {initialInsights.length > 0 && (
+            <div className="p-6 pt-6 pb-0">
+              <CollapsibleAIAssistant 
+                projectContext={projectContext}
+                projectName={projectName}
+                initialInsights={initialInsights}
+              />
+            </div>
+          )}
+          
+          <div className="p-6">
+            <div className="w-full mx-auto">
+              {children}
+            </div>
           </div>
         </main>
       </div>

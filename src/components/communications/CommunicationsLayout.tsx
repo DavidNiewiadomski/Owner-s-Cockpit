@@ -30,14 +30,18 @@ export const CommunicationsLayout = ({
       <div className="flex-1 flex flex-col">
         <DashboardHeader onSearch={setSearchTerm} />
         
-        <CollapsibleAIAssistant
-          projectContext="your communications"
-          initialInsights={communicationInsights}
-        />
-        
-        <main className="flex-1 p-6">
-          <div className="max-w-7xl mx-auto">
-            {children}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6 pt-6 pb-0">
+            <CollapsibleAIAssistant
+              projectContext="your communications"
+              initialInsights={communicationInsights}
+            />
+          </div>
+          
+          <div className="p-6">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
           </div>
         </main>
       </div>
