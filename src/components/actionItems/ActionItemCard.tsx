@@ -6,13 +6,15 @@ import {
   Clock, 
   Calendar,
   Construction,
-  ArrowDown
+  ArrowDown,
+  Sparkles
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ActionItem } from './ActionItemList';
+import { useTaskResponseModal } from '@/hooks/useTaskResponseModal';
 
 interface ActionItemCardProps {
   item: ActionItem;
@@ -20,6 +22,8 @@ interface ActionItemCardProps {
 }
 
 export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
+  const { openModal } = useTaskResponseModal();
+  
   // Get icon based on item type
   const getTypeIcon = (type: ActionItem['type']) => {
     switch (type) {
@@ -52,6 +56,10 @@ export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
     } else {
       return `Due in ${diffDays} days`;
     }
+  };
+
+  const handleAIAssist = () => {
+    openModal(item);
   };
 
   return (
@@ -101,9 +109,20 @@ export function ActionItemCard({ item, onToggleStatus }: ActionItemCardProps) {
             </div>
           </div>
           
-          <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white">
-            <ArrowDown className="h-4 w-4" />
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="w-8 h-8 text-cyan-400 hover:text-white hover:bg-cyan-950/50 rounded-full"
+              onClick={handleAIAssist}
+              title="AI Assistance"
+            >
+              <Sparkles className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="w-8 h-8 text-gray-300 hover:text-white">
+              <ArrowDown className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

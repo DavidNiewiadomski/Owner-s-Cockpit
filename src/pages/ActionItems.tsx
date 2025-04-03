@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { ActionItemFilters } from '@/components/actionItems/ActionItemFilters';
 import { ActionItemSearch } from '@/components/actionItems/ActionItemSearch';
+import { TaskResponseModal } from '@/components/actionItems/TaskResponseModal';
 import { useProject } from '@/contexts/ProjectContext';
 
 // Define project-specific action items
@@ -265,6 +267,9 @@ export default function ActionItems() {
             />
           </div>
         </div>
+        
+        {/* Add TaskResponseModal */}
+        <TaskResponseModal />
       </main>
     </div>
   );
