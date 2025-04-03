@@ -1,0 +1,20 @@
+
+/* Shimmer effect */
+.shimmer {
+  background: linear-gradient(to right, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.2) 20%, rgba(56, 189, 248, 0) 40%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Shadow effects */
+.shadow-glow {
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.shadow-blue {
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+}
+
+.shadow-purple {
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3);
+}

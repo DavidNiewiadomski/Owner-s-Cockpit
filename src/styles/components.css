@@ -1,0 +1,21 @@
+
+/* Common UI elements */
+.card-gradient {
+  @apply bg-gradient-to-br from-card to-background backdrop-blur-sm;
+}
+
+.status-badge-on-track {
+  @apply bg-emerald-900/20 text-emerald-400 border border-emerald-800/40;
+}
+
+.status-badge-at-risk {
+  @apply bg-amber-900/20 text-amber-400 border border-amber-800/40;
+}
+
+.status-badge-delayed {
+  @apply bg-rose-900/20 text-rose-400 border border-rose-800/40;
+}
+
+.status-badge-completed {
+  @apply bg-blue-900/20 text-blue-400 border border-blue-800/40;
+}

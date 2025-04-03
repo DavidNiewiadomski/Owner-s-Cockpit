@@ -1,0 +1,44 @@
+
+/* Glassmorphism */
+.glass-card {
+  @apply backdrop-blur-sm bg-black/80 border border-cyan-900/20 shadow-lg;
+  box-shadow: 0 8px 32px rgba(2, 132, 199, 0.1);
+}
+
+.glass-input {
+  @apply backdrop-blur-sm bg-black/80 border border-cyan-800/30;
+}
+
+/* Futuristic borders */
+.border-glow {
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.5), 
+              inset 0 0 5px rgba(56, 189, 248, 0.2);
+}
+
+.border-pulse {
+  box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+  animation: pulse-glow 2s infinite;
+}
+
+/* Futuristic gradients */
+.gradient-border {
+  position: relative;
+  border-radius: 0.5rem;
+  padding: 4px;
+}
+
+.gradient-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  padding: 2px;
+  background: linear-gradient(45deg, #38bdf8, #818cf8, #c084fc);
+  background-size: 200% 200%;
+  animation: rotate-gradient 3s ease infinite;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
