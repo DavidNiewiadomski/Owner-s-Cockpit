@@ -4,9 +4,6 @@ import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { ContractsHeader } from '@/components/contracts/ContractsHeader';
 import { ContractsPageTabs } from '@/components/contracts/ContractsPageTabs';
 import { 
-  contracts, 
-  contractMilestones, 
-  insurances, 
   getContractsByProject, 
   getInsurancesByProject, 
   getMilestonesByContract 
