@@ -69,7 +69,11 @@ export default function ContractsInsurance() {
   }, [projectId, toast]);
   
   return (
-    <DashboardLayout projectContext="Contracts & Insurance" projectName={projectName}>
+    <DashboardLayout 
+      projectContext="Contracts & Insurance" 
+      projectName={projectName}
+      // Remove initialInsights to avoid duplicate AI assistant
+    >
       <div className="max-w-7xl mx-auto">
         <CollapsibleAIAssistant 
           projectContext="Contracts & Insurance"
