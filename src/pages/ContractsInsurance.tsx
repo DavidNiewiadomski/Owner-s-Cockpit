@@ -18,9 +18,13 @@ export default function ContractsInsurance() {
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
   
-  // Get data based on active project
-  const projectContracts = getContractsByProject(selectedProject.id);
-  const projectInsurances = getInsurancesByProject(selectedProject.id);
+  // Handle case when selectedProject is null by defaulting to 'all'
+  const projectId = selectedProject?.id || 'all';
+  const projectName = selectedProject?.title || 'All Projects';
+  
+  // Get data based on active project, using the safe project ID
+  const projectContracts = getContractsByProject(projectId);
+  const projectInsurances = getInsurancesByProject(projectId);
   
   // Get all milestones for the current project's contracts
   const projectMilestones = projectContracts.flatMap(contract => 
@@ -28,7 +32,7 @@ export default function ContractsInsurance() {
   );
   
   return (
-    <DashboardLayout projectContext="Contracts & Insurance" projectName={selectedProject.title}>
+    <DashboardLayout projectContext="Contracts & Insurance" projectName={projectName}>
       <div className="max-w-7xl mx-auto">
         <ContractsHeader activeTab={activeTab} />
         
