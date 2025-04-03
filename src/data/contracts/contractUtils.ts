@@ -2,9 +2,10 @@
 import { contracts } from './contractData';
 import { insurances } from './insuranceData';
 import { contractMilestones } from './milestoneData';
+import { Contract, Insurance, ContractMilestone } from './types';
 
 // Get contracts by project ID
-export const getContractsByProject = (projectId: string | undefined | null) => {
+export const getContractsByProject = (projectId: string | undefined | null): Contract[] => {
   // Default to 'all' if projectId is undefined or null
   if (!projectId || projectId === 'all') {
     return contracts;
@@ -20,7 +21,7 @@ export const getContractsByProject = (projectId: string | undefined | null) => {
 };
 
 // Get insurances by project ID
-export const getInsurancesByProject = (projectId: string | undefined | null) => {
+export const getInsurancesByProject = (projectId: string | undefined | null): Insurance[] => {
   // Default to 'all' if projectId is undefined or null
   if (!projectId || projectId === 'all') {
     return insurances;
@@ -36,6 +37,9 @@ export const getInsurancesByProject = (projectId: string | undefined | null) => 
 };
 
 // Get milestones by contract ID
-export const getMilestonesByContract = (contractId: string) => {
+export const getMilestonesByContract = (contractId: string): ContractMilestone[] => {
+  if (!contractId) {
+    return [];
+  }
   return contractMilestones.filter(milestone => milestone.contractId === contractId);
 };
