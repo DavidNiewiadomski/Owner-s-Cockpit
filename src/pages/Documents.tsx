@@ -95,7 +95,7 @@ const Documents = () => {
                 variant={viewMode === 'folders' ? 'secondary' : 'ghost'} 
                 size="sm"
                 onClick={() => setViewMode('folders')}
-                className="gap-1"
+                className={`gap-1 ${viewMode === 'folders' ? 'bg-cyan-900/40 text-cyan-400 border-b-2 border-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.3)]' : ''}`}
               >
                 <FolderTree className="w-4 h-4" />
                 <span className="hidden sm:inline">Folders</span>
@@ -104,7 +104,7 @@ const Documents = () => {
                 variant={viewMode === 'list' ? 'secondary' : 'ghost'} 
                 size="sm"
                 onClick={() => setViewMode('list')}
-                className="gap-1"
+                className={`gap-1 ${viewMode === 'list' ? 'bg-cyan-900/40 text-cyan-400 border-b-2 border-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.3)]' : ''}`}
               >
                 <ListFilter className="w-4 h-4" />
                 <span className="hidden sm:inline">List</span>
@@ -160,7 +160,7 @@ const Documents = () => {
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Last Updated</p>
-                        <p className="text-white">{selectedDocument.date}</p>
+                        <p className="text-white">{selectedDocument.updatedAt}</p>
                       </div>
                     </div>
                     

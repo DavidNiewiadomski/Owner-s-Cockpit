@@ -88,11 +88,17 @@ const SafetySustainability = () => {
         
         <Tabs defaultValue="safety" className="w-full">
           <TabsList className="bg-black mb-6 border border-gray-800">
-            <TabsTrigger value="safety" className="data-[state=active]:bg-cyan-900 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="safety" 
+              className="data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+            >
               <ShieldCheck className="w-4 h-4 mr-2" />
               Safety
             </TabsTrigger>
-            <TabsTrigger value="sustainability" className="data-[state=active]:bg-green-900 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="sustainability" 
+              className="data-[state=active]:bg-cyan-900/40 data-[state=active]:text-cyan-400 data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+            >
               <Leaf className="w-4 h-4 mr-2" />
               Sustainability
             </TabsTrigger>
