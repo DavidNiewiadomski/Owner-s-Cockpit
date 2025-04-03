@@ -27,15 +27,18 @@ export function GanttChart({ data }: GanttChartProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <CardTitle>Gantt Chart</CardTitle>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-blue-200 text-blue-800 border-blue-500 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-700">
-              Planned
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-500 px-3 flex items-center gap-1.5 shadow-sm">
+              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span>Planned</span>
             </Badge>
-            <Badge variant="outline" className="bg-green-200 text-green-800 border-green-500 dark:bg-green-950 dark:text-green-300 dark:border-green-700">
-              Actual
+            <Badge variant="outline" className="bg-green-100 text-green-800 border-green-500 px-3 flex items-center gap-1.5 shadow-sm">
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span>Actual</span>
             </Badge>
-            <Badge variant="outline" className="bg-purple-200 text-purple-800 border-purple-500 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700">
-              % Complete
+            <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-500 px-3 flex items-center gap-1.5 shadow-sm">
+              <div className="w-3 h-3 rounded-full bg-purple-600"></div>
+              <span>% Complete</span>
             </Badge>
           </div>
         </div>
@@ -128,7 +131,7 @@ export function GanttChart({ data }: GanttChartProps) {
                   {/* Actual bar */}
                   {item.actualStart !== null && (
                     <div 
-                      className="absolute h-3 rounded-md bg-green-600 z-30"
+                      className="absolute h-3 rounded-md bg-green-500 z-30"
                       style={{ 
                         left: `${item.actualStart * 20}px`,
                         width: `${(item.actualEnd !== null ? item.actualEnd - item.actualStart : 2) * 20}px`,
