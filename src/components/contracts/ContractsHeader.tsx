@@ -14,12 +14,19 @@ export function ContractsHeader({ activeTab }: ContractsHeaderProps) {
   const projectName = selectedProject?.title || 'All Projects';
 
   // AI insights for contracts and insurance
-  const contractInsights = [
+  const contractInsightsStrings = [
     "2 contracts are expiring in the next 30 days",
     "Builder's Risk insurance policy is due for renewal",
     "4 unresolved payment milestones require attention",
     "Westview Residences has 3 active change orders pending approval"
   ];
+  
+  // Convert string array to the expected Insight[] format
+  const contractInsights = contractInsightsStrings.map((content, index) => ({
+    title: `Insight ${index + 1}`,
+    content,
+    type: (index % 3 === 0 ? "warning" : index % 3 === 1 ? "info" : "success") as "warning" | "success" | "info"
+  }));
 
   return (
     <>
