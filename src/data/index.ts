@@ -13,6 +13,14 @@ import {
   scheduledEvents, 
   communicationInsights
 } from './communications/communicationData';
+import {
+  contracts,
+  insurances,
+  contractMilestones,
+  getContractsByProject,
+  getInsurancesByProject,
+  getMilestonesByContract
+} from './contracts/contractsData';
 
 // Import types
 import type { Project } from './projects/projectData';
@@ -20,6 +28,11 @@ import type {
   Communication,
   ScheduledEvent
 } from './communications/communicationData';
+import type {
+  Contract,
+  Insurance,
+  ContractMilestone
+} from './contracts/contractsData';
 
 // Export data
 export {
@@ -37,7 +50,13 @@ export {
   recentCommunications,
   scheduledEvents,
   communicationInsights,
+  contracts,
+  insurances,
+  contractMilestones,
+  getContractsByProject,
+  getInsurancesByProject,
+  getMilestonesByContract
 };
 
 // Export types
-export type { Project, Communication, ScheduledEvent };
+export type { Project, Communication, ScheduledEvent, Contract, Insurance, ContractMilestone };

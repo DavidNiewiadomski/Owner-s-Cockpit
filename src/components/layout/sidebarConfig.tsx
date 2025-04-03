@@ -12,7 +12,9 @@ import {
   Layers, 
   Settings,
   Brush,
-  Download
+  Download,
+  FileContract,
+  ScrollText
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -50,6 +52,11 @@ export const navigationItems = [
     path: "/safety-sustainability",
     label: "Safety & Sustainability",
     icon: ShieldCheck
+  },
+  {
+    path: "/contracts-insurance",
+    label: "Contracts & Insurance",
+    icon: ScrollText
   },
   {
     path: "/documents",

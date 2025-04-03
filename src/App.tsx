@@ -13,6 +13,7 @@ import Communications from '@/pages/Communications';
 import InvestmentImpact from '@/pages/InvestmentImpact';
 import ActionItems from '@/pages/ActionItems';
 import SafetySustainability from '@/pages/SafetySustainability';
+import ContractsInsurance from '@/pages/ContractsInsurance';
 import Integrations from '@/pages/Integrations';
 import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
@@ -36,6 +37,7 @@ function App() {
               <Route path="/investment-impact" element={<InvestmentImpact />} />
               <Route path="/action-items" element={<ActionItems />} />
               <Route path="/safety-sustainability" element={<SafetySustainability />} />
+              <Route path="/contracts-insurance" element={<ContractsInsurance />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
