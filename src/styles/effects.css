@@ -15,6 +15,10 @@
   box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
 }
 
+.shadow-green {
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+}
+
 .shadow-purple {
   box-shadow: 0 4px 14px rgba(168, 85, 247, 0.3);
 }

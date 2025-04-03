@@ -28,15 +28,15 @@ export function GanttChart({ data }: GanttChartProps) {
         <div className="flex justify-between items-center">
           <CardTitle>Gantt Chart</CardTitle>
           <div className="flex items-center gap-3">
-            <Badge variant="outline" className="bg-blue-100 text-blue-800 border-blue-500 px-3 flex items-center gap-1.5 shadow-sm">
+            <Badge variant="outline" className="bg-blue-950/80 text-blue-400 border-blue-700/50 px-3 flex items-center gap-1.5 shadow-blue">
               <div className="w-3 h-3 rounded-full bg-blue-500"></div>
               <span>Planned</span>
             </Badge>
-            <Badge variant="outline" className="bg-green-100 text-green-800 border-green-500 px-3 flex items-center gap-1.5 shadow-sm">
+            <Badge variant="outline" className="bg-green-950/80 text-green-400 border-green-700/50 px-3 flex items-center gap-1.5 shadow-green">
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
               <span>Actual</span>
             </Badge>
-            <Badge variant="outline" className="bg-purple-100 text-purple-800 border-purple-500 px-3 flex items-center gap-1.5 shadow-sm">
+            <Badge variant="outline" className="bg-purple-950/80 text-purple-400 border-purple-700/50 px-3 flex items-center gap-1.5 shadow-purple">
               <div className="w-3 h-3 rounded-full bg-purple-600"></div>
               <span>% Complete</span>
             </Badge>
