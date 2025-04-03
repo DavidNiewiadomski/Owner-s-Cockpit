@@ -17,6 +17,7 @@ import ContractsInsurance from '@/pages/ContractsInsurance';
 import Integrations from '@/pages/Integrations';
 import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
+import Customize from '@/pages/Customize';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
 import './App.css';
@@ -41,6 +42,7 @@ function App() {
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/customize" element={<Customize />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             
