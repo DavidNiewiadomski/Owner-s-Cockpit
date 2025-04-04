@@ -120,20 +120,20 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
-                  const barElement = e?.target as SVGElement | null;
+                  const barElement = e.currentTarget;
                   if (barElement) {
-                    barElement.setAttribute('filter', 'url(#plannedGlow)');
-                    barElement.setAttribute('fill', 'url(#plannedHoverGradient)');
-                    barElement.setAttribute('transform', 'scale(1, 1.05)');
-                    barElement.setAttribute('transform-origin', 'bottom');
+                    barElement.style.filter = 'url(#plannedGlow)';
+                    barElement.style.fill = 'url(#plannedHoverGradient)';
+                    barElement.style.transform = 'scale(1, 1.05)';
+                    barElement.style.transformOrigin = 'bottom';
                   }
                 }}
                 onMouseOut={(data, index, e) => {
-                  const barElement = e?.target as SVGElement | null;
+                  const barElement = e.currentTarget;
                   if (barElement) {
-                    barElement.removeAttribute('filter');
-                    barElement.setAttribute('fill', 'url(#plannedGradient)');
-                    barElement.removeAttribute('transform');
+                    barElement.style.filter = '';
+                    barElement.style.fill = '';
+                    barElement.style.transform = '';
                   }
                 }}
               />
@@ -147,20 +147,20 @@ export function CostVarianceChart() {
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
-                  const barElement = e?.target as SVGElement | null;
+                  const barElement = e.currentTarget;
                   if (barElement) {
-                    barElement.setAttribute('filter', 'url(#actualGlow)');
-                    barElement.setAttribute('fill', 'url(#actualHoverGradient)');
-                    barElement.setAttribute('transform', 'scale(1, 1.05)');
-                    barElement.setAttribute('transform-origin', 'bottom');
+                    barElement.style.filter = 'url(#actualGlow)';
+                    barElement.style.fill = 'url(#actualHoverGradient)';
+                    barElement.style.transform = 'scale(1, 1.05)';
+                    barElement.style.transformOrigin = 'bottom';
                   }
                 }}
                 onMouseOut={(data, index, e) => {
-                  const barElement = e?.target as SVGElement | null;
+                  const barElement = e.currentTarget;
                   if (barElement) {
-                    barElement.removeAttribute('filter');
-                    barElement.setAttribute('fill', 'url(#actualGradient)');
-                    barElement.removeAttribute('transform');
+                    barElement.style.filter = '';
+                    barElement.style.fill = '';
+                    barElement.style.transform = '';
                   }
                 }}
               />
