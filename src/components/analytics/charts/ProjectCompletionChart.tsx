@@ -32,6 +32,26 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
     cardBg: "bg-gradient-to-br from-black to-zinc-900 border-cyan-900/30",
     cardHeader: "bg-gradient-to-r from-cyan-950/50 to-transparent border-b border-cyan-900/20"
   };
+  
+  // Custom tooltip component with improved styling
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 border border-cyan-700/40 backdrop-blur-lg rounded-lg shadow-lg py-2 px-3 text-white">
+          <p className="text-cyan-400 font-semibold">{label}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`item-${index}`} className="text-white text-sm">
+              <span className="font-medium" style={{ color: entry.color }}>
+                {entry.name}:
+              </span>{' '}
+              <span className="text-white font-bold">{entry.value}%</span>
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Card className={`shadow-[0_4px_30px_rgba(56,189,248,0.15)] ${enhancedColors.cardBg}`}>
@@ -67,6 +87,27 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
+                
+                {/* Add highlight effect for hover */}
+                <filter id="completionGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#38bdf8" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                
+                <filter id="budgetGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#f472b6" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke={enhancedColors.gridLine} opacity={0.5} />
               <XAxis 
@@ -81,15 +122,14 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
                 axisLine={{ stroke: enhancedColors.gridLine }}
               />
               <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(0, 0, 0, 0.85)', 
-                  border: '1px solid #334155', 
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
-                  padding: '10px 14px',
+                content={<CustomTooltip />}
+                cursor={{
+                  fill: 'rgba(56, 189, 248, 0.1)',
+                  strokeWidth: 1,
+                  stroke: 'rgba(56, 189, 248, 0.4)',
+                  rx: 4,
+                  ry: 4
                 }}
-                labelStyle={{ color: enhancedColors.textPrimary, fontWeight: 'bold', fontSize: '14px', marginBottom: '5px' }}
-                itemStyle={{ padding: '4px 0', color: enhancedColors.textPrimary, fontSize: '13px' }}
               />
               <Legend 
                 verticalAlign="top" 
@@ -112,7 +152,13 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
                 fill="url(#colorComplete)" 
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
-                filter="url(#glow)"
+                className="transition-all duration-300 ease-in-out"
+                onMouseOver={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-0:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#completionGlow)');
+                }}
+                onMouseOut={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-0:nth-child(${index + 1})`)?.removeAttribute('filter');
+                }}
               />
               <Bar 
                 dataKey="budget" 
@@ -121,7 +167,13 @@ export function ProjectCompletionChart({ projectData, colors }: ProjectCompletio
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
                 animationBegin={300}
-                filter="url(#glow)"
+                className="transition-all duration-300 ease-in-out"
+                onMouseOver={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#budgetGlow)');
+                }}
+                onMouseOut={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.removeAttribute('filter');
+                }}
               />
             </BarChart>
           </ResponsiveContainer>
