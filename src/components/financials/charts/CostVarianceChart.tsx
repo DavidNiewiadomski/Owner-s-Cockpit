@@ -120,26 +120,22 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(_, __, e) => {
-                  // Access the bar element through recharts' API
+                  // Type casting e.target to HTMLElement to access style property
                   if (e && e.target) {
-                    // Apply the glow filter
-                    e.target.style.filter = 'url(#plannedGlow)';
-                    // Change the fill to the hover gradient
-                    e.target.style.fill = 'url(#plannedHoverGradient)';
-                    // Apply subtle scale effect
-                    e.target.style.transform = 'scale(1, 1.05)';
-                    e.target.style.transformOrigin = 'bottom';
+                    const target = e.target as HTMLElement;
+                    target.style.filter = 'url(#plannedGlow)';
+                    target.style.fill = 'url(#plannedHoverGradient)';
+                    target.style.transform = 'scale(1, 1.05)';
+                    target.style.transformOrigin = 'bottom';
                   }
                 }}
                 onMouseOut={(_, __, e) => {
-                  // Reset styles on mouse out
+                  // Type casting e.target to HTMLElement to access style property
                   if (e && e.target) {
-                    // Remove the filter
-                    e.target.style.filter = '';
-                    // Reset the fill to default
-                    e.target.style.fill = '';
-                    // Remove the transform
-                    e.target.style.transform = '';
+                    const target = e.target as HTMLElement;
+                    target.style.filter = '';
+                    target.style.fill = '';
+                    target.style.transform = '';
                   }
                 }}
               />
@@ -153,26 +149,22 @@ export function CostVarianceChart() {
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(_, __, e) => {
-                  // Access the bar element through recharts' API
+                  // Type casting e.target to HTMLElement to access style property
                   if (e && e.target) {
-                    // Apply the glow filter
-                    e.target.style.filter = 'url(#actualGlow)';
-                    // Change the fill to the hover gradient
-                    e.target.style.fill = 'url(#actualHoverGradient)';
-                    // Apply subtle scale effect
-                    e.target.style.transform = 'scale(1, 1.05)';
-                    e.target.style.transformOrigin = 'bottom';
+                    const target = e.target as HTMLElement;
+                    target.style.filter = 'url(#actualGlow)';
+                    target.style.fill = 'url(#actualHoverGradient)';
+                    target.style.transform = 'scale(1, 1.05)';
+                    target.style.transformOrigin = 'bottom';
                   }
                 }}
                 onMouseOut={(_, __, e) => {
-                  // Reset styles on mouse out
+                  // Type casting e.target to HTMLElement to access style property
                   if (e && e.target) {
-                    // Remove the filter
-                    e.target.style.filter = '';
-                    // Reset the fill to default
-                    e.target.style.fill = '';
-                    // Remove the transform
-                    e.target.style.transform = '';
+                    const target = e.target as HTMLElement;
+                    target.style.filter = '';
+                    target.style.fill = '';
+                    target.style.transform = '';
                   }
                 }}
               />
