@@ -1,3 +1,4 @@
+
 import { 
   LayoutDashboard, 
   ListChecks, 
@@ -12,7 +13,8 @@ import {
   Settings,
   Brush,
   Download,
-  ScrollText
+  ScrollText,
+  HardHat
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -60,6 +62,11 @@ export const navigationItems = [
     path: "/documents",
     label: "Documents",
     icon: FileText
+  },
+  {
+    path: "/preconstruction",
+    label: "Preconstruction",
+    icon: HardHat
   },
   {
     path: "/communications",

@@ -21,6 +21,15 @@ import {
   getInsurancesByProject,
   getMilestonesByContract
 } from './contracts/contractsData';
+import {
+  designPlansData,
+  siteAssessmentsData,
+  permitsData,
+  approvalsTimeline,
+  budgetEstimatesData,
+  budgetCategoryData,
+  budgetRisksData
+} from './preconstruction/preconstructionData';
 
 // Import types
 import type { Project } from './projects/projectData';
@@ -55,7 +64,15 @@ export {
   contractMilestones,
   getContractsByProject,
   getInsurancesByProject,
-  getMilestonesByContract
+  getMilestonesByContract,
+  // Preconstruction data
+  designPlansData,
+  siteAssessmentsData,
+  permitsData,
+  approvalsTimeline,
+  budgetEstimatesData,
+  budgetCategoryData,
+  budgetRisksData
 };
 
 // Export types
