@@ -11,12 +11,9 @@ export interface CostVarianceThemeConfig {
   dark: string;
 }
 
+// Updated to match ChartConfig from ChartContext.tsx
 export interface CostVarianceConfig {
-  planned: {
-    label: string;
-    theme: CostVarianceThemeConfig;
-  };
-  actual: {
+  [key: string]: {
     label: string;
     theme: CostVarianceThemeConfig;
   };
