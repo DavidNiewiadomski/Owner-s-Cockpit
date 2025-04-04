@@ -21,7 +21,7 @@ const propertiesData = [
     occupancy: 92,
     roi: 8.6,
     status: 'Complete',
-    image: '/lovable-uploads/77247687-71e8-4da5-b76a-df619aae257e.png' // Highland Tower image from screenshot
+    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80' // Updated to a tall white modern building
   },
   { 
     id: 'P002', 
