@@ -119,21 +119,27 @@ export function CostVarianceChart() {
                 animationDuration={1500}
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
-                onMouseOver={(data, index, e) => {
-                  const barElement = e.currentTarget;
-                  if (barElement) {
-                    barElement.style.filter = 'url(#plannedGlow)';
-                    barElement.style.fill = 'url(#plannedHoverGradient)';
-                    barElement.style.transform = 'scale(1, 1.05)';
-                    barElement.style.transformOrigin = 'bottom';
+                onMouseOver={(_, __, e) => {
+                  // Access the bar element through recharts' API
+                  if (e && e.target) {
+                    // Apply the glow filter
+                    e.target.style.filter = 'url(#plannedGlow)';
+                    // Change the fill to the hover gradient
+                    e.target.style.fill = 'url(#plannedHoverGradient)';
+                    // Apply subtle scale effect
+                    e.target.style.transform = 'scale(1, 1.05)';
+                    e.target.style.transformOrigin = 'bottom';
                   }
                 }}
-                onMouseOut={(data, index, e) => {
-                  const barElement = e.currentTarget;
-                  if (barElement) {
-                    barElement.style.filter = '';
-                    barElement.style.fill = '';
-                    barElement.style.transform = '';
+                onMouseOut={(_, __, e) => {
+                  // Reset styles on mouse out
+                  if (e && e.target) {
+                    // Remove the filter
+                    e.target.style.filter = '';
+                    // Reset the fill to default
+                    e.target.style.fill = '';
+                    // Remove the transform
+                    e.target.style.transform = '';
                   }
                 }}
               />
@@ -146,21 +152,27 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
-                onMouseOver={(data, index, e) => {
-                  const barElement = e.currentTarget;
-                  if (barElement) {
-                    barElement.style.filter = 'url(#actualGlow)';
-                    barElement.style.fill = 'url(#actualHoverGradient)';
-                    barElement.style.transform = 'scale(1, 1.05)';
-                    barElement.style.transformOrigin = 'bottom';
+                onMouseOver={(_, __, e) => {
+                  // Access the bar element through recharts' API
+                  if (e && e.target) {
+                    // Apply the glow filter
+                    e.target.style.filter = 'url(#actualGlow)';
+                    // Change the fill to the hover gradient
+                    e.target.style.fill = 'url(#actualHoverGradient)';
+                    // Apply subtle scale effect
+                    e.target.style.transform = 'scale(1, 1.05)';
+                    e.target.style.transformOrigin = 'bottom';
                   }
                 }}
-                onMouseOut={(data, index, e) => {
-                  const barElement = e.currentTarget;
-                  if (barElement) {
-                    barElement.style.filter = '';
-                    barElement.style.fill = '';
-                    barElement.style.transform = '';
+                onMouseOut={(_, __, e) => {
+                  // Reset styles on mouse out
+                  if (e && e.target) {
+                    // Remove the filter
+                    e.target.style.filter = '';
+                    // Reset the fill to default
+                    e.target.style.fill = '';
+                    // Remove the transform
+                    e.target.style.transform = '';
                   }
                 }}
               />
