@@ -19,8 +19,10 @@ import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
 import Customize from '@/pages/Customize';
 import RiskMitigationPlans from '@/pages/RiskMitigationPlans';
+import MeetingDetails from '@/pages/MeetingDetails';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
+import { FlashingNotification } from '@/components/notifications/FlashingNotification';
 import './App.css';
 
 function App() {
@@ -41,6 +43,7 @@ function App() {
               <Route path="/safety-sustainability" element={<SafetySustainability />} />
               <Route path="/contracts-insurance" element={<ContractsInsurance />} />
               <Route path="/risk-mitigation-plans" element={<RiskMitigationPlans />} />
+              <Route path="/meeting-details" element={<MeetingDetails />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />
@@ -48,8 +51,15 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
             
-            {/* Owner's AI Agent - now on the right side */}
+            {/* Owner's AI Agent */}
             <OwnerAgentButton />
+            
+            {/* Meeting notification */}
+            <FlashingNotification 
+              message="Meeting scheduled for tomorrow" 
+              date="2023-04-07" 
+              link="/meeting-details" 
+            />
 
             <Toaster />
           </div>
