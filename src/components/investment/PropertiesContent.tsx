@@ -21,7 +21,7 @@ const propertiesData = [
     occupancy: 92,
     roi: 8.6,
     status: 'Complete',
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80' // Updated to a tall white modern building
+    image: 'https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=800&q=80' // Tall modern skyscraper for Highland Tower
   },
   { 
     id: 'P002', 
@@ -34,7 +34,7 @@ const propertiesData = [
     occupancy: 87,
     roi: 7.8,
     status: 'Complete',
-    image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&q=80' // White modern commercial building
+    image: 'https://images.unsplash.com/photo-1460574283810-2aab119d8511?auto=format&fit=crop&w=800&q=80' // Riverside modern building
   },
   { 
     id: 'P003', 
@@ -47,7 +47,7 @@ const propertiesData = [
     occupancy: 96,
     roi: 9.3,
     status: 'Complete',
-    image: 'https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=800&q=80' // Elegant residential building
+    image: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?auto=format&fit=crop&w=800&q=80' // Elegant residential building with unique architecture
   },
   { 
     id: 'P004', 
@@ -73,7 +73,7 @@ const propertiesData = [
     occupancy: 88,
     roi: 7.5,
     status: 'In Progress',
-    image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=800&q=80' // White residential complex
+    image: 'https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=800&q=80' // White residential complex
   },
 ];
 
