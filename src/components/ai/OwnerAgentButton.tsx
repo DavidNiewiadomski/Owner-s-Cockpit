@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Brain, X, Headphones, Sparkles, Bell } from 'lucide-react';
+import { Brain, X, Headphones, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { OwnerAgent } from '@/components/ai/OwnerAgent';
@@ -12,8 +12,6 @@ export function OwnerAgentButton() {
   const [isPulsing, setIsPulsing] = useState(false);
   const [hasNotification, setHasNotification] = useState(false);
   const [notificationText, setNotificationText] = useState('');
-  const [notificationCount, setNotificationCount] = useState(1);
-  const [showNotificationBadge, setShowNotificationBadge] = useState(true);
   const navigate = useNavigate();
 
   // Simulate agent activity with random notifications
@@ -50,43 +48,10 @@ export function OwnerAgentButton() {
       clearInterval(pulseInterval);
     };
   }, [isOpen]);
-  
-  const handleNotificationClick = () => {
-    navigate('/meeting-details');
-    setShowNotificationBadge(false); // Hide badge after clicking
-  };
-
-  // Auto-hide notification badge after some time
-  useEffect(() => {
-    if (showNotificationBadge) {
-      const hideTimeout = setTimeout(() => {
-        setShowNotificationBadge(false);
-      }, 60000); // Hide notification badge after 1 minute
-      
-      return () => clearTimeout(hideTimeout);
-    }
-  }, [showNotificationBadge]);
 
   return (
     <>
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
-        {notificationCount > 0 && showNotificationBadge && (
-          <Button
-            onClick={handleNotificationClick}
-            className="bg-blue-600 hover:bg-blue-700 text-white h-12 w-12 rounded-full shadow-lg flex items-center justify-center relative"
-            size="icon"
-            aria-label="View Notifications"
-          >
-            <Bell className="h-6 w-6" />
-            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping"></span>
-              <span className="relative inline-flex rounded-full h-5 w-5 bg-red-600 text-white text-xs items-center justify-center font-bold">
-                {notificationCount}
-              </span>
-            </span>
-          </Button>
-        )}
-        
         <Button
           onClick={() => setIsOpen(true)}
           className={cn(
