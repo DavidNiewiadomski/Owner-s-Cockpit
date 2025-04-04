@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Calendar, Bell } from 'lucide-react';
+import { Calendar, Bell, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -9,15 +9,18 @@ interface FlashingNotificationProps {
   date: string;
   link: string;
   icon?: React.ReactNode;
+  autoHideAfter?: number; // Time in milliseconds before auto-hiding
 }
 
 export function FlashingNotification({ 
   message, 
   date, 
   link, 
-  icon = <Calendar className="h-4 w-4" /> 
+  icon = <Calendar className="h-4 w-4" />,
+  autoHideAfter = 8000 // Default to 8 seconds
 }: FlashingNotificationProps) {
   const [isFlashing, setIsFlashing] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const navigate = useNavigate();
 
   // Create flashing effect
@@ -29,9 +32,27 @@ export function FlashingNotification({
     return () => clearInterval(flashInterval);
   }, []);
 
+  // Auto-hide notification after specified time
+  useEffect(() => {
+    if (autoHideAfter > 0) {
+      const hideTimeout = setTimeout(() => {
+        setIsVisible(false);
+      }, autoHideAfter);
+
+      return () => clearTimeout(hideTimeout);
+    }
+  }, [autoHideAfter]);
+
   const handleClick = () => {
     navigate(link);
   };
+
+  const handleDismiss = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsVisible(false);
+  };
+
+  if (!isVisible) return null;
 
   return (
     <div 
@@ -49,6 +70,13 @@ export function FlashingNotification({
         <p className="text-sm font-medium truncate">{message}</p>
         <p className="text-xs text-blue-200">{date}</p>
       </div>
+      <button 
+        onClick={handleDismiss}
+        className="p-1 rounded-full hover:bg-blue-800 transition-colors"
+        aria-label="Dismiss notification"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
     </div>
   );
 }
