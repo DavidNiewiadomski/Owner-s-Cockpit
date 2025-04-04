@@ -2,6 +2,14 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
+import {
   Building,
   Home,
   Landmark,
@@ -27,21 +35,21 @@ export function ProjectAllocationsTable() {
       </CardHeader>
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-800 text-left">
-                <th className="py-3 px-4 text-gray-400 font-medium text-sm">Project</th>
-                <th className="py-3 px-4 text-gray-400 font-medium text-sm">Type</th>
-                <th className="py-3 px-4 text-gray-400 font-medium text-sm">Allocation</th>
-                <th className="py-3 px-4 text-gray-400 font-medium text-sm">Status</th>
-                <th className="py-3 px-4 text-gray-400 font-medium text-sm">Progress</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHeader>
+              <TableRow className="border-gray-800">
+                <TableHead className="text-gray-400 font-medium text-sm">Project</TableHead>
+                <TableHead className="text-gray-400 font-medium text-sm">Type</TableHead>
+                <TableHead className="text-gray-400 font-medium text-sm">Allocation</TableHead>
+                <TableHead className="text-gray-400 font-medium text-sm">Status</TableHead>
+                <TableHead className="text-gray-400 font-medium text-sm">Progress</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {projectAllocationData.map(project => (
-                <tr key={project.id} className="border-b border-gray-800">
-                  <td className="py-3 px-4 font-medium">{project.name}</td>
-                  <td className="py-3 px-4 text-gray-300">
+                <TableRow key={project.id} className="border-gray-800">
+                  <TableCell className="font-medium">{project.name}</TableCell>
+                  <TableCell className="text-gray-300">
                     <div className="flex items-center">
                       {project.type === 'Commercial' && <Building className="h-4 w-4 mr-2 text-blue-400" />}
                       {project.type === 'Residential' && <Home className="h-4 w-4 mr-2 text-green-400" />}
@@ -49,14 +57,14 @@ export function ProjectAllocationsTable() {
                       {project.type === 'Mixed-Use' && <CircleEllipsis className="h-4 w-4 mr-2 text-purple-400" />}
                       {project.type}
                     </div>
-                  </td>
-                  <td className="py-3 px-4 text-gray-300">
+                  </TableCell>
+                  <TableCell className="text-gray-300">
                     <div className="flex items-center">
                       <CircleDollarSign className="h-4 w-4 mr-1 text-gray-400" />
                       {project.allocation}
                     </div>
-                  </td>
-                  <td className="py-3 px-4">
+                  </TableCell>
+                  <TableCell>
                     <span className={`px-2 py-1 rounded text-xs ${
                       project.status === 'Active' ? 'bg-blue-900 text-blue-300' :
                       project.status === 'Completed' ? 'bg-green-900 text-green-300' :
@@ -64,8 +72,8 @@ export function ProjectAllocationsTable() {
                     }`}>
                       {project.status}
                     </span>
-                  </td>
-                  <td className="py-3 px-4 w-48">
+                  </TableCell>
+                  <TableCell className="w-48">
                     <div className="flex items-center">
                       <div className="w-full bg-gray-800 rounded-full h-2.5 mr-2">
                         <div 
@@ -77,11 +85,11 @@ export function ProjectAllocationsTable() {
                       </div>
                       <span className="text-xs text-gray-400">{project.progress}%</span>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </CardContent>
     </Card>
