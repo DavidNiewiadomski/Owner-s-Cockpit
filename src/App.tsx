@@ -18,6 +18,7 @@ import Integrations from '@/pages/Integrations';
 import Messages from '@/pages/Messages';
 import Settings from '@/pages/Settings';
 import Customize from '@/pages/Customize';
+import RiskMitigationPlans from '@/pages/RiskMitigationPlans';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
 import './App.css';
@@ -39,6 +40,7 @@ function App() {
               <Route path="/action-items" element={<ActionItems />} />
               <Route path="/safety-sustainability" element={<SafetySustainability />} />
               <Route path="/contracts-insurance" element={<ContractsInsurance />} />
+              <Route path="/risk-mitigation-plans" element={<RiskMitigationPlans />} />
               <Route path="/integrations" element={<Integrations />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/settings" element={<Settings />} />

@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +33,7 @@ interface RiskManagementContentProps {
 }
 
 export function RiskManagementContent({ riskData, riskByCategory }: RiskManagementContentProps) {
+  const navigate = useNavigate();
   const [sortField, setSortField] = useState<keyof Risk>('severity');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -167,7 +169,7 @@ export function RiskManagementContent({ riskData, riskByCategory }: RiskManageme
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sortedRisks.map((risk) => (
+                  {sortedRisks.slice(0, 5).map((risk) => (
                     <TableRow key={risk.id} className="hover:bg-gray-900/50">
                       <TableCell className="font-medium text-gray-300">{risk.id}</TableCell>
                       <TableCell>{risk.name}</TableCell>
@@ -294,7 +296,12 @@ export function RiskManagementContent({ riskData, riskByCategory }: RiskManageme
             </Table>
           </div>
           <div className="mt-4 flex justify-end">
-            <Button variant="outline" size="sm" className="border-gray-700 hover:bg-gray-900">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="border-gray-700 hover:bg-gray-900"
+              onClick={() => navigate('/risk-mitigation-plans')}
+            >
               View All Mitigation Plans
             </Button>
           </div>
