@@ -34,16 +34,27 @@ export function CostVarianceChart() {
               }}
             >
               <defs>
+                {/* Enhanced gradients for bars */}
                 <linearGradient id="plannedGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="rgba(139, 92, 246, 0.8)" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="rgba(139, 92, 246, 0.3)" stopOpacity={0.3}/>
+                  <stop offset="5%" stopColor="rgba(139, 92, 246, 0.85)" stopOpacity={0.9}/>
+                  <stop offset="95%" stopColor="rgba(139, 92, 246, 0.4)" stopOpacity={0.4}/>
                 </linearGradient>
                 <linearGradient id="actualGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="rgba(14, 165, 233, 0.8)" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="rgba(14, 165, 233, 0.3)" stopOpacity={0.3}/>
+                  <stop offset="5%" stopColor="rgba(14, 165, 233, 0.85)" stopOpacity={0.9}/>
+                  <stop offset="95%" stopColor="rgba(14, 165, 233, 0.4)" stopOpacity={0.4}/>
                 </linearGradient>
                 
-                {/* Add dark-themed glow filters for hover effects */}
+                {/* Enhanced hover gradients */}
+                <linearGradient id="plannedHoverGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(167, 139, 250, 0.95)" stopOpacity={1}/>
+                  <stop offset="95%" stopColor="rgba(139, 92, 246, 0.6)" stopOpacity={0.6}/>
+                </linearGradient>
+                <linearGradient id="actualHoverGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(56, 189, 248, 0.95)" stopOpacity={1}/>
+                  <stop offset="95%" stopColor="rgba(14, 165, 233, 0.6)" stopOpacity={0.6}/>
+                </linearGradient>
+                
+                {/* Dark-themed glow filters for hover effects */}
                 <filter id="plannedGlow" x="-10%" y="-10%" width="120%" height="120%">
                   <feGaussianBlur stdDeviation="4" result="blur" />
                   <feFlood floodColor="#8B5CF6" floodOpacity="0.7" result="glow" />
@@ -109,19 +120,24 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
-                  // Custom logic without adding white highlight
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.setAttribute('filter', 'url(#plannedGlow)');
+                    barElement.setAttribute('fill', 'url(#plannedHoverGradient)');
                     barElement.setAttribute('opacity', '1');
+                    // Scale effect - slightly increase height
+                    barElement.setAttribute('transform', 'scale(1, 1.05)');
+                    barElement.setAttribute('transform-origin', 'bottom');
                   }
                 }}
                 onMouseOut={(data, index, e) => {
-                  // Restore original style
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.removeAttribute('filter');
+                    barElement.setAttribute('fill', 'url(#plannedGradient)');
                     barElement.setAttribute('opacity', '0.9');
+                    // Remove scale effect
+                    barElement.removeAttribute('transform');
                   }
                 }}
               />
@@ -135,19 +151,24 @@ export function CostVarianceChart() {
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
-                  // Custom logic without adding white highlight
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.setAttribute('filter', 'url(#actualGlow)');
+                    barElement.setAttribute('fill', 'url(#actualHoverGradient)');
                     barElement.setAttribute('opacity', '1');
+                    // Scale effect - slightly increase height
+                    barElement.setAttribute('transform', 'scale(1, 1.05)');
+                    barElement.setAttribute('transform-origin', 'bottom');
                   }
                 }}
                 onMouseOut={(data, index, e) => {
-                  // Restore original style
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.removeAttribute('filter');
+                    barElement.setAttribute('fill', 'url(#actualGradient)');
                     barElement.setAttribute('opacity', '0.9');
+                    // Remove scale effect
+                    barElement.removeAttribute('transform');
                   }
                 }}
               />
