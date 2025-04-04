@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 interface Category {
   id: string;
@@ -20,25 +22,31 @@ export function IntegrationCategories({
   setSelectedCategory 
 }: IntegrationCategoriesProps) {
   return (
-    <div className="flex items-center flex-wrap gap-2 mb-8 overflow-x-auto pb-2">
-      {categories.map((category) => {
-        const Icon = category.icon;
-        return (
-          <Button
-            key={category.id}
-            variant={selectedCategory === category.id ? "default" : "outline"}
-            className={`flex items-center justify-center px-4 py-2 h-10 transition-all ${
-              selectedCategory === category.id 
-                ? "bg-cyan-700 text-white border-cyan-600 shadow-[0_0_15px_rgba(8,145,178,0.6)]" 
-                : "bg-black text-gray-300 hover:bg-gray-900 border-gray-700 hover:shadow-[0_0_10px_rgba(8,145,178,0.3)]"
-            }`}
-            onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
-          >
-            <Icon className="h-4 w-4 mr-2" />
-            <span>{category.name}</span>
-          </Button>
-        );
-      })}
+    <div className="mb-6">
+      <h3 className="text-sm font-medium text-gray-400 mb-3">Categories</h3>
+      <ScrollArea className="pb-2 w-full">
+        <div className="flex items-center gap-2 pb-2 overflow-x-auto">
+          {categories.map((category) => {
+            const Icon = category.icon;
+            return (
+              <Button
+                key={category.id}
+                variant={selectedCategory === category.id ? "default" : "outline"}
+                className={`flex items-center justify-center px-4 py-2 h-10 transition-all whitespace-nowrap ${
+                  selectedCategory === category.id 
+                    ? "bg-cyan-700 text-white border-cyan-600 shadow-blue" 
+                    : "bg-gray-900/60 text-gray-300 hover:bg-gray-800 border-gray-700 hover:shadow-blue"
+                }`}
+                onClick={() => setSelectedCategory(selectedCategory === category.id ? null : category.id)}
+              >
+                <Icon className="h-4 w-4 mr-2" />
+                <span>{category.name}</span>
+              </Button>
+            );
+          })}
+        </div>
+      </ScrollArea>
+      <Separator className="mt-4 bg-gray-800" />
     </div>
   );
 }

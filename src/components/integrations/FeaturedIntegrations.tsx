@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Scan } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { IntegrationCard } from '@/components/dashboard/IntegrationCard';
+import { Separator } from '@/components/ui/separator';
 
 interface Integration {
   id: string;
@@ -28,20 +29,21 @@ export function FeaturedIntegrations({
 
   return (
     <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4 text-white flex items-center">
-        <Scan className="h-5 w-5 mr-2 text-construction-400" />
-        Featured Integrations
-      </h2>
+      <div className="flex items-center mb-4">
+        <Sparkles className="h-5 w-5 mr-2 text-yellow-400" />
+        <h2 className="text-xl font-semibold text-white">Featured Integrations</h2>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {integrations.map((integration) => (
           <IntegrationCard 
             key={integration.id} 
             {...integration} 
             onToggle={() => onToggle(integration.name)} 
-            className="bg-gradient-to-br from-black to-black border-construction-700/30 shadow-lg"
+            className="bg-gradient-to-br from-gray-900 to-black border-cyan-900/20 shadow-blue"
           />
         ))}
       </div>
+      <Separator className="mt-8 mb-6 bg-gray-800" />
     </div>
   );
 }

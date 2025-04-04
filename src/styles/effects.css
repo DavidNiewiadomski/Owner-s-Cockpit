@@ -35,3 +35,12 @@
 .dialog-glow {
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
 }
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+}
