@@ -31,6 +31,27 @@
   box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
 }
 
+/* Enhanced shadow effects for cards */
+.shadow-card-blue {
+  box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.2), 0 8px 10px -6px rgba(56, 189, 248, 0.1);
+}
+
+.shadow-card-green {
+  box-shadow: 0 10px 25px -5px rgba(34, 197, 94, 0.2), 0 8px 10px -6px rgba(34, 197, 94, 0.1);
+}
+
+.shadow-card-purple {
+  box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.2), 0 8px 10px -6px rgba(168, 85, 247, 0.1);
+}
+
+.shadow-card-yellow {
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.2), 0 8px 10px -6px rgba(245, 158, 11, 0.1);
+}
+
+.shadow-card-red {
+  box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2), 0 8px 10px -6px rgba(239, 68, 68, 0.1);
+}
+
 /* Dialog effect */
 .dialog-glow {
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.15);
@@ -43,4 +64,30 @@
 
 .card-hover:hover {
   transform: translateY(-4px);
+}
+
+/* Animation for subtle breathing effect */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+.breathe {
+  animation: breathe 6s infinite ease-in-out;
+}
+
+/* Animation for shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }

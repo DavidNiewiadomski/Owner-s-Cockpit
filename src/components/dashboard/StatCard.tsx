@@ -24,79 +24,92 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn(
-      "overflow-hidden bg-gradient-to-br from-gray-900 to-black border-cyan-900/20 shadow-lg animate-fade-in hover:translate-y-[-2px] transition-all duration-300",
+      "overflow-hidden bg-gradient-to-br from-gray-900/95 to-black border-gray-800/50 shadow-xl animate-fade-in transition-all duration-300 hover:translate-y-[-4px]",
       className
     )}>
-      {/* Vibrant gradient top border */}
+      {/* Color gradient top border based on trend */}
       <div className={cn(
-        "h-1.5 w-full",
-        trend === "up" ? "bg-gradient-to-r from-emerald-400 to-green-500" :
-        trend === "down" ? "bg-gradient-to-r from-red-400 to-rose-500" :
-        "bg-gradient-to-r from-blue-400 to-cyan-500"
+        "h-1.5 w-full bg-gradient-to-r",
+        trend === "up" ? "from-emerald-500 to-green-400" :
+        trend === "down" ? "from-red-500 to-rose-400" :
+        "from-blue-500 to-cyan-400"
       )}></div>
       
-      <CardContent className="p-5">
+      <CardContent className="pt-6 pb-5 px-5">
         <div className="flex justify-between items-start">
           <div>
-            <p className="text-sm font-medium text-cyan-400">{title}</p>
-            <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
+            <p className="text-sm font-medium text-gray-400 mb-1">{title}</p>
+            <h3 className="text-3xl font-bold text-white tracking-tight">{value}</h3>
             {description && (
-              <p className="text-sm text-cyan-200/80 mt-1">{description}</p>
-            )}
-            
-            {trend && (
-              <div className="flex items-center mt-2.5">
-                <span
-                  className={cn(
-                    "inline-flex items-center text-xs font-medium rounded-full px-2.5 py-1",
-                    trend === "up" && "bg-green-900/40 text-green-300 border border-green-500/40",
-                    trend === "down" && "bg-red-900/40 text-red-300 border border-red-500/40",
-                    trend === "neutral" && "bg-gray-900/40 text-gray-200 border border-gray-500/40"
-                  )}
-                >
-                  {trend === "up" && (
-                    <svg
-                      className="w-3 h-3 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 15l7-7 7 7"
-                      />
-                    </svg>
-                  )}
-                  {trend === "down" && (
-                    <svg
-                      className="w-3 h-3 mr-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  )}
-                  {trendValue}
-                </span>
-              </div>
+              <p className="text-sm text-gray-400 mt-1 opacity-80">{description}</p>
             )}
           </div>
           
           {Icon && (
-            <div className="p-2.5 rounded-full bg-gradient-to-br from-black to-gray-900 border border-cyan-700/30 shadow-[0_0_15px_rgba(8,145,178,0.2)]">
-              <Icon className="h-5 w-5 text-cyan-400" />
+            <div className="p-3 rounded-full bg-gradient-to-br from-gray-800/80 to-gray-900/90 border border-gray-700/50 shadow-lg transform hover:rotate-3 transition-transform duration-200">
+              <Icon className={cn(
+                "h-6 w-6",
+                trend === "up" ? "text-green-400" :
+                trend === "down" ? "text-red-400" :
+                "text-blue-400"
+              )} />
             </div>
           )}
+        </div>
+        
+        {trend && (
+          <div className="mt-4">
+            <div className={cn(
+              "inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border",
+              trend === "up" && "bg-green-900/30 text-green-300 border-green-700/40",
+              trend === "down" && "bg-red-900/30 text-red-300 border-red-700/40",
+              trend === "neutral" && "bg-blue-900/30 text-blue-300 border-blue-700/40"
+            )}>
+              {trend === "up" && (
+                <svg
+                  className="w-3 h-3 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 15l7-7 7 7"
+                  />
+                </svg>
+              )}
+              {trend === "down" && (
+                <svg
+                  className="w-3 h-3 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              )}
+              {trendValue}
+            </div>
+          </div>
+        )}
+        
+        {/* Add a subtle glow effect at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 opacity-30">
+          <div className={cn(
+            "h-full w-16 mx-auto rounded-t-full blur-md",
+            trend === "up" ? "bg-green-400" :
+            trend === "down" ? "bg-red-400" :
+            "bg-blue-400"
+          )}></div>
         </div>
       </CardContent>
     </Card>
