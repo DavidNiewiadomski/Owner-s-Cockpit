@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -49,6 +48,38 @@ const projectAllocationData = [
 ];
 
 export function InvestmentAllocationContent() {
+  // Custom tooltip for bar chart
+  const CustomBarTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 border border-cyan-800/50 p-3 rounded-md shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+          <p className="font-bold text-cyan-300">{`Quarter: ${label}`}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={index} style={{ color: entry.color }} className="text-sm">
+              {entry.name}: {entry.value}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Custom tooltip for pie chart
+  const CustomPieTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 border border-cyan-800/50 p-3 rounded-md shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+          <p className="font-bold text-cyan-300">{payload[0].name}</p>
+          <p className="text-white">
+            <span className="text-white font-bold">{payload[0].value}%</span> of portfolio
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -57,20 +88,177 @@ export function InvestmentAllocationContent() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={quarterlyAllocation} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                <defs>
+                  {/* Residential bar gradient and glow */}
+                  <linearGradient id="residentialGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <filter id="residentialGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#0284c7" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  
+                  {/* Commercial bar gradient and glow */}
+                  <linearGradient id="commercialGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0891b2" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#0891b2" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <filter id="commercialGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#0891b2" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  
+                  {/* Mixed-Use bar gradient and glow */}
+                  <linearGradient id="mixedUseGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#7c3aed" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <filter id="mixedUseGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#7c3aed" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  
+                  {/* Infrastructure bar gradient and glow */}
+                  <linearGradient id="infrastructureGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#059669" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#059669" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <filter id="infrastructureGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#059669" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  
+                  {/* Special Projects bar gradient and glow */}
+                  <linearGradient id="specialGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#db2777" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#db2777" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <filter id="specialGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#db2777" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.1)" />
                 <XAxis dataKey="name" stroke="#666" />
                 <YAxis stroke="#666" />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} 
-                  itemStyle={{ color: '#eee' }}
-                  labelStyle={{ color: '#fff' }}
+                  content={<CustomBarTooltip />}
+                  cursor={{
+                    fill: 'rgba(56, 189, 248, 0.1)',
+                    strokeWidth: 1,
+                    stroke: 'rgba(56, 189, 248, 0.4)',
+                    rx: 4,
+                    ry: 4
+                  }}
                 />
-                <Legend wrapperStyle={{ color: '#eee' }} />
-                <Bar dataKey="residential" name="Residential" fill="#0284c7" />
-                <Bar dataKey="commercial" name="Commercial" fill="#0891b2" />
-                <Bar dataKey="mixedUse" name="Mixed-Use" fill="#7c3aed" />
-                <Bar dataKey="infrastructure" name="Infrastructure" fill="#059669" />
-                <Bar dataKey="special" name="Special Projects" fill="#db2777" />
+                <Legend 
+                  wrapperStyle={{ 
+                    color: '#eee',
+                    paddingTop: '20px',
+                    lineHeight: '24px',
+                    marginTop: '15px'
+                  }}
+                  formatter={(value) => <span className="text-gray-300">{value}</span>}
+                  layout="horizontal"
+                  verticalAlign="bottom"
+                  align="center"
+                />
+                <Bar 
+                  dataKey="residential" 
+                  name="Residential" 
+                  fill="url(#residentialGradient)" 
+                  radius={[4, 4, 0, 0]}
+                  animationDuration={1500}
+                  className="transition-all duration-300 ease-in-out"
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#residentialGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                />
+                <Bar 
+                  dataKey="commercial" 
+                  name="Commercial" 
+                  fill="url(#commercialGradient)" 
+                  radius={[4, 4, 0, 0]}
+                  animationDuration={1500}
+                  className="transition-all duration-300 ease-in-out"
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#commercialGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                />
+                <Bar 
+                  dataKey="mixedUse" 
+                  name="Mixed-Use" 
+                  fill="url(#mixedUseGradient)" 
+                  radius={[4, 4, 0, 0]}
+                  animationDuration={1500}
+                  className="transition-all duration-300 ease-in-out"
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-2:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#mixedUseGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-2:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                />
+                <Bar 
+                  dataKey="infrastructure" 
+                  name="Infrastructure" 
+                  fill="url(#infrastructureGradient)" 
+                  radius={[4, 4, 0, 0]}
+                  animationDuration={1500}
+                  className="transition-all duration-300 ease-in-out"
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-3:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#infrastructureGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-3:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                />
+                <Bar 
+                  dataKey="special" 
+                  name="Special Projects" 
+                  fill="url(#specialGradient)" 
+                  radius={[4, 4, 0, 0]}
+                  animationDuration={1500}
+                  className="transition-all duration-300 ease-in-out"
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-4:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#specialGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-4:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -81,26 +269,54 @@ export function InvestmentAllocationContent() {
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
+                <defs>
+                  {/* Add glow filter for pie chart */}
+                  <filter id="pieSliceGlow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feFlood floodColor="#38bdf8" floodOpacity="0.7" result="glow" />
+                    <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                    <feMerge>
+                      <feMergeNode in="softGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
                 <Pie
                   data={allocationData}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
-                  outerRadius={100}
+                  outerRadius={80}
                   fill="#8884d8"
                   paddingAngle={2}
                   dataKey="value"
+                  labelLine
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={false}
+                  onMouseOver={(data, index) => {
+                    document.querySelector(`.recharts-pie-sector:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#pieSliceGlow)');
+                  }}
+                  onMouseOut={(data, index) => {
+                    document.querySelector(`.recharts-pie-sector:nth-child(${index + 1})`)?.removeAttribute('filter');
+                  }}
+                  animationDuration={1500}
                 >
                   {allocationData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.color}
+                      className="transition-all duration-300 ease-in-out" 
+                    />
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }} 
-                  itemStyle={{ color: '#eee' }}
-                  formatter={(value) => [`${value}%`, 'Allocation']}
+                  content={<CustomPieTooltip />}
+                  cursor={{
+                    fill: 'rgba(56, 189, 248, 0.1)',
+                    strokeWidth: 1,
+                    stroke: 'rgba(56, 189, 248, 0.4)',
+                    rx: 4,
+                    ry: 4
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -142,15 +358,55 @@ export function InvestmentAllocationContent() {
               data={projectionData}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+              <defs>
+                <linearGradient id="projectionGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0.3}/>
+                </linearGradient>
+                <filter id="projectionGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#10b981" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(56, 189, 248, 0.1)" />
               <XAxis dataKey="name" stroke="#666" />
               <YAxis stroke="#666" />
               <Tooltip
                 contentStyle={{ backgroundColor: '#111', border: '1px solid #333' }}
                 itemStyle={{ color: '#eee' }}
                 formatter={(value) => [`${value}%`, 'Projected Value']}
+                cursor={{
+                  stroke: 'rgba(56, 189, 248, 0.4)',
+                  strokeWidth: 1
+                }}
               />
-              <Line type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} activeDot={{ r: 8 }} />
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                stroke="url(#projectionGradient)" 
+                strokeWidth={2} 
+                activeDot={{ 
+                  r: 8,
+                  onMouseOver: (e) => {
+                    e.target.setAttribute('filter', 'url(#projectionGlow)');
+                  },
+                  onMouseOut: (e) => {
+                    e.target.removeAttribute('filter');
+                  }
+                }}
+                dot={{
+                  r: 4,
+                  strokeWidth: 2,
+                  fill: "#10b981",
+                  stroke: "#10b981"
+                }}
+                animationDuration={1500}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
