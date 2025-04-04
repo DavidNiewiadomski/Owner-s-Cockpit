@@ -43,7 +43,7 @@ export function CostVarianceChart() {
                   <stop offset="95%" stopColor="rgba(14, 165, 233, 0.3)" stopOpacity={0.3}/>
                 </linearGradient>
                 
-                {/* Add glow filters for hover effects */}
+                {/* Add dark-themed glow filters for hover effects */}
                 <filter id="plannedGlow" x="-10%" y="-10%" width="120%" height="120%">
                   <feGaussianBlur stdDeviation="4" result="blur" />
                   <feFlood floodColor="#8B5CF6" floodOpacity="0.7" result="glow" />
