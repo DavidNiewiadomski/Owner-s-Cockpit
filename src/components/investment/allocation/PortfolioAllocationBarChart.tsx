@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   BarChart, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Bar
 } from 'recharts';
+import { PortfolioAllocationData } from './types';
 
 // Sample data for quarterly investment allocation
-const quarterlyAllocation = [
+const quarterlyAllocation: PortfolioAllocationData[] = [
   { name: 'Q1', residential: 35, commercial: 20, mixedUse: 10, infrastructure: 10, special: 5 },
   { name: 'Q2', residential: 38, commercial: 22, mixedUse: 12, infrastructure: 11, special: 6 },
   { name: 'Q3', residential: 40, commercial: 25, mixedUse: 15, infrastructure: 12, special: 8 },

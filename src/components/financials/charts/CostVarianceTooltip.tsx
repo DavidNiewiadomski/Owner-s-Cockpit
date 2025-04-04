@@ -1,12 +1,7 @@
 
 import React from "react";
 import { formatCurrency } from "./CostVarianceData";
-
-interface CostVarianceTooltipProps {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-}
+import { CostVarianceTooltipProps } from "./CostVarianceTypes";
 
 export const CostVarianceTooltip: React.FC<CostVarianceTooltipProps> = ({ 
   active, 

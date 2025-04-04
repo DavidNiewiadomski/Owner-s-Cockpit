@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { AllocationDataPoint } from './types';
 
 // Sample data for investment allocation
-const allocationData = [
+const allocationData: AllocationDataPoint[] = [
   { name: 'Residential', value: 40, color: '#0284c7' },
   { name: 'Commercial', value: 25, color: '#0891b2' },
   { name: 'Mixed-Use', value: 15, color: '#7c3aed' },

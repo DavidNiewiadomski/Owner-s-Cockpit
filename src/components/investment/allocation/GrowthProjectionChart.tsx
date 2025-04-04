@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { ProjectionDataPoint } from './types';
 
 // Sample data for growth projection
-const projectionData = [
+const projectionData: ProjectionDataPoint[] = [
   { name: 'Current', value: 100 },
   { name: '1 Year', value: 115 },
   { name: '3 Year', value: 140 },

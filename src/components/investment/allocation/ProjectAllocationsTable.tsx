@@ -8,9 +8,10 @@ import {
   CircleEllipsis,
   CircleDollarSign
 } from 'lucide-react';
+import { ProjectAllocation } from './types';
 
 // Sample data for project allocations
-const projectAllocationData = [
+const projectAllocationData: ProjectAllocation[] = [
   { id: 1, name: 'East Tower', type: 'Commercial', allocation: '$12.5M', status: 'Active', progress: 65 },
   { id: 2, name: 'Westview Residences', type: 'Residential', allocation: '$8.2M', status: 'Active', progress: 40 },
   { id: 3, name: 'Harbor Bridge', type: 'Infrastructure', allocation: '$6.7M', status: 'Planning', progress: 15 },

@@ -1,5 +1,7 @@
 
-export const costVarianceData = [
+import { CostVarianceDataPoint, CostVarianceConfig } from './CostVarianceTypes';
+
+export const costVarianceData: CostVarianceDataPoint[] = [
   {
     name: "Site Work",
     planned: 425000,
@@ -38,7 +40,7 @@ export const costVarianceData = [
   },
 ];
 
-export const costVarianceChartConfig = {
+export const costVarianceChartConfig: CostVarianceConfig = {
   planned: {
     label: "Planned",
     theme: {
