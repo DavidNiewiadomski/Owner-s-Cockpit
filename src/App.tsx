@@ -22,8 +22,6 @@ import RiskMitigationPlans from '@/pages/RiskMitigationPlans';
 import MeetingDetails from '@/pages/MeetingDetails';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
-import { FlashingNotification } from '@/components/notifications/FlashingNotification';
-import { Bell } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -55,15 +53,6 @@ function App() {
             {/* Owner's AI Agent */}
             <OwnerAgentButton />
             
-            {/* Meeting notification - will auto-hide after 8 seconds */}
-            <FlashingNotification 
-              message="Meeting scheduled for tomorrow" 
-              date="2023-04-07" 
-              link="/meeting-details" 
-              icon={<Bell className="h-4 w-4" />}
-              autoHideAfter={8000}
-            />
-
             <Toaster />
           </div>
         </BrowserRouter>
