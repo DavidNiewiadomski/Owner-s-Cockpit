@@ -29,6 +29,22 @@ export function IssuesBarChart({ projectData, colors }: IssuesBarChartProps) {
     cardHeader: "bg-gradient-to-r from-cyan-950/50 to-transparent border-b border-cyan-900/20"
   };
 
+  // Custom tooltip component with improved styling
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 border border-cyan-700/40 backdrop-blur-lg rounded-lg shadow-lg py-2 px-3 text-white">
+          <p className="text-cyan-400 font-semibold">{payload[0].payload.name}</p>
+          <p className="text-white text-sm">
+            <span className="font-medium text-cyan-200">Open Issues:</span>{' '}
+            <span className="text-white font-bold">{payload[0].value}</span>
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Card className={`shadow-[0_4px_30px_rgba(56,189,248,0.15)] ${enhancedColors.cardBg}`}>
       <CardHeader className={`pb-2 ${enhancedColors.cardHeader}`}>
@@ -60,6 +76,17 @@ export function IssuesBarChart({ projectData, colors }: IssuesBarChartProps) {
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
+                
+                {/* Add highlight effect for hover */}
+                <filter id="hoverGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#38bdf8" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke={enhancedColors.gridLine} opacity={0.5} />
               <XAxis 
@@ -77,16 +104,14 @@ export function IssuesBarChart({ projectData, colors }: IssuesBarChartProps) {
                 axisLine={{ stroke: enhancedColors.gridLine }}
               />
               <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'rgba(0, 0, 0, 0.85)', 
-                  border: '1px solid #334155', 
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 20px rgba(56,189,248,0.3)',
-                  padding: '10px 14px',
+                content={<CustomTooltip />}
+                cursor={{
+                  fill: 'rgba(56, 189, 248, 0.1)',
+                  strokeWidth: 1,
+                  stroke: 'rgba(56, 189, 248, 0.4)',
+                  rx: 4,
+                  ry: 4
                 }}
-                labelStyle={{ color: enhancedColors.textPrimary, fontWeight: 'bold', fontSize: '14px' }}
-                itemStyle={{ color: enhancedColors.textPrimary, fontSize: '13px' }}
-                formatter={(value) => [`${value} issues`, 'Open Issues']}
               />
               <Bar 
                 dataKey="issues" 
@@ -94,7 +119,13 @@ export function IssuesBarChart({ projectData, colors }: IssuesBarChartProps) {
                 fill="url(#issueGradient)"
                 radius={[0, 4, 4, 0]}
                 animationDuration={1500}
-                filter="url(#issueGlow)"
+                className="transition-all duration-300 ease-in-out"
+                onMouseOver={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#hoverGlow)');
+                }}
+                onMouseOut={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.removeAttribute('filter');
+                }}
               />
             </BarChart>
           </ResponsiveContainer>
