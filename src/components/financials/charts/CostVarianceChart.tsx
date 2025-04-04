@@ -110,18 +110,18 @@ export function CostVarianceChart() {
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
                   // Custom logic without adding white highlight
-                  const barElement = e?.target;
+                  const barElement = e?.target as SVGElement | null;
                   if (barElement) {
-                    barElement.style.filter = 'url(#plannedGlow)';
-                    barElement.style.opacity = '1';
+                    barElement.setAttribute('filter', 'url(#plannedGlow)');
+                    barElement.setAttribute('opacity', '1');
                   }
                 }}
                 onMouseOut={(data, index, e) => {
                   // Restore original style
-                  const barElement = e?.target;
+                  const barElement = e?.target as SVGElement | null;
                   if (barElement) {
-                    barElement.style.filter = 'none';
-                    barElement.style.opacity = '0.9';
+                    barElement.removeAttribute('filter');
+                    barElement.setAttribute('opacity', '0.9');
                   }
                 }}
               />
@@ -136,18 +136,18 @@ export function CostVarianceChart() {
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
                   // Custom logic without adding white highlight
-                  const barElement = e?.target;
+                  const barElement = e?.target as SVGElement | null;
                   if (barElement) {
-                    barElement.style.filter = 'url(#actualGlow)';
-                    barElement.style.opacity = '1';
+                    barElement.setAttribute('filter', 'url(#actualGlow)');
+                    barElement.setAttribute('opacity', '1');
                   }
                 }}
                 onMouseOut={(data, index, e) => {
                   // Restore original style
-                  const barElement = e?.target;
+                  const barElement = e?.target as SVGElement | null;
                   if (barElement) {
-                    barElement.style.filter = 'none';
-                    barElement.style.opacity = '0.9';
+                    barElement.removeAttribute('filter');
+                    barElement.setAttribute('opacity', '0.9');
                   }
                 }}
               />
