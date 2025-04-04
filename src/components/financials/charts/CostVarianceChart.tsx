@@ -108,11 +108,21 @@ export function CostVarianceChart() {
                 animationDuration={1500}
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
-                onMouseOver={(data, index) => {
-                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#plannedGlow)');
+                onMouseOver={(data, index, e) => {
+                  // Custom logic without adding white highlight
+                  const barElement = e?.target;
+                  if (barElement) {
+                    barElement.style.filter = 'url(#plannedGlow)';
+                    barElement.style.opacity = '1';
+                  }
                 }}
-                onMouseOut={(data, index) => {
-                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.removeAttribute('filter');
+                onMouseOut={(data, index, e) => {
+                  // Restore original style
+                  const barElement = e?.target;
+                  if (barElement) {
+                    barElement.style.filter = 'none';
+                    barElement.style.opacity = '0.9';
+                  }
                 }}
               />
               <Bar 
@@ -124,11 +134,21 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
-                onMouseOver={(data, index) => {
-                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#actualGlow)');
+                onMouseOver={(data, index, e) => {
+                  // Custom logic without adding white highlight
+                  const barElement = e?.target;
+                  if (barElement) {
+                    barElement.style.filter = 'url(#actualGlow)';
+                    barElement.style.opacity = '1';
+                  }
                 }}
-                onMouseOut={(data, index) => {
-                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.removeAttribute('filter');
+                onMouseOut={(data, index, e) => {
+                  // Restore original style
+                  const barElement = e?.target;
+                  if (barElement) {
+                    barElement.style.filter = 'none';
+                    barElement.style.opacity = '0.9';
+                  }
                 }}
               />
             </BarChart>
