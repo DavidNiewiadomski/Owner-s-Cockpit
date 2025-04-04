@@ -79,6 +79,25 @@ export function CostVarianceChart() {
     }
   };
   
+  // Custom tooltip component with improved styling
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 border border-cyan-700/40 backdrop-blur-lg rounded-lg shadow-lg py-2 px-3 text-white">
+          <p className="text-cyan-400 font-semibold">{label}</p>
+          <div className="text-sm text-cyan-200 space-y-1">
+            <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
+            <div>Actual: {formatCurrency(payload[0].payload.actual)}</div>
+            <div className={payload[0].payload.variance >= 0 ? "text-emerald-400" : "text-rose-400"}>
+              Variance: {formatCurrency(payload[0].payload.variance)}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <Card className="h-full bg-black border-cyan-900/30 shadow-[0_4px_20px_rgba(56,189,248,0.15)] animate-fade-in">
       <CardHeader className="bg-black">
@@ -96,18 +115,49 @@ export function CostVarianceChart() {
                 top: 10,
                 right: 30,
                 left: 20,
-                bottom: 70, // Increased bottom margin to prevent text overlap
+                bottom: 90, // Increased bottom margin to prevent text overlap
               }}
             >
+              <defs>
+                <linearGradient id="plannedGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(139, 92, 246, 0.8)" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="rgba(139, 92, 246, 0.3)" stopOpacity={0.3}/>
+                </linearGradient>
+                <linearGradient id="actualGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="rgba(14, 165, 233, 0.8)" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="rgba(14, 165, 233, 0.3)" stopOpacity={0.3}/>
+                </linearGradient>
+                
+                {/* Add glow filters for hover effects */}
+                <filter id="plannedGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#8B5CF6" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                
+                <filter id="actualGlow" x="-10%" y="-10%" width="120%" height="120%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feFlood floodColor="#0EA5E9" floodOpacity="0.7" result="glow" />
+                  <feComposite in="glow" in2="blur" operator="in" result="softGlow" />
+                  <feMerge>
+                    <feMergeNode in="softGlow" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
               <XAxis 
                 dataKey="name" 
                 tick={{ fontSize: 11, fill: "#94a3b8" }} 
                 angle={-45}
                 textAnchor="end"
-                height={60}
+                height={80} // Increased height for more space
                 stroke="#475569"
-                tickMargin={10} // Added margin between text and axis
+                tickMargin={15} // Added more margin between text and axis
               />
               <YAxis 
                 tickFormatter={(value) => `$${value / 1000}k`}
@@ -115,45 +165,56 @@ export function CostVarianceChart() {
                 tick={{ fill: "#94a3b8" }}
                 stroke="#475569"
               />
-              <ChartTooltip 
-                content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="rounded-lg border border-cyan-800/50 bg-black p-3 shadow-[0_4px_20px_rgba(56,189,248,0.3)] backdrop-blur-md">
-                        <div className="font-medium text-cyan-300 mb-1">{payload[0].payload.name}</div>
-                        <div className="text-sm text-cyan-200 space-y-1">
-                          <div>Planned: {formatCurrency(payload[0].payload.planned)}</div>
-                          <div>Actual: {formatCurrency(payload[0].payload.actual)}</div>
-                          <div className={payload[0].payload.variance >= 0 ? "text-emerald-400" : "text-rose-400"}>
-                            Variance: {formatCurrency(payload[0].payload.variance)}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-                  return null;
+              <Tooltip 
+                content={<CustomTooltip />}
+                cursor={{
+                  fill: 'rgba(56, 189, 248, 0.1)',
+                  strokeWidth: 1,
+                  stroke: 'rgba(56, 189, 248, 0.4)',
+                  rx: 4,
+                  ry: 4
                 }}
               />
               <Legend 
-                wrapperStyle={{ paddingTop: "20px" }}
+                wrapperStyle={{ 
+                  paddingTop: "20px",
+                  marginTop: "35px", // Add more space at the top of the legend
+                  paddingBottom: "10px"
+                }}
                 formatter={(value) => <span className="text-gray-300">{value}</span>}
+                verticalAlign="bottom" // Position legend at the bottom
+                height={36} // Set a fixed height for the legend
               />
               <Bar 
                 dataKey="planned" 
-                fill="var(--color-planned)" 
+                fill="url(#plannedGradient)" 
                 name="Planned" 
                 radius={[4, 4, 0, 0]} 
                 animationDuration={1500}
                 animationEasing="ease-out"
+                className="transition-all duration-300 ease-in-out"
+                onMouseOver={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#plannedGlow)');
+                }}
+                onMouseOut={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle:nth-child(${index + 1})`)?.removeAttribute('filter');
+                }}
               />
               <Bar 
                 dataKey="actual" 
-                fill="var(--color-actual)" 
+                fill="url(#actualGradient)" 
                 name="Actual" 
                 radius={[4, 4, 0, 0]} 
                 animationDuration={1500}
                 animationEasing="ease-out"
                 animationBegin={300}
+                className="transition-all duration-300 ease-in-out"
+                onMouseOver={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.setAttribute('filter', 'url(#actualGlow)');
+                }}
+                onMouseOut={(data, index) => {
+                  document.querySelector(`.recharts-bar-rectangle.recharts-bar-rectangle-1:nth-child(${index + 1})`)?.removeAttribute('filter');
+                }}
               />
             </BarChart>
           </ChartContainer>
