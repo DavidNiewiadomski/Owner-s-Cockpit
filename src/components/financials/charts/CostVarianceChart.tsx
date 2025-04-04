@@ -120,11 +120,11 @@ export function CostVarianceChart() {
                 animationEasing="ease-out"
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
+                  // Use the enhanced gradients and glow effect instead of white highlight
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.setAttribute('filter', 'url(#plannedGlow)');
                     barElement.setAttribute('fill', 'url(#plannedHoverGradient)');
-                    barElement.setAttribute('opacity', '1');
                     // Scale effect - slightly increase height
                     barElement.setAttribute('transform', 'scale(1, 1.05)');
                     barElement.setAttribute('transform-origin', 'bottom');
@@ -135,7 +135,6 @@ export function CostVarianceChart() {
                   if (barElement) {
                     barElement.removeAttribute('filter');
                     barElement.setAttribute('fill', 'url(#plannedGradient)');
-                    barElement.setAttribute('opacity', '0.9');
                     // Remove scale effect
                     barElement.removeAttribute('transform');
                   }
@@ -151,11 +150,11 @@ export function CostVarianceChart() {
                 animationBegin={300}
                 className="transition-all duration-300 ease-in-out"
                 onMouseOver={(data, index, e) => {
+                  // Use the enhanced gradients and glow effect instead of white highlight
                   const barElement = e?.target as SVGElement | null;
                   if (barElement) {
                     barElement.setAttribute('filter', 'url(#actualGlow)');
                     barElement.setAttribute('fill', 'url(#actualHoverGradient)');
-                    barElement.setAttribute('opacity', '1');
                     // Scale effect - slightly increase height
                     barElement.setAttribute('transform', 'scale(1, 1.05)');
                     barElement.setAttribute('transform-origin', 'bottom');
@@ -166,7 +165,6 @@ export function CostVarianceChart() {
                   if (barElement) {
                     barElement.removeAttribute('filter');
                     barElement.setAttribute('fill', 'url(#actualGradient)');
-                    barElement.setAttribute('opacity', '0.9');
                     // Remove scale effect
                     barElement.removeAttribute('transform');
                   }
