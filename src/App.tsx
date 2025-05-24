@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,6 +24,8 @@ import MeetingDetails from '@/pages/MeetingDetails';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
 import SiteSelection from '@/pages/SiteSelection';
+import Procurement from '@/pages/Procurement';
+import FacilitiesManagement from '@/pages/FacilitiesManagement';
 import './App.css';
 
 function App() {
@@ -34,11 +37,13 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/site-selection" element={<SiteSelection />} />
+              <Route path="/preconstruction" element={<Preconstruction />} />
+              <Route path="/procurement" element={<Procurement />} />
+              <Route path="/facilities-management" element={<FacilitiesManagement />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/budget-financials" element={<BudgetFinancials />} />
               <Route path="/documents" element={<Documents />} />
-              <Route path="/preconstruction" element={<Preconstruction />} />
               <Route path="/communications" element={<Communications />} />
               <Route path="/investment-impact" element={<InvestmentImpact />} />
               <Route path="/action-items" element={<ActionItems />} />
