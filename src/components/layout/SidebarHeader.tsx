@@ -14,16 +14,11 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
     <div className="flex h-16 items-center px-4 border-b border-gray-800">
       <Link to="/" className="flex items-center gap-2">
         {!collapsed && (
-          <div className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/249d967c-7ff4-46d6-952b-92274a485085.png" 
-              alt="Company Logo" 
-              className="h-8 w-auto"
-            />
-            <div className="font-semibold text-xl leading-none text-white">
-              Owner's Cockpit
-            </div>
-          </div>
+          <img 
+            src="/lovable-uploads/249d967c-7ff4-46d6-952b-92274a485085.png" 
+            alt="Company Logo" 
+            className="h-8 w-auto"
+          />
         )}
         {collapsed && (
           <img 
@@ -38,7 +33,7 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
           variant="ghost" 
           size="icon" 
           onClick={onToggleCollapse}
-          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-800/30"
+          className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-800/50"
         >
           {collapsed ? <PanelRight className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
         </Button>
