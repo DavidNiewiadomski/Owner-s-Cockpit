@@ -14,7 +14,12 @@ import {
   Brush,
   Download,
   ScrollText,
-  HardHat
+  HardHat,
+  MapPin,
+  Users,
+  ClipboardCheck,
+  Truck,
+  Building2
 } from 'lucide-react';
 
 export const navigationItems = [
@@ -22,6 +27,31 @@ export const navigationItems = [
     path: "/",
     label: "Dashboard",
     icon: LayoutDashboard
+  },
+  {
+    path: "/site-selection",
+    label: "Site Selection",
+    icon: MapPin
+  },
+  {
+    path: "/preconstruction",
+    label: "Preconstruction",
+    icon: HardHat
+  },
+  {
+    path: "/procurement",
+    label: "Procurement",
+    icon: Users
+  },
+  {
+    path: "/quality-control",
+    label: "Quality Control",
+    icon: ClipboardCheck
+  },
+  {
+    path: "/resource-management",
+    label: "Resources",
+    icon: Truck
   },
   {
     path: "/action-items",
@@ -64,9 +94,9 @@ export const navigationItems = [
     icon: FileText
   },
   {
-    path: "/preconstruction",
-    label: "Preconstruction",
-    icon: HardHat
+    path: "/facilities-management",
+    label: "Facilities Management",
+    icon: Building2
   },
   {
     path: "/communications",

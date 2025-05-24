@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,6 +22,7 @@ import RiskMitigationPlans from '@/pages/RiskMitigationPlans';
 import MeetingDetails from '@/pages/MeetingDetails';
 import NotFound from '@/pages/NotFound';
 import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
+import SiteSelection from '@/pages/SiteSelection';
 import './App.css';
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
           <div className="app">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/site-selection" element={<SiteSelection />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/budget-financials" element={<BudgetFinancials />} />
