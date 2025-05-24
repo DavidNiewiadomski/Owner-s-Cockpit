@@ -19,7 +19,8 @@ import {
   Users,
   ClipboardCheck,
   Truck,
-  Building2
+  Building2,
+  Wrench
 } from 'lucide-react';
 
 export const navigationItems = [

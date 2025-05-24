@@ -26,6 +26,8 @@ import { OwnerAgentButton } from '@/components/ai/OwnerAgentButton';
 import SiteSelection from '@/pages/SiteSelection';
 import Procurement from '@/pages/Procurement';
 import FacilitiesManagement from '@/pages/FacilitiesManagement';
+import ResourceManagement from '@/pages/ResourceManagement';
+import QualityControl from '@/pages/QualityControl';
 import './App.css';
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
               <Route path="/site-selection" element={<SiteSelection />} />
               <Route path="/preconstruction" element={<Preconstruction />} />
               <Route path="/procurement" element={<Procurement />} />
+              <Route path="/quality-control" element={<QualityControl />} />
+              <Route path="/resource-management" element={<ResourceManagement />} />
               <Route path="/facilities-management" element={<FacilitiesManagement />} />
               <Route path="/timeline" element={<Timeline />} />
               <Route path="/analytics" element={<Analytics />} />
