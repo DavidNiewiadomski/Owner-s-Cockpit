@@ -15,7 +15,7 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
       <Link to="/" className="flex items-center gap-2">
         {!collapsed && (
           <div className="font-semibold text-xl leading-none text-white">
-            OwnersRealm
+            Owner's Cockpit
           </div>
         )}
         {collapsed && (
