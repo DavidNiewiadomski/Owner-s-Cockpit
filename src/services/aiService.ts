@@ -12,6 +12,9 @@ export class AIService {
 
   async sendMessage(message: string): Promise<string> {
     try {
+      console.log('=== AI SERVICE STARTED ===');
+      console.log('Sending message:', message);
+
       // Add user message to history
       this.conversationHistory.push({
         role: 'user',
@@ -19,7 +22,8 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
-      console.log('AIService: Sending message:', message);
+      console.log('Conversation history length:', this.conversationHistory.length);
+      console.log('Calling Supabase Edge Function...');
 
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
@@ -29,28 +33,32 @@ export class AIService {
         }
       });
 
-      console.log('AIService: Function response:', { data, error });
+      console.log('Supabase function response:');
+      console.log('- Data:', data);
+      console.log('- Error:', error);
 
       if (error) {
-        console.error('AIService: Supabase function error:', error);
-        throw new Error(`API Error: ${error.message || 'Failed to send a request to the Edge Function'}`);
+        console.error('Supabase function error details:', error);
+        throw new Error(`Supabase Error: ${error.message || 'Failed to call Edge Function'}`);
       }
 
       if (!data) {
-        throw new Error('API Error: No response received from the AI service');
+        console.error('No data received from Supabase function');
+        throw new Error('No response received from the AI service');
       }
 
       if (data.error) {
-        console.error('AIService: Error in response:', data.error);
-        throw new Error(`API Error: ${data.error}`);
+        console.error('Error in Edge Function response:', data.error);
+        throw new Error(`Edge Function Error: ${data.error}`);
       }
 
       const aiResponse = data.response;
-      if (!aiResponse) {
-        throw new Error('API Error: Empty response from AI service');
+      if (!aiResponse || typeof aiResponse !== 'string') {
+        console.error('Invalid AI response:', aiResponse);
+        throw new Error('Invalid response from AI service');
       }
 
-      console.log('AIService: Successfully received AI response');
+      console.log('Successfully received AI response:', aiResponse.substring(0, 100) + '...');
 
       // Add AI response to history
       this.conversationHistory.push({
@@ -59,29 +67,19 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
+      console.log('=== AI SERVICE COMPLETED ===');
       return aiResponse;
 
     } catch (error) {
-      console.error('AIService: Error occurred:', error);
+      console.error('=== AI SERVICE ERROR ===');
+      console.error('Error type:', error.constructor.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
       
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       
-      // For connection/API errors, provide a more helpful message
-      if (errorMessage.includes('Failed to send a request to the Edge Function') || 
-          errorMessage.includes('fetch')) {
-        const fallbackMessage = "I'm experiencing technical difficulties (API Error: Failed to send a request to the Edge Function). Please check the console for more details, or try again in a moment.";
-        
-        this.conversationHistory.push({
-          role: 'assistant',
-          content: fallbackMessage,
-          timestamp: new Date().toISOString()
-        })
-        
-        return fallbackMessage;
-      }
-      
-      // For other errors, return the specific error message
-      const fallbackResponse = `I encountered an error: ${errorMessage}. Please try again.`;
+      // Return a helpful error message that indicates the real problem
+      const fallbackResponse = `I'm having trouble connecting to the AI service right now. Error: ${errorMessage}. Please check the browser console for detailed logs and try again.`;
       
       this.conversationHistory.push({
         role: 'assistant',
