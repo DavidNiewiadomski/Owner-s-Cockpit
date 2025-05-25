@@ -15,18 +15,24 @@ serve(async (req) => {
   try {
     const { message, conversationHistory } = await req.json()
     
-    // Get the Gemini API key from Supabase secrets
-    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY') || 'AIzaSyDLBm0-7qT4P2IESMvw7Tv6FK20TmnpeFE'
+    console.log('Edge function received:', { message, conversationHistory });
     
+    // Get the Gemini API key
+    const GEMINI_API_KEY = 'AIzaSyDLBm0-7qT4P2IESMvw7Tv6FK20TmnpeFE'
+    
+    if (!GEMINI_API_KEY) {
+      throw new Error('Gemini API key not found')
+    }
+
     // Prepare the conversation context
     const messages = conversationHistory || []
-    messages.push({
-      role: 'user',
-      content: message
-    })
+    console.log('Conversation context:', messages);
 
     // Create the prompt for Gemini
-    const prompt = messages.map(msg => `${msg.role}: ${msg.content}`).join('\n') + '\nassistant:'
+    const conversationContext = messages.slice(-6).map(msg => `${msg.role}: ${msg.content}`).join('\n');
+    const fullPrompt = conversationContext + `\nuser: ${message}\nassistant:`;
+
+    console.log('Sending to Gemini API...');
 
     // Call Gemini API
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
@@ -37,7 +43,14 @@ serve(async (req) => {
       body: JSON.stringify({
         contents: [{
           parts: [{
-            text: `You are a helpful construction project assistant. You help with project management, resource allocation, timeline planning, and other construction-related tasks. Please respond helpfully and professionally to: ${message}`
+            text: `You are a helpful construction project assistant powered by Google Gemini. You help with project management, resource allocation, timeline planning, and other construction-related tasks. 
+
+Context from conversation:
+${conversationContext}
+
+Current user message: ${message}
+
+Please respond helpfully and professionally:`
           }]
         }],
         generationConfig: {
@@ -49,13 +62,20 @@ serve(async (req) => {
       })
     })
 
-    const data = await response.json()
-    
+    console.log('Gemini API response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Failed to get AI response')
+      const errorData = await response.text();
+      console.error('Gemini API error:', errorData);
+      throw new Error(`Gemini API error: ${response.status} - ${errorData}`);
     }
 
+    const data = await response.json()
+    console.log('Gemini API response data:', data);
+    
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.'
+
+    console.log('Final AI response:', aiResponse);
 
     return new Response(
       JSON.stringify({ response: aiResponse }),
@@ -67,9 +87,12 @@ serve(async (req) => {
       }
     )
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Edge function error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Check the edge function logs for more information'
+      }),
       { 
         status: 500,
         headers: { 

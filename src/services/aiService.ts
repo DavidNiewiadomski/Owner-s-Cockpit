@@ -19,6 +19,9 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
+      console.log('Sending message to AI:', message);
+      console.log('Conversation history:', this.conversationHistory.slice(-10));
+
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
         body: {
@@ -27,11 +30,20 @@ export class AIService {
         }
       })
 
+      console.log('Supabase function response:', { data, error });
+
       if (error) {
-        throw new Error(error.message)
+        console.error('Supabase function error:', error);
+        throw new Error(`API Error: ${error.message}`);
       }
 
-      const aiResponse = data.response || 'Sorry, I could not generate a response.'
+      if (!data || !data.response) {
+        console.error('No response from AI service:', data);
+        throw new Error('No response received from AI service');
+      }
+
+      const aiResponse = data.response;
+      console.log('AI Response received:', aiResponse);
 
       // Add AI response to history
       this.conversationHistory.push({
@@ -40,18 +52,15 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
-      return aiResponse
+      return aiResponse;
     } catch (error) {
-      console.error('AI Service Error:', error)
+      console.error('AI Service Error:', error);
       
-      // Fallback response if API fails
-      const fallbackResponses = [
-        "I'm here to help with your construction projects. What would you like to know?",
-        "I can assist with project management, resource allocation, and timeline planning. How can I help?",
-        "I'm experiencing some technical difficulties, but I'm still here to help with your construction needs."
-      ]
+      // Only use fallback if there's a real error, not for normal API responses
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       
-      const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)]
+      // Add error info to response for debugging
+      const fallbackResponse = `I'm experiencing technical difficulties (${errorMessage}). Please check the console for more details, or try again in a moment.`;
       
       // Add fallback response to history
       this.conversationHistory.push({
@@ -60,7 +69,7 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
       
-      return fallbackResponse
+      return fallbackResponse;
     }
   }
 
