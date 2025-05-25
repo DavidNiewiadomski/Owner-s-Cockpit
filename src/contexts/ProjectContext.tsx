@@ -3,17 +3,20 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { getProjects } from '@/services/dataService';
 import type { Project } from '@/lib/supabase';
 
+export type ProjectOrAll = Project | { id: 'all'; title: 'All Projects'; status: string };
+
 interface ProjectContextType {
-  selectedProject: Project | null;
-  setSelectedProject: (project: Project | null) => void;
+  selectedProject: ProjectOrAll | null;
+  setSelectedProject: (project: ProjectOrAll | null) => void;
   projects: Project[];
+  allProjects: Project[];
   loading: boolean;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,6 +45,7 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     selectedProject,
     setSelectedProject,
     projects,
+    allProjects: projects, // Adding allProjects as an alias for projects
     loading
   };
 

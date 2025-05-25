@@ -1,4 +1,3 @@
-
 import { supabase } from '@/lib/supabase'
 import type { 
   Project, 
@@ -14,64 +13,176 @@ import type {
   Communication 
 } from '@/lib/supabase'
 
+// Mock data for development when Supabase isn't configured
+const mockProjects: Project[] = [
+  {
+    id: '1',
+    title: 'Downtown Office Complex',
+    description: 'Modern 12-story office building with retail space',
+    status: 'active',
+    progress: 65,
+    start_date: '2024-01-15',
+    end_date: '2024-12-30',
+    budget: 15000000,
+    actual_cost: 9750000,
+    location: 'Downtown Business District',
+    client_name: 'Metro Development Corp',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-20T00:00:00Z'
+  },
+  {
+    id: '2',
+    title: 'Riverside Residential Tower',
+    description: '25-story luxury residential building',
+    status: 'active',
+    progress: 42,
+    start_date: '2024-03-01',
+    end_date: '2025-06-15',
+    budget: 28000000,
+    actual_cost: 11760000,
+    location: 'Riverside District',
+    client_name: 'Luxury Living LLC',
+    created_at: '2024-02-15T00:00:00Z',
+    updated_at: '2024-03-01T00:00:00Z'
+  }
+];
+
+const mockTasks: Task[] = [
+  {
+    id: '1',
+    title: 'Foundation concrete pour',
+    description: 'Complete foundation concrete pour for Building A',
+    status: 'completed',
+    priority: 'high',
+    due_date: '2024-02-15',
+    project_id: '1',
+    created_at: '2024-01-15T00:00:00Z',
+    updated_at: '2024-02-15T00:00:00Z'
+  },
+  {
+    id: '2',
+    title: 'Electrical rough-in inspection',
+    description: 'Schedule and complete electrical rough-in inspection',
+    status: 'in-progress',
+    priority: 'critical',
+    due_date: '2024-03-01',
+    project_id: '1',
+    created_at: '2024-02-10T00:00:00Z',
+    updated_at: '2024-02-20T00:00:00Z'
+  }
+];
+
+// Helper function to check if Supabase is properly configured
+const isSupabaseConfigured = () => {
+  const url = import.meta.env.VITE_SUPABASE_URL;
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  return url && key && url !== 'https://placeholder.supabase.co' && key !== 'placeholder-key';
+};
+
 // Projects
 export const getProjects = async (): Promise<Project[]> => {
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .order('created_at', { ascending: false })
-  
-  if (error) throw error
-  return data || []
+  if (!isSupabaseConfigured()) {
+    console.log('Using mock data - Supabase not configured');
+    return mockProjects;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.warn('Supabase query failed, using mock data:', error);
+    return mockProjects;
+  }
 }
 
 export const getProject = async (id: string): Promise<Project | null> => {
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('id', id)
-    .single()
-  
-  if (error) throw error
-  return data
+  if (!isSupabaseConfigured()) {
+    return mockProjects.find(p => p.id === id) || null;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('id', id)
+      .single()
+    
+    if (error) throw error
+    return data
+  } catch (error) {
+    console.warn('Supabase query failed, using mock data:', error);
+    return mockProjects.find(p => p.id === id) || null;
+  }
 }
 
 // Team Members
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
-  const { data, error } = await supabase
-    .from('team_members')
-    .select('*')
-    .eq('is_active', true)
-    .order('name')
-  
-  if (error) throw error
-  return data || []
+  if (!isSupabaseConfigured()) {
+    return [];
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('team_members')
+      .select('*')
+      .eq('is_active', true)
+      .order('name')
+    
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.warn('Supabase query failed:', error);
+    return [];
+  }
 }
 
 // Tasks
 export const getTasks = async (projectId?: string): Promise<Task[]> => {
-  let query = supabase
-    .from('tasks')
-    .select('*')
-    .order('created_at', { ascending: false })
-  
-  if (projectId) {
-    query = query.eq('project_id', projectId)
+  if (!isSupabaseConfigured()) {
+    return projectId ? mockTasks.filter(t => t.project_id === projectId) : mockTasks;
   }
-  
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
+
+  try {
+    let query = supabase
+      .from('tasks')
+      .select('*')
+      .order('created_at', { ascending: false })
+    
+    if (projectId) {
+      query = query.eq('project_id', projectId)
+    }
+    
+    const { data, error } = await query
+    
+    if (error) throw error
+    return data || []
+  } catch (error) {
+    console.warn('Supabase query failed, using mock data:', error);
+    return projectId ? mockTasks.filter(t => t.project_id === projectId) : mockTasks;
+  }
 }
 
 export const updateTaskStatus = async (taskId: string, status: Task['status']): Promise<void> => {
-  const { error } = await supabase
-    .from('tasks')
-    .update({ status })
-    .eq('id', taskId)
-  
-  if (error) throw error
+  if (!isSupabaseConfigured()) {
+    console.log('Mock: Task status updated');
+    return;
+  }
+
+  try {
+    const { error } = await supabase
+      .from('tasks')
+      .update({ status })
+      .eq('id', taskId)
+    
+    if (error) throw error
+  } catch (error) {
+    console.warn('Supabase update failed:', error);
+  }
 }
 
 // Documents
