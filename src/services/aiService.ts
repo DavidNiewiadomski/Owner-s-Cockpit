@@ -20,7 +20,6 @@ export class AIService {
       })
 
       console.log('AIService: Sending message:', message);
-      console.log('AIService: Using Supabase URL:', supabase.supabaseUrl);
 
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
