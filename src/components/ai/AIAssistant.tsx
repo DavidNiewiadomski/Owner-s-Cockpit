@@ -6,24 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-
-type MessageRole = 'user' | 'assistant';
-
-interface Message {
-  role: MessageRole;
-  content: string;
-  timestamp: string;
-  isVoiceMessage?: boolean;
-}
+import { aiService, type ChatMessage } from '@/services/aiService';
 
 export function AIAssistant() {
   const [isExpanded, setIsExpanded] = useState(true);
   const [message, setMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [conversation, setConversation] = useState<Message[]>([
+  const [isLoading, setIsLoading] = useState(false);
+  const [conversation, setConversation] = useState<ChatMessage[]>([
     {
       role: 'assistant',
-      content: 'Hello, I\'m your construction project assistant. How can I help you today?',
+      content: 'Hello, I\'m your live AI construction project assistant powered by Google Gemini. How can I help you today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -37,40 +30,45 @@ export function AIAssistant() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [conversation]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim()) return;
+    if (!message.trim() || isLoading) return;
     
-    // Add user message to conversation
-    const userMessage: Message = { 
+    const userMessage = message.trim();
+    setMessage('');
+    setIsLoading(true);
+
+    // Add user message to conversation immediately
+    const newUserMessage: ChatMessage = { 
       role: 'user', 
-      content: message,
+      content: userMessage,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    const newConversation = [...conversation, userMessage];
-    setConversation(newConversation);
-    setMessage('');
     
-    // Simulate AI response
-    setTimeout(() => {
-      let response = '';
-      if (message.toLowerCase().includes('progress')) {
-        response = 'The East Tower project is currently at 75% completion, on track for the September deadline.';
-      } else if (message.toLowerCase().includes('budget')) {
-        response = 'The current budget utilization is at 62%, with $4.2M spent of the total $6.8M allocation.';
-      } else if (message.toLowerCase().includes('issue') || message.toLowerCase().includes('problem')) {
-        response = 'There are currently 12 open issues across all projects. The most critical ones are related to material delivery delays.';
-      } else {
-        response = 'I\'m here to help you manage your construction projects. You can ask about project progress, budget status, or any issues that need attention.';
-      }
+    setConversation(prev => [...prev, newUserMessage]);
+    
+    try {
+      // Get AI response
+      const aiResponse = await aiService.sendMessage(userMessage);
       
-      const assistantMessage: Message = { 
+      // Add AI response to conversation
+      const newAiMessage: ChatMessage = { 
         role: 'assistant', 
-        content: response,
+        content: aiResponse,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setConversation([...newConversation, assistantMessage]);
-    }, 1000);
+      
+      setConversation(prev => [...prev, newAiMessage]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      toast({
+        title: "AI Error",
+        description: "Sorry, I'm having trouble responding right now. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const toggleVoiceRecording = async () => {
@@ -103,30 +101,9 @@ export function AIAssistant() {
     };
 
     mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-      // In a real app, you'd send this blob to a speech-to-text service
-      // For demo purposes, we'll simulate a response
-      const userMessage: Message = {
-        role: 'user',
-        content: "Voice message transcription would appear here",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isVoiceMessage: true
-      };
-      
-      const newConversation = [...conversation, userMessage];
-      setConversation(newConversation);
-      
-      // Simulate AI response to voice message
-      setTimeout(() => {
-        const assistantMessage: Message = {
-          role: 'assistant',
-          content: "I've received your voice message. In a real implementation, I would process your audio and respond accordingly.",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        setConversation([...newConversation, assistantMessage]);
-      }, 1000);
-      
-      // Stop all tracks
+      // In a real implementation, you'd convert speech to text
+      // For now, we'll just show a placeholder
+      setMessage("Voice message would be transcribed here");
       stream.getTracks().forEach(track => track.stop());
     };
 
@@ -157,10 +134,10 @@ export function AIAssistant() {
           <div className="flex items-center justify-center h-7 w-7 rounded-full bg-black/40 border border-construction-600/30">
             <Bot className="h-3.5 w-3.5 text-construction-400" />
           </div>
-          <div className="text-sm font-medium">AI Assistant</div>
-          <Badge variant="outline" className="text-xs bg-construction-900/20 border-construction-700/20 text-construction-300">
+          <div className="text-sm font-medium">Live AI Assistant</div>
+          <Badge variant="outline" className="text-xs bg-green-900/20 border-green-700/20 text-green-300">
             <Sparkles className="h-2.5 w-2.5 mr-1" />
-            Pro
+            Gemini
           </Badge>
         </div>
         <Button 
@@ -190,13 +167,27 @@ export function AIAssistant() {
                 <div className="flex justify-between items-start mb-1">
                   <span className="text-[10px] font-medium text-gray-300">
                     {msg.role === 'assistant' ? 'AI Assistant' : 'You'}
-                    {msg.isVoiceMessage && ' (Voice)'}
                   </span>
                   <span className="text-[10px] text-gray-400 ml-2">{msg.timestamp}</span>
                 </div>
                 <p className="text-xs leading-relaxed">{msg.content}</p>
               </div>
             ))}
+            
+            {isLoading && (
+              <div className="bg-gradient-to-br from-gray-800/70 to-gray-900/80 border-l border-construction-600/30 p-3 rounded-lg max-w-[85%] backdrop-blur-md">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-[10px] font-medium text-gray-300">AI Assistant</span>
+                  <span className="text-[10px] text-gray-400">Thinking...</span>
+                </div>
+                <div className="flex space-x-1">
+                  <div className="h-2 w-2 bg-construction-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="h-2 w-2 bg-construction-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="h-2 w-2 bg-construction-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                </div>
+              </div>
+            )}
+            
             <div ref={messagesEndRef} />
           </div>
           
@@ -209,7 +200,7 @@ export function AIAssistant() {
                 placeholder="Ask about your projects..." 
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                disabled={isRecording}
+                disabled={isRecording || isLoading}
                 className="border-0 bg-transparent text-xs h-8 focus-visible:ring-0 placeholder:text-gray-500 shadow-none"
               />
               <div className="flex items-center gap-1">
@@ -227,7 +218,8 @@ export function AIAssistant() {
                 <Button 
                   type="submit" 
                   size="icon" 
-                  className="h-6 w-6 rounded-full bg-gradient-to-br from-construction-600 to-construction-700 hover:from-construction-500 hover:to-construction-600 text-white"
+                  disabled={isLoading || !message.trim()}
+                  className="h-6 w-6 rounded-full bg-gradient-to-br from-construction-600 to-construction-700 hover:from-construction-500 hover:to-construction-600 text-white disabled:opacity-50"
                 >
                   <Send className="h-3 w-3" />
                 </Button>

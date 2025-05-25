@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Brain, MessageSquare, Mail, Phone, FileText, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -11,13 +10,14 @@ import { AgentActionList } from '@/components/ai/agent/AgentActionList';
 import { MessageList } from '@/components/ai/agent/MessageList';
 import { MessageInput } from '@/components/ai/agent/MessageInput';
 import { AgentMessage } from '@/components/ai/agent/types';
+import { aiService } from '@/services/aiService';
 
 export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: (open: boolean) => void }) {
   const [messages, setMessages] = useState<AgentMessage[]>([
     {
       id: '1',
       role: 'agent',
-      content: "Hello, I'm your construction project assistant. How can I help you today?",
+      content: "Hello, I'm your live AI construction project assistant powered by Google Gemini. I can help you with emails, calls, reports, scheduling, and more. How can I assist you today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       type: 'text'
     }
@@ -71,86 +71,72 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     setMessages(updatedMessages);
     setInput('');
     
-    // Simulate agent thinking
+    // Set thinking state
     setIsThinking(true);
     
-    // Process the message and detect intent
-    setTimeout(() => {
-      const lowerCaseMessage = messageContent.toLowerCase();
-      let responseType: 'text' | 'task' | 'summary' | 'alert' = 'text';
-      let actionType = '';
+    try {
+      // Get AI response
+      const aiResponse = await aiService.sendMessage(`As a construction project assistant agent, help with this request: ${messageContent}. If this involves taking an action like sending emails, making calls, generating reports, scheduling meetings, setting reminders, or sending alerts, clearly indicate what action should be taken.`);
       
-      // Simple intent detection
-      if (lowerCaseMessage.includes('email') || lowerCaseMessage.includes('message')) {
+      // Detect if response suggests an action
+      const lowerResponse = aiResponse.toLowerCase();
+      let actionType = '';
+      let responseType: 'text' | 'task' | 'summary' | 'alert' = 'text';
+      
+      if (lowerResponse.includes('email') || lowerResponse.includes('draft') || lowerResponse.includes('send')) {
         responseType = 'task';
         actionType = 'email';
-      } else if (lowerCaseMessage.includes('call') || lowerCaseMessage.includes('phone')) {
+      } else if (lowerResponse.includes('call') || lowerResponse.includes('phone')) {
         responseType = 'task';
         actionType = 'call';
-      } else if (lowerCaseMessage.includes('report') || lowerCaseMessage.includes('summary')) {
+      } else if (lowerResponse.includes('report') || lowerResponse.includes('generate')) {
         responseType = 'task';
         actionType = 'report';
-      } else if (lowerCaseMessage.includes('schedule') || lowerCaseMessage.includes('meeting') || lowerCaseMessage.includes('calendar')) {
+      } else if (lowerResponse.includes('schedule') || lowerResponse.includes('meeting')) {
         responseType = 'task';
         actionType = 'schedule';
-      } else if (lowerCaseMessage.includes('remind') || lowerCaseMessage.includes('reminder')) {
+      } else if (lowerResponse.includes('remind') || lowerResponse.includes('reminder')) {
         responseType = 'task';
         actionType = 'reminder';
-      } else if (lowerCaseMessage.includes('alert') || lowerCaseMessage.includes('warning')) {
+      } else if (lowerResponse.includes('alert') || lowerResponse.includes('warning')) {
         responseType = 'alert';
         actionType = 'alert';
       }
       
-      let responseContent = '';
-      
-      if (responseType === 'task') {
-        switch (actionType) {
-          case 'email':
-            responseContent = "I'll draft an email for you. Who would you like to send it to and what should the main point be?";
-            break;
-          case 'call':
-            responseContent = "I'll set up a call for you. Who would you like to call and what topics should I prepare for discussion?";
-            break;
-          case 'report':
-            responseContent = "I'll generate a report for you. Which project would you like me to focus on, and what specific aspects should I include?";
-            break;
-          case 'schedule':
-            responseContent = "I'll schedule a meeting. What date and time works for you, and who should be invited?";
-            break;
-          case 'reminder':
-            responseContent = "I'll set a reminder for you. What would you like to be reminded about and when?";
-            break;
-          default:
-            responseContent = "I understand you want me to take an action. Could you please clarify what you'd like me to do?";
-        }
-      } else if (responseType === 'alert') {
-        responseContent = "I'll send an alert regarding this issue. Who needs to be notified and what's the urgency level?";
-      } else {
-        // General response
-        responseContent = "I'm here to help with your construction projects. I can send emails, make calls, generate reports, schedule meetings, set reminders, or send alerts. What would you like me to do?";
-      }
-      
-      // Add agent response
       const agentResponse: AgentMessage = {
         id: (Date.now() + 1).toString(),
         role: 'agent',
-        content: responseContent,
+        content: aiResponse,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         type: responseType,
-        action: responseType === 'task' || responseType === 'alert' ? {
+        action: actionType ? {
           type: actionType,
           status: 'pending'
         } : undefined
       };
       
       setMessages([...updatedMessages, agentResponse]);
-      setIsThinking(false);
       
       // If action was detected, set it as active
       if (actionType) {
         setActiveAction(actionType);
       }
-    }, 1500);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      
+      // Fallback response
+      const fallbackResponse: AgentMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'agent',
+        content: "I'm here to help with your construction projects. I can send emails, make calls, generate reports, schedule meetings, set reminders, or send alerts. What would you like me to do?",
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type: 'text'
+      };
+      
+      setMessages([...updatedMessages, fallbackResponse]);
+    } finally {
+      setIsThinking(false);
+    }
   };
 
   const completeAction = (actionType: string) => {
