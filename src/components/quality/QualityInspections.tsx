@@ -1,165 +1,190 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ClipboardCheck, Calendar, MapPin, User } from 'lucide-react';
-
-const inspectionData = [
-  {
-    id: 'INS001',
-    type: 'Structural Inspection',
-    location: 'East Tower - Floor 15',
-    inspector: 'Sarah Johnson',
-    scheduledDate: '2024-01-08',
-    status: 'Scheduled',
-    priority: 'High',
-    checklist: 'Foundation & Structural'
-  },
-  {
-    id: 'INS002',
-    type: 'Electrical Safety Check',
-    location: 'West Plaza - Main Panel',
-    inspector: 'Mike Rodriguez',
-    scheduledDate: '2024-01-06',
-    status: 'In Progress',
-    priority: 'Medium',
-    checklist: 'Electrical Systems'
-  },
-  {
-    id: 'INS003',
-    type: 'Concrete Quality Test',
-    location: 'North Building - Slab C3',
-    inspector: 'Emily Chen',
-    scheduledDate: '2024-01-05',
-    status: 'Completed',
-    priority: 'High',
-    checklist: 'Material Quality'
-  }
-];
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Calendar, CheckCircle, Clock, AlertTriangle, Search, Plus } from 'lucide-react';
+import { getQualityInspections } from '@/services/dataService';
+import { useProject } from '@/contexts/ProjectContext';
+import type { QualityInspection } from '@/lib/supabase';
 
 export function QualityInspections() {
+  const { selectedProject } = useProject();
+  const [inspections, setInspections] = useState<QualityInspection[]>([]);
+  const [filteredInspections, setFilteredInspections] = useState<QualityInspection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const loadInspections = async () => {
+      try {
+        const inspectionsData = await getQualityInspections(selectedProject?.id);
+        setInspections(inspectionsData);
+        setFilteredInspections(inspectionsData);
+      } catch (error) {
+        console.error('Error loading inspections:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInspections();
+  }, [selectedProject]);
+
+  useEffect(() => {
+    const filtered = inspections.filter(inspection =>
+      inspection.inspection_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inspection.notes?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredInspections(filtered);
+  }, [inspections, searchTerm]);
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'passed':
+        return 'bg-green-600';
+      case 'failed':
+        return 'bg-red-600';
+      case 'in-progress':
+        return 'bg-blue-600';
+      case 'scheduled':
+        return 'bg-yellow-600';
+      case 'pending-review':
+        return 'bg-purple-600';
+      default:
+        return 'bg-gray-600';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'passed':
+        return <CheckCircle className="h-4 w-4" />;
+      case 'failed':
+        return <AlertTriangle className="h-4 w-4" />;
+      case 'in-progress':
+        return <Clock className="h-4 w-4" />;
+      case 'scheduled':
+        return <Calendar className="h-4 w-4" />;
+      default:
+        return <Clock className="h-4 w-4" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg text-white flex items-center gap-2">
-              <ClipboardCheck className="h-5 w-5 text-blue-400" />
-              Total Inspections
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-blue-400">156</div>
-            <p className="text-sm text-gray-400">This month</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg text-white flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-green-400" />
-              Scheduled
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-green-400">23</div>
-            <p className="text-sm text-gray-400">Upcoming this week</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg text-white flex items-center gap-2">
-              <ClipboardCheck className="h-5 w-5 text-amber-400" />
-              In Progress
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-amber-400">8</div>
-            <p className="text-sm text-gray-400">Currently active</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg text-white flex items-center gap-2">
-              <ClipboardCheck className="h-5 w-5 text-green-400" />
-              Completed
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-green-400">125</div>
-            <p className="text-sm text-gray-400">This month</p>
-          </CardContent>
-        </Card>
+      {/* Header and Search */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex-1">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Search inspections..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 bg-gray-800 border-gray-700 text-white"
+            />
+          </div>
+        </div>
+        <Button className="bg-blue-600 hover:bg-blue-700">
+          <Plus className="h-4 w-4 mr-2" />
+          Schedule Inspection
+        </Button>
       </div>
 
-      <Card className="bg-gray-900 border-gray-800">
-        <CardHeader>
-          <CardTitle className="text-white">Inspection Schedule</CardTitle>
-          <CardDescription className="text-gray-400">
-            Upcoming and ongoing quality inspections
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-gray-700">
-                <TableHead className="text-gray-300">Inspection ID</TableHead>
-                <TableHead className="text-gray-300">Type</TableHead>
-                <TableHead className="text-gray-300">Location</TableHead>
-                <TableHead className="text-gray-300">Inspector</TableHead>
-                <TableHead className="text-gray-300">Date</TableHead>
-                <TableHead className="text-gray-300">Status</TableHead>
-                <TableHead className="text-gray-300">Priority</TableHead>
-                <TableHead className="text-gray-300">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {inspectionData.map((inspection) => (
-                <TableRow key={inspection.id} className="border-gray-700">
-                  <TableCell className="text-white font-medium">{inspection.id}</TableCell>
-                  <TableCell className="text-gray-300">{inspection.type}</TableCell>
-                  <TableCell className="text-gray-300">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4 text-gray-400" />
-                      {inspection.location}
+      {/* Inspections Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {filteredInspections.map((inspection) => (
+          <Card key={inspection.id} className="bg-gray-900 border-gray-800">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-white flex items-center gap-2">
+                  {getStatusIcon(inspection.status)}
+                  {inspection.inspection_type}
+                </CardTitle>
+                <Badge className={`${getStatusBadgeColor(inspection.status)} text-white`}>
+                  {inspection.status}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-400">Scheduled Date</p>
+                  <p className="text-white">
+                    {new Date(inspection.scheduled_date).toLocaleDateString()}
+                  </p>
+                </div>
+                {inspection.completed_date && (
+                  <div>
+                    <p className="text-sm text-gray-400">Completed Date</p>
+                    <p className="text-white">
+                      {new Date(inspection.completed_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {inspection.score && (
+                <div>
+                  <p className="text-sm text-gray-400">Quality Score</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-gray-700 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full ${
+                          inspection.score >= 90 ? 'bg-green-500' :
+                          inspection.score >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${inspection.score}%` }}
+                      />
                     </div>
-                  </TableCell>
-                  <TableCell className="text-gray-300">
-                    <div className="flex items-center gap-1">
-                      <User className="h-4 w-4 text-gray-400" />
-                      {inspection.inspector}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-gray-300">{inspection.scheduledDate}</TableCell>
-                  <TableCell>
-                    <Badge variant={
-                      inspection.status === 'Completed' ? 'default' : 
-                      inspection.status === 'In Progress' ? 'secondary' : 
-                      'destructive'
-                    }>
-                      {inspection.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={inspection.priority === 'High' ? 'destructive' : 'outline'}>
-                      {inspection.priority}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="outline" size="sm">
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                    <span className="text-white font-medium">{inspection.score}%</span>
+                  </div>
+                </div>
+              )}
+
+              {inspection.notes && (
+                <div>
+                  <p className="text-sm text-gray-400">Notes</p>
+                  <p className="text-white text-sm">{inspection.notes}</p>
+                </div>
+              )}
+
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
+                  View Details
+                </Button>
+                {inspection.status === 'scheduled' && (
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    Start Inspection
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {filteredInspections.length === 0 && (
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-12 text-center">
+            <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-white mb-2">No inspections found</h3>
+            <p className="text-gray-400">
+              {searchTerm ? 'Try adjusting your search terms.' : 'Schedule your first inspection to get started.'}
+            </p>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

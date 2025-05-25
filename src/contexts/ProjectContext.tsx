@@ -1,62 +1,55 @@
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { projects, Project } from '@/data/projects/projectData';
-
-// Extended type for the "All Projects" option
-export type ProjectOrAll = Project | { 
-  id: 'all'; 
-  title: 'All Projects'; 
-  status: 'on-track' | 'at-risk' | 'delayed' | 'completed' | 'upcoming';
-};
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { getProjects } from '@/services/dataService';
+import type { Project } from '@/lib/supabase';
 
 interface ProjectContextType {
-  selectedProject: ProjectOrAll | null;
-  setSelectedProject: (project: ProjectOrAll) => void;
-  allProjects: Project[];
+  selectedProject: Project | null;
+  setSelectedProject: (project: Project | null) => void;
+  projects: Project[];
+  loading: boolean;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  // Get from localStorage or default to the first project
-  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
-  const [allProjects, setAllProjects] = useState<Project[]>(projects);
-  
-  // On first load, try to get from localStorage
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const savedProjectId = localStorage.getItem('selectedProjectId');
-    if (savedProjectId) {
-      if (savedProjectId === 'all') {
-        setSelectedProject({ id: 'all', title: 'All Projects', status: 'on-track' });
-      } else {
-        const project = projects.find(p => p.id === savedProjectId) || null;
-        if (project) {
-          setSelectedProject(project);
-        } else {
-          // If saved project not found, default to first project
-          setSelectedProject(projects[0] || null);
+    const loadProjects = async () => {
+      try {
+        const projectsData = await getProjects();
+        setProjects(projectsData);
+        
+        // Set the first active project as default
+        const activeProject = projectsData.find(p => p.status === 'active');
+        if (activeProject && !selectedProject) {
+          setSelectedProject(activeProject);
         }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+      } finally {
+        setLoading(false);
       }
-    } else {
-      // If no saved project, default to first project
-      setSelectedProject(projects[0] || null);
-    }
+    };
+
+    loadProjects();
   }, []);
-  
-  // Save to localStorage when changed
-  useEffect(() => {
-    if (selectedProject) {
-      localStorage.setItem('selectedProjectId', selectedProject.id);
-    }
-  }, [selectedProject]);
 
   const value = {
     selectedProject,
     setSelectedProject,
-    allProjects
+    projects,
+    loading
   };
 
-  return <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>;
+  return (
+    <ProjectContext.Provider value={value}>
+      {children}
+    </ProjectContext.Provider>
+  );
 }
 
 export function useProject() {

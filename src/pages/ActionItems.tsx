@@ -1,276 +1,289 @@
 
 import React, { useState, useEffect } from 'react';
-import { DashboardHeader } from '@/components/layout/DashboardHeader';
-import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
-import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { ActionItemFilters } from '@/components/actionItems/ActionItemFilters';
-import { ActionItemSearch } from '@/components/actionItems/ActionItemSearch';
-import { TaskResponseModal } from '@/components/actionItems/TaskResponseModal';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CheckCircle, Clock, AlertTriangle, Search, Filter, Plus } from 'lucide-react';
+import { getTasks, updateTaskStatus } from '@/services/dataService';
 import { useProject } from '@/contexts/ProjectContext';
-
-// Define project-specific action items
-const projectActionItems = {
-  '1': [
-    {
-      id: '1-1',
-      title: 'Review East Tower Facade Design',
-      description: 'Updated facade renderings need approval before manufacturing.',
-      dueDate: '2024-07-15',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'East Tower'
-    },
-    {
-      id: '1-2',
-      title: 'Authorize Additional Concrete Order',
-      description: 'Structural engineer requests 15% more for reinforcement.',
-      dueDate: '2024-07-10',
-      priority: 'medium' as const,
-      status: 'pending' as const,
-      type: 'decision' as const,
-      project: 'East Tower'
-    },
-    {
-      id: '1-3',
-      title: 'Sign Off on Elevator Specifications',
-      description: 'Final specs from vendor need owner approval.',
-      dueDate: '2024-07-20',
-      priority: 'low' as const,
-      status: 'pending' as const,
-      type: 'review' as const,
-      project: 'East Tower'
-    },
-    {
-      id: '1-4',
-      title: 'Schedule Model Unit Tour',
-      description: 'Review completed model unit fixtures and finishes.',
-      dueDate: '2024-06-30',
-      priority: 'medium' as const,
-      status: 'completed' as const,
-      type: 'task' as const,
-      project: 'East Tower'
-    },
-  ],
-  '2': [
-    {
-      id: '2-1',
-      title: 'Approve Park Landscape Changes',
-      description: 'Drought-resistant plant substitutions need approval.',
-      dueDate: '2024-07-18',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'Westside Park'
-    },
-    {
-      id: '2-2',
-      title: 'Review Playground Equipment Options',
-      description: 'Select from three vendor proposals for playground equipment.',
-      dueDate: '2024-07-25',
-      priority: 'medium' as const,
-      status: 'pending' as const,
-      type: 'decision' as const,
-      project: 'Westside Park'
-    },
-    {
-      id: '2-3',
-      title: 'Sign Community Event Agreement',
-      description: 'Partnership with local community for park opening event.',
-      dueDate: '2024-08-10',
-      priority: 'low' as const,
-      status: 'pending' as const,
-      type: 'review' as const,
-      project: 'Westside Park'
-    },
-    {
-      id: '2-4',
-      title: 'Finalize Water Feature Design',
-      description: 'Approve central fountain and pond specifications.',
-      dueDate: '2024-06-25',
-      priority: 'high' as const,
-      status: 'completed' as const,
-      type: 'approval' as const,
-      project: 'Westside Park'
-    },
-  ],
-  '3': [
-    {
-      id: '3-1',
-      title: 'Approve Traffic Management Plan',
-      description: 'Updated diversion routes during main bridge closure.',
-      dueDate: '2024-07-12',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'North Bridge'
-    },
-    {
-      id: '3-2',
-      title: 'Review Structural Reinforcement Specs',
-      description: 'Engineer\'s report on additional support requirements.',
-      dueDate: '2024-07-08',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'review' as const,
-      project: 'North Bridge'
-    },
-    {
-      id: '3-3',
-      title: 'Sign Change Order for Support Columns',
-      description: 'Additional columns needed based on stress test results.',
-      dueDate: '2024-07-20',
-      priority: 'medium' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'North Bridge'
-    },
-    {
-      id: '3-4',
-      title: 'Schedule Project Update Meeting',
-      description: 'Monthly progress review with transportation department.',
-      dueDate: '2024-07-01',
-      priority: 'low' as const,
-      status: 'completed' as const,
-      type: 'task' as const,
-      project: 'North Bridge'
-    },
-  ],
-  'all': [
-    {
-      id: 'all-1',
-      title: 'Budget Approval Required',
-      description: 'Change order for East Tower HVAC upgrade needs approval.',
-      dueDate: '2024-07-15',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'East Tower'
-    },
-    {
-      id: 'all-2',
-      title: 'Document Review',
-      description: 'Updated construction contracts for Westside Park project.',
-      dueDate: '2024-07-18',
-      priority: 'medium' as const,
-      status: 'pending' as const,
-      type: 'review' as const,
-      project: 'Westside Park'
-    },
-    {
-      id: 'all-3',
-      title: 'Schedule Site Visit',
-      description: 'North Bridge project reached structural completion milestone.',
-      dueDate: '2024-07-10',
-      priority: 'low' as const,
-      status: 'completed' as const,
-      type: 'task' as const,
-      project: 'North Bridge'
-    },
-    {
-      id: 'all-4',
-      title: 'Design Decision Needed',
-      description: 'Facade material selection for East Tower project.',
-      dueDate: '2024-07-22',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'decision' as const,
-      project: 'East Tower'
-    },
-    {
-      id: 'all-5',
-      title: 'Safety Inspection Follow-up',
-      description: 'Address safety concerns from recent inspection at South Avenue site.',
-      dueDate: '2024-07-08',
-      priority: 'high' as const,
-      status: 'pending' as const,
-      type: 'task' as const,
-      project: 'South Avenue'
-    },
-    {
-      id: 'all-6',
-      title: 'Contractor Payment Approval',
-      description: 'Approve final payment for electrical work at Downtown Heights.',
-      dueDate: '2024-07-20',
-      priority: 'medium' as const,
-      status: 'pending' as const,
-      type: 'approval' as const,
-      project: 'Downtown Heights'
-    },
-    {
-      id: 'all-7',
-      title: 'Permit Extension Request',
-      description: 'Complete paperwork for extending building permit for Riverside Complex.',
-      dueDate: '2024-07-15',
-      priority: 'medium' as const,
-      status: 'completed' as const,
-      type: 'task' as const,
-      project: 'Riverside Complex'
-    }
-  ]
-};
+import type { Task } from '@/lib/supabase';
 
 export default function ActionItems() {
-  const [searchQuery, setSearchQuery] = useState('');
   const { selectedProject } = useProject();
-  const [actionItems, setActionItems] = useState<any[]>([]);
-  
-  // Get project-specific action items based on selected project
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [priorityFilter, setPriorityFilter] = useState<string>('all');
+
   useEffect(() => {
-    const projectId = selectedProject?.id || 'all';
-    setActionItems(projectActionItems[projectId as keyof typeof projectActionItems] || projectActionItems['all']);
+    const loadTasks = async () => {
+      try {
+        const tasksData = await getTasks(selectedProject?.id);
+        setTasks(tasksData);
+        setFilteredTasks(tasksData);
+      } catch (error) {
+        console.error('Error loading tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTasks();
   }, [selectedProject]);
-  
-  return (
-    <div className="flex h-screen bg-black">
-      <SidebarNavigation />
-      
-      <main className="flex flex-col flex-1 overflow-y-auto bg-black">
-        <DashboardHeader title="Action Items" />
-        <CollapsibleAIAssistant 
-          projectName={selectedProject?.title || 'All Projects'}
-          initialInsights={[
-            {
-              title: 'Priority Items',
-              content: `You have ${actionItems.filter(item => item.priority === 'high' && item.status === 'pending').length} high-priority items requiring attention`,
-              type: 'warning'
-            },
-            {
-              title: 'Upcoming Deadlines',
-              content: `${actionItems.filter(item => new Date(item.dueDate) <= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000) && item.status === 'pending').length} items due within the next 7 days`,
-              type: 'info'
-            }
-          ]}
-        />
-        
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-white">Action Items</h1>
-              <div className="flex gap-2">
-                <ActionItemSearch 
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                />
-                <Button className="gap-1 bg-construction-600 hover:bg-construction-700">
-                  <Plus className="h-4 w-4" />
-                  New Item
-                </Button>
-              </div>
-            </div>
-            
-            <ActionItemFilters 
-              items={actionItems} 
-              searchQuery={searchQuery} 
-            />
-          </div>
+
+  useEffect(() => {
+    let filtered = tasks;
+
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(task =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by status
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(task => task.status === statusFilter);
+    }
+
+    // Filter by priority
+    if (priorityFilter !== 'all') {
+      filtered = filtered.filter(task => task.priority === priorityFilter);
+    }
+
+    setFilteredTasks(filtered);
+  }, [tasks, searchTerm, statusFilter, priorityFilter]);
+
+  const handleStatusUpdate = async (taskId: string, newStatus: Task['status']) => {
+    try {
+      await updateTaskStatus(taskId, newStatus);
+      setTasks(prev => prev.map(task =>
+        task.id === taskId ? { ...task, status: newStatus } : task
+      ));
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
+  };
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-600';
+      case 'in-progress':
+        return 'bg-blue-600';
+      case 'pending':
+        return 'bg-yellow-600';
+      case 'cancelled':
+        return 'bg-gray-600';
+      default:
+        return 'bg-gray-600';
+    }
+  };
+
+  const getPriorityBadgeColor = (priority: string) => {
+    switch (priority) {
+      case 'critical':
+        return 'bg-red-600';
+      case 'high':
+        return 'bg-orange-600';
+      case 'medium':
+        return 'bg-yellow-600';
+      case 'low':
+        return 'bg-green-600';
+      default:
+        return 'bg-gray-600';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="h-4 w-4" />;
+      case 'in-progress':
+        return <Clock className="h-4 w-4" />;
+      case 'pending':
+        return <AlertTriangle className="h-4 w-4" />;
+      default:
+        return <Clock className="h-4 w-4" />;
+    }
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout
+        projectContext="Action Items"
+        projectName={selectedProject?.title || "All Projects"}
+        initialInsights={[]}
+      >
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
         </div>
-        
-        {/* Add TaskResponseModal */}
-        <TaskResponseModal />
-      </main>
-    </div>
+      </DashboardLayout>
+    );
+  }
+
+  return (
+    <DashboardLayout
+      projectContext="Action Items"
+      projectName={selectedProject?.title || "All Projects"}
+      initialInsights={[
+        {
+          id: 'task-1',
+          title: 'Task Overview',
+          description: `${tasks.length} total tasks across all projects`,
+          severity: 'info',
+        },
+        {
+          id: 'task-2',
+          title: 'Critical Tasks',
+          description: `${tasks.filter(t => t.priority === 'critical').length} critical priority tasks need attention`,
+          severity: 'error',
+        },
+        {
+          id: 'task-3',
+          title: 'Completion Rate',
+          description: `${Math.round((tasks.filter(t => t.status === 'completed').length / tasks.length) * 100)}% tasks completed`,
+          severity: 'success',
+        }
+      ]}
+    >
+      <div className="space-y-6">
+        {/* Header with Filters */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Action Items</h1>
+            <p className="text-gray-400 mt-2">
+              Manage and track project tasks and deliverables
+            </p>
+          </div>
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            <Plus className="h-4 w-4 mr-2" />
+            New Task
+          </Button>
+        </div>
+
+        {/* Filters */}
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search tasks..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 bg-gray-800 border-gray-700 text-white"
+                  />
+                </div>
+              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+                <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700">
+                  <SelectValue placeholder="Filter by priority" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectItem value="all">All Priorities</SelectItem>
+                  <SelectItem value="critical">Critical</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tasks List */}
+        <div className="space-y-4">
+          {filteredTasks.map((task) => (
+            <Card key={task.id} className="bg-gray-900 border-gray-800">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={`p-1 rounded-full ${getStatusBadgeColor(task.status)}`}>
+                        {getStatusIcon(task.status)}
+                      </div>
+                      <h3 className="font-semibold text-white text-lg">{task.title}</h3>
+                    </div>
+                    
+                    {task.description && (
+                      <p className="text-gray-400 mb-3">{task.description}</p>
+                    )}
+                    
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <Badge className={`${getStatusBadgeColor(task.status)} text-white`}>
+                        {task.status}
+                      </Badge>
+                      <Badge className={`${getPriorityBadgeColor(task.priority)} text-white`}>
+                        {task.priority} priority
+                      </Badge>
+                      {task.due_date && (
+                        <span className="text-sm text-gray-400">
+                          Due: {new Date(task.due_date).toLocaleDateString()}
+                        </span>
+                      )}
+                      <span className="text-sm text-gray-400">
+                        Created: {new Date(task.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    {task.status !== 'completed' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleStatusUpdate(task.id, 
+                          task.status === 'pending' ? 'in-progress' : 'completed'
+                        )}
+                        className="border-gray-600 text-gray-300"
+                      >
+                        {task.status === 'pending' ? 'Start' : 'Complete'}
+                      </Button>
+                    )}
+                    <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {filteredTasks.length === 0 && (
+          <Card className="bg-gray-900 border-gray-800">
+            <CardContent className="p-12 text-center">
+              <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-white mb-2">No tasks found</h3>
+              <p className="text-gray-400">
+                {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
+                  ? 'Try adjusting your filters to see more tasks.'
+                  : 'Create your first task to get started.'}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </DashboardLayout>
   );
 }
