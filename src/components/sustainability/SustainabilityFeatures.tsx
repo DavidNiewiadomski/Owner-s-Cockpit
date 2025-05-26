@@ -1,86 +1,62 @@
 
 import React from 'react';
-import { Sun, DropletIcon, Recycle, ThermometerIcon, Wind, Flower } from 'lucide-react';
+// Lucide icons will be passed as props, so specific imports here are not needed unless for default/fallback.
+// For this refactor, we assume icons are passed correctly.
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-export function SustainabilityFeatures() {
+// Define the Feature interface
+interface Feature {
+  id: string; // Or number
+  name: string;
+  description: string;
+  icon: React.ElementType; // To accept Lucide icons
+  iconColor?: string; // Optional: if you want to control color via data
+}
+
+// Define props for SustainabilityFeatures
+interface SustainabilityFeaturesProps {
+  features: Feature[];
+}
+
+export function SustainabilityFeatures({ features }: SustainabilityFeaturesProps) {
+  // Helper to group features into columns for rendering
+  const featuresInColumns: Feature[][] = [];
+  const itemsPerColumn = Math.ceil(features.length / 3); // Aim for 3 columns
+  for (let i = 0; i < features.length; i += itemsPerColumn) {
+    featuresInColumns.push(features.slice(i, i + itemsPerColumn));
+  }
+
   return (
     <Card className="p-6 bg-black border-gray-800 mb-6">
-      <h2 className="text-xl font-semibold mb-4">Sustainability Features</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="flex flex-col space-y-3">
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <Sun className="h-5 w-5 text-yellow-500" />
+      <h2 className="text-xl font-semibold mb-4 text-white">Sustainability Features</h2>
+      {features.length === 0 ? (
+        <p className="text-gray-400">No sustainability features listed for this project.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3">
+          {featuresInColumns.map((columnFeatures, columnIndex) => (
+            <div key={columnIndex} className="flex flex-col space-y-3">
+              {columnFeatures.map((feature, featureIndex) => (
+                <React.Fragment key={feature.id}>
+                  <div className="flex items-start">
+                    <div className="mr-3 mt-0.5">
+                      <feature.icon className={`h-5 w-5 ${feature.iconColor || 'text-green-500'}`} />
+                    </div>
+                    <div>
+                      <h3 className="font-medium text-gray-100">{feature.name}</h3>
+                      <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
+                    </div>
+                  </div>
+                  {/* Add Separator if not the last item in the column */}
+                  {featureIndex < columnFeatures.length - 1 && (
+                    <Separator className="bg-gray-800" />
+                  )}
+                </React.Fragment>
+              ))}
             </div>
-            <div>
-              <h3 className="font-medium">Solar Energy Integration</h3>
-              <p className="text-sm text-gray-400 mt-1">Rooftop solar panels providing up to 35% of building energy needs during peak production</p>
-            </div>
-          </div>
-          
-          <Separator className="bg-gray-800" />
-          
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <DropletIcon className="h-5 w-5 text-blue-500" />
-            </div>
-            <div>
-              <h3 className="font-medium">Rainwater Harvesting</h3>
-              <p className="text-sm text-gray-400 mt-1">System captures and filters rainwater for landscape irrigation and non-potable uses</p>
-            </div>
-          </div>
+          ))}
         </div>
-        
-        <div className="flex flex-col space-y-3">
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <Recycle className="h-5 w-5 text-green-500" />
-            </div>
-            <div>
-              <h3 className="font-medium">Construction Waste Diversion</h3>
-              <p className="text-sm text-gray-400 mt-1">Over 90% of construction waste diverted from landfills through recycling and reuse programs</p>
-            </div>
-          </div>
-          
-          <Separator className="bg-gray-800" />
-          
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <ThermometerIcon className="h-5 w-5 text-red-500" />
-            </div>
-            <div>
-              <h3 className="font-medium">High-Efficiency HVAC</h3>
-              <p className="text-sm text-gray-400 mt-1">Variable refrigerant flow system with heat recovery provides 40% energy savings over conventional systems</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex flex-col space-y-3">
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <Wind className="h-5 w-5 text-cyan-500" />
-            </div>
-            <div>
-              <h3 className="font-medium">Natural Ventilation</h3>
-              <p className="text-sm text-gray-400 mt-1">Building design optimizes airflow reducing mechanical ventilation needs by 30%</p>
-            </div>
-          </div>
-          
-          <Separator className="bg-gray-800" />
-          
-          <div className="flex items-start">
-            <div className="mr-3 mt-0.5">
-              <Flower className="h-5 w-5 text-green-500" />
-            </div>
-            <div>
-              <h3 className="font-medium">Sustainable Materials</h3>
-              <p className="text-sm text-gray-400 mt-1">85% of materials sourced from sustainable suppliers with verified environmental certifications</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </Card>
   );
 }

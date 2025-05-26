@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { LightbulbIcon, Brain, TrendingUp, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Project } from '@/data/projects/projectData';
+import { Project } from '@/lib/supabase'; // Changed import
 
 interface AIProjectRecommendationsProps {
   projects: Project[];
@@ -15,70 +15,95 @@ export function AIProjectRecommendations({ projects }: AIProjectRecommendationsP
   
   // Generate AI recommendations based on project data
   const recommendations = React.useMemo(() => {
-    const atRiskProjects = projects.filter(p => p.status === 'at-risk');
-    const delayedProjects = projects.filter(p => p.status === 'delayed');
-    const onTrackProjects = projects.filter(p => p.status === 'on-track');
+    const now = new Date();
+
+    // Supabase statuses: 'planning' | 'active' | 'on-hold' | 'completed' | 'cancelled'
+    const onHoldProjects = projects.filter(p => p.status === 'on-hold');
+    
+    const delayedProjects = projects.filter(p => 
+      p.end_date && new Date(p.end_date) < now && p.status !== 'completed' && p.status !== 'cancelled'
+    );
+    
+    const activeProjects = projects.filter(p => p.status === 'active');
+    const completedProjects = projects.filter(p => p.status === 'completed');
     
     const result = [];
     
-    if (atRiskProjects.length > 0) {
+    if (onHoldProjects.length > 0) {
       result.push({
-        type: 'warning',
-        title: 'At-Risk Projects Need Attention',
-        content: `${atRiskProjects.length} project${atRiskProjects.length > 1 ? 's' : ''} ${atRiskProjects.length > 1 ? 'are' : 'is'} at risk. Consider reviewing resource allocation.`,
+        type: 'warning', // Keep warning for on-hold
+        title: 'On-Hold Projects Require Review',
+        content: `${onHoldProjects.length} project${onHoldProjects.length > 1 ? 's are' : ' is'} currently on-hold. Review reasons and plan next steps.`,
         action: () => {
           toast({
-            title: "AI Resource Analysis",
-            description: "Analyzing resource allocation for at-risk projects"
+            title: "AI Project Review",
+            description: "Analyzing on-hold projects for potential actions."
           });
         },
-        icon: AlertTriangle
+        icon: AlertTriangle // Keep AlertTriangle for on-hold/warning
       });
     }
     
     if (delayedProjects.length > 0) {
       result.push({
-        type: 'danger',
-        title: 'Schedule Optimization Needed',
-        content: `${delayedProjects.length} project${delayedProjects.length > 1 ? 's' : ''} ${delayedProjects.length > 1 ? 'are' : 'is'} delayed. AI can help create recovery plans.`,
+        type: 'danger', // Keep danger for delayed
+        title: 'Delayed Projects Need Urgent Action',
+        content: `${delayedProjects.length} project${delayedProjects.length > 1 ? 's are' : ' is'} past its end date and not completed. AI can help create recovery plans.`,
         action: () => {
           toast({
             title: "AI Schedule Recovery",
-            description: "Generating schedule recovery options for delayed projects"
+            description: "Generating schedule recovery options for delayed projects."
           });
         },
-        icon: AlertTriangle
+        icon: AlertTriangle // Keep AlertTriangle for delayed/danger
       });
     }
     
-    if (onTrackProjects.length > 0) {
+    if (activeProjects.length > 0) {
       result.push({
-        type: 'success',
-        title: 'Performance Excellence',
-        content: `${onTrackProjects.length} project${onTrackProjects.length > 1 ? 's' : ''} on track. AI suggests documenting best practices.`,
+        type: 'success', // Keep success for active/on-track
+        title: 'Active Projects Progressing',
+        content: `${activeProjects.length} project${activeProjects.length > 1 ? 's are' : ' is'} currently active. Monitor progress and address risks proactively.`,
         action: () => {
           toast({
-            title: "AI Best Practice Documentation",
-            description: "Creating best practice templates from successful projects"
+            title: "AI Progress Monitoring",
+            description: "Setting up enhanced progress monitoring for active projects."
           });
         },
-        icon: CheckCircle2
+        icon: CheckCircle2 // Keep CheckCircle2 for active/success
+      });
+    }
+
+    if (completedProjects.length > 0) {
+      result.push({
+        type: 'info', // Use info for completed projects, can also be success
+        title: 'Review Completed Projects',
+        content: `${completedProjects.length} project${completedProjects.length > 1 ? 's have' : ' has'} been completed. Consider a post-project review for lessons learned.`,
+        action: () => {
+          toast({
+            title: "AI Post-Project Analysis",
+            description: "Analyzing completed projects for insights and documentation."
+          });
+        },
+        icon: LightbulbIcon // Lightbulb for insights/lessons learned
       });
     }
     
-    // Add a general optimization recommendation
-    result.push({
-      type: 'info',
-      title: 'Optimization Opportunities',
-      content: 'AI detected potential for 12% efficiency improvement across workflows.',
-      action: () => {
-        toast({
-          title: "AI Efficiency Analysis",
-          description: "Analyzing workflows for optimization opportunities"
-        });
-      },
-      icon: TrendingUp
-    });
+    // Add a general optimization recommendation if no other specific recommendations
+    if (result.length === 0) {
+      result.push({
+        type: 'info',
+        title: 'General Project Health',
+        content: 'All projects appear to be within expected parameters. AI continues to monitor for optimization opportunities.',
+        action: () => {
+          toast({
+            title: "AI System Check",
+            description: "Performing routine check for new optimization insights."
+          });
+        },
+        icon: TrendingUp
+      });
+    }
     
     return result;
   }, [projects, toast]);

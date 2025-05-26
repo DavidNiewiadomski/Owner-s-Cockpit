@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Project } from '@/data/projects/projectData';
+import { Project } from '@/lib/supabase'; // Changed import
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
 import { Button } from '@/components/ui/button';
 import { Grid, List } from 'lucide-react';
@@ -17,18 +17,20 @@ interface ProjectTabsProps {
 
 export function ProjectTabs({ projects, viewMode, setViewMode, searchTerm }: ProjectTabsProps) {
   // Filter projects based on search term
+  const searchTermLower = searchTerm.toLowerCase();
   const filteredProjects = projects.filter(project => 
-    project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.location.toLowerCase().includes(searchTerm.toLowerCase())
+    project.title.toLowerCase().includes(searchTermLower) ||
+    (project.description && project.description.toLowerCase().includes(searchTermLower)) || // Handle optional description
+    (project.client_name && project.client_name.toLowerCase().includes(searchTermLower)) || // Changed to client_name and handle optional
+    (project.location && project.location.toLowerCase().includes(searchTermLower)) // Handle optional location
   );
 
-  // Get projects for each tab
+  // Get projects for each tab based on Supabase statuses
+  // Supabase statuses: 'planning' | 'active' | 'on-hold' | 'completed' | 'cancelled'
   const activeProjects = filteredProjects.filter(p => 
-    p.status === 'on-track' || p.status === 'at-risk' || p.status === 'delayed'
+    p.status === 'active' || p.status === 'on-hold'
   );
-  const upcomingProjects = filteredProjects.filter(p => p.status === 'upcoming');
+  const upcomingProjects = filteredProjects.filter(p => p.status === 'planning');
   const completedProjects = filteredProjects.filter(p => p.status === 'completed');
 
   // Project display based on view mode
@@ -40,19 +42,8 @@ export function ProjectTabs({ projects, viewMode, setViewMode, searchTerm }: Pro
     return viewMode === 'card' ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projectsToRender.map(project => (
-          <ProjectCard 
-            key={project.id}
-            id={project.id}
-            title={project.title}
-            description={project.description}
-            progress={project.progress}
-            status={project.status === "completed" || project.status === "upcoming" 
-              ? "on-track" 
-              : project.status}
-            dueDate={project.dueDate}
-            teamMembers={project.teamMembers}
-            priority={project.priority}
-          />
+          <ProjectCard key={project.id} project={project} />
+          // Props passed as a single project object. Status mapping removed.
         ))}
       </div>
     ) : (

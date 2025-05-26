@@ -20,19 +20,22 @@ export function TaskResponseModal() {
 
   // Generate different response types based on the task
   const getEmailDraft = () => {
-    const task = selectedTask;
+    const task = selectedTask; // task is (Task & { projectTitle: string }) | null
+    const projectTitleSafe = task.projectTitle || "the project"; // Fallback for projectTitle
+    const projectEmailPart = task.projectTitle?.toLowerCase().replace(/\s+/g, '') || 'project';
+
     return {
-      to: `stakeholders@${task.project.toLowerCase().replace(/\s+/g, '')}.com`,
+      to: `stakeholders@${projectEmailPart}.com`,
       subject: `RE: ${task.title}`,
       body: `Hello,
 
-I'm reaching out regarding the ${task.title} for the ${task.project} project.
+I'm reaching out regarding the ${task.title} for the ${projectTitleSafe}.
 
-${task.description}
+${task.description || 'No specific description provided for this task.'}
 
-Could you please review and provide your approval/feedback at your earliest convenience? This is ${task.priority === 'high' ? 'urgent and requires immediate attention' : 'important for our project timeline'}.
+Could you please review and provide your approval/feedback at your earliest convenience? This is ${task.priority === 'high' || task.priority === 'critical' ? 'urgent and requires immediate attention' : 'important for our project timeline'}.
 
-Relevant documents can be found in the project repository under ${task.project}/documentation.
+Relevant documents can be found in the project repository under ${projectTitleSafe}/documentation.
 
 Thank you for your assistance.
 
@@ -43,20 +46,24 @@ Best regards,
 
   const getMessageDraft = () => {
     const task = selectedTask;
-    return `Hi team, I need your input on the ${task.title} for ${task.project}. ${task.description} Please let me know your thoughts ${task.priority === 'high' ? 'ASAP' : 'when you have a moment'}. Thanks!`;
+    const projectTitleSafe = task.projectTitle || "the project";
+    return `Hi team, I need your input on the ${task.title} for ${projectTitleSafe}. ${task.description || 'No specific description.'} Please let me know your thoughts ${task.priority === 'high' || task.priority === 'critical' ? 'ASAP' : 'when you have a moment'}. Thanks!`;
   };
 
   const getPhoneCallScript = () => {
     const task = selectedTask;
-    return `Hello, this is [Your Name] from the ${task.project} project team.
+    const projectTitleSafe = task.projectTitle || "the project";
+    const dueDateString = task.due_date ? new Date(task.due_date).toLocaleDateString() : 'Not specified';
+
+    return `Hello, this is [Your Name] from the ${projectTitleSafe} team.
 
 I'm calling about the ${task.title} that requires your attention.
 
 Key points to discuss:
-- ${task.description}
-- The deadline is ${new Date(task.dueDate).toLocaleDateString()}
+- ${task.description || 'No specific description provided.'}
+- The deadline is ${dueDateString}
 - This is a ${task.priority} priority item
-- We need your ${task.type} to proceed
+- We need your input to proceed.
 
 Do you have any questions or concerns about this task?
 When do you think you'll be able to complete this?

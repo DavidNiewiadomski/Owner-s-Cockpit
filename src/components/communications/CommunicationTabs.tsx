@@ -3,10 +3,12 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RecentCommunications } from '@/components/communications/RecentCommunications';
 import { ScheduledCommunications } from '@/components/communications/ScheduledCommunications';
-import type { Communication, ScheduledEvent } from '@/data';
+// Local Communication type removed
+import type { ScheduledEvent } from '@/data'; // Keep ScheduledEvent for now
+import type { Communication } from '@/lib/supabase'; // Import Supabase Communication type
 
 interface CommunicationTabsProps {
-  communications: Communication[];
+  communications: (Communication & { projectTitle: string })[]; // Expect enriched communications
   scheduledEvents: ScheduledEvent[];
 }
 
@@ -27,19 +29,20 @@ export const CommunicationTabs = ({ communications, scheduledEvents }: Communica
         
         <TabsContent value="emails" className="m-0">
           <RecentCommunications 
-            communications={communications.filter(c => c.type === 'email')} 
+            communications={communications.filter(c => c.communication_type === 'email')} 
           />
         </TabsContent>
         
         <TabsContent value="messages" className="m-0">
           <RecentCommunications 
-            communications={communications.filter(c => c.type === 'message')} 
+            communications={communications.filter(c => c.communication_type === 'message')} 
           />
         </TabsContent>
         
         <TabsContent value="calls" className="m-0">
           <RecentCommunications 
-            communications={communications.filter(c => c.type === 'call' || c.type === 'video')} 
+            communications={communications.filter(c => c.communication_type === 'call')} 
+            // Assuming 'video' is not a Supabase communication_type, or needs to be handled if it is
           />
         </TabsContent>
       </Tabs>

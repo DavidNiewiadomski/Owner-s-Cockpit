@@ -1,44 +1,10 @@
 
 import { CostVarianceDataPoint, CostVarianceConfig } from './CostVarianceTypes';
 
-export const costVarianceData: CostVarianceDataPoint[] = [
-  {
-    name: "Site Work",
-    planned: 425000,
-    actual: 412750,
-    variance: 12250,
-  },
-  {
-    name: "Structural Framing",
-    planned: 720000,
-    actual: 748800,
-    variance: -28800,
-  },
-  {
-    name: "Electrical",
-    planned: 345000,
-    actual: 341550,
-    variance: 3450,
-  },
-  {
-    name: "Plumbing & HVAC",
-    planned: 520000,
-    actual: 546000,
-    variance: -26000,
-  },
-  {
-    name: "Interior Finishes",
-    planned: 635000,
-    actual: 622300,
-    variance: 12700,
-  },
-  {
-    name: "Exterior Facades",
-    planned: 390000,
-    actual: 409500,
-    variance: -19500,
-  },
-];
+// costVarianceData array export removed.
+// The CostVarianceDataPoint type is defined in CostVarianceTypes.ts and re-exported here if needed,
+// or imported directly in components that use it.
+// For this refactor, we assume CostVarianceDataPoint is available via CostVarianceTypes.ts.
 
 export const costVarianceChartConfig: CostVarianceConfig = {
   planned: {

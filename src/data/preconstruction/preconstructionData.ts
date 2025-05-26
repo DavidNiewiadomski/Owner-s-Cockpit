@@ -366,14 +366,14 @@ export const budgetEstimatesData = [
   }
 ];
 
-// Budget Category Data for Chart
-export const budgetCategoryData = [
-  { name: 'Site Work', value: 595000 },
-  { name: 'Structural', value: 1425000 },
-  { name: 'Envelope', value: 890000 },
-  { name: 'MEP', value: 1415000 },
-  { name: 'Finishes', value: 525000 }
-];
+// Budget Category Data for Chart - This is now fetched dynamically
+// export const budgetCategoryData = [
+//   { name: 'Site Work', value: 595000 },
+//   { name: 'Structural', value: 1425000 },
+//   { name: 'Envelope', value: 890000 },
+//   { name: 'MEP', value: 1415000 },
+//   { name: 'Finishes', value: 525000 }
+// ];
 
 // Budget Risks Data
 export const budgetRisksData = [

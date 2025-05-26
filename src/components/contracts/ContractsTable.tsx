@@ -9,7 +9,8 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Contract } from '@/data/contracts/contractsData';
+// Local Contract type removed
+import type { Contract as SupabaseContract } from '@/lib/supabase'; // Import Supabase Contract
 import { 
   MoreHorizontal, 
   EyeIcon, 
@@ -28,14 +29,15 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ContractsTableProps {
-  contracts: Contract[];
+  contracts: SupabaseContract[]; // Expect SupabaseContract array
 }
 
 export function ContractsTable({ contracts }: ContractsTableProps) {
-  const [sortColumn, setSortColumn] = useState<keyof Contract>('id');
+  // Ensure sortColumn and handleSort are compatible with SupabaseContract keys
+  const [sortColumn, setSortColumn] = useState<keyof SupabaseContract>('id');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
-  const handleSort = (column: keyof Contract) => {
+  const handleSort = (column: keyof SupabaseContract) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -45,8 +47,9 @@ export function ContractsTable({ contracts }: ContractsTableProps) {
   };
   
   const sortedContracts = [...contracts].sort((a, b) => {
-    const valueA = a[sortColumn];
-    const valueB = b[sortColumn];
+    // Handle cases where a value might be null or undefined for SupabaseContract
+    const valueA = a[sortColumn] ?? ''; // Default to empty string for null/undefined
+    const valueB = b[sortColumn] ?? ''; // Default to empty string for null/undefined
     
     if (typeof valueA === 'string' && typeof valueB === 'string') {
       return sortDirection === 'asc' 
@@ -61,13 +64,14 @@ export function ContractsTable({ contracts }: ContractsTableProps) {
     return 0;
   });
 
-  // Status badge color mapping
-  const statusColor = {
-    'Draft': 'bg-gray-500/20 text-gray-400 border-gray-500/50',
-    'In Review': 'bg-blue-500/20 text-blue-400 border-blue-500/50',
-    'Active': 'bg-green-500/20 text-green-400 border-green-500/50',
-    'Expired': 'bg-amber-500/20 text-amber-400 border-amber-500/50',
-    'Terminated': 'bg-red-500/20 text-red-400 border-red-500/50'
+  // Status badge color mapping for SupabaseContract statuses
+  // Supabase status values: 'draft' | 'in-review' | 'active' | 'expired' | 'terminated'
+  const statusColor: Record<SupabaseContract['status'], string> = {
+    'draft': 'bg-gray-500/20 text-gray-400 border-gray-500/50',
+    'in-review': 'bg-blue-500/20 text-blue-400 border-blue-500/50',
+    'active': 'bg-green-500/20 text-green-400 border-green-500/50',
+    'expired': 'bg-amber-500/20 text-amber-400 border-amber-500/50',
+    'terminated': 'bg-red-500/20 text-red-400 border-red-500/50'
   };
 
   return (
@@ -100,7 +104,7 @@ export function ContractsTable({ contracts }: ContractsTableProps) {
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>Type</TableHead>
+                <TableHead>Contract Type</TableHead> {/* Changed from Type */}
                 <TableHead>
                   <Button 
                     variant="ghost" 
@@ -124,15 +128,16 @@ export function ContractsTable({ contracts }: ContractsTableProps) {
                 <TableHead>
                   <Button 
                     variant="ghost" 
-                    onClick={() => handleSort('startDate')}
+                    onClick={() => handleSort('start_date')} {/* Changed to start_date */}
                     className="px-0 font-medium text-gray-400 hover:text-white"
                   >
                     Start Date
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>End Date</TableHead>
-                <TableHead>Project</TableHead>
+                <TableHead>End Date</TableHead> {/* Keep as is, will sort by end_date */}
+                <TableHead>Contractor</TableHead> {/* Changed from Project to Contractor */}
+                <TableHead>Project ID</TableHead> {/* Added Project ID */}
                 <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
@@ -143,21 +148,22 @@ export function ContractsTable({ contracts }: ContractsTableProps) {
                   <TableCell>{contract.title}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="bg-gray-800/50 border-gray-700 text-gray-300">
-                      {contract.type}
+                      {contract.contract_type} {/* Changed to contract_type */}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className={`${statusColor[contract.status]}`}>
-                      {contract.status}
+                      {contract.status.charAt(0).toUpperCase() + contract.status.slice(1)} {/* Capitalize status */}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right font-mono">${contract.value.toLocaleString()}</TableCell>
-                  <TableCell>{new Date(contract.startDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{new Date(contract.endDate).toLocaleDateString()}</TableCell>
+                  <TableCell>{new Date(contract.start_date).toLocaleDateString()}</TableCell> {/* Changed to start_date */}
+                  <TableCell>{new Date(contract.end_date).toLocaleDateString()}</TableCell> {/* Changed to end_date */}
+                  <TableCell>{contract.contractor_name}</TableCell> {/* Changed to contractor_name */}
                   <TableCell>
-                    <Badge variant="secondary" className="bg-gray-800/80 border-gray-700 hover:bg-gray-700/50">
-                      {contract.project}
-                    </Badge>
+                     <Badge variant="secondary" className="bg-gray-700/80 border-gray-600 hover:bg-gray-600/50">
+                       {contract.project_id || 'N/A'} {/* Display project_id */}
+                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>

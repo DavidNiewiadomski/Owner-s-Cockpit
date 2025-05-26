@@ -1,118 +1,111 @@
 
 import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react'; // Added useMemo
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card'; // Removed CardHeader, CardTitle, Badge
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CheckCircle, Clock, AlertTriangle, Search, Filter, Plus } from 'lucide-react';
-import { getTasks, updateTaskStatus } from '@/services/dataService';
+import { Search, Plus, AlertTriangle } from 'lucide-react'; 
+import { getTasks, getProjects, getTeamMembers, updateTaskStatus } from '@/services/dataService'; // Added getTeamMembers
 import { useProject } from '@/contexts/ProjectContext';
-import type { Task } from '@/lib/supabase';
+import type { Task, Project, TeamMember } from '@/lib/supabase'; // Added TeamMember
+import { ActionItemList } from '@/components/actionItems/ActionItemList'; 
+import { CreateTaskModal } from '@/components/actionItems/CreateTaskModal'; // Import CreateTaskModal
 
 export default function ActionItems() {
   const { selectedProject } = useProject();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [projectsMap, setProjectsMap] = useState<Map<string, Project>>(new Map());
+  const [enrichedTasks, setEnrichedTasks] = useState<(Task & { projectTitle: string })[]>([]);
+  
+  const [allProjects, setAllProjects] = useState<Project[]>([]); // For modal
+  const [allTeamMembers, setAllTeamMembers] = useState<TeamMember[]>([]); // For modal
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const tasksData = await getTasks(selectedProject?.id);
-        setTasks(tasksData);
-        setFilteredTasks(tasksData);
-      } catch (error) {
-        console.error('Error loading tasks:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadData = async () => { // Made loadData a standalone function
+    setLoading(true);
+    try {
+      const [tasksData, projectsData, teamMembersData] = await Promise.all([
+        getTasks(selectedProject?.id),
+        getProjects(), // Fetch all projects
+        getTeamMembers() // Fetch all team members
+      ]);
+      
+      setTasks(tasksData);
+      setAllProjects(projectsData); // Store all projects for modal
+      setAllTeamMembers(teamMembersData); // Store all team members for modal
 
-    loadTasks();
+      const newProjectsMap = new Map<string, Project>();
+      projectsData.forEach(project => newProjectsMap.set(project.id, project));
+      setProjectsMap(newProjectsMap);
+
+    } catch (error) {
+      console.error('Error loading data:', error);
+      // Consider setting an error state here to display to the user
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
   }, [selectedProject]);
 
   useEffect(() => {
-    let filtered = tasks;
+    // Enrich tasks whenever tasks or projectsMap changes
+    if (tasks.length > 0 && projectsMap.size > 0) {
+      const currentEnrichedTasks = tasks.map(task => ({
+        ...task,
+        projectTitle: task.project_id ? (projectsMap.get(task.project_id)?.title || 'Unknown Project') : 'N/A (No Project ID)'
+      }));
+      setEnrichedTasks(currentEnrichedTasks);
+    } else if (tasks.length > 0 && projectsMap.size === 0 && !loading) {
+      // Handle case where projects might not have loaded but tasks did (e.g. if getProjects failed)
+       const currentEnrichedTasks = tasks.map(task => ({
+        ...task,
+        projectTitle: 'Project Info N/A'
+      }));
+      setEnrichedTasks(currentEnrichedTasks);
+    } else {
+      setEnrichedTasks([]);
+    }
+  }, [tasks, projectsMap, loading]);
+
+
+  const filteredAndEnrichedTasks = useMemo(() => {
+    let localFilteredTasks = enrichedTasks;
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        task.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      const searchTermLower = searchTerm.toLowerCase();
+      localFilteredTasks = localFilteredTasks.filter(task =>
+        task.title.toLowerCase().includes(searchTermLower) ||
+        (task.description && task.description.toLowerCase().includes(searchTermLower)) ||
+        task.projectTitle.toLowerCase().includes(searchTermLower) 
       );
     }
 
     // Filter by status
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(task => task.status === statusFilter);
+      localFilteredTasks = localFilteredTasks.filter(task => task.status === statusFilter);
     }
 
     // Filter by priority
     if (priorityFilter !== 'all') {
-      filtered = filtered.filter(task => task.priority === priorityFilter);
+      localFilteredTasks = localFilteredTasks.filter(task => task.priority === priorityFilter);
     }
+    return localFilteredTasks;
+  }, [enrichedTasks, searchTerm, statusFilter, priorityFilter]);
 
-    setFilteredTasks(filtered);
-  }, [tasks, searchTerm, statusFilter, priorityFilter]);
-
-  const handleStatusUpdate = async (taskId: string, newStatus: Task['status']) => {
-    try {
-      await updateTaskStatus(taskId, newStatus);
-      setTasks(prev => prev.map(task =>
-        task.id === taskId ? { ...task, status: newStatus } : task
-      ));
-    } catch (error) {
-      console.error('Error updating task status:', error);
-    }
-  };
-
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-600';
-      case 'in-progress':
-        return 'bg-blue-600';
-      case 'pending':
-        return 'bg-yellow-600';
-      case 'cancelled':
-        return 'bg-gray-600';
-      default:
-        return 'bg-gray-600';
-    }
-  };
-
-  const getPriorityBadgeColor = (priority: string) => {
-    switch (priority) {
-      case 'critical':
-        return 'bg-red-600';
-      case 'high':
-        return 'bg-orange-600';
-      case 'medium':
-        return 'bg-yellow-600';
-      case 'low':
-        return 'bg-green-600';
-      default:
-        return 'bg-gray-600';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-4 w-4" />;
-      case 'in-progress':
-        return <Clock className="h-4 w-4" />;
-      case 'pending':
-        return <AlertTriangle className="h-4 w-4" />;
-      default:
-        return <Clock className="h-4 w-4" />;
-    }
-  };
+  // handleStatusUpdate and related badge/icon functions are removed for now,
+  // as ActionItemList is purely presentational.
+  // This functionality can be added back when ActionItemList gets checkbox interactivity.
 
   if (loading) {
     return (
@@ -127,6 +120,12 @@ export default function ActionItems() {
       </DashboardLayout>
     );
   }
+  
+  const totalTasks = tasks.length;
+  const criticalTasksCount = tasks.filter(t => t.priority === 'critical').length;
+  const completedTasksCount = tasks.filter(t => t.status === 'completed').length;
+  const completionRate = totalTasks > 0 ? Math.round((completedTasksCount / totalTasks) * 100) : 0;
+
 
   return (
     <DashboardLayout
@@ -136,25 +135,25 @@ export default function ActionItems() {
         {
           id: 'task-1',
           title: 'Task Overview',
-          description: `${tasks.length} total tasks across all projects`,
+          description: `${totalTasks} total tasks.`,
           severity: 'info',
         },
         {
           id: 'task-2',
           title: 'Critical Tasks',
-          description: `${tasks.filter(t => t.priority === 'critical').length} critical priority tasks need attention`,
+          description: `${criticalTasksCount} critical priority tasks need attention.`,
           severity: 'error',
         },
         {
           id: 'task-3',
           title: 'Completion Rate',
-          description: `${Math.round((tasks.filter(t => t.status === 'completed').length / tasks.length) * 100)}% tasks completed`,
+          description: `${completionRate}% tasks completed.`,
           severity: 'success',
         }
       ]}
     >
       <div className="space-y-6">
-        {/* Header with Filters */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white">Action Items</h1>
@@ -162,7 +161,7 @@ export default function ActionItems() {
               Manage and track project tasks and deliverables
             </p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => setIsCreateModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             New Task
           </Button>
@@ -176,7 +175,7 @@ export default function ActionItems() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <Input
-                    placeholder="Search tasks..."
+                    placeholder="Search tasks by title, description, or project..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 bg-gray-800 border-gray-700 text-white"
@@ -211,66 +210,11 @@ export default function ActionItems() {
           </CardContent>
         </Card>
 
-        {/* Tasks List */}
-        <div className="space-y-4">
-          {filteredTasks.map((task) => (
-            <Card key={task.id} className="bg-gray-900 border-gray-800">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className={`p-1 rounded-full ${getStatusBadgeColor(task.status)}`}>
-                        {getStatusIcon(task.status)}
-                      </div>
-                      <h3 className="font-semibold text-white text-lg">{task.title}</h3>
-                    </div>
-                    
-                    {task.description && (
-                      <p className="text-gray-400 mb-3">{task.description}</p>
-                    )}
-                    
-                    <div className="flex items-center gap-4 flex-wrap">
-                      <Badge className={`${getStatusBadgeColor(task.status)} text-white`}>
-                        {task.status}
-                      </Badge>
-                      <Badge className={`${getPriorityBadgeColor(task.priority)} text-white`}>
-                        {task.priority} priority
-                      </Badge>
-                      {task.due_date && (
-                        <span className="text-sm text-gray-400">
-                          Due: {new Date(task.due_date).toLocaleDateString()}
-                        </span>
-                      )}
-                      <span className="text-sm text-gray-400">
-                        Created: {new Date(task.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    {task.status !== 'completed' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleStatusUpdate(task.id, 
-                          task.status === 'pending' ? 'in-progress' : 'completed'
-                        )}
-                        className="border-gray-600 text-gray-300"
-                      >
-                        {task.status === 'pending' ? 'Start' : 'Complete'}
-                      </Button>
-                    )}
-                    <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
-                      View Details
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Render ActionItemList */}
+        <ActionItemList tasks={filteredAndEnrichedTasks} />
 
-        {filteredTasks.length === 0 && (
+        {/* Display message if no tasks match filters */}
+        {filteredAndEnrichedTasks.length === 0 && !loading && (
           <Card className="bg-gray-900 border-gray-800">
             <CardContent className="p-12 text-center">
               <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -284,6 +228,17 @@ export default function ActionItems() {
           </Card>
         )}
       </div>
+      <CreateTaskModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onTaskCreated={() => {
+          loadData(); // Re-fetch data to include the new task and update enrichment
+          // Optionally, could add the new task to local state for quicker UI update
+          // before re-fetch completes, but re-fetching ensures consistency.
+        }}
+        projects={allProjects}
+        teamMembers={allTeamMembers}
+      />
     </DashboardLayout>
   );
 }

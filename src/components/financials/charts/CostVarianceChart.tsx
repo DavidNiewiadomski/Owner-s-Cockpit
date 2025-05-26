@@ -6,10 +6,17 @@ import {
   ChartContainer, 
 } from "@/components/ui/chart";
 import { useProject } from "@/contexts/ProjectContext";
-import { costVarianceData, costVarianceChartConfig, formatCurrency } from "./CostVarianceData";
+// costVarianceData import removed, formatCurrency kept if needed by Tooltip, or can be removed if not.
+// Assuming CostVarianceDataPoint is now imported via CostVarianceTypes.ts or similar if needed here directly.
+import { costVarianceChartConfig } from "./CostVarianceData"; 
 import { CostVarianceTooltip } from "./CostVarianceTooltip";
+import type { CostVarianceDataPoint } from "./CostVarianceTypes"; // Import the type
 
-export function CostVarianceChart() {
+interface CostVarianceChartProps {
+  chartData: CostVarianceDataPoint[]; // Add chartData prop
+}
+
+export function CostVarianceChart({ chartData }: CostVarianceChartProps) { // Destructure chartData from props
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || "All Projects";
   
@@ -25,7 +32,7 @@ export function CostVarianceChart() {
         <div className="h-[350px] w-full">
           <ChartContainer config={costVarianceChartConfig} aspectRatio="auto">
             <BarChart
-              data={costVarianceData}
+              data={chartData} // Use chartData prop
               margin={{
                 top: 10,
                 right: 30,

@@ -4,12 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, ShieldCheck } from 'lucide-react';
 import { ContractsTab } from './ContractsTab';
 import { InsuranceTab } from './InsuranceTab';
-import { Contract, ContractMilestone, Insurance } from '@/data/contracts/contractsData';
+// Local Contract type removed, ContractMilestone and Insurance kept for now
+import { ContractMilestone, Insurance } from '@/data/contracts/contractsData';
+import type { Contract as SupabaseContract } from '@/lib/supabase'; // Import Supabase Contract
 
 interface ContractsPageTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  contracts: Contract[];
+  contracts: SupabaseContract[]; // Expect SupabaseContract array
   milestones: ContractMilestone[];
   insurances: Insurance[];
 }
