@@ -1,4 +1,3 @@
-
 -- Insert sample company
 INSERT INTO companies (id, name, logo_url, website, phone, email, address) VALUES 
 ('00000000-0000-0000-0000-000000000001', 'Premier Construction Group', '/lovable-uploads/249d967c-7ff4-46d6-952b-92274a485085.png', 'https://premierconstructiongroup.com', '+1-555-0123', 'info@premierconstructiongroup.com', '123 Construction Ave, Building City, BC 12345');
@@ -65,14 +64,14 @@ INSERT INTO materials (name, category, quantity, unit, unit_cost, supplier_name,
 ('High-Strength Cables', 'Structural', 2400, 'feet', 12.50, 'CableTech Engineering', '00000000-0000-0000-0000-000000000003');
 
 -- Insert contracts
-INSERT INTO contracts (title, contract_type, status, value, start_date, end_date, contractor_name, project_id) VALUES 
-('Main Construction Contract - Riverfront Tower', 'construction', 'active', 32000000.00, '2023-03-15', '2024-12-30', 'BuildRight Construction Inc.', '00000000-0000-0000-0000-000000000001'),
-('Electrical Systems Installation', 'service', 'active', 4500000.00, '2023-06-01', '2024-10-15', 'PowerTech Electrical Services', '00000000-0000-0000-0000-000000000001'),
-('HVAC System Installation', 'equipment', 'active', 3200000.00, '2023-08-15', '2024-11-30', 'Climate Control Specialists', '00000000-0000-0000-0000-000000000001'),
-('Residential Construction - Westview', 'construction', 'active', 18500000.00, '2023-09-01', '2025-06-15', 'GreenBuild Contractors', '00000000-0000-0000-0000-000000000002'),
-('Sustainable Energy Systems', 'equipment', 'active', 2800000.00, '2024-01-15', '2025-04-30', 'EcoEnergy Solutions', '00000000-0000-0000-0000-000000000002'),
-('Bridge Reconstruction - Harbor', 'construction', 'active', 14200000.00, '2023-01-10', '2024-08-20', 'Infrastructure Masters LLC', '00000000-0000-0000-0000-000000000003'),
-('Traffic Control Systems', 'equipment', 'active', 1650000.00, '2023-05-01', '2024-07-15', 'SmartTraffic Technologies', '00000000-0000-0000-0000-000000000003');
+INSERT INTO contracts (id, title, contract_type, status, value, start_date, end_date, contractor_name, project_id) VALUES 
+('00000000-0000-0000-0000-000000000011', 'Main Construction Contract - Riverfront Tower', 'construction', 'active', 32000000.00, '2023-03-15', '2024-12-30', 'BuildRight Construction Inc.', '00000000-0000-0000-0000-000000000001'),
+('00000000-0000-0000-0000-000000000012', 'Electrical Systems Installation', 'service', 'active', 4500000.00, '2023-06-01', '2024-10-15', 'PowerTech Electrical Services', '00000000-0000-0000-0000-000000000001'),
+('00000000-0000-0000-0000-000000000013', 'HVAC System Installation', 'equipment', 'active', 3200000.00, '2023-08-15', '2024-11-30', 'Climate Control Specialists', '00000000-0000-0000-0000-000000000001'),
+('00000000-0000-0000-0000-000000000014', 'Residential Construction - Westview', 'construction', 'active', 18500000.00, '2023-09-01', '2025-06-15', 'GreenBuild Contractors', '00000000-0000-0000-0000-000000000002'),
+('00000000-0000-0000-0000-000000000015', 'Sustainable Energy Systems', 'equipment', 'active', 2800000.00, '2024-01-15', '2025-04-30', 'EcoEnergy Solutions', '00000000-0000-0000-0000-000000000002'),
+('00000000-0000-0000-0000-000000000016', 'Bridge Reconstruction - Harbor', 'construction', 'active', 14200000.00, '2023-01-10', '2024-08-20', 'Infrastructure Masters LLC', '00000000-0000-0000-0000-000000000003'),
+('00000000-0000-0000-0000-000000000017', 'Traffic Control Systems', 'equipment', 'active', 1650000.00, '2023-05-01', '2024-07-15', 'SmartTraffic Technologies', '00000000-0000-0000-0000-000000000003');
 
 -- Insert quality inspections
 INSERT INTO quality_inspections (inspection_type, status, scheduled_date, completed_date, inspector_id, project_id, notes, score) VALUES 
@@ -120,3 +119,347 @@ INSERT INTO documents (name, file_url, file_type, file_size, folder, project_id,
 ('Bridge Load Analysis.pdf', '/documents/harbor-bridge/load-analysis.pdf', 'pdf', 18500000, 'Engineering', '00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000005'),
 ('Traffic Management Plan.pdf', '/documents/harbor-bridge/traffic-management.pdf', 'pdf', 4200000, 'Planning', '00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000002'),
 ('Cable Stay Installation Manual.pdf', '/documents/harbor-bridge/cable-installation.pdf', 'pdf', 9800000, 'Technical', '00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000002');
+
+-- ----------------------------------------------------
+-- Sample Data for design_plans table START
+-- ----------------------------------------------------
+-- Note: 
+-- Replace 'your-project-id-1' and 'your-project-id-2' with actual UUIDs from your 'projects' table.
+-- The 'projects' table above uses '00000000-0000-0000-0000-000000000001', etc.
+-- If your 'id' column in 'design_plans' does not have uuid_generate_v4() as a default, 
+-- you must provide unique UUIDs for each record (e.g., 'dp-uuid-1', 'dp-uuid-2', etc.).
+
+INSERT INTO design_plans (id, project_id, name, version, designer, status, last_updated, file_url, description, created_at, updated_at)
+VALUES 
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    'Initial Architectural Layout', 
+    'v1.0', 
+    'ArchDesign Firm LLC', 
+    'Draft', 
+    '2024-01-15',
+    'https://example.com/project1/arch_layout_v1.pdf',
+    'First draft of the primary architectural floor plans and elevations.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    'Structural Engineering Blueprints - Phase 1', 
+    'v2.1', 
+    'Structura Engineers Inc.', 
+    'Approved', 
+    '2024-03-20',
+    'https://example.com/project1/structural_phase1_v2.1.dwg',
+    'Approved structural plans for the foundation and main support structures of Phase 1.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000002', -- Linked to 'Westview Residences'
+    'MEP System Design - Preliminary', 
+    'v0.5-alpha', 
+    'Total MEP Solutions', 
+    'In Review', 
+    '2024-04-10',
+    NULL, 
+    'Preliminary designs for Mechanical, Electrical, and Plumbing systems. Awaiting initial feedback.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    'Revised Architectural Layout', 
+    'v1.1', 
+    'ArchDesign Firm LLC', 
+    'Pending', 
+    '2024-02-28',
+    'https://example.com/project1/arch_layout_v1.1_revised.pdf',
+    'Revised architectural layouts based on client feedback. Pending final review before approval.',
+    NOW(),
+    NOW()
+  );
+-- ----------------------------------------------------
+-- Sample Data for design_plans table END
+-- ----------------------------------------------------
+
+-- ----------------------------------------------------
+-- Sample Data for permits table START
+-- ----------------------------------------------------
+-- Note: 
+-- Replace 'your-project-id-1' and 'your-project-id-2' with actual UUIDs from your 'projects' table.
+-- The 'projects' table above uses '00000000-0000-0000-0000-000000000001', etc.
+-- If your 'id' column in 'permits' does not have uuid_generate_v4() as a default, 
+-- you must provide unique UUIDs for each record.
+
+INSERT INTO permits (id, project_id, name, type, status, application_date, expected_approval_date, actual_approval_date, description, created_at, updated_at)
+VALUES 
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    'General Building Permit', 
+    'Construction', 
+    'Approved', 
+    '2024-01-10',
+    '2024-02-15',
+    '2024-02-10',
+    'Main building permit covering general construction activities for Project Alpha.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    'Electrical Systems Permit', 
+    'Utilities', 
+    'In Progress', 
+    '2024-03-01',
+    '2024-04-15',
+    NULL, 
+    'Permit for all electrical installations and systems for Project Alpha.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000002', -- Linked to 'Westview Residences'
+    'Environmental Impact Clearance', 
+    'Regulatory', 
+    'Pending', 
+    '2024-02-20',
+    '2024-05-20',
+    NULL,
+    'Environmental clearance required before site mobilization for Project Beta.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000002', -- Linked to 'Westview Residences'
+    'Demolition Permit - Phase 1', 
+    'Site Work', 
+    'Approved', 
+    '2023-12-01',
+    '2023-12-20',
+    '2023-12-18',
+    NULL, 
+    NOW(),
+    NOW()
+  );
+-- ----------------------------------------------------
+-- Sample Data for permits table END
+-- ----------------------------------------------------
+
+-- ----------------------------------------------------
+-- Sample Data for vendors table START
+-- ----------------------------------------------------
+-- Note: 
+-- If your 'id' column in 'vendors' does not have uuid_generate_v4() as a default, 
+-- you must provide unique UUIDs for each record.
+
+INSERT INTO vendors (id, name, category, rating, location, phone, email, status, notes, created_at, updated_at)
+VALUES 
+  (
+    uuid_generate_v4(), 
+    'Global Construction Supplies Ltd.', 
+    'General Building Materials', 
+    4.5, 
+    '123 Industrial Way, Anytown, USA',
+    '+1-555-123-4567',
+    'sales@globalconstructionsupplies.com',
+    'Active',
+    'Reliable supplier for bulk orders of cement, lumber, and standard fittings. Good payment terms.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'Precision Electrical Co.', 
+    'Electrical Systems & Components', 
+    4.8, 
+    '456 Tech Park, Circuit City, USA',
+    '+1-555-987-6543',
+    'info@precisionelectrical.co',
+    'Preferred',
+    'Specializes in high-voltage systems and custom control panels. Excellent technical support.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'SafeGuard Security Solutions', 
+    'Security Systems & Services', 
+    4.2, 
+    '789 Secure Ave, Metroville, USA',
+    '+1-555-321-7890',
+    'support@safeguard.com',
+    'Active',
+    'Provides installation and monitoring services. Some delays reported in Q2 but resolved.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'EcoFriendly Landscapers Inc.', 
+    'Landscaping & Site Work', 
+    4.0, 
+    '101 Green Valley Rd, Rural Town, USA',
+    '+1-555-555-5555',
+    'contact@ecolandscapers.net',
+    'On Hold',
+    'Currently on hold pending review of their new environmental certification. Past performance was satisfactory.',
+    NOW(),
+    NOW()
+  );
+-- ----------------------------------------------------
+-- Sample Data for vendors table END
+-- ----------------------------------------------------
+
+-- ----------------------------------------------------
+-- Sample Data for insurances table START
+-- ----------------------------------------------------
+-- Note: 
+-- Replace 'your-project-id-1' and 'your-project-id-2' with actual UUIDs from your 'projects' table if needed.
+-- The 'projects' table above uses '00000000-0000-0000-0000-000000000001', etc.
+-- If your 'id' column in 'insurances' does not have uuid_generate_v4() as a default, 
+-- you must provide unique UUIDs for each record.
+
+INSERT INTO insurances (id, title, type, status, premium, coverage, start_date, end_date, provider, policy_number, project_id, created_at, updated_at)
+VALUES 
+  (
+    uuid_generate_v4(), 
+    'General Liability for Downtown Complex', 
+    'Liability', 
+    'Active', 
+    25000.00,
+    10000000.00,
+    '2024-01-01',
+    '2025-01-01',
+    'SecureGuard Insurance Co.',
+    'POL-GL-2024-001A',
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'Builders Risk - Riverside Tower Construction', 
+    'Builder''s Risk', 
+    'Active', 
+    17500.50,
+    15000000.00,
+    '2024-03-01',
+    '2025-08-30',
+    'ConstructSafe Insurers',
+    'POL-BR-2024-002B',
+    '00000000-0000-0000-0000-000000000002', -- Linked to 'Westview Residences'
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'Workers Compensation - All Sites', 
+    'Workers Comp', 
+    'Active', 
+    55000.75,
+    5000000.00,
+    '2024-01-01',
+    '2025-01-01',
+    'WorkWell Indemnity',
+    'POL-WC-2024-003C',
+    NULL, 
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    'Professional Liability for Design Phase - Downtown Complex', 
+    'Professional Liability', 
+    'Expired', 
+    12000.00,
+    2000000.00,
+    '2023-05-01',
+    '2024-05-01',
+    'DesignGuard Pro',
+    'POL-PL-2023-004D',
+    '00000000-0000-0000-0000-000000000001', -- Linked to 'Riverfront Tower'
+    NOW(),
+    NOW()
+  );
+-- ----------------------------------------------------
+-- Sample Data for insurances table END
+-- ----------------------------------------------------
+
+-- ----------------------------------------------------
+-- Sample Data for contract_milestones table START
+-- ----------------------------------------------------
+-- Note: 
+-- Replace 'your-contract-id-1' and 'your-contract-id-2' with actual UUIDs from your 'contracts' table.
+-- The 'contracts' table above uses '00000000-0000-0000-0000-000000000011', etc.
+-- If your 'id' column in 'contract_milestones' does not have uuid_generate_v4() as a default, 
+-- you must provide unique UUIDs for each record.
+
+INSERT INTO contract_milestones (id, contract_id, title, due_date, status, value, description, created_at, updated_at)
+VALUES 
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000011', -- Linked to 'Main Construction Contract - Riverfront Tower'
+    'Phase 1 Completion: Foundation and Site Prep', 
+    '2024-07-31',
+    'Pending', 
+    150000.00,
+    'Completion of all foundational work and site preparation as per section 2.1 of the contract.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000011', -- Linked to 'Main Construction Contract - Riverfront Tower'
+    'Phase 2 Completion: Structural Framework', 
+    '2024-09-30',
+    'Pending', 
+    250000.00,
+    'Erection and approval of the main structural framework for building A.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000012', -- Linked to 'Electrical Systems Installation'
+    'Initial Design Draft Submission', 
+    '2024-06-15',
+    'Completed', 
+    50000.00,
+    'Submission of the initial design drafts for client review. Approved on 2024-06-20.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000012', -- Linked to 'Electrical Systems Installation'
+    'Final Design Approval', 
+    '2024-08-01',
+    'Delayed', 
+    75000.00,
+    'Final approval of all design specifications. Delayed due to additional client feedback rounds.',
+    NOW(),
+    NOW()
+  ),
+  (
+    uuid_generate_v4(), 
+    '00000000-0000-0000-0000-000000000011', -- Linked to 'Main Construction Contract - Riverfront Tower'
+    'Phase 3 Completion: Building Envelope', 
+    '2024-12-15',
+    'Pending', 
+    200000.00,
+    NULL, 
+    NOW(),
+    NOW()
+  );
+-- ----------------------------------------------------
+-- Sample Data for contract_milestones table END
+-- ----------------------------------------------------

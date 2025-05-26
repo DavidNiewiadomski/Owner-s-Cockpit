@@ -10,7 +10,8 @@ import type {
   Material, 
   BudgetCategory, 
   TimelineEvent, 
-  Communication 
+  Communication,
+  Vendor // Import the new Vendor type
 } from '@/lib/supabase'
 
 // Mock data for development when Supabase isn't configured
@@ -184,6 +185,97 @@ export const updateTaskStatus = async (taskId: string, status: Task['status']): 
     console.warn('Supabase update failed:', error);
   }
 }
+
+// Vendors
+const mockVendors: Vendor[] = [
+  {
+    id: 'vendor-mock-1',
+    name: 'BuildRight Materials (Mock)',
+    category: 'Construction Materials',
+    rating: 4.8,
+    location: 'Chicago, IL',
+    phone: '(555) 123-4567',
+    email: 'contact@buildrightmock.com',
+    status: 'Active',
+    notes: 'Reliable supplier for general materials.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'vendor-mock-2',
+    name: 'SteelWorks Industrial (Mock)',
+    category: 'Steel & Metal',
+    rating: 4.6,
+    location: 'Detroit, MI',
+    phone: '(555) 234-5678',
+    email: 'sales@steelworksmock.com',
+    status: 'Preferred',
+    notes: 'Preferred for large scale steel orders.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+];
+
+export const getVendors = async (): Promise<Vendor[]> => {
+  if (!isSupabaseConfigured()) {
+    console.log('Using mock vendor data - Supabase not configured');
+    return mockVendors;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('vendors')
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('Supabase getVendors query failed, using mock data:', error);
+    return mockVendors;
+  }
+};
+
+export const createVendor = async (
+  vendorData: Omit<Vendor, 'id' | 'created_at' | 'updated_at'>
+): Promise<Vendor> => {
+  if (!isSupabaseConfigured()) {
+    console.log('Mock: Creating vendor with data:', vendorData);
+    const mockVendor: Vendor = {
+      ...vendorData,
+      id: crypto.randomUUID(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      status: vendorData.status || 'Active', // Default status
+    };
+    mockVendors.push(mockVendor); // Add to mock array for session persistence
+    return mockVendor;
+  }
+
+  try {
+    const dataToInsert = {
+      ...vendorData,
+      status: vendorData.status || 'Active', // Default status if not provided
+    };
+    const { data, error } = await supabase
+      .from('vendors')
+      .insert([dataToInsert])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Supabase createVendor error:', error);
+      throw error;
+    }
+    if (!data) {
+      throw new Error('Failed to create vendor or no data returned.');
+    }
+    return data as Vendor;
+  } catch (error) {
+    console.error('Error in createVendor:', error);
+    throw error;
+  }
+};
 
 // Documents
 export const getDocuments = async (projectId?: string): Promise<Document[]> => {
