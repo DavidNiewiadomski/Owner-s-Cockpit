@@ -1,111 +1,9 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BudgetCategory } from '@/lib/supabase';
-import { getBudgetCategories } from '@/services/dataService';
-import { useProject } from '@/contexts/ProjectContext';
-import { Loader2, AlertTriangle } from 'lucide-react'; // For loading and error states
-
-// Helper to format currency
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-};
 
 export function CostBreakdownTable() {
-  const { selectedProject } = useProject();
-  const [categories, setCategories] = useState<BudgetCategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getBudgetCategories(selectedProject?.id);
-        setCategories(data);
-      } catch (err) {
-        setError("Failed to load budget categories.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [selectedProject]);
-
-  const renderTableContent = () => {
-    if (loading) {
-      return (
-        <TableRow>
-          <TableCell colSpan={6} className="text-center py-10">
-            <Loader2 className="h-8 w-8 text-blue-500 animate-spin mx-auto" />
-            <p className="text-gray-400 mt-2">Loading cost breakdown...</p>
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    if (error) {
-      return (
-        <TableRow>
-          <TableCell colSpan={6} className="text-center py-10">
-            <AlertTriangle className="h-8 w-8 text-red-500 mx-auto" />
-            <p className="text-red-400 mt-2">{error}</p>
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    if (categories.length === 0) {
-      return (
-        <TableRow>
-          <TableCell colSpan={6} className="text-center py-10">
-            <p className="text-gray-400">No budget categories found for this project.</p>
-          </TableCell>
-        </TableRow>
-      );
-    }
-
-    return categories.map((category) => {
-      const variance = category.budgeted_amount - category.actual_amount;
-      const variancePercentage = category.budgeted_amount !== 0 
-        ? (variance / category.budgeted_amount) * 100 
-        : 0;
-      
-      let status: "Under Budget" | "Over Budget" | "On Budget" = "On Budget";
-      let statusColor = "text-gray-400 bg-gray-900/20 border-gray-700/40"; // Default for On Budget
-      let varianceColor = "text-gray-300";
-
-      if (variance > 0) {
-        status = "Under Budget";
-        statusColor = "text-emerald-400 bg-emerald-900/20 border-emerald-700/40";
-        varianceColor = "text-emerald-400";
-      } else if (variance < 0) {
-        status = "Over Budget";
-        statusColor = "text-rose-400 bg-rose-900/20 border-rose-700/40";
-        varianceColor = "text-rose-400";
-      }
-
-      return (
-        <TableRow key={category.id} className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
-          <TableCell className="font-medium text-white">{category.name}</TableCell>
-          <TableCell className="text-gray-300">{formatCurrency(category.budgeted_amount)}</TableCell>
-          <TableCell className="text-gray-300">{formatCurrency(category.actual_amount)}</TableCell>
-          <TableCell className={varianceColor}>{formatCurrency(variance)}</TableCell>
-          <TableCell className={varianceColor}>{variancePercentage.toFixed(1)}%</TableCell>
-          <TableCell>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColor}`}>
-              {status}
-            </span>
-          </TableCell>
-        </TableRow>
-      );
-    });
-  };
-
   return (
     <Card className="mb-6 bg-black border-cyan-900/30 hover-scale">
       <CardHeader className="bg-black">
@@ -126,13 +24,84 @@ export function CostBreakdownTable() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {renderTableContent()}
+              <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Site Work & Foundation</TableCell>
+                <TableCell className="text-gray-300">$425,000</TableCell>
+                <TableCell className="text-gray-300">$412,750</TableCell>
+                <TableCell className="text-emerald-400">$12,250</TableCell>
+                <TableCell className="text-emerald-400">2.9%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                    Under Budget
+                  </span>
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Structural Framing</TableCell>
+                <TableCell className="text-gray-300">$720,000</TableCell>
+                <TableCell className="text-gray-300">$748,800</TableCell>
+                <TableCell className="text-rose-400">-$28,800</TableCell>
+                <TableCell className="text-rose-400">-4.0%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                    Over Budget
+                  </span>
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Electrical Systems</TableCell>
+                <TableCell className="text-gray-300">$345,000</TableCell>
+                <TableCell className="text-gray-300">$341,550</TableCell>
+                <TableCell className="text-emerald-400">$3,450</TableCell>
+                <TableCell className="text-emerald-400">1.0%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                    Under Budget
+                  </span>
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Plumbing & HVAC</TableCell>
+                <TableCell className="text-gray-300">$520,000</TableCell>
+                <TableCell className="text-gray-300">$546,000</TableCell>
+                <TableCell className="text-rose-400">-$26,000</TableCell>
+                <TableCell className="text-rose-400">-5.0%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                    Over Budget
+                  </span>
+                </TableCell>
+              </TableRow>
+              <TableRow className="border-b border-cyan-900/30 hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Interior Finishes</TableCell>
+                <TableCell className="text-gray-300">$635,000</TableCell>
+                <TableCell className="text-gray-300">$622,300</TableCell>
+                <TableCell className="text-emerald-400">$12,700</TableCell>
+                <TableCell className="text-emerald-400">2.0%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/20 text-emerald-400 border border-emerald-700/40">
+                    Under Budget
+                  </span>
+                </TableCell>
+              </TableRow>
+              <TableRow className="hover:bg-cyan-900/10 transition-colors">
+                <TableCell className="font-medium text-white">Exterior Facades</TableCell>
+                <TableCell className="text-gray-300">$390,000</TableCell>
+                <TableCell className="text-gray-300">$409,500</TableCell>
+                <TableCell className="text-rose-400">-$19,500</TableCell>
+                <TableCell className="text-rose-400">-5.0%</TableCell>
+                <TableCell>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/20 text-rose-400 border border-rose-700/40">
+                    Over Budget
+                  </span>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </div>
       </CardContent>
       <CardFooter className="bg-black text-sm text-gray-500 border-t border-cyan-900/30">
-        Last updated: June 15, 2023 {/* This remains static as per requirements */}
+        Last updated: June 15, 2023
       </CardFooter>
     </Card>
   );

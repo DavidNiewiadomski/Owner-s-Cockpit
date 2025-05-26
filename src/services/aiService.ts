@@ -12,12 +12,18 @@ export class AIService {
 
   async sendMessage(message: string): Promise<string> {
     try {
+      console.log('=== AI SERVICE STARTED ===');
+      console.log('Sending message:', message);
+
       // Add user message to history
       this.conversationHistory.push({
         role: 'user',
         content: message,
         timestamp: new Date().toISOString()
       })
+
+      console.log('Conversation history length:', this.conversationHistory.length);
+      console.log('Calling Supabase Edge Function...');
 
       // Call the Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
@@ -26,6 +32,10 @@ export class AIService {
           conversationHistory: this.conversationHistory.slice(-10)
         }
       });
+
+      console.log('Supabase function response:');
+      console.log('- Data:', data);
+      console.log('- Error:', error);
 
       if (error) {
         console.error('Supabase function error details:', error);
@@ -48,6 +58,8 @@ export class AIService {
         throw new Error('Invalid response from AI service');
       }
 
+      console.log('Successfully received AI response:', aiResponse.substring(0, 100) + '...');
+
       // Add AI response to history
       this.conversationHistory.push({
         role: 'assistant',
@@ -55,6 +67,7 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
+      console.log('=== AI SERVICE COMPLETED ===');
       return aiResponse;
 
     } catch (error) {
@@ -64,15 +77,9 @@ export class AIService {
       console.error('Error stack:', error.stack);
       
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      let fallbackResponse: string;
-
-      if (errorMessage.includes("Supabase Error") || errorMessage.includes("Edge Function Error")) {
-        fallbackResponse = `I encountered an issue while trying to communicate with the AI processing service. Please try again shortly. If the problem persists, please contact support. (Details: ${errorMessage})`;
-      } else if (error instanceof TypeError && errorMessage.toLowerCase().includes('failed to fetch')) { // TypeError is often a network error
-        fallbackResponse = `I'm unable to reach the AI service at the moment. Please check your internet connection and try again. (Details: ${errorMessage})`;
-      } else {
-        fallbackResponse = `An unexpected error occurred while trying to process your request with the AI. We've logged the issue and are looking into it. Please try again later. (Details: ${errorMessage})`;
-      }
+      
+      // Return a helpful error message that indicates the real problem
+      const fallbackResponse = `I'm having trouble connecting to the AI service right now. Error: ${errorMessage}. Please check the browser console for detailed logs and try again.`;
       
       this.conversationHistory.push({
         role: 'assistant',

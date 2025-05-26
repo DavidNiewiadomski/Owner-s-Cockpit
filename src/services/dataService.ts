@@ -10,7 +10,8 @@ import type {
   Material, 
   BudgetCategory, 
   TimelineEvent, 
-  Communication 
+  Communication,
+  Vendor // Import the new Vendor type
 } from '@/lib/supabase'
 
 // Mock data for development when Supabase isn't configured
@@ -185,43 +186,93 @@ export const updateTaskStatus = async (taskId: string, status: Task['status']): 
   }
 }
 
-export const createTask = async (taskData: Omit<Task, 'id' | 'created_at' | 'updated_at' | 'created_by'>): Promise<Task> => {
+// Vendors
+const mockVendors: Vendor[] = [
+  {
+    id: 'vendor-mock-1',
+    name: 'BuildRight Materials (Mock)',
+    category: 'Construction Materials',
+    rating: 4.8,
+    location: 'Chicago, IL',
+    phone: '(555) 123-4567',
+    email: 'contact@buildrightmock.com',
+    status: 'Active',
+    notes: 'Reliable supplier for general materials.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'vendor-mock-2',
+    name: 'SteelWorks Industrial (Mock)',
+    category: 'Steel & Metal',
+    rating: 4.6,
+    location: 'Detroit, MI',
+    phone: '(555) 234-5678',
+    email: 'sales@steelworksmock.com',
+    status: 'Preferred',
+    notes: 'Preferred for large scale steel orders.',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+];
+
+export const getVendors = async (): Promise<Vendor[]> => {
   if (!isSupabaseConfigured()) {
-    console.log('Mock: Creating task with data:', taskData);
-    // For development: Create a mock task object
-    const mockTask: Task = {
-      ...taskData,
-      id: crypto.randomUUID(),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      created_by: undefined, // Or a mock user ID string like 'mock-user-id'
-      // Ensure all other non-optional fields from Task type are present if not in taskData
-      // For example, if status or priority were not in Omit but had defaults in DB, mock them.
-      // However, 'status' and 'priority' are expected in taskData based on current Omit type.
-    };
-    return mockTask;
+    console.log('Using mock vendor data - Supabase not configured');
+    return mockVendors;
   }
 
   try {
-    // The 'created_by' field will be handled by Supabase policies based on the authenticated user.
     const { data, error } = await supabase
-      .from('tasks')
-      .insert([taskData]) // taskData should already match the expected insert structure
+      .from('vendors')
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.warn('Supabase getVendors query failed, using mock data:', error);
+    return mockVendors;
+  }
+};
+
+export const createVendor = async (
+  vendorData: Omit<Vendor, 'id' | 'created_at' | 'updated_at'>
+): Promise<Vendor> => {
+  if (!isSupabaseConfigured()) {
+    console.log('Mock: Creating vendor with data:', vendorData);
+    const mockVendor: Vendor = {
+      ...vendorData,
+      id: crypto.randomUUID(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      status: vendorData.status || 'Active', // Default status
+    };
+    mockVendors.push(mockVendor); // Add to mock array for session persistence
+    return mockVendor;
+  }
+
+  try {
+    const dataToInsert = {
+      ...vendorData,
+      status: vendorData.status || 'Active', // Default status if not provided
+    };
+    const { data, error } = await supabase
+      .from('vendors')
+      .insert([dataToInsert])
       .select()
-      .single(); // Assuming you want to return the single created record
+      .single();
 
     if (error) {
-      console.error('Supabase createTask error:', error);
+      console.error('Supabase createVendor error:', error);
       throw error;
     }
     if (!data) {
-      throw new Error('Failed to create task or no data returned.');
+      throw new Error('Failed to create vendor or no data returned.');
     }
-    return data as Task; // Ensure the returned data is cast to Task
+    return data as Vendor;
   } catch (error) {
-    console.error('Error in createTask:', error);
-    // Re-throw the error or handle it as per application's error strategy
-    // For example, could return a custom error object or throw a more specific error type
+    console.error('Error in createVendor:', error);
     throw error;
   }
 };
@@ -242,87 +293,6 @@ export const getDocuments = async (projectId?: string): Promise<Document[]> => {
   if (error) throw error
   return data || []
 }
-
-// Document File Upload
-export const uploadDocumentFile = async (
-  file: File,
-  bucketName: string, // e.g., 'project_documents'
-  path: string       // e.g., `${projectId}/${folderNameIfAny}/${file.name}`
-): Promise<{ publicUrl: string; fullPath: string }> => {
-  if (!isSupabaseConfigured()) {
-    console.log(`Mock: Uploading file ${file.name} to ${bucketName}/${path}`);
-    // In a real mock, you might want to simulate a delay
-    // await new Promise(resolve => setTimeout(resolve, 1000)); 
-    return {
-      publicUrl: `https://mockstorage.com/${bucketName}/${path}`,
-      fullPath: path,
-    };
-  }
-
-  try {
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from(bucketName)
-      .upload(path, file);
-
-    if (uploadError) {
-      console.error('Supabase uploadDocumentFile error:', uploadError);
-      throw uploadError;
-    }
-
-    // The 'path' returned by uploadData.path is the same as the 'path' argument.
-    // We need to construct the public URL.
-    const { data: urlData } = supabase.storage
-      .from(bucketName)
-      .getPublicUrl(path);
-
-    if (!urlData || !urlData.publicUrl) {
-      throw new Error('Failed to get public URL for uploaded document.');
-    }
-    
-    return { publicUrl: urlData.publicUrl, fullPath: path }; // path from arg is the fullPath
-  } catch (error) {
-    console.error('Error in uploadDocumentFile:', error);
-    throw error;
-  }
-};
-
-// Document Record Creation
-export const createDocumentRecord = async (
-  documentMetaData: Omit<Document, 'id' | 'created_at' | 'updated_at' | 'uploaded_by'>
-): Promise<Document> => {
-  if (!isSupabaseConfigured()) {
-    console.log('Mock: Creating document record with data:', documentMetaData);
-    const mockDocument: Document = {
-      ...documentMetaData,
-      id: crypto.randomUUID(),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      uploaded_by: 'mock-user-id', // Or undefined if your policies handle it
-    };
-    return mockDocument;
-  }
-
-  try {
-    // 'uploaded_by' will likely be set by RLS policies based on auth.uid()
-    const { data, error } = await supabase
-      .from('documents')
-      .insert([documentMetaData])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Supabase createDocumentRecord error:', error);
-      throw error;
-    }
-    if (!data) {
-      throw new Error('Failed to create document record or no data returned.');
-    }
-    return data as Document;
-  } catch (error) {
-    console.error('Error in createDocumentRecord:', error);
-    throw error;
-  }
-};
 
 // Contracts
 export const getContracts = async (projectId?: string): Promise<Contract[]> => {
@@ -442,43 +412,6 @@ export const getCommunications = async (projectId?: string): Promise<Communicati
   if (error) throw error
   return data || []
 }
-
-export const createCommunication = async (
-  communicationData: Omit<Communication, 'id' | 'created_at' | 'updated_at' | 'sender_id'>
-): Promise<Communication> => {
-  if (!isSupabaseConfigured()) {
-    console.log('Mock: Creating communication with data:', communicationData);
-    const mockCommunication: Communication = {
-      ...communicationData,
-      id: crypto.randomUUID(),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      sender_id: 'mock-sender-id', // Or undefined if your RLS policies handle it
-    };
-    return mockCommunication;
-  }
-
-  try {
-    // sender_id will likely be set by RLS policies based on auth.uid() if not provided
-    const { data, error } = await supabase
-      .from('communications')
-      .insert([communicationData])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Supabase createCommunication error:', error);
-      throw error;
-    }
-    if (!data) {
-      throw new Error('Failed to create communication or no data returned.');
-    }
-    return data as Communication;
-  } catch (error) {
-    console.error('Error in createCommunication:', error);
-    throw error;
-  }
-};
 
 // Dashboard Analytics
 export const getDashboardStats = async () => {

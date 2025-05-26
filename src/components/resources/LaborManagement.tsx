@@ -1,144 +1,148 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Users, UserCheck, Loader2, AlertTriangle as AlertTriangleIcon } from 'lucide-react'; // UserCheck for active, renamed AlertTriangle
-import type { TeamMember } from '@/lib/supabase';
-import { getTeamMembers } from '@/services/dataService';
-// useProject is not needed as getTeamMembers does not take projectId
+import { Users, Clock, HardHat, Briefcase } from 'lucide-react';
 
-// laborData array and LaborItem interface removed
+const laborData = [
+  {
+    id: 'LAB001',
+    name: 'John Smith',
+    role: 'Site Supervisor',
+    skill: 'Electrical',
+    project: 'East Tower',
+    hoursWorked: 42,
+    availability: 'Available',
+    certifications: ['OSHA', 'Electrical License'],
+    hourlyRate: '$35'
+  },
+  {
+    id: 'LAB002',
+    name: 'Maria Garcia',
+    role: 'Heavy Equipment Operator',
+    skill: 'Machinery',
+    project: 'West Plaza',
+    hoursWorked: 38,
+    availability: 'Busy',
+    certifications: ['Crane Operator', 'Safety'],
+    hourlyRate: '$28'
+  },
+  {
+    id: 'LAB003',
+    name: 'David Chen',
+    role: 'Concrete Specialist',
+    skill: 'Concrete Work',
+    project: 'North Building',
+    hoursWorked: 40,
+    availability: 'Available',
+    certifications: ['Concrete Finishing', 'Quality Control'],
+    hourlyRate: '$32'
+  }
+];
 
 export function LaborManagement() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getTeamMembers();
-        setTeamMembers(data);
-      } catch (err) {
-        setError("Failed to load labor data.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const totalWorkers = teamMembers.length;
-  const activeWorkers = teamMembers.filter(tm => tm.is_active).length;
-
-  // Other summary cards ("Hours This Week", "Available Workers", "Specialists") are removed.
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-16 w-16 text-blue-500 animate-spin" />
-        <p className="ml-4 text-xl text-gray-300">Loading Labor Data...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 bg-red-900/10 border border-red-700/50 rounded-lg p-6">
-        <AlertTriangleIcon className="h-12 w-12 text-red-500 mb-4" />
-        <h3 className="text-xl font-semibold text-red-400 mb-2">Error Loading Labor Data</h3>
-        <p className="text-red-300">{error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> {/* Adjusted to 2 columns */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg text-white flex items-center gap-2">
               <Users className="h-5 w-5 text-blue-400" />
-              Total Team Members
+              Total Workers
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-blue-400">{totalWorkers}</div>
-            <p className="text-sm text-gray-400">Total team members</p>
+            <div className="text-3xl font-bold text-blue-400">248</div>
+            <p className="text-sm text-gray-400">Active workforce</p>
           </CardContent>
         </Card>
 
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg text-white flex items-center gap-2">
-              <UserCheck className="h-5 w-5 text-green-400" /> {/* Changed icon */}
-              Active Team Members
+              <Clock className="h-5 w-5 text-green-400" />
+              Hours This Week
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-400">{activeWorkers}</div>
-            <p className="text-sm text-gray-400">Currently active</p>
+            <div className="text-3xl font-bold text-green-400">9,840</div>
+            <p className="text-sm text-gray-400">Total hours logged</p>
           </CardContent>
         </Card>
-        {/* Removed "Hours This Week", "Available Workers", "Specialists" cards */}
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg text-white flex items-center gap-2">
+              <HardHat className="h-5 w-5 text-purple-400" />
+              Available Workers
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-purple-400">67</div>
+            <p className="text-sm text-gray-400">Ready for assignment</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg text-white flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-cyan-400" />
+              Specialists
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-cyan-400">45</div>
+            <p className="text-sm text-gray-400">Certified specialists</p>
+          </CardContent>
+        </Card>
       </div>
 
       <Card className="bg-gray-900 border-gray-800">
         <CardHeader>
           <CardTitle className="text-white">Labor Force Overview</CardTitle>
           <CardDescription className="text-gray-400">
-            Team member details and status
+            Current workforce allocation and availability
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {teamMembers.length === 0 && !loading ? (
-            <div className="text-center py-10 text-gray-500">
-              <Users className="h-12 w-12 mx-auto opacity-50 mb-3" />
-              <p className="text-lg">No team members found.</p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow className="border-gray-700">
-                  <TableHead className="text-gray-300">Worker ID</TableHead>
-                  <TableHead className="text-gray-300">Name</TableHead>
-                  <TableHead className="text-gray-300">Role</TableHead>
-                  <TableHead className="text-gray-300">Contact Info</TableHead>
-                  <TableHead className="text-gray-300">Status</TableHead>
-                  <TableHead className="text-gray-300">Actions</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow className="border-gray-700">
+                <TableHead className="text-gray-300">Worker ID</TableHead>
+                <TableHead className="text-gray-300">Name</TableHead>
+                <TableHead className="text-gray-300">Role</TableHead>
+                <TableHead className="text-gray-300">Project</TableHead>
+                <TableHead className="text-gray-300">Hours/Week</TableHead>
+                <TableHead className="text-gray-300">Status</TableHead>
+                <TableHead className="text-gray-300">Rate</TableHead>
+                <TableHead className="text-gray-300">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {laborData.map((worker) => (
+                <TableRow key={worker.id} className="border-gray-700">
+                  <TableCell className="text-white font-medium">{worker.id}</TableCell>
+                  <TableCell className="text-gray-300">{worker.name}</TableCell>
+                  <TableCell className="text-gray-300">{worker.role}</TableCell>
+                  <TableCell className="text-gray-300">{worker.project}</TableCell>
+                  <TableCell className="text-gray-300">{worker.hoursWorked}</TableCell>
+                  <TableCell>
+                    <Badge variant={worker.availability === 'Available' ? 'default' : 'secondary'}>
+                      {worker.availability}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-gray-300">{worker.hourlyRate}</TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm">
+                      Assign
+                    </Button>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {teamMembers.map((member) => (
-                  <TableRow key={member.id} className="border-gray-700">
-                    <TableCell className="text-white font-medium">{member.id}</TableCell>
-                    <TableCell className="text-gray-300">{member.name}</TableCell>
-                    <TableCell className="text-gray-300">{member.role}</TableCell>
-                    <TableCell className="text-gray-300">
-                      <div>{member.email}</div>
-                      <div>{member.phone ?? 'N/A'}</div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={member.is_active ? 'default' : 'secondary'} 
-                             className={member.is_active ? 'bg-green-600/70 text-green-100' : 'bg-gray-600/70 text-gray-100'}>
-                        {member.is_active ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm">
-                        Manage
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

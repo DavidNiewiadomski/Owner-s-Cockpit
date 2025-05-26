@@ -7,9 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package } from 'lucide-react';
 import { getDashboardStats, getProjects, getTasks } from '@/services/dataService';
 import type { Project, Task } from '@/lib/supabase';
-import { FinancialOverview } from '@/components/dashboard/FinancialOverview'; // Import FinancialOverview
-// Import changeOrders directly instead of financialData
-import { changeOrders } from '@/data'; 
 
 export function MainDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -275,16 +272,6 @@ export function MainDashboard() {
             </div>
           </CardContent>
         </Card>
-      </motion.div>
-
-      {/* Financial Overview Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }} // Adjust delay as needed
-      >
-        <FinancialOverview changeOrders={changeOrders} /> 
-        {/* Use imported changeOrders directly */}
       </motion.div>
     </div>
   );

@@ -33,49 +33,21 @@ serve(async (req) => {
     console.log('Processing message:', message);
     console.log('Conversation history items:', conversationHistory?.length || 0);
 
-    // Read the Gemini API key from environment variables
-    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    // Use the hardcoded Gemini API key
+    const GEMINI_API_KEY = 'AIzaSyDLBm0-7qT4P2IESMvw7Tv6FK20TmnpeFE';
     
     if (!GEMINI_API_KEY) {
-      throw new Error('Missing GEMINI_API_KEY environment variable');
+      throw new Error('Gemini API key not available');
     }
 
-    console.log('Gemini API key loaded from environment.');
+    console.log('Gemini API key available, length:', GEMINI_API_KEY.length);
 
     // Create the prompt for Gemini
-    const systemPrompt = `"You are an advanced AI construction project assistant. Your goal is to understand the user's request and provide concise, actionable, and professional assistance. You are integrated into a system that can perform actions like: drafting emails, making calls (scheduling/summarizing), generating reports, scheduling meetings, setting reminders, and sending alerts.
-
-When responding:
-- If the user's request implies one of these actions, clearly state the action you are taking or suggesting (e.g., "Okay, I can help you draft that email," or "I will generate a report based on your criteria.").
-- If the request is for information, provide it clearly and concisely.
-- If the request is ambiguous, ask for clarification.
-- Maintain a professional and helpful tone.
-- Base your responses on the context of the current conversation if history is provided."`;
+    const systemPrompt = `You are a helpful construction project assistant. You help with project management, resource allocation, timeline planning, risk assessment, and other construction-related tasks. Provide specific, actionable advice. Keep responses concise and professional.`;
     
-    let constructedPrompt = systemPrompt;
-
-    if (conversationHistory && Array.isArray(conversationHistory)) {
-      for (const entry of conversationHistory) {
-        if (entry.role === 'user') {
-          constructedPrompt += `
-
-User: ${entry.content}`;
-        } else if (entry.role === 'assistant') {
-          constructedPrompt += `
-
-Assistant: ${entry.content}`;
-        }
-      }
-    }
-
-    constructedPrompt += `
-
-User: ${message}`; // The current user's message
-    constructedPrompt += `
-
-Assistant:`; // Prompt Gemini to generate the assistant's response
+    const fullPrompt = `${systemPrompt}\n\nUser question: ${message}\n\nPlease provide a helpful response:`;
     
-    console.log('Calling Gemini API with constructed prompt length:', constructedPrompt.length);
+    console.log('Calling Gemini API with prompt length:', fullPrompt.length);
 
     // Call Gemini API
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
@@ -83,7 +55,7 @@ Assistant:`; // Prompt Gemini to generate the assistant's response
     const requestPayload = {
       contents: [{
         parts: [{
-          text: constructedPrompt
+          text: fullPrompt
         }]
       }],
       generationConfig: {

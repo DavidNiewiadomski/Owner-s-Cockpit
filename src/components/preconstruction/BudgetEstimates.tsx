@@ -1,53 +1,13 @@
 
-import React, { useState, useEffect, useMemo } from 'react'; // Added useState, useEffect, useMemo
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
-import { Wallet, DollarSign, TrendingUp, AlertTriangle, Download, Plus, Loader2 } from 'lucide-react'; // Added Loader2
-// budgetCategoryData import removed from here
-import { budgetEstimatesData, budgetRisksData } from '@/data/preconstruction/preconstructionData'; 
-import type { BudgetCategory as SupabaseBudgetCategory } from '@/lib/supabase';
-import { getBudgetCategories } from '@/services/dataService';
-import { useProject } from '@/contexts/ProjectContext';
-
-// BudgetCategoryChartProps and BudgetCategoryChart component are defined below or already modified
+import { Wallet, DollarSign, TrendingUp, AlertTriangle, Download, Plus } from 'lucide-react';
+import { budgetEstimatesData, budgetCategoryData, budgetRisksData } from '@/data/preconstruction/preconstructionData';
 
 export function BudgetEstimates() {
-  const { selectedProject } = useProject();
-  const [fetchedCategories, setFetchedCategories] = useState<SupabaseBudgetCategory[]>([]);
-  const [loadingChartData, setLoadingChartData] = useState(true);
-  const [chartError, setChartError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    const loadBudgetCategories = async () => {
-      setLoadingChartData(true);
-      setChartError(null);
-      try {
-        const projectId = selectedProject?.id === 'all' ? undefined : selectedProject?.id;
-        const data = await getBudgetCategories(projectId);
-        setFetchedCategories(data);
-      } catch (err) {
-        console.error("Error fetching budget categories for chart:", err);
-        setChartError(err instanceof Error ? err : new Error("Failed to load chart data"));
-      } finally {
-        setLoadingChartData(false);
-      }
-    };
-    loadBudgetCategories();
-  }, [selectedProject]);
-
-  const budgetCategoryChartData = useMemo(() => {
-    return fetchedCategories.map(category => ({
-      name: category.name,
-      value: category.budgeted_amount, // Use budgeted_amount for the chart value
-    }));
-  }, [fetchedCategories]);
-
-  const totalBudgetAllCategories = useMemo(() => {
-    return budgetCategoryChartData.reduce((sum, item) => sum + item.value, 0);
-  }, [budgetCategoryChartData]);
-  
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -80,26 +40,11 @@ export function BudgetEstimates() {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <LineItemsTable /> {/* This still uses mock data */}
-          {loadingChartData && (
-            <Card className="bg-gray-900 border-gray-800 flex items-center justify-center h-[422px]"> {/* Approx height of chart card */}
-              <Loader2 className="h-12 w-12 text-blue-500 animate-spin" />
-            </Card>
-          )}
-          {chartError && !loadingChartData && (
-            <Card className="bg-gray-900 border-red-800/50 flex items-center justify-center h-[422px]">
-              <div className="text-center">
-                <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-2" />
-                <p className="text-red-400">Error: {chartError.message}</p>
-              </div>
-            </Card>
-          )}
-          {!loadingChartData && !chartError && (
-            <BudgetCategoryChart data={budgetCategoryChartData} totalBudget={totalBudgetAllCategories} />
-          )}
+          <LineItemsTable />
+          <BudgetCategoryChart />
         </div>
         <div className="space-y-6">
-          <BudgetRisksCard /> {/* This still uses mock data */}
+          <BudgetRisksCard />
           <BudgetAllocationChart />
         </div>
       </div>
@@ -225,25 +170,22 @@ function LineItemsTable() {
   );
 }
 
-interface BudgetCategoryChartProps {
-  data: { name: string; value: number }[];
-  totalBudget: number;
-}
-
-function BudgetCategoryChart({ data, totalBudget }: BudgetCategoryChartProps) { // Accept data and totalBudget as props
+function BudgetCategoryChart() {
+  const data = budgetCategoryData;
+  
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>
         <CardTitle className="text-white">Cost by Category</CardTitle>
         <CardDescription className="text-gray-400">
-          Distribution of estimated costs across major categories. Total: ${totalBudget.toLocaleString()}
+          Distribution of estimated costs across major categories
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={data} // Use data from props
+              data={data}
               margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(59, 130, 246, 0.2)" />
@@ -258,7 +200,7 @@ function BudgetCategoryChart({ data, totalBudget }: BudgetCategoryChartProps) { 
                 tickFormatter={(value) => `$${value / 1000}k`}
               />
               <Tooltip 
-                formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Estimated Cost']} // Ensure value is number
+                formatter={(value) => [`$${value.toLocaleString()}`, 'Estimated Cost']}
                 cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
                 contentStyle={{ 
                   backgroundColor: '#1f2937', 
@@ -285,7 +227,7 @@ function BudgetCategoryChart({ data, totalBudget }: BudgetCategoryChartProps) { 
   );
 }
 
-function BudgetRisksCard() { // Remains unchanged, uses mock data
+function BudgetRisksCard() {
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>

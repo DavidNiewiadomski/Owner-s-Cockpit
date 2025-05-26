@@ -2,38 +2,59 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { cn, formatDate } from '@/lib/utils'; // Import formatDate
-import { Project } from '@/lib/supabase'; // Import Supabase Project type
+import { cn } from '@/lib/utils';
 
-// Removed internal Project interface
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  status: 'on-track' | 'at-risk' | 'delayed' | 'completed' | 'upcoming';
+  dueDate: string;
+  teamMembers: { name: string }[];
+  priority: string; // "High" | "Medium" | "Low"
+}
 
 interface ProjectsOverviewProps {
   projects: Project[];
 }
 
 export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
-  // formatDate is now imported from @/lib/utils
+  // Format date for display
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
 
-  // Get status color - updated for Supabase status values
-  const getStatusColor = (status: Project['status']) => {
+  // Get status color
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': // was 'on-track'
+      case 'on-track':
         return 'bg-green-600';
-      case 'on-hold': // was 'at-risk'
+      case 'at-risk':
         return 'bg-yellow-500';
-      // 'delayed' is not a direct status, 'active' or 'on-hold' might imply delay via progress
-      case 'planning': // was 'upcoming'
-        return 'bg-purple-600';
+      case 'delayed':
+        return 'bg-red-600';
       case 'completed':
         return 'bg-blue-600';
-      case 'cancelled': // new status
-        return 'bg-gray-700'; // Using a slightly darker gray for cancelled
+      case 'upcoming':
+        return 'bg-purple-600';
       default:
-        return 'bg-gray-600'; // Default for unexpected status
+        return 'bg-gray-600';
     }
   };
 
-  // getPriorityBadge function removed as project.priority is not available
+  // Get priority badge styles
+  const getPriorityBadge = (priority: string) => {
+    if (priority === "High") {
+      return "bg-red-700 text-white border-red-600 font-bold";
+    } else if (priority === "Medium") {
+      return "bg-yellow-600 text-white border-yellow-500 font-bold";
+    } else if (priority === "Low") {
+      return "bg-green-700 text-white border-green-600 font-bold";
+    }
+    return "bg-gray-700 text-white border-gray-600 font-bold";
+  };
 
   return (
     <div className="bg-black border border-gray-800 rounded-lg shadow-lg p-5">
@@ -51,10 +72,14 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
             <div className="flex justify-between items-start mb-2">
               <div>
                 <h4 className="font-medium text-white text-base">{project.title}</h4>
-                {/* project.description is optional in Supabase type, handle if undefined */}
-                <p className="text-xs text-gray-300">{project.description || 'No description available.'}</p>
+                <p className="text-xs text-gray-300">{project.description}</p>
               </div>
-              {/* Priority badge removed */}
+              <span className={cn(
+                "text-xs px-3 py-1 rounded-full border",
+                getPriorityBadge(project.priority)
+              )}>
+                {project.priority}
+              </span>
             </div>
             
             <div className="mb-3">
@@ -76,13 +101,10 @@ export function ProjectsOverview({ projects }: ProjectsOverviewProps) {
                   getStatusColor(project.status)
                 )}></div>
                 <span className="text-xs text-white font-medium uppercase tracking-wide">
-                  {/* Display Supabase status, capitalize first letter */}
-                  {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                  {project.status.replace('-', ' ')}
                 </span>
               </div>
-              <span className="text-xs text-gray-300 font-medium">
-                Due {project.end_date ? formatDate(project.end_date) : 'N/A'}
-              </span>
+              <span className="text-xs text-gray-300 font-medium">Due {formatDate(project.dueDate)}</span>
             </div>
           </div>
         ))}

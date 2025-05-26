@@ -1,53 +1,59 @@
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-// Avatar components removed
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon } from "lucide-react"; // Clock removed as it's not used
+import { CalendarIcon, Clock } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { Project } from '@/lib/supabase'; // Import Supabase Project type
-import { formatDate } from '@/lib/utils'; // Import formatDate
 
-// TeamMember interface removed
-
-interface ProjectCardProps {
-  project: Project; // Pass the whole project object
+interface TeamMember {
+  name: string;
+  avatar?: string;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
-  // Destructure from project object
-  const { id, title, description, progress, status, end_date } = project;
-  const getStatusClass = (currentStatus: Project['status']) => {
-    switch (currentStatus) {
-      case "active": // was "on-track" -> Green
+interface ProjectCardProps {
+  id?: string;
+  title: string;
+  description: string;
+  progress: number;
+  status: "on-track" | "at-risk" | "delayed";
+  dueDate: string;
+  teamMembers: TeamMember[];
+  priority?: "High" | "Medium" | "Low";
+}
+
+export function ProjectCard({
+  id,
+  title,
+  description,
+  progress,
+  status,
+  dueDate,
+  teamMembers,
+  priority,
+}: ProjectCardProps) {
+  const getStatusClass = () => {
+    switch (status) {
+      case "on-track":
         return "bg-green-600 text-white font-bold px-3 py-1 shadow-lg border border-green-500";
-      case "planning": // new -> Purple
-        return "bg-purple-600 text-white font-bold px-3 py-1 shadow-lg border border-purple-500";
-      case "on-hold": // was "at-risk" -> Yellow
+      case "at-risk":
         return "bg-yellow-500 text-black font-bold px-3 py-1 shadow-lg border border-yellow-400";
-      case "completed": // Blue
-        return "bg-blue-600 text-white font-bold px-3 py-1 shadow-lg border border-blue-500";
-      case "cancelled": // Gray
-        return "bg-gray-500 text-white font-bold px-3 py-1 shadow-lg border border-gray-400";
-      // 'delayed' is not a direct status in Supabase.
+      case "delayed":
+        return "bg-red-600 text-white font-bold px-3 py-1 shadow-lg border border-red-500";
       default:
-        return "bg-gray-400 text-black px-3 py-1 shadow-lg border border-gray-300"; // Default for unexpected status
+        return "";
     }
   };
 
-  const getStatusLabel = (currentStatus: Project['status']) => {
-    switch (currentStatus) {
-      case "active":
-        return "Active";
-      case "planning":
-        return "Planning";
-      case "on-hold":
-        return "On Hold";
-      case "completed":
-        return "Completed";
-      case "cancelled":
-        return "Cancelled";
+  const getStatusLabel = () => {
+    switch (status) {
+      case "on-track":
+        return "On Track";
+      case "at-risk":
+        return "At Risk";
+      case "delayed":
+        return "Delayed";
       default:
-        return currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1); // Capitalize if unknown
+        return status;
     }
   };
 
@@ -56,9 +62,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg font-bold text-white">{title}</CardTitle>
-          <Badge className={getStatusClass(status)}>{getStatusLabel(status)}</Badge>
+          <Badge className={getStatusClass()}>{getStatusLabel()}</Badge>
         </div>
-        <p className="text-sm text-gray-300 line-clamp-2 mt-1">{description || 'No description available.'}</p>
+        <p className="text-sm text-gray-300 line-clamp-2 mt-1">{description}</p>
       </CardHeader>
       <CardContent className="pb-2">
         <div className="space-y-4">
@@ -72,19 +78,37 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
           <div className="flex items-center text-sm text-gray-300">
             <CalendarIcon className="mr-1 h-4 w-4" />
-            <span className="font-medium">Due: {end_date ? formatDate(end_date) : 'N/A'}</span>
+            <span className="font-medium">Due: {dueDate}</span>
           </div>
         </div>
       </CardContent>
       <CardFooter className="pt-0">
-        <div className="flex justify-end items-center w-full"> {/* Changed justify-between to justify-end */}
-          {/* Team members avatars removed */}
-          <a 
-            href={`/projects/${id}`} // Assuming a route like /projects/:id for details
-            className="text-sm text-construction-400 hover:text-construction-300 hover:underline font-medium"
-          >
-            View Details
-          </a>
+        <div className="flex justify-between items-center w-full">
+          <div className="flex -space-x-2">
+            {teamMembers.slice(0, 3).map((member, index) => (
+              <Avatar key={index} className="border-2 border-background h-8 w-8">
+                {member.avatar ? (
+                  <AvatarImage src={member.avatar} alt={member.name} />
+                ) : (
+                  <AvatarFallback className="bg-construction-600 text-white">
+                    {member.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                )}
+              </Avatar>
+            ))}
+            {teamMembers.length > 3 && (
+              <Avatar className="border-2 border-background h-8 w-8">
+                <AvatarFallback className="bg-construction-600 text-white">
+                  +{teamMembers.length - 3}
+                </AvatarFallback>
+              </Avatar>
+            )}
+          </div>
+          
+          <a href="#" className="text-sm text-construction-400 hover:text-construction-300 hover:underline font-medium">View Details</a>
         </div>
       </CardFooter>
     </Card>

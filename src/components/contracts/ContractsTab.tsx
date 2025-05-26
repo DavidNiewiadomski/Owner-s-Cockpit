@@ -1,8 +1,6 @@
 
 import React from 'react';
-// Local Contract type removed, ContractMilestone kept for now
-import { ContractMilestone } from '@/data/contracts/contractsData';
-import type { Contract as SupabaseContract } from '@/lib/supabase'; // Import Supabase Contract
+import { Contract, ContractMilestone } from '@/data/contracts/contractsData';
 import { ContractsTable } from './ContractsTable';
 import { ContractMilestonesTable } from './ContractMilestonesTable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,18 +8,17 @@ import { Badge } from '@/components/ui/badge';
 import { FileText, CalendarClock, DollarSign } from 'lucide-react';
 
 interface ContractsTabProps {
-  contracts: SupabaseContract[]; // Expect SupabaseContract array
+  contracts: Contract[];
   milestones: ContractMilestone[];
 }
 
 export function ContractsTab({ contracts, milestones }: ContractsTabProps) {
-  // Calculate contracts overview stats using SupabaseContract fields
-  // Supabase status values: 'draft' | 'in-review' | 'active' | 'expired' | 'terminated'
-  const activeContracts = contracts.filter(c => c.status === 'active').length;
+  // Calculate contracts overview stats
+  const activeContracts = contracts.filter(c => c.status === 'Active').length;
   const totalContractValue = contracts.reduce((sum, contract) => sum + contract.value, 0);
-  const pendingApproval = contracts.filter(c => c.status === 'in-review' || c.status === 'draft').length;
+  const pendingApproval = contracts.filter(c => c.status === 'In Review' || c.status === 'Draft').length;
   
-  // Calculate milestones stats (remains unchanged as milestones data is still local)
+  // Calculate milestones stats
   const completedMilestones = milestones.filter(m => m.status === 'Completed').length;
   const upcomingMilestones = milestones.filter(m => m.status === 'Pending').length;
   const totalMilestoneValue = milestones.reduce((sum, milestone) => sum + milestone.value, 0);
@@ -76,10 +73,10 @@ export function ContractsTab({ contracts, milestones }: ContractsTabProps) {
           <CardContent>
             <div className="flex space-x-2">
               <Badge variant="outline" className="bg-gray-800/50 border-gray-700 text-xs text-gray-300">
-                {contracts.filter(c => c.status === 'in-review').length} In Review
+                {contracts.filter(c => c.status === 'In Review').length} In Review
               </Badge>
               <Badge variant="outline" className="bg-gray-800/50 border-gray-700 text-xs text-gray-300">
-                {contracts.filter(c => c.status === 'draft').length} Drafts
+                {contracts.filter(c => c.status === 'Draft').length} Drafts
               </Badge>
             </div>
           </CardContent>

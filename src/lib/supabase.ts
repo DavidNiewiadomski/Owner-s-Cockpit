@@ -43,6 +43,26 @@ export interface TeamMember {
   updated_at: string
 }
 
+export type VendorStatusEnum = 
+  | 'Active'
+  | 'Preferred'
+  | 'Inactive'
+  | 'On Hold';
+
+export interface Vendor {
+  id: string; // UUID
+  name: string;
+  category?: string;
+  rating?: number; // NUMERIC(2,1) -> number
+  location?: string;
+  phone?: string;
+  email?: string;
+  status?: VendorStatusEnum; // Optional, as per SQL schema (can have default)
+  notes?: string;
+  created_at: string; // TIMESTAMPTZ
+  updated_at: string; // TIMESTAMPTZ
+}
+
 export interface Task {
   id: string
   title: string

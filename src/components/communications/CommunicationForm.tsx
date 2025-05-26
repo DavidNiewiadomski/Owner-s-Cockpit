@@ -6,27 +6,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { X } from 'lucide-react';
-import type { Communication } from '@/lib/supabase'; // Import Supabase Communication type
 
 interface CommunicationFormProps {
-  title: string; // This prop will be used as the modal title, not directly for communicationData.title
+  title: string;
   icon: React.ReactNode;
-  communicationType: Communication['communication_type']; // New prop
-  projectId?: string; // New prop
   recipientLabel?: string;
   showSubject?: boolean;
   showMessage?: boolean;
   showAttachment?: boolean;
   showSchedule?: boolean;
   onClose: () => void;
-  onSubmit: (data: Omit<Communication, 'id' | 'created_at' | 'updated_at' | 'sender_id'>) => void; // Updated onSubmit data type
+  onSubmit: (data: any) => void;
 }
 
 export function CommunicationForm({
-  title: modalTitle, // Renamed prop to avoid confusion with communication title
+  title,
   icon,
-  communicationType, // Use new prop
-  projectId, // Use new prop
   recipientLabel = "Recipient",
   showSubject = true,
   showMessage = true,
@@ -35,69 +30,42 @@ export function CommunicationForm({
   onClose,
   onSubmit
 }: CommunicationFormProps) {
-  const { toast } = useToast(); // Keep toast for local validation/error feedback
+  const { toast } = useToast();
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Recipient validation (as per previous step, kept for relevant types)
-    if (!recipient && (communicationType === 'email' || communicationType === 'message')) {
+    if (!recipient) {
       toast({
         title: "Missing information",
-        description: `Please enter a ${recipientLabel.toLowerCase()}.`,
+        description: `Please enter a ${recipientLabel.toLowerCase()}`,
         variant: "destructive"
       });
       return;
     }
     
-    let finalTitle = subject.trim();
-    if (!showSubject || !finalTitle) {
-      const typeLabel = communicationType.charAt(0).toUpperCase() + communicationType.slice(1);
-      if (recipient) {
-        finalTitle = `${typeLabel} to/with ${recipient.trim()}`;
-      } else {
-        finalTitle = `${typeLabel} Log`;
-      }
-    }
-    if (!finalTitle.trim() && (communicationType === 'email' || communicationType === 'message')) {
-       toast({
-        title: "Missing information",
-        description: "Please provide a subject or message content to generate a title.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     
-    const communicationData: Omit<Communication, 'id' | 'created_at' | 'updated_at' | 'sender_id'> = {
-      title: finalTitle,
-      content: message.trim(),
-      communication_type: communicationType,
-      project_id: projectId,
-      recipient_ids: recipient ? [recipient.trim()] : [],
-    };
-
-    try {
-      await onSubmit(communicationData); // onSubmit now returns a Promise
-      // Success toast and onClose are now handled by the parent component
-      // Reset form state after successful submission handled by parent calling onClose, which can trigger reset.
-    } catch (error) {
-      // Display error toast if onSubmit promise rejects
-      console.error("Error submitting communication:", error);
-      toast({ 
-        title: "Error Sending Communication", 
-        description: (error instanceof Error ? error.message : "An unexpected error occurred."), 
-        variant: "destructive" 
+    // Simulate API call
+    setTimeout(() => {
+      onSubmit({
+        recipient,
+        subject,
+        message
       });
-    } finally {
+      
+      toast({
+        title: "Success",
+        description: "Your communication has been sent!",
+      });
+      
       setIsSubmitting(false);
-      // onClose(); // IMPORTANT: Parent component is now responsible for calling onClose
-    }
+      onClose();
+    }, 1000);
   };
   
   return (
@@ -106,7 +74,7 @@ export function CommunicationForm({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {icon}
-            <CardTitle className="text-blue-200">{modalTitle}</CardTitle> {/* Use modalTitle prop */}
+            <CardTitle className="text-blue-200">{title}</CardTitle>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-gray-100">
             <X className="h-5 w-5" />

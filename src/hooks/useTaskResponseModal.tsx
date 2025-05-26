@@ -1,22 +1,17 @@
 
 import { create } from 'zustand';
-import type { Task } from '@/lib/supabase'; // Import Supabase Task type
-
-// ActionItem import removed
+import { ActionItem } from '@/components/actionItems/ActionItemList';
 
 interface TaskResponseModalState {
   isOpen: boolean;
-  selectedTask: (Task & { projectTitle: string }) | null; // Updated selectedTask type
-  openModal: (task: Task, projectTitle: string) => void; // Updated openModal signature
+  selectedTask: ActionItem | null;
+  openModal: (task: ActionItem) => void;
   closeModal: () => void;
 }
 
 export const useTaskResponseModal = create<TaskResponseModalState>((set) => ({
   isOpen: false,
   selectedTask: null,
-  openModal: (task, projectTitle) => set({ 
-    isOpen: true, 
-    selectedTask: { ...task, projectTitle } // Combine task and projectTitle
-  }),
+  openModal: (task) => set({ isOpen: true, selectedTask: task }),
   closeModal: () => set({ isOpen: false, selectedTask: null }),
 }));

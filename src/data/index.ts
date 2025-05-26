@@ -5,10 +5,9 @@ import { timelineEvents } from './timeline/timelineData';
 import { documents, projectDocuments } from './documents/documentData';
 import { projects } from './projects/projectData';
 import { notifications, dashboardInsights } from './notifications/notificationData';
-// import { integrationData, allIntegrations } from './integrations/integrationData'; // Removed import
+import { integrationData, allIntegrations } from './integrations/integrationData';
 import { progressChartData } from './charts/chartData';
-// financialData import changed to changeOrders
-import { changeOrders } from './financials/financialData'; 
+import { financialData } from './financials/financialData';
 import { 
   recentCommunications, 
   scheduledEvents, 
@@ -53,10 +52,10 @@ export {
   projects,
   notifications,
   dashboardInsights,
-  // integrationData, // Removed re-export
-  // allIntegrations, // Removed re-export
+  integrationData,
+  allIntegrations,
   progressChartData,
-  changeOrders, // financialData changed to changeOrders
+  financialData,
   recentCommunications,
   scheduledEvents,
   communicationInsights,
@@ -72,8 +71,7 @@ export {
   permitsData,
   approvalsTimeline,
   budgetEstimatesData,
-  // budgetCategoryData removed from re-export
-  // budgetCategoryData removed from re-export
+  budgetCategoryData,
   budgetRisksData
 };
 
