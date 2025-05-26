@@ -33,8 +33,8 @@ serve(async (req) => {
     console.log('Processing message:', message);
     console.log('Conversation history items:', conversationHistory?.length || 0);
 
-    // Use the hardcoded Gemini API key
-    const GEMINI_API_KEY = 'AIzaSyDLBm0-7qT4P2IESMvw7Tv6FK20TmnpeFE';
+    // Use the Gemini API key from environment variables
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
     
     if (!GEMINI_API_KEY) {
       throw new Error('Gemini API key not available');
