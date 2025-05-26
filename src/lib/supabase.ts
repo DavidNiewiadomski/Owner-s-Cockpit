@@ -63,6 +63,68 @@ export interface Vendor {
   updated_at: string; // TIMESTAMPTZ
 }
 
+// --- Preconstruction Specific Enums and Interfaces ---
+
+export type SiteAssessmentStatusEnum = 
+  | 'Pending'
+  | 'In Progress'
+  | 'Completed'
+  | 'Delayed';
+
+export interface SiteAssessment {
+  id: string; // UUID
+  project_id: string; // UUID, Foreign Key to projects table
+  title: string;
+  consultant?: string;
+  assessment_date?: string; // DATE string
+  status: SiteAssessmentStatusEnum;
+  summary?: string;
+  file_url?: string;
+  created_at: string; // TIMESTAMPTZ
+  updated_at: string; // TIMESTAMPTZ
+}
+
+export interface PreconstructionBudgetItem {
+  id: string; // UUID
+  project_id: string; // UUID, Foreign Key to projects table
+  description: string;
+  category?: string;
+  estimated_amount: number; // NUMERIC
+  actual_amount?: number; // NUMERIC, optional
+  variance_amount?: number; // NUMERIC, optional
+  notes?: string;
+  created_at: string; // TIMESTAMPTZ
+  updated_at: string; // TIMESTAMPTZ
+}
+
+export type ImpactLevelEnum = 
+  | 'High'
+  | 'Medium'
+  | 'Low';
+
+export type PreconstructionRiskStatusEnum =
+  | 'Open'
+  | 'Mitigated'
+  | 'Monitoring'
+  | 'Closed';
+
+export interface PreconstructionRisk {
+  id: string; // UUID
+  project_id: string; // UUID, Foreign Key to projects table
+  title: string;
+  description?: string;
+  impact_level: ImpactLevelEnum;
+  probability_percentage?: number; // INTEGER (0-100)
+  potential_cost_impact_min?: number; // NUMERIC
+  potential_cost_impact_max?: number; // NUMERIC
+  mitigation_plan?: string;
+  status: PreconstructionRiskStatusEnum;
+  created_at: string; // TIMESTAMPTZ
+  updated_at: string; // TIMESTAMPTZ
+}
+
+// --- End Preconstruction Specific Enums and Interfaces ---
+
 export interface Task {
   id: string
   title: string
