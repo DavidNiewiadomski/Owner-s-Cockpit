@@ -21,7 +21,7 @@ export const DashboardHeader = ({
   showSearch = true
 }: DashboardHeaderProps) => {
   return (
-    <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-gray-900">
+    <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-black flex-shrink-0">
       <div>
         <h1 className="text-2xl font-bold text-white">{title}</h1>
         {subtitle && <p className="text-gray-400 mt-1">{subtitle}</p>}

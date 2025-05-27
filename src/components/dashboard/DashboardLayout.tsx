@@ -27,7 +27,6 @@ export function DashboardLayout({
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const location = useLocation();
   
-  // Get the current page ID from the location path
   const currentPageId = location.pathname.replace('/', '') || 'dashboard';
   
   const handleAssistantClick = () => {
@@ -39,10 +38,11 @@ export function DashboardLayout({
   };
   
   return (
-    <div className="flex h-screen w-full bg-black overflow-hidden">
+    <div className="min-h-screen w-full bg-black flex overflow-hidden">
       <SidebarNavigation 
         onAssistantClick={handleAssistantClick}
         onCustomizeClick={handleCustomizeClick}
+        className="flex-shrink-0"
       />
       
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -53,10 +53,9 @@ export function DashboardLayout({
           showSearch={true}
         />
 
-        <main className="flex-1 overflow-y-auto bg-black">
-          {/* Only render the CollapsibleAIAssistant if initialInsights has items */}
+        <main className="flex-1 overflow-y-auto bg-black p-6">
           {initialInsights.length > 0 && (
-            <div className="p-6 pt-6 pb-0">
+            <div className="mb-6">
               <CollapsibleAIAssistant 
                 projectContext={projectContext}
                 projectName={projectName}
@@ -65,15 +64,12 @@ export function DashboardLayout({
             </div>
           )}
           
-          <div className="p-6">
-            <div className="w-full mx-auto">
-              {children}
-            </div>
+          <div className="w-full max-w-none">
+            {children}
           </div>
         </main>
       </div>
       
-      {/* Customization Menu */}
       <CustomizationMenu 
         isOpen={customizeOpen} 
         onClose={() => setCustomizeOpen(false)} 

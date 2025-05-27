@@ -4,43 +4,6 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
 
 /* Force black background everywhere */
@@ -50,457 +13,79 @@ html, body, #app, #root {
   padding: 0;
   width: 100%;
   height: 100%;
-}
-
-/* Force cards and UI components to have black backgrounds */
-.card, .bg-card, [class*="bg-gray-"], .bg-background, .bg-gradient-radial, .bg-muted {
-  background-color: #000000 !important;
-}
-
-/* Override any background opacity */
-[class*="bg-black/"], [class*="bg-gray-900/"] {
-  background-color: #000000 !important;
-  opacity: 1 !important;
-}
-
-/* Ensure any nested elements also have black backgrounds */
-div[class*="card"], 
-div[class*="container"], 
-section, 
-header, 
-footer, 
-main, 
-nav, 
-aside {
-  background-color: #000000 !important;
-}
-
-/* Force header and menu elements to have black backgrounds with proper contrast */
-header, 
-nav, 
-.sidebar-navigation, 
-.menu-item, 
-.dropdown-content,
-.nav-item,
-.SidebarNavigation,
-.SidebarNavigation *,
-.DashboardHeader,
-.DashboardHeader * {
-  background-color: #000000 !important;
-  color: white !important;
-  border-color: rgba(56, 189, 248, 0.2) !important;
-}
-
-/* Additional dark mode overrides for menu elements */
-nav button, 
-.nav-menu button,
-.sidebar button,
-.SidebarNavigation button {
-  background-color: #000000 !important;
-  color: white !important;
-}
-
-/* Force side navigation specifically */
-.SidebarNavigation svg,
-.SidebarNavigation span,
-.SidebarNavigation div,
-.DashboardHeader svg,
-.DashboardHeader span, 
-.DashboardHeader div {
-  background-color: transparent !important;
-}
-
-/* Force shadcn components to have black backgrounds */
-[data-radix-popper-content-wrapper] * {
-  background-color: #000000 !important;
-}
-
-/* Override specific chart backgrounds */
-.recharts-surface,
-.recharts-default-tooltip {
-  background-color: #000000 !important;
-}
-
-/* Reality Capture viewer specific styles */
-.reality-capture-card {
-  background-color: #000000 !important;
-}
-
-.reality-capture-card * {
-  background-color: #000000 !important;
-}
-
-.reality-capture-controls button {
-  background-color: #000000 !important;
-  border-color: #333333 !important;
-}
-
-/* Fix the overflow issue and allow proper scrolling */
-.h-screen {
-  height: 100vh;
-  width: 100vw;
-}
-
-/* Enable scrolling on the main content area */
-.flex-1.p-6 {
-  overflow-y: auto !important;
-  max-height: calc(100vh - 64px);
-}
-
-/* Important overrides for sidebar navigation */
-.h-screen.sticky.top-0.border-r,
-.h-screen.sticky.top-0.border-r * {
-  background-color: #000000 !important;
-  color: white !important;
-}
-
-/* Ensure that the button elements in sidebar have transparent background */
-.h-screen.sticky.top-0.border-r button {
-  background-color: transparent !important;
-}
-
-.h-screen.sticky.top-0.border-r button:hover {
-  background-color: rgba(56, 189, 248, 0.1) !important;
-}
-
-/* Ensure the main content area uses the full width */
-main > div {
-  width: 100% !important;
-  max-width: none !important;
-}
-
-/* Prevent double scrollbars */
-body, html {
-  overflow: hidden !important;
-}
-
-/* Fix overscroll issue */
-.flex-1.flex.flex-col.w-full.overflow-hidden {
-  overflow-y: hidden !important;
-}
-
-/* Ensure main area is scrollable */
-main.flex-1.p-6.bg-black.overflow-y-auto.w-full {
-  overflow-y: auto !important;
-  max-height: calc(100vh - 64px);
-}
-
-/* Allow Communications page to scroll */
-.Communications main {
-  overflow-y: auto !important;
-  max-height: calc(100vh - 64px);
-}
-
-/* Allow Projects page to scroll */
-.Projects main {
-  overflow-y: auto !important;
-}
-
-/* Animation utilities */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.1); }
-  50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
-  100% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.1); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
-}
-
-.shadow-glow {
-  animation: pulse-glow 3s infinite ease-in-out;
-}
-
-/* Text gradient for titles */
-.text-gradient {
-  background: linear-gradient(90deg, #38bdf8, #8B5CF6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Glow effects for important elements */
-.hover-glow:hover {
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-  transition: box-shadow 0.3s ease;
-}
-
-/* Card hover effects */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(56, 189, 248, 0.2);
-}
-
-/* Force text to be visible and high contrast */
-body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, label {
-  color: white !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-.text-muted-foreground, .text-gray-400, .text-gray-500 {
-  color: #e0e0e0 !important;
-}
-
-/* Improved visibility for status badges */
-[class*="status-badge"],
-.Badge,
-.badge,
-[class*="badge-"] {
-  font-weight: 700 !important;
-  padding: 0.25rem 0.75rem !important;
-  border-radius: 0.375rem !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
-  letter-spacing: 0.02em !important;
-}
-
-/* Status colors with improved contrast */
-.status-on-track,
-.status-completed,
-[data-status="on-track"],
-[data-status="completed"] {
-  background-color: rgb(22, 163, 74) !important;
-  color: white !important;
-  border: 1px solid rgb(21, 128, 61) !important;
-  font-weight: 700 !important;
-}
-
-.status-at-risk,
-.status-warning,
-[data-status="at-risk"],
-[data-status="warning"] {
-  background-color: rgb(234, 179, 8) !important;
-  color: black !important;
-  border: 1px solid rgb(202, 138, 4) !important;
-  font-weight: 700 !important;
-}
-
-.status-delayed,
-.status-danger,
-[data-status="delayed"],
-[data-status="danger"] {
-  background-color: rgb(220, 38, 38) !important;
-  color: white !important;
-  border: 1px solid rgb(185, 28, 28) !important;
-  font-weight: 700 !important;
-}
-
-/* Improved visibility for tabs, buttons, and cards */
-.TabsTrigger, .TabsList, .TabsContent {
-  color: white !important;
-  font-weight: 500 !important;
-}
-
-/* Enhanced tabs styling */
-[data-state="active"].TabsTrigger,
-[data-state="active"][role="tab"],
-[role="tab"][data-state="active"] {
-  background-color: rgba(34, 211, 238, 0.2) !important;
-  color: rgb(186, 230, 253) !important;
-  border-bottom: 2px solid rgb(34, 211, 238) !important;
-  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3) !important;
-  text-shadow: 0 0 5px rgba(34, 211, 238, 0.5) !important;
-}
-
-/* Add glow to tabs on hover */
-[role="tab"]:hover:not([data-state="active"]) {
-  background-color: rgba(34, 211, 238, 0.1) !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  transition: all 0.2s ease-in-out;
-}
-
-/* Ensure labels in charts and widgets are visible */
-.recharts-text, .recharts-label, .recharts-cartesian-axis-tick-value {
-  fill: white !important;
-  font-weight: 500 !important;
-  font-size: 12px !important;
-}
-
-/* Add text shadow to improve legibility on complex backgrounds */
-.tab-content-label, .chart-label, .metric-label {
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8) !important;
-}
-
-/* Enhance button text visibility */
-button {
-  color: white !important;
-  font-weight: 500 !important;
-}
-
-/* Make badges more visible */
-.badge {
-  color: white !important;
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  font-weight: 600 !important;
-}
-
-/* Improve card content visibility */
-.card-content {
-  color: white !important;
-  font-weight: normal !important;
-  font-size: 1rem !important;
-}
-
-/* Enhance tooltip visibility */
-[data-tooltip], [data-tooltip-content] {
-  color: white !important;
-  background-color: rgba(0, 0, 0, 0.85) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  padding: 8px 12px !important;
-  font-weight: 500 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Global card glow effect - apply to all card/box components */
-.card,
-.Card,
-[class*="card-"],
-[class*="Card"],
-[class*="card_"],
-[class*="Card_"],
-[role="tabpanel"] > div,
-.recharts-wrapper,
-.AspectRatio {
-  box-shadow: 0 0 15px rgba(34, 211, 238, 0.2) !important;
-  border: 1px solid rgba(34, 211, 238, 0.15) !important;
-  border-radius: 8px !important;
-  transition: box-shadow 0.3s ease, transform 0.2s ease !important;
-}
-
-/* Hover effect for glowing cards */
-.card:hover,
-.Card:hover,
-[class*="card-"]:hover,
-[class*="Card"]:hover,
-[class*="card_"]:hover,
-[class*="Card_"]:hover {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.35) !important;
-  transform: translateY(-2px);
-}
-
-/* Special glow for important cards */
-.important-card,
-.financial-card,
-.budget-card,
-.stats-card,
-.analytics-card,
-.dashboard-card {
-  box-shadow: 0 0 25px rgba(34, 211, 238, 0.3) !important;
-  border: 1px solid rgba(34, 211, 238, 0.25) !important;
-}
-
-/* Make sure visualization cards have proper glow */
-.visualization-card,
-[class*="-visualization"],
-.chart-container {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25) !important;
-  border: 1px solid rgba(34, 211, 238, 0.2) !important;
-  background-color: #000000 !important;
   overflow: hidden;
 }
 
-/* Better badge contrast for statuses */
-.bg-green-100.text-green-800,
-[class*="green-badge"] {
-  background-color: rgba(22, 163, 74, 0.3) !important;
-  color: rgb(220, 252, 231) !important;
-  border: 1px solid rgba(22, 163, 74, 0.5) !important;
-  font-weight: 600 !important;
+/* Ensure proper layout */
+.min-h-screen {
+  min-height: 100vh;
 }
 
-.bg-yellow-100.text-yellow-800,
-[class*="yellow-badge"] {
-  background-color: rgba(202, 138, 4, 0.3) !important;
-  color: rgb(254, 249, 195) !important;
-  border: 1px solid rgba(202, 138, 4, 0.5) !important;
-  font-weight: 600 !important;
+/* Force text to be visible */
+body, p, h1, h2, h3, h4, h5, h6, span, div, a, button, input, textarea, select, label {
+  color: white !important;
 }
 
-.bg-red-100.text-red-800,
-[class*="red-badge"] {
-  background-color: rgba(220, 38, 38, 0.3) !important;
-  color: rgb(254, 226, 226) !important;
-  border: 1px solid rgba(220, 38, 38, 0.5) !important;
-  font-weight: 600 !important;
+.text-muted-foreground, .text-gray-400, .text-gray-500 {
+  color: #9ca3af !important;
 }
 
-/* Card gradients for better visibility */
-.card,
-[class*="card-"],
-[class*="Card"],
-.recharts-wrapper {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.95)) !important;
-}
-
-/* Text contrast utilities */
-.text-white {
-  font-weight: 500 !important;
-}
-
-.text-gray-300, 
-.text-gray-400 {
-  color: #d1d5db !important;
-}
-
-/* Add outline to small text for better readability */
-small, 
-.text-xs, 
-.text-sm {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
-}
-
-/* Add background contrast to items in lists for better readability */
-.list-item,
-[class*="item-"],
-[class*="list-item"],
-[role="listitem"] {
-  background-color: rgba(17, 24, 39, 0.6) !important;
+/* Card styling */
+.card {
+  background-color: #000000 !important;
   border: 1px solid rgba(75, 85, 99, 0.3) !important;
 }
 
-/* Enhanced status indicator colors */
-.status-indicator {
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50% !important;
-  display: inline-block !important;
-  margin-right: 6px !important;
+/* Button styling */
+button {
+  color: white !important;
 }
 
-.status-indicator.green {
-  background-color: rgb(34, 197, 94) !important;
-  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6) !important;
+/* Input styling */
+input {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: white !important;
 }
 
-.status-indicator.yellow {
-  background-color: rgb(234, 179, 8) !important;
-  box-shadow: 0 0 6px rgba(234, 179, 8, 0.6) !important;
+input::placeholder {
+  color: #9ca3af !important;
 }
 
-.status-indicator.red {
-  background-color: rgb(239, 68, 68) !important;
-  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6) !important;
+/* Sidebar specific styles */
+.sidebar-navigation {
+  background-color: #000000 !important;
 }
 
-/* Override any badge styling that might interfere */
-.bg-green-200.text-green-900,
-.bg-yellow-200.text-yellow-900,
-.bg-red-200.text-red-900 {
-  text-shadow: none !important;
+/* Navigation link styles */
+.nav-link {
+  color: #d1d5db !important;
+  transition: color 0.2s ease;
 }
 
-/* Ensure text in all badges is well-contrasted */
-.badge, [class*="badge"] {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
-  letter-spacing: 0.02em !important;
+.nav-link:hover {
+  color: white !important;
+}
+
+.nav-link.active {
+  color: white !important;
+  background-color: rgba(55, 65, 81, 0.5) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
 }
