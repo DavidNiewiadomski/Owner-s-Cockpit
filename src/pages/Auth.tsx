@@ -59,8 +59,13 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-construction-950 p-4 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"%3E%3Cg fill-opacity=\"0.03\"%3E%3Cpolygon fill=\"%23fff\" points=\"50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40\"/%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+      {/* Animated Background Dots */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-construction-500 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-construction-400 rounded-full animate-pulse delay-700"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-construction-600 rounded-full animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-1 h-1 bg-construction-300 rounded-full animate-pulse delay-500"></div>
+      </div>
       
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
