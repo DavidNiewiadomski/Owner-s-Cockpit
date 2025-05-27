@@ -80,7 +80,7 @@ const isSupabaseConfigured = () => {
   return true; // Now properly configured
 };
 
-// Error handling wrapper
+// Error handling wrapper - fixed to properly handle async operations
 const handleSupabaseError = async <T>(
   operation: () => Promise<{ data: T | null; error: any }>,
   fallback: T
@@ -101,7 +101,7 @@ const handleSupabaseError = async <T>(
 // Companies
 export const getCompanies = async (): Promise<Company[]> => {
   return handleSupabaseError(
-    () => supabase.from('companies').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('companies').select('*').order('created_at', { ascending: false }),
     []
   );
 };
@@ -109,28 +109,28 @@ export const getCompanies = async (): Promise<Company[]> => {
 // Projects
 export const getProjects = async (): Promise<Project[]> => {
   return handleSupabaseError(
-    () => supabase.from('projects').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('projects').select('*').order('created_at', { ascending: false }),
     mockProjects
   );
 };
 
 export const getProject = async (id: string): Promise<Project | null> => {
   return handleSupabaseError(
-    () => supabase.from('projects').select('*').eq('id', id).single(),
+    async () => await supabase.from('projects').select('*').eq('id', id).single(),
     mockProjects.find(p => p.id === id) || null
   );
 };
 
 export const createProject = async (project: Omit<Project, 'id' | 'created_at' | 'updated_at'>): Promise<Project | null> => {
   return handleSupabaseError(
-    () => supabase.from('projects').insert([project]).select().single(),
+    async () => await supabase.from('projects').insert([project]).select().single(),
     null
   );
 };
 
 export const updateProject = async (id: string, updates: Partial<Project>): Promise<Project | null> => {
   return handleSupabaseError(
-    () => supabase.from('projects').update(updates).eq('id', id).select().single(),
+    async () => await supabase.from('projects').update(updates).eq('id', id).select().single(),
     null
   );
 };
@@ -138,14 +138,14 @@ export const updateProject = async (id: string, updates: Partial<Project>): Prom
 // Team Members
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
   return handleSupabaseError(
-    () => supabase.from('team_members').select('*').eq('is_active', true).order('name'),
+    async () => await supabase.from('team_members').select('*').eq('is_active', true).order('name'),
     []
   );
 };
 
 export const createTeamMember = async (member: Omit<TeamMember, 'id' | 'created_at' | 'updated_at'>): Promise<TeamMember | null> => {
   return handleSupabaseError(
-    () => supabase.from('team_members').insert([member]).select().single(),
+    async () => await supabase.from('team_members').insert([member]).select().single(),
     null
   );
 };
@@ -154,20 +154,20 @@ export const createTeamMember = async (member: Omit<TeamMember, 'id' | 'created_
 export const getTasks = async (projectId?: string): Promise<Task[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('tasks').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      async () => await supabase.from('tasks').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
       mockTasks.filter(t => t.project_id === projectId)
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('tasks').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('tasks').select('*').order('created_at', { ascending: false }),
     mockTasks
   );
 };
 
 export const createTask = async (task: Omit<Task, 'id' | 'created_at' | 'updated_at'>): Promise<Task | null> => {
   return handleSupabaseError(
-    () => supabase.from('tasks').insert([task]).select().single(),
+    async () => await supabase.from('tasks').insert([task]).select().single(),
     null
   );
 };
@@ -185,13 +185,13 @@ export const updateTaskStatus = async (taskId: string, status: Task['status']): 
 export const getDocuments = async (projectId?: string): Promise<Document[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('documents').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      async () => await supabase.from('documents').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('documents').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('documents').select('*').order('created_at', { ascending: false }),
     []
   );
 };
@@ -200,13 +200,13 @@ export const getDocuments = async (projectId?: string): Promise<Document[]> => {
 export const getContracts = async (projectId?: string): Promise<Contract[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('contracts').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      async () => await supabase.from('contracts').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('contracts').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('contracts').select('*').order('created_at', { ascending: false }),
     []
   );
 };
@@ -215,13 +215,13 @@ export const getContracts = async (projectId?: string): Promise<Contract[]> => {
 export const getQualityInspections = async (projectId?: string): Promise<QualityInspection[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('quality_inspections').select('*').eq('project_id', projectId).order('scheduled_date', { ascending: false }),
+      async () => await supabase.from('quality_inspections').select('*').eq('project_id', projectId).order('scheduled_date', { ascending: false }),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('quality_inspections').select('*').order('scheduled_date', { ascending: false }),
+    async () => await supabase.from('quality_inspections').select('*').order('scheduled_date', { ascending: false }),
     []
   );
 };
@@ -230,13 +230,13 @@ export const getQualityInspections = async (projectId?: string): Promise<Quality
 export const getEquipment = async (projectId?: string): Promise<Equipment[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('equipment').select('*').eq('project_id', projectId).order('name'),
+      async () => await supabase.from('equipment').select('*').eq('project_id', projectId).order('name'),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('equipment').select('*').order('name'),
+    async () => await supabase.from('equipment').select('*').order('name'),
     []
   );
 };
@@ -245,13 +245,13 @@ export const getEquipment = async (projectId?: string): Promise<Equipment[]> => 
 export const getMaterials = async (projectId?: string): Promise<Material[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('materials').select('*').eq('project_id', projectId).order('name'),
+      async () => await supabase.from('materials').select('*').eq('project_id', projectId).order('name'),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('materials').select('*').order('name'),
+    async () => await supabase.from('materials').select('*').order('name'),
     []
   );
 };
@@ -260,13 +260,13 @@ export const getMaterials = async (projectId?: string): Promise<Material[]> => {
 export const getBudgetCategories = async (projectId?: string): Promise<BudgetCategory[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('budget_categories').select('*').eq('project_id', projectId).order('name'),
+      async () => await supabase.from('budget_categories').select('*').eq('project_id', projectId).order('name'),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('budget_categories').select('*').order('name'),
+    async () => await supabase.from('budget_categories').select('*').order('name'),
     []
   );
 };
@@ -275,13 +275,13 @@ export const getBudgetCategories = async (projectId?: string): Promise<BudgetCat
 export const getTimelineEvents = async (projectId?: string): Promise<TimelineEvent[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('timeline_events').select('*').eq('project_id', projectId).order('event_date', { ascending: false }),
+      async () => await supabase.from('timeline_events').select('*').eq('project_id', projectId).order('event_date', { ascending: false }),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('timeline_events').select('*').order('event_date', { ascending: false }),
+    async () => await supabase.from('timeline_events').select('*').order('event_date', { ascending: false }),
     []
   );
 };
@@ -290,13 +290,13 @@ export const getTimelineEvents = async (projectId?: string): Promise<TimelineEve
 export const getCommunications = async (projectId?: string): Promise<Communication[]> => {
   if (projectId) {
     return handleSupabaseError(
-      () => supabase.from('communications').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      async () => await supabase.from('communications').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
       []
     );
   }
   
   return handleSupabaseError(
-    () => supabase.from('communications').select('*').order('created_at', { ascending: false }),
+    async () => await supabase.from('communications').select('*').order('created_at', { ascending: false }),
     []
   );
 };
@@ -304,7 +304,7 @@ export const getCommunications = async (projectId?: string): Promise<Communicati
 // Vendors
 export const getVendors = async (): Promise<Vendor[]> => {
   return handleSupabaseError(
-    () => supabase.from('vendors').select('*').order('name'),
+    async () => await supabase.from('vendors').select('*').order('name'),
     []
   );
 };
