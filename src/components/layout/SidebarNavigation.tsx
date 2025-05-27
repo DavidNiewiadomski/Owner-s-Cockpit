@@ -33,7 +33,7 @@ export function SidebarNavigation({
   return (
     <div 
       className={cn(
-        "h-screen sticky top-0 border-r border-gray-800 bg-black z-30 transition-all duration-300 ease-in-out flex flex-col",
+        "h-screen flex-shrink-0 border-r border-gray-800 bg-black transition-all duration-300 ease-in-out flex flex-col",
         collapsed ? "w-16" : "w-64",
         className
       )}
