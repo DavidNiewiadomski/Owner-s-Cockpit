@@ -33,7 +33,7 @@ export function SidebarNavigation({
   return (
     <div 
       className={cn(
-        "h-screen sticky top-0 border-r border-gray-800 bg-black z-30 transition-all duration-300 ease-in-out",
+        "h-screen sticky top-0 border-r border-gray-800 bg-black z-30 transition-all duration-300 ease-in-out flex flex-col",
         collapsed ? "w-16" : "w-64",
         className
       )}
@@ -43,7 +43,7 @@ export function SidebarNavigation({
         onToggleCollapse={toggleCollapse} 
       />
       
-      <ScrollArea className="h-[calc(100vh-4rem)]">
+      <ScrollArea className="flex-1">
         <div className="px-3 py-2">
           <SidebarNavItems 
             navItems={navigationItems}

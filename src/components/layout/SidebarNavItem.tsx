@@ -23,29 +23,34 @@ export function SidebarNavItem({
   onClick
 }: SidebarNavItemProps) {
   const content = (
-    <>
+    <div className={cn(
+      "flex items-center w-full h-10",
+      collapsed ? "justify-center px-0" : "justify-start px-3 gap-3"
+    )}>
       <Icon className="h-4 w-4 flex-shrink-0" />
-      {!collapsed && <span className="ml-2">{label}</span>}
-    </>
+      {!collapsed && <span className="text-sm font-medium">{label}</span>}
+    </div>
+  );
+
+  const buttonClasses = cn(
+    "w-full justify-start text-gray-200 hover:text-white hover:bg-gray-800/50 transition-colors",
+    isActive && "bg-gray-800/60 text-white",
+    collapsed ? "justify-center px-0" : "px-0"
   );
 
   return (
     <Button 
       variant={isActive ? "secondary" : "ghost"} 
-      className={cn(
-        "w-full justify-start gap-3 h-10 text-gray-200 hover:text-white hover:bg-gray-800/50",
-        isActive && "bg-gray-800/60 text-white",
-        collapsed ? "justify-center px-0" : "px-3"
-      )}
+      className={buttonClasses}
       onClick={onClick}
       asChild={!onClick}
     >
       {onClick ? (
-        <div className="flex items-center cursor-pointer">
+        <div className="cursor-pointer">
           {content}
         </div>
       ) : (
-        <Link to={to} className="flex items-center">
+        <Link to={to}>
           {content}
         </Link>
       )}
