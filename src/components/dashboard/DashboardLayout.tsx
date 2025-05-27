@@ -46,7 +46,12 @@ export function DashboardLayout({
       />
       
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <DashboardHeader onSearch={onSearch} />
+        <DashboardHeader 
+          title="Dashboard"
+          searchTerm={searchTerm}
+          onSearch={onSearch}
+          showSearch={true}
+        />
 
         <main className="flex-1 overflow-y-auto bg-black">
           {/* Only render the CollapsibleAIAssistant if initialInsights has items */}

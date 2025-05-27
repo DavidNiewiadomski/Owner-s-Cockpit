@@ -35,7 +35,7 @@ export const DashboardHeader = ({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearch(e.target.value)}
-              className="pl-10 w-64 bg-gray-800 border-gray-700 text-white"
+              className="pl-10 w-64 bg-gray-800 border-gray-700 text-white placeholder:text-gray-400"
             />
           </div>
         )}
