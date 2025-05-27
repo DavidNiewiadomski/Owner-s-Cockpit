@@ -1,13 +1,8 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
-
-// Only throw error if we're not in development mode with placeholders
-if ((!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'https://placeholder.supabase.co' || supabaseAnonKey === 'placeholder-key') && import.meta.env.PROD) {
-  console.warn('Supabase environment variables not configured. Using placeholder values for development.')
-}
+const supabaseUrl = 'https://prfggewuqbaenxedlywg.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZmdnZXd1cWJhZW54ZWRseXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNzg3NTEsImV4cCI6MjA2Mzg1NDc1MX0.nu3VUfHQE-olR1Lu4inPXu05UCHZEb4u-sqRWhpSf8o'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -50,80 +45,18 @@ export type VendorStatusEnum =
   | 'On Hold';
 
 export interface Vendor {
-  id: string; // UUID
-  name: string;
-  category?: string;
-  rating?: number; // NUMERIC(2,1) -> number
-  location?: string;
-  phone?: string;
-  email?: string;
-  status?: VendorStatusEnum; // Optional, as per SQL schema (can have default)
-  notes?: string;
-  created_at: string; // TIMESTAMPTZ
-  updated_at: string; // TIMESTAMPTZ
+  id: string
+  name: string
+  category?: string
+  rating?: number
+  location?: string
+  phone?: string
+  email?: string
+  status?: VendorStatusEnum
+  notes?: string
+  created_at: string
+  updated_at: string
 }
-
-// --- Preconstruction Specific Enums and Interfaces ---
-
-export type SiteAssessmentStatusEnum = 
-  | 'Pending'
-  | 'In Progress'
-  | 'Completed'
-  | 'Delayed';
-
-export interface SiteAssessment {
-  id: string; // UUID
-  project_id: string; // UUID, Foreign Key to projects table
-  title: string;
-  consultant?: string;
-  assessment_date?: string; // DATE string
-  status: SiteAssessmentStatusEnum;
-  summary?: string;
-  file_url?: string;
-  created_at: string; // TIMESTAMPTZ
-  updated_at: string; // TIMESTAMPTZ
-}
-
-export interface PreconstructionBudgetItem {
-  id: string; // UUID
-  project_id: string; // UUID, Foreign Key to projects table
-  description: string;
-  category?: string;
-  estimated_amount: number; // NUMERIC
-  actual_amount?: number; // NUMERIC, optional
-  variance_amount?: number; // NUMERIC, optional
-  notes?: string;
-  created_at: string; // TIMESTAMPTZ
-  updated_at: string; // TIMESTAMPTZ
-}
-
-export type ImpactLevelEnum = 
-  | 'High'
-  | 'Medium'
-  | 'Low';
-
-export type PreconstructionRiskStatusEnum =
-  | 'Open'
-  | 'Mitigated'
-  | 'Monitoring'
-  | 'Closed';
-
-export interface PreconstructionRisk {
-  id: string; // UUID
-  project_id: string; // UUID, Foreign Key to projects table
-  title: string;
-  description?: string;
-  impact_level: ImpactLevelEnum;
-  probability_percentage?: number; // INTEGER (0-100)
-  potential_cost_impact_min?: number; // NUMERIC
-  potential_cost_impact_max?: number; // NUMERIC
-  mitigation_plan?: string;
-  status: PreconstructionRiskStatusEnum;
-  created_at: string; // TIMESTAMPTZ
-  updated_at: string; // TIMESTAMPTZ
-}
-
-// --- End Preconstruction Specific Enums and Interfaces ---
 
 export interface Task {
   id: string
