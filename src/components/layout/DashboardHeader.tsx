@@ -21,10 +21,10 @@ export const DashboardHeader = ({
   showSearch = true
 }: DashboardHeaderProps) => {
   return (
-    <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-white shadow-sm">
+    <div className="flex items-center justify-between p-6 border-b border-gray-800 bg-gray-900">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-        {subtitle && <p className="text-gray-600 mt-1">{subtitle}</p>}
+        <h1 className="text-2xl font-bold text-white">{title}</h1>
+        {subtitle && <p className="text-gray-400 mt-1">{subtitle}</p>}
       </div>
       
       <div className="flex items-center gap-4">
@@ -35,12 +35,12 @@ export const DashboardHeader = ({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearch(e.target.value)}
-              className="pl-10 w-64"
+              className="pl-10 w-64 bg-gray-800 border-gray-700 text-white"
             />
           </div>
         )}
         
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
           <Bell className="h-5 w-5" />
         </Button>
         
