@@ -39,16 +39,16 @@ export function DashboardLayout({
   };
   
   return (
-    <div className="flex h-screen w-full bg-black overflow-hidden">
+    <div className="flex h-screen w-full bg-gray-50 overflow-hidden">
       <SidebarNavigation 
         onAssistantClick={handleAssistantClick}
         onCustomizeClick={handleCustomizeClick}
       />
       
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0">
         <DashboardHeader onSearch={onSearch} />
 
-        <main className="flex-1 overflow-y-auto bg-black">
+        <main className="flex-1 overflow-y-auto bg-gray-50">
           {/* Only render the CollapsibleAIAssistant if initialInsights has items */}
           {initialInsights.length > 0 && (
             <div className="p-6 pt-6 pb-0">
