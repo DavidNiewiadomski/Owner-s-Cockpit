@@ -12,9 +12,6 @@ export class AIService {
 
   async sendMessage(message: string): Promise<string> {
     try {
-      console.log('=== AI SERVICE STARTED ===');
-      console.log('Sending message:', message);
-
       // Add user message to history
       this.conversationHistory.push({
         role: 'user',
@@ -22,10 +19,11 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
-      console.log('Conversation history length:', this.conversationHistory.length);
-      console.log('Calling Supabase Edge Function...');
+      console.log('AIService: Sending message to AI:', message);
+      console.log('AIService: Conversation history length:', this.conversationHistory.length);
 
       // Call the Supabase Edge Function
+      console.log('AIService: Calling Supabase function...');
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
         body: {
           message,
@@ -33,32 +31,30 @@ export class AIService {
         }
       });
 
-      console.log('Supabase function response:');
-      console.log('- Data:', data);
-      console.log('- Error:', error);
+      console.log('AIService: Supabase function response:', { data, error });
 
       if (error) {
-        console.error('Supabase function error details:', error);
-        throw new Error(`Supabase Error: ${error.message || 'Failed to call Edge Function'}`);
+        console.error('AIService: Supabase function error:', error);
+        throw new Error(`Supabase function failed: ${JSON.stringify(error)}`);
       }
 
       if (!data) {
-        console.error('No data received from Supabase function');
-        throw new Error('No response received from the AI service');
+        console.error('AIService: No data returned from function');
+        throw new Error('No data returned from AI service');
       }
 
       if (data.error) {
-        console.error('Error in Edge Function response:', data.error);
-        throw new Error(`Edge Function Error: ${data.error}`);
+        console.error('AIService: Error in response data:', data.error);
+        throw new Error(`AI service error: ${data.error} - ${data.details || ''}`);
+      }
+
+      if (!data.response) {
+        console.error('AIService: No response field in data:', data);
+        throw new Error('No response field in AI service response');
       }
 
       const aiResponse = data.response;
-      if (!aiResponse || typeof aiResponse !== 'string') {
-        console.error('Invalid AI response:', aiResponse);
-        throw new Error('Invalid response from AI service');
-      }
-
-      console.log('Successfully received AI response:', aiResponse.substring(0, 100) + '...');
+      console.log('AIService: AI Response received:', aiResponse);
 
       // Add AI response to history
       this.conversationHistory.push({
@@ -67,19 +63,15 @@ export class AIService {
         timestamp: new Date().toISOString()
       })
 
-      console.log('=== AI SERVICE COMPLETED ===');
       return aiResponse;
-
     } catch (error) {
-      console.error('=== AI SERVICE ERROR ===');
-      console.error('Error type:', error.constructor.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
+      console.error('AIService: Full error details:', error);
       
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('AIService: Error message:', errorMessage);
       
-      // Return a helpful error message that indicates the real problem
-      const fallbackResponse = `I'm having trouble connecting to the AI service right now. Error: ${errorMessage}. Please check the browser console for detailed logs and try again.`;
+      // Add error to conversation history for context
+      const fallbackResponse = `I'm having trouble connecting to the AI service right now. Error: ${errorMessage}. Please try again in a moment.`;
       
       this.conversationHistory.push({
         role: 'assistant',

@@ -7,109 +7,79 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    console.log('=== EDGE FUNCTION STARTED ===');
-    console.log('Request method:', req.method);
-    console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+    const { message, conversationHistory } = await req.json()
     
-    if (req.method !== 'POST') {
-      throw new Error('Only POST method allowed');
-    }
-
-    const requestBody = await req.json();
-    console.log('Request body received:', JSON.stringify(requestBody, null, 2));
+    console.log('Edge function received message:', message);
+    console.log('Conversation history length:', conversationHistory?.length || 0);
     
-    const { message, conversationHistory } = requestBody;
-    
-    if (!message || typeof message !== 'string') {
-      throw new Error('Message is required and must be a string');
-    }
-
-    console.log('Processing message:', message);
-    console.log('Conversation history items:', conversationHistory?.length || 0);
-
-    // Use the Gemini API key from environment variables
-    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    // Get the Gemini API key
+    const GEMINI_API_KEY = 'AIzaSyDLBm0-7qT4P2IESMvw7Tv6FK20TmnpeFE'
     
     if (!GEMINI_API_KEY) {
-      throw new Error('Gemini API key not available');
+      console.error('Gemini API key not found');
+      throw new Error('Gemini API key not configured')
     }
 
-    console.log('Gemini API key available, length:', GEMINI_API_KEY.length);
+    console.log('Gemini API key found, making request...');
 
     // Create the prompt for Gemini
-    const systemPrompt = `You are a helpful construction project assistant. You help with project management, resource allocation, timeline planning, risk assessment, and other construction-related tasks. Provide specific, actionable advice. Keep responses concise and professional.`;
+    const systemPrompt = `You are a helpful construction project assistant powered by Google Gemini. You help with project management, resource allocation, timeline planning, risk assessment, and other construction-related tasks. Provide specific, actionable advice.`;
     
-    const fullPrompt = `${systemPrompt}\n\nUser question: ${message}\n\nPlease provide a helpful response:`;
-    
-    console.log('Calling Gemini API with prompt length:', fullPrompt.length);
+    const userPrompt = `${message}`;
+
+    console.log('Sending request to Gemini with prompt:', userPrompt);
 
     // Call Gemini API
     const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
-    const requestPayload = {
-      contents: [{
-        parts: [{
-          text: fullPrompt
-        }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 1024,
-      }
-    };
-
-    console.log('Sending request to Gemini:', JSON.stringify(requestPayload, null, 2));
-
-    const geminiResponse = await fetch(geminiUrl, {
+    const response = await fetch(geminiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestPayload)
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `${systemPrompt}\n\nUser question: ${userPrompt}\n\nPlease provide a helpful response:`
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 1024,
+        }
+      })
     });
 
-    console.log('Gemini response status:', geminiResponse.status);
-    console.log('Gemini response headers:', Object.fromEntries(geminiResponse.headers.entries()));
+    console.log('Gemini API response status:', response.status);
+    console.log('Gemini API response ok:', response.ok);
 
-    if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text();
+    if (!response.ok) {
+      const errorText = await response.text();
       console.error('Gemini API error response:', errorText);
-      throw new Error(`Gemini API error: ${geminiResponse.status} - ${errorText}`);
+      throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
     }
 
-    const responseText = await geminiResponse.text();
-    console.log('Raw Gemini response:', responseText);
-
-    const data = JSON.parse(responseText);
-    console.log('Parsed Gemini response:', JSON.stringify(data, null, 2));
+    const data = await response.json();
+    console.log('Gemini API response data:', JSON.stringify(data, null, 2));
     
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
     if (!aiResponse) {
-      console.error('No response text found in Gemini response structure');
+      console.error('No response text in Gemini response:', data);
       throw new Error('No response generated by Gemini');
     }
 
     console.log('Extracted AI response:', aiResponse);
-    console.log('=== EDGE FUNCTION COMPLETED SUCCESSFULLY ===');
 
     return new Response(
-      JSON.stringify({ 
-        response: aiResponse,
-        debug: {
-          messageLength: message.length,
-          responseLength: aiResponse.length,
-          timestamp: new Date().toISOString()
-        }
-      }),
+      JSON.stringify({ response: aiResponse }),
       { 
         headers: { 
           ...corsHeaders, 
@@ -117,19 +87,15 @@ serve(async (req) => {
         } 
       }
     );
-
   } catch (error) {
-    console.error('=== EDGE FUNCTION ERROR ===');
-    console.error('Error type:', error.constructor.name);
-    console.error('Error message:', error.message);
+    console.error('Edge function error:', error);
     console.error('Error stack:', error.stack);
     
     return new Response(
       JSON.stringify({ 
-        error: error.message || 'Unknown error occurred',
-        errorType: error.constructor.name,
-        timestamp: new Date().toISOString(),
-        details: 'Check the edge function logs for more information'
+        error: error.message,
+        details: 'Check the edge function logs for more information',
+        stack: error.stack
       }),
       { 
         status: 500,

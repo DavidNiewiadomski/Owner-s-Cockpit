@@ -1,8 +1,13 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://prfggewuqbaenxedlywg.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZmdnZXd1cWJhZW54ZWRseXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNzg3NTEsImV4cCI6MjA2Mzg1NDc1MX0.nu3VUfHQE-olR1Lu4inPXu05UCHZEb4u-sqRWhpSf8o'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
+
+// Only throw error if we're not in development mode with placeholders
+if ((!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'https://placeholder.supabase.co' || supabaseAnonKey === 'placeholder-key') && import.meta.env.PROD) {
+  console.warn('Supabase environment variables not configured. Using placeholder values for development.')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -34,26 +39,6 @@ export interface TeamMember {
   avatar_url?: string
   company_id?: string
   is_active: boolean
-  created_at: string
-  updated_at: string
-}
-
-export type VendorStatusEnum = 
-  | 'Active'
-  | 'Preferred'
-  | 'Inactive'
-  | 'On Hold';
-
-export interface Vendor {
-  id: string
-  name: string
-  category?: string
-  rating?: number
-  location?: string
-  phone?: string
-  email?: string
-  status?: VendorStatusEnum
-  notes?: string
   created_at: string
   updated_at: string
 }

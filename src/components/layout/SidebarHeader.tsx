@@ -17,11 +17,15 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
           <img 
             src="/lovable-uploads/249d967c-7ff4-46d6-952b-92274a485085.png" 
             alt="Company Logo" 
-            className="h-8 w-auto object-contain max-w-[120px]"
+            className="h-8 w-auto"
           />
         )}
         {collapsed && (
-          <Building className="h-6 w-6 text-orange-500" />
+          <img 
+            src="/lovable-uploads/249d967c-7ff4-46d6-952b-92274a485085.png" 
+            alt="Company Logo" 
+            className="h-6 w-auto"
+          />
         )}
       </Link>
       <div className="ml-auto">
