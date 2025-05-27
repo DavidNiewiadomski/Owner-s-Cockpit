@@ -58,28 +58,51 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <Building2 className="h-12 w-12 text-blue-600" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-construction-950 p-4 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cg fill-opacity="0.03"%3E%3Cpolygon fill="%23fff" points="50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40"/%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+      
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      
+      <Card className="w-full max-w-md bg-black/40 backdrop-blur-xl border-construction-700/30 shadow-2xl">
+        <CardHeader className="text-center relative">
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 bg-construction-600/20 blur-xl rounded-full"></div>
+              <div className="relative bg-gradient-to-br from-construction-600 to-construction-700 p-4 rounded-2xl shadow-lg">
+                <Building2 className="h-8 w-8 text-white" />
+              </div>
+            </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Owner's Cockpit</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-white to-construction-200 bg-clip-text text-transparent">
+            Owner's Cockpit
+          </CardTitle>
+          <CardDescription className="text-construction-300 text-lg">
             Construction Management Platform
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-900/50 border-construction-700/30">
+              <TabsTrigger 
+                value="signin" 
+                className="data-[state=active]:bg-construction-600 data-[state=active]:text-white text-construction-300"
+              >
+                Sign In
+              </TabsTrigger>
+              <TabsTrigger 
+                value="signup"
+                className="data-[state=active]:bg-construction-600 data-[state=active]:text-white text-construction-300"
+              >
+                Sign Up
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+                  <Label htmlFor="signin-email" className="text-construction-200">Email</Label>
                   <Input
                     id="signin-email"
                     type="email"
@@ -87,10 +110,11 @@ const Auth = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="bg-gray-900/50 border-construction-700/50 text-white placeholder:text-gray-400 focus:border-construction-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="signin-password" className="text-construction-200">Password</Label>
                   <Input
                     id="signin-password"
                     type="password"
@@ -98,11 +122,12 @@ const Auth = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    className="bg-gray-900/50 border-construction-700/50 text-white placeholder:text-gray-400 focus:border-construction-500"
                   />
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className="w-full bg-gradient-to-r from-construction-600 to-construction-700 hover:from-construction-500 hover:to-construction-600 text-white font-semibold py-2.5" 
                   disabled={loading}
                 >
                   {loading ? 'Signing in...' : 'Sign In'}
@@ -113,7 +138,7 @@ const Auth = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email" className="text-construction-200">Email</Label>
                   <Input
                     id="signup-email"
                     type="email"
@@ -121,10 +146,11 @@ const Auth = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    className="bg-gray-900/50 border-construction-700/50 text-white placeholder:text-gray-400 focus:border-construction-500"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
+                  <Label htmlFor="signup-password" className="text-construction-200">Password</Label>
                   <Input
                     id="signup-password"
                     type="password"
@@ -133,11 +159,12 @@ const Auth = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
+                    className="bg-gray-900/50 border-construction-700/50 text-white placeholder:text-gray-400 focus:border-construction-500"
                   />
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className="w-full bg-gradient-to-r from-construction-600 to-construction-700 hover:from-construction-500 hover:to-construction-600 text-white font-semibold py-2.5" 
                   disabled={loading}
                 >
                   {loading ? 'Creating account...' : 'Create Account'}
@@ -147,15 +174,15 @@ const Auth = () => {
           </Tabs>
 
           {error && (
-            <Alert variant="destructive" className="mt-4">
+            <Alert variant="destructive" className="mt-4 bg-red-950/50 border-red-800/50">
               <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription className="text-red-200">{error}</AlertDescription>
             </Alert>
           )}
 
           {message && (
-            <Alert className="mt-4">
-              <AlertDescription>{message}</AlertDescription>
+            <Alert className="mt-4 bg-construction-950/50 border-construction-700/50">
+              <AlertDescription className="text-construction-200">{message}</AlertDescription>
             </Alert>
           )}
         </CardContent>
