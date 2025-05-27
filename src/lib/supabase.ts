@@ -1,17 +1,12 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
-
-// Only throw error if we're not in development mode with placeholders
-if ((!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'https://placeholder.supabase.co' || supabaseAnonKey === 'placeholder-key') && import.meta.env.PROD) {
-  console.warn('Supabase environment variables not configured. Using placeholder values for development.')
-}
+const supabaseUrl = 'https://prfggewuqbaenxedlywg.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InByZmdnZXd1cWJhZW54ZWRseXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgyNzg3NTEsImV4cCI6MjA2Mzg1NDc1MX0.nu3VUfHQE-olR1Lu4inPXu05UCHZEb4u-sqRWhpSf8o'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// Database types
+// Database types with improved type safety
 export interface Project {
   id: string
   title: string
@@ -33,7 +28,7 @@ export interface Project {
 export interface TeamMember {
   id: string
   name: string
-  email: string
+  email?: string
   role: string
   phone?: string
   avatar_url?: string
@@ -154,6 +149,32 @@ export interface Communication {
   sender_id?: string
   recipient_ids?: string[]
   project_id?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Company {
+  id: string
+  name: string
+  logo_url?: string
+  website?: string
+  phone?: string
+  email?: string
+  address?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Vendor {
+  id: string
+  name: string
+  category?: string
+  email?: string
+  phone?: string
+  location?: string
+  status?: string
+  rating?: number
+  notes?: string
   created_at: string
   updated_at: string
 }

@@ -1,3 +1,4 @@
+
 import { supabase } from '@/lib/supabase'
 import type { 
   Project, 
@@ -10,7 +11,9 @@ import type {
   Material, 
   BudgetCategory, 
   TimelineEvent, 
-  Communication 
+  Communication,
+  Company,
+  Vendor
 } from '@/lib/supabase'
 
 // Mock data for development when Supabase isn't configured
@@ -74,252 +77,237 @@ const mockTasks: Task[] = [
 
 // Helper function to check if Supabase is properly configured
 const isSupabaseConfigured = () => {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
-  return url && key && url !== 'https://placeholder.supabase.co' && key !== 'placeholder-key';
+  return true; // Now properly configured
+};
+
+// Error handling wrapper
+const handleSupabaseError = async <T>(
+  operation: () => Promise<{ data: T | null; error: any }>,
+  fallback: T
+): Promise<T> => {
+  try {
+    const { data, error } = await operation();
+    if (error) {
+      console.error('Supabase operation failed:', error);
+      return fallback;
+    }
+    return data || fallback;
+  } catch (error) {
+    console.error('Supabase operation error:', error);
+    return fallback;
+  }
+};
+
+// Companies
+export const getCompanies = async (): Promise<Company[]> => {
+  return handleSupabaseError(
+    () => supabase.from('companies').select('*').order('created_at', { ascending: false }),
+    []
+  );
 };
 
 // Projects
 export const getProjects = async (): Promise<Project[]> => {
-  if (!isSupabaseConfigured()) {
-    console.log('Using mock data - Supabase not configured');
-    return mockProjects;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('created_at', { ascending: false })
-    
-    if (error) throw error
-    return data || []
-  } catch (error) {
-    console.warn('Supabase query failed, using mock data:', error);
-    return mockProjects;
-  }
-}
+  return handleSupabaseError(
+    () => supabase.from('projects').select('*').order('created_at', { ascending: false }),
+    mockProjects
+  );
+};
 
 export const getProject = async (id: string): Promise<Project | null> => {
-  if (!isSupabaseConfigured()) {
-    return mockProjects.find(p => p.id === id) || null;
-  }
+  return handleSupabaseError(
+    () => supabase.from('projects').select('*').eq('id', id).single(),
+    mockProjects.find(p => p.id === id) || null
+  );
+};
 
-  try {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single()
-    
-    if (error) throw error
-    return data
-  } catch (error) {
-    console.warn('Supabase query failed, using mock data:', error);
-    return mockProjects.find(p => p.id === id) || null;
-  }
-}
+export const createProject = async (project: Omit<Project, 'id' | 'created_at' | 'updated_at'>): Promise<Project | null> => {
+  return handleSupabaseError(
+    () => supabase.from('projects').insert([project]).select().single(),
+    null
+  );
+};
+
+export const updateProject = async (id: string, updates: Partial<Project>): Promise<Project | null> => {
+  return handleSupabaseError(
+    () => supabase.from('projects').update(updates).eq('id', id).select().single(),
+    null
+  );
+};
 
 // Team Members
 export const getTeamMembers = async (): Promise<TeamMember[]> => {
-  if (!isSupabaseConfigured()) {
-    return [];
-  }
+  return handleSupabaseError(
+    () => supabase.from('team_members').select('*').eq('is_active', true).order('name'),
+    []
+  );
+};
 
-  try {
-    const { data, error } = await supabase
-      .from('team_members')
-      .select('*')
-      .eq('is_active', true)
-      .order('name')
-    
-    if (error) throw error
-    return data || []
-  } catch (error) {
-    console.warn('Supabase query failed:', error);
-    return [];
-  }
-}
+export const createTeamMember = async (member: Omit<TeamMember, 'id' | 'created_at' | 'updated_at'>): Promise<TeamMember | null> => {
+  return handleSupabaseError(
+    () => supabase.from('team_members').insert([member]).select().single(),
+    null
+  );
+};
 
 // Tasks
 export const getTasks = async (projectId?: string): Promise<Task[]> => {
-  if (!isSupabaseConfigured()) {
-    return projectId ? mockTasks.filter(t => t.project_id === projectId) : mockTasks;
+  if (projectId) {
+    return handleSupabaseError(
+      () => supabase.from('tasks').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      mockTasks.filter(t => t.project_id === projectId)
+    );
   }
+  
+  return handleSupabaseError(
+    () => supabase.from('tasks').select('*').order('created_at', { ascending: false }),
+    mockTasks
+  );
+};
 
-  try {
-    let query = supabase
-      .from('tasks')
-      .select('*')
-      .order('created_at', { ascending: false })
-    
-    if (projectId) {
-      query = query.eq('project_id', projectId)
-    }
-    
-    const { data, error } = await query
-    
-    if (error) throw error
-    return data || []
-  } catch (error) {
-    console.warn('Supabase query failed, using mock data:', error);
-    return projectId ? mockTasks.filter(t => t.project_id === projectId) : mockTasks;
-  }
-}
+export const createTask = async (task: Omit<Task, 'id' | 'created_at' | 'updated_at'>): Promise<Task | null> => {
+  return handleSupabaseError(
+    () => supabase.from('tasks').insert([task]).select().single(),
+    null
+  );
+};
 
 export const updateTaskStatus = async (taskId: string, status: Task['status']): Promise<void> => {
-  if (!isSupabaseConfigured()) {
-    console.log('Mock: Task status updated');
-    return;
-  }
-
   try {
-    const { error } = await supabase
-      .from('tasks')
-      .update({ status })
-      .eq('id', taskId)
-    
-    if (error) throw error
+    const { error } = await supabase.from('tasks').update({ status }).eq('id', taskId);
+    if (error) throw error;
   } catch (error) {
-    console.warn('Supabase update failed:', error);
+    console.error('Failed to update task status:', error);
   }
-}
+};
 
 // Documents
 export const getDocuments = async (projectId?: string): Promise<Document[]> => {
-  let query = supabase
-    .from('documents')
-    .select('*')
-    .order('created_at', { ascending: false })
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('documents').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('documents').select('*').order('created_at', { ascending: false }),
+    []
+  );
+};
 
 // Contracts
 export const getContracts = async (projectId?: string): Promise<Contract[]> => {
-  let query = supabase
-    .from('contracts')
-    .select('*')
-    .order('created_at', { ascending: false })
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('contracts').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('contracts').select('*').order('created_at', { ascending: false }),
+    []
+  );
+};
 
 // Quality Inspections
 export const getQualityInspections = async (projectId?: string): Promise<QualityInspection[]> => {
-  let query = supabase
-    .from('quality_inspections')
-    .select('*')
-    .order('scheduled_date', { ascending: false })
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('quality_inspections').select('*').eq('project_id', projectId).order('scheduled_date', { ascending: false }),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('quality_inspections').select('*').order('scheduled_date', { ascending: false }),
+    []
+  );
+};
 
 // Equipment
 export const getEquipment = async (projectId?: string): Promise<Equipment[]> => {
-  let query = supabase
-    .from('equipment')
-    .select('*')
-    .order('name')
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('equipment').select('*').eq('project_id', projectId).order('name'),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('equipment').select('*').order('name'),
+    []
+  );
+};
 
 // Materials
 export const getMaterials = async (projectId?: string): Promise<Material[]> => {
-  let query = supabase
-    .from('materials')
-    .select('*')
-    .order('name')
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('materials').select('*').eq('project_id', projectId).order('name'),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('materials').select('*').order('name'),
+    []
+  );
+};
 
 // Budget Categories
 export const getBudgetCategories = async (projectId?: string): Promise<BudgetCategory[]> => {
-  let query = supabase
-    .from('budget_categories')
-    .select('*')
-    .order('name')
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('budget_categories').select('*').eq('project_id', projectId).order('name'),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('budget_categories').select('*').order('name'),
+    []
+  );
+};
 
 // Timeline Events
 export const getTimelineEvents = async (projectId?: string): Promise<TimelineEvent[]> => {
-  let query = supabase
-    .from('timeline_events')
-    .select('*')
-    .order('event_date', { ascending: false })
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('timeline_events').select('*').eq('project_id', projectId).order('event_date', { ascending: false }),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('timeline_events').select('*').order('event_date', { ascending: false }),
+    []
+  );
+};
 
 // Communications
 export const getCommunications = async (projectId?: string): Promise<Communication[]> => {
-  let query = supabase
-    .from('communications')
-    .select('*')
-    .order('created_at', { ascending: false })
-  
   if (projectId) {
-    query = query.eq('project_id', projectId)
+    return handleSupabaseError(
+      () => supabase.from('communications').select('*').eq('project_id', projectId).order('created_at', { ascending: false }),
+      []
+    );
   }
   
-  const { data, error } = await query
-  
-  if (error) throw error
-  return data || []
-}
+  return handleSupabaseError(
+    () => supabase.from('communications').select('*').order('created_at', { ascending: false }),
+    []
+  );
+};
+
+// Vendors
+export const getVendors = async (): Promise<Vendor[]> => {
+  return handleSupabaseError(
+    () => supabase.from('vendors').select('*').order('name'),
+    []
+  );
+};
 
 // Dashboard Analytics
 export const getDashboardStats = async () => {
@@ -328,12 +316,12 @@ export const getDashboardStats = async () => {
     getTasks(),
     getEquipment(),
     getMaterials()
-  ])
+  ]);
   
-  const activeProjects = projects.filter(p => p.status === 'active').length
-  const pendingTasks = tasks.filter(t => t.status === 'pending').length
-  const criticalTasks = tasks.filter(t => t.priority === 'critical').length
-  const equipmentInUse = equipment.filter(e => e.status === 'in-use').length
+  const activeProjects = projects.filter(p => p.status === 'active').length;
+  const pendingTasks = tasks.filter(t => t.status === 'pending').length;
+  const criticalTasks = tasks.filter(t => t.priority === 'critical').length;
+  const equipmentInUse = equipment.filter(e => e.status === 'in-use').length;
   
   return {
     activeProjects,
@@ -344,5 +332,5 @@ export const getDashboardStats = async () => {
     totalTasks: tasks.length,
     totalEquipment: equipment.length,
     totalMaterials: materials.length
-  }
-}
+  };
+};

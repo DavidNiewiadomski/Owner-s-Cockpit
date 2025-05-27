@@ -17,7 +17,7 @@ export class AIService {
         role: 'user',
         content: message,
         timestamp: new Date().toISOString()
-      })
+      });
 
       console.log('AIService: Sending message to AI:', message);
       console.log('AIService: Conversation history length:', this.conversationHistory.length);
@@ -35,22 +35,22 @@ export class AIService {
 
       if (error) {
         console.error('AIService: Supabase function error:', error);
-        throw new Error(`Supabase function failed: ${JSON.stringify(error)}`);
+        throw new Error(`AI service temporarily unavailable: ${error.message || 'Unknown error'}`);
       }
 
       if (!data) {
         console.error('AIService: No data returned from function');
-        throw new Error('No data returned from AI service');
+        throw new Error('No response from AI service');
       }
 
       if (data.error) {
         console.error('AIService: Error in response data:', data.error);
-        throw new Error(`AI service error: ${data.error} - ${data.details || ''}`);
+        throw new Error(`AI service error: ${data.error}`);
       }
 
       if (!data.response) {
         console.error('AIService: No response field in data:', data);
-        throw new Error('No response field in AI service response');
+        throw new Error('Invalid response format from AI service');
       }
 
       const aiResponse = data.response;
@@ -61,7 +61,7 @@ export class AIService {
         role: 'assistant',
         content: aiResponse,
         timestamp: new Date().toISOString()
-      })
+      });
 
       return aiResponse;
     } catch (error) {
@@ -71,26 +71,26 @@ export class AIService {
       console.error('AIService: Error message:', errorMessage);
       
       // Add error to conversation history for context
-      const fallbackResponse = `I'm having trouble connecting to the AI service right now. Error: ${errorMessage}. Please try again in a moment.`;
+      const fallbackResponse = `I'm having trouble connecting to the AI service right now. This might be because the service is starting up or temporarily unavailable. Please try again in a moment.`;
       
       this.conversationHistory.push({
         role: 'assistant',
         content: fallbackResponse,
         timestamp: new Date().toISOString()
-      })
+      });
       
       return fallbackResponse;
     }
   }
 
   getConversationHistory(): ChatMessage[] {
-    return [...this.conversationHistory]
+    return [...this.conversationHistory];
   }
 
   clearHistory(): void {
-    this.conversationHistory = []
+    this.conversationHistory = [];
   }
 }
 
 // Export a singleton instance
-export const aiService = new AIService()
+export const aiService = new AIService();
