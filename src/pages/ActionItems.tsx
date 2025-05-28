@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -134,22 +133,19 @@ export default function ActionItems() {
       projectName={selectedProject?.title || "All Projects"}
       initialInsights={[
         {
-          id: 'task-1',
           title: 'Task Overview',
-          description: `${tasks.length} total tasks across all projects`,
-          severity: 'info',
+          content: `${tasks.length} total tasks across all projects`,
+          type: 'info',
         },
         {
-          id: 'task-2',
           title: 'Critical Tasks',
-          description: `${tasks.filter(t => t.priority === 'critical').length} critical priority tasks need attention`,
-          severity: 'error',
+          content: `${tasks.filter(t => t.priority === 'critical').length} critical priority tasks need attention`,
+          type: 'warning',
         },
         {
-          id: 'task-3',
           title: 'Completion Rate',
-          description: `${Math.round((tasks.filter(t => t.status === 'completed').length / tasks.length) * 100)}% tasks completed`,
-          severity: 'success',
+          content: `${Math.round((tasks.filter(t => t.status === 'completed').length / tasks.length) * 100)}% tasks completed`,
+          type: 'success',
         }
       ]}
     >

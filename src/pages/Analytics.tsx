@@ -40,6 +40,7 @@ const Analytics = () => {
   return (
     <DashboardLayout
       projectContext="Analytics"
+      projectName="All Projects"
       initialInsights={analyticsInsights}
     >
       <CustomizablePageLayout pageId="analytics">

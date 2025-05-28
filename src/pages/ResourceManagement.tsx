@@ -10,22 +10,19 @@ export default function ResourceManagement() {
       projectName="All Projects"
       initialInsights={[
         {
-          id: 'res-1',
           title: 'Equipment Utilization',
-          description: 'Heavy machinery utilization at 85% capacity across all sites',
-          severity: 'success',
+          content: 'Heavy machinery utilization at 85% capacity across all sites',
+          type: 'success',
         },
         {
-          id: 'res-2',
           title: 'Material Shortage',
-          description: 'Steel reinforcement bars running low - reorder required',
-          severity: 'warning',
+          content: 'Steel reinforcement bars running low - reorder required',
+          type: 'warning',
         },
         {
-          id: 'res-3',
           title: 'Labor Allocation',
-          description: 'Skilled workers overallocated by 15% this week',
-          severity: 'error',
+          content: 'Skilled workers overallocated by 15% this week',
+          type: 'warning',
         }
       ]}
     >

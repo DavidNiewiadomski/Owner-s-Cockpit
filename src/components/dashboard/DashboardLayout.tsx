@@ -47,7 +47,7 @@ export function DashboardLayout({
       
       <AIAssistantSheet 
         isOpen={isAISheetOpen} 
-        onClose={() => setIsAISheetOpen(false)} 
+        onOpenChange={setIsAISheetOpen} 
       />
     </div>
   );

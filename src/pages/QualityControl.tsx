@@ -10,22 +10,19 @@ export default function QualityControl() {
       projectName="All Projects"
       initialInsights={[
         {
-          id: 'qc-1',
           title: 'Inspection Schedule',
-          description: '12 quality inspections scheduled for this week',
-          severity: 'info',
+          content: '12 quality inspections scheduled for this week',
+          type: 'info',
         },
         {
-          id: 'qc-2',
           title: 'Quality Score',
-          description: 'Overall quality score improved to 94.2% this month',
-          severity: 'success',
+          content: 'Overall quality score improved to 94.2% this month',
+          type: 'success',
         },
         {
-          id: 'qc-3',
           title: 'Non-Conformance',
-          description: '3 non-conformance issues require immediate attention',
-          severity: 'error',
+          content: '3 non-conformance issues require immediate attention',
+          type: 'warning',
         }
       ]}
     >

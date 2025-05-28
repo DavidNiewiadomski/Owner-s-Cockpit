@@ -10,22 +10,19 @@ export default function FacilitiesManagement() {
       projectName="All Properties"
       initialInsights={[
         {
-          id: 'fm-1',
           title: 'Maintenance Schedule',
-          description: '15 preventive maintenance tasks scheduled for this week',
-          severity: 'info',
+          content: '15 preventive maintenance tasks scheduled for this week',
+          type: 'info',
         },
         {
-          id: 'fm-2',
           title: 'Energy Efficiency',
-          description: 'HVAC optimization resulted in 18% energy cost reduction',
-          severity: 'success',
+          content: 'HVAC optimization resulted in 18% energy cost reduction',
+          type: 'success',
         },
         {
-          id: 'fm-3',
           title: 'Critical Issue',
-          description: 'Elevator in Building A requires immediate attention',
-          severity: 'error',
+          content: 'Elevator in Building A requires immediate attention',
+          type: 'warning',
         }
       ]}
     >

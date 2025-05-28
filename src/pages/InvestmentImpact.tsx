@@ -21,6 +21,7 @@ const InvestmentImpact = () => {
   return (
     <DashboardLayout
       projectContext="Investment Impact"
+      projectName="All Projects"
       initialInsights={investmentInsights}
     >
       <CustomizablePageLayout pageId="investment">

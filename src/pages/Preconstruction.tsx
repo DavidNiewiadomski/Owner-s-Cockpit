@@ -10,22 +10,19 @@ export default function Preconstruction() {
       projectName="All Projects"
       initialInsights={[
         {
-          id: 'pc-1',
           title: 'Budget Review',
-          description: 'Initial budget estimates are 12% over benchmark targets for similar projects',
-          severity: 'warning',
+          content: 'Initial budget estimates are 12% over benchmark targets for similar projects',
+          type: 'warning',
         },
         {
-          id: 'pc-2',
           title: 'Site Assessment',
-          description: 'Environmental assessment found potential concerns with soil quality',
-          severity: 'error',
+          content: 'Environmental assessment found potential concerns with soil quality',
+          type: 'warning',
         },
         {
-          id: 'pc-3',
           title: 'Permits Processing',
-          description: 'Building permits are on track for approval by next month',
-          severity: 'success',
+          content: 'Building permits are on track for approval by next month',
+          type: 'success',
         }
       ]}
     >

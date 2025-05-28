@@ -52,7 +52,27 @@ const MeetingDetails = () => {
   };
 
   return (
-    <DashboardLayout projectContext="Meeting Details">
+    <DashboardLayout 
+      projectContext="Meeting Details"
+      projectName="All Projects"
+      initialInsights={[
+        {
+          title: 'Meeting Status',
+          content: 'Meeting scheduled for today at 10:00 AM',
+          type: 'info',
+        },
+        {
+          title: 'Attendance',
+          content: '4 participants confirmed attendance',
+          type: 'success',
+        },
+        {
+          title: 'Documents',
+          content: '3 documents ready for review',
+          type: 'info',
+        }
+      ]}
+    >
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-6 flex items-center">
           <Button 
