@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Brain, MessageSquare, Mail, Phone, FileText, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -91,7 +90,7 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
         title: c.title,
         value: c.value,
         status: c.status,
-        contractor: c.contractor || 'TBD'
+        contractor: c.parties[0] || 'TBD'
       }))
     };
 
