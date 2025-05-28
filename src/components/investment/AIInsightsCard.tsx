@@ -61,7 +61,7 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
                   <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors break-words">
                     {insight.title}
                   </p>
-                  <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words">
+                  <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words whitespace-normal">
                     {insight.content}
                   </p>
                 </div>

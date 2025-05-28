@@ -24,9 +24,26 @@ const Timeline = () => {
     availableRealityCaptures,
     handleViewRealityCapture,
     ganttData,
-    delayMetricsData,
-    timelineInsights
+    delayMetricsData
   } = useTimelineData();
+  
+  const timelineInsights = [
+    {
+      title: 'Schedule Status',
+      content: 'Downtown High-Rise project is 3 days ahead of schedule for Q4 milestones',
+      type: 'success' as const
+    },
+    {
+      title: 'Critical Path Alert',
+      content: 'Foundation work delay may impact subsequent phases - mitigation plan required',
+      type: 'warning' as const
+    },
+    {
+      title: 'Milestone Achievement',
+      content: 'Structural completion milestone reached 2 weeks early with quality standards met',
+      type: 'success' as const
+    }
+  ];
   
   return (
     <div className="flex h-screen bg-black">

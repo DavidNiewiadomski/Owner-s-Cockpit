@@ -1,55 +1,51 @@
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { Dialog } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface CommunicationsLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   activeDialog: string | null;
   handleCloseDialog: () => void;
-  dialogContent: ReactNode;
   communicationInsights: any[];
+  dialogContent: React.ReactNode;
 }
 
-export const CommunicationsLayout = ({
+export function CommunicationsLayout({
   children,
   searchTerm,
   setSearchTerm,
   activeDialog,
   handleCloseDialog,
-  dialogContent,
-  communicationInsights
-}: CommunicationsLayoutProps) => {
+  communicationInsights,
+  dialogContent
+}: CommunicationsLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="flex h-screen bg-black">
       <SidebarNavigation />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onSearch={setSearchTerm} />
         
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-6 pt-6 pb-0">
-            <CollapsibleAIAssistant
-              projectContext="your communications"
+        <ScrollArea className="flex-1">
+          <main className="container mx-auto py-6 px-4 md:px-6">
+            <CollapsibleAIAssistant 
+              projectContext="Communications"
+              projectName="All Projects"
               initialInsights={communicationInsights}
             />
-          </div>
-          
-          <div className="p-6">
-            <div className="max-w-7xl mx-auto">
-              {children}
-            </div>
-          </div>
-        </main>
+            {children}
+          </main>
+        </ScrollArea>
       </div>
       
-      {/* Communication Form Dialogs */}
-      <Dialog open={activeDialog !== null} onOpenChange={() => activeDialog && handleCloseDialog()}>
+      <Dialog open={!!activeDialog} onOpenChange={handleCloseDialog}>
         {dialogContent}
       </Dialog>
     </div>
   );
-};
+}
