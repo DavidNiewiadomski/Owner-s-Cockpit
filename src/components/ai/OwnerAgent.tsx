@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Brain, MessageSquare, Mail, Phone, FileText, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
@@ -11,13 +12,18 @@ import { MessageList } from '@/components/ai/agent/MessageList';
 import { MessageInput } from '@/components/ai/agent/MessageInput';
 import { AgentMessage } from '@/components/ai/agent/types';
 import { aiService } from '@/services/aiService';
+import { useProject } from '@/contexts/ProjectContext';
+import { riskData } from '@/data/investment/riskData';
+import { contracts } from '@/data/contracts/contractData';
+import { contractMilestones } from '@/data/contracts/milestoneData';
 
 export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: (open: boolean) => void }) {
+  const { selectedProject, projects } = useProject();
   const [messages, setMessages] = useState<AgentMessage[]>([
     {
       id: '1',
       role: 'agent',
-      content: "Hello, I'm your live AI construction project assistant powered by Google Gemini. I can help you with emails, calls, reports, scheduling, and more. How can I assist you today?",
+      content: "Hello, I'm your live AI construction project assistant powered by Google Gemini. I have access to your project data including risks, contracts, milestones, and more. How can I assist you today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       type: 'text'
     }
@@ -52,6 +58,45 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     }
   }, [transcript]);
 
+  // Prepare context data for the AI
+  const getProjectContext = () => {
+    const currentProject = selectedProject?.title || 'All Projects';
+    
+    // Filter data based on selected project
+    const projectRisks = riskData.filter(risk => 
+      !selectedProject || risk.category // For now, include all risks since they don't have project association
+    );
+    
+    const projectContracts = contracts.filter(contract => 
+      !selectedProject || contract.project === selectedProject.title
+    );
+    
+    const projectMilestones = contractMilestones.filter(milestone => 
+      !selectedProject || projectContracts.some(contract => contract.id === milestone.contractId)
+    );
+
+    const context = {
+      currentProject,
+      totalProjects: projects.length,
+      activeRisks: projectRisks.filter(r => r.status === 'Active').length,
+      highSeverityRisks: projectRisks.filter(r => r.severity === 'High').length,
+      activeContracts: projectContracts.filter(c => c.status === 'Active').length,
+      upcomingMilestones: projectMilestones.filter(m => m.status === 'Pending').length,
+      topRisks: projectRisks
+        .filter(r => r.status === 'Active' && r.severity === 'High')
+        .slice(0, 3)
+        .map(r => ({ name: r.name, impact: r.impact, mitigation: r.mitigation })),
+      recentContracts: projectContracts.slice(0, 3).map(c => ({
+        title: c.title,
+        value: c.value,
+        status: c.status,
+        contractor: c.contractor_name
+      }))
+    };
+
+    return context;
+  };
+
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
@@ -75,8 +120,31 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     setIsThinking(true);
     
     try {
+      // Get project context
+      const context = getProjectContext();
+      
+      // Create enhanced prompt with context
+      const contextualPrompt = `As a construction project assistant agent, I have access to the following project data:
+
+Current Project: ${context.currentProject}
+- Total Projects in Portfolio: ${context.totalProjects}
+- Active Risks: ${context.activeRisks}
+- High Severity Risks: ${context.highSeverityRisks}
+- Active Contracts: ${context.activeContracts}
+- Upcoming Milestones: ${context.upcomingMilestones}
+
+Top Active High-Severity Risks:
+${context.topRisks.map(risk => `- ${risk.name}: ${risk.impact} (Mitigation: ${risk.mitigation})`).join('\n')}
+
+Recent Contracts:
+${context.recentContracts.map(contract => `- ${contract.title}: $${contract.value.toLocaleString()} (${contract.status}) - ${contract.contractor}`).join('\n')}
+
+User Request: ${messageContent}
+
+Please help with this request using the available project data. If this involves taking an action like sending emails, making calls, generating reports, scheduling meetings, setting reminders, or sending alerts, clearly indicate what action should be taken.`;
+      
       // Get AI response
-      const aiResponse = await aiService.sendMessage(`As a construction project assistant agent, help with this request: ${messageContent}. If this involves taking an action like sending emails, making calls, generating reports, scheduling meetings, setting reminders, or sending alerts, clearly indicate what action should be taken.`);
+      const aiResponse = await aiService.sendMessage(contextualPrompt);
       
       // Detect if response suggests an action
       const lowerResponse = aiResponse.toLowerCase();
@@ -124,11 +192,12 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
     } catch (error) {
       console.error('Error getting AI response:', error);
       
-      // Fallback response
+      // Fallback response with context
+      const context = getProjectContext();
       const fallbackResponse: AgentMessage = {
         id: (Date.now() + 1).toString(),
         role: 'agent',
-        content: "I'm here to help with your construction projects. I can send emails, make calls, generate reports, schedule meetings, set reminders, or send alerts. What would you like me to do?",
+        content: `I'm here to help with your construction projects. Based on your current data, you have ${context.activeRisks} active risks and ${context.activeContracts} active contracts. I can send emails, make calls, generate reports, schedule meetings, set reminders, or send alerts. What would you like me to do?`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         type: 'text'
       };
