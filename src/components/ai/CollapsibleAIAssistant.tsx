@@ -91,10 +91,10 @@ export function CollapsibleAIAssistant({
                       <LightbulbIcon className="h-5 w-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors break-words">
+                      <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors break-words hyphens-auto">
                         {insight.title}
                       </p>
-                      <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words whitespace-normal">
+                      <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words hyphens-auto whitespace-normal overflow-wrap-anywhere">
                         {insight.content}
                       </p>
                     </div>
