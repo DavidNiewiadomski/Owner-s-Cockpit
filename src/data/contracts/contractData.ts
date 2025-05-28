@@ -4,7 +4,7 @@ import { Contract } from './types';
 export const contracts: Contract[] = [
   {
     id: "CON-001",
-    title: "Main Construction Contract",
+    title: "Main Construction Contract - Tower Foundation",
     type: "Construction",
     status: "Active",
     value: 12500000,
@@ -17,7 +17,7 @@ export const contracts: Contract[] = [
   },
   {
     id: "CON-002",
-    title: "Electrical Systems Installation",
+    title: "Electrical Systems Installation Package",
     type: "Service",
     status: "Active",
     value: 2750000,
@@ -30,7 +30,7 @@ export const contracts: Contract[] = [
   },
   {
     id: "CON-003",
-    title: "Architectural Design Services",
+    title: "Architectural Design Services - Phase 1",
     type: "Design",
     status: "Active",
     value: 1250000,
@@ -43,7 +43,7 @@ export const contracts: Contract[] = [
   },
   {
     id: "CON-004",
-    title: "HVAC Installation & Service",
+    title: "HVAC Installation & Maintenance Service",
     type: "Equipment",
     status: "In Review",
     value: 1850000,
@@ -69,7 +69,7 @@ export const contracts: Contract[] = [
   },
   {
     id: "CON-006",
-    title: "Landscaping & Site Work",
+    title: "Landscaping & Site Work Package",
     type: "Service",
     status: "Draft",
     value: 560000,
@@ -92,5 +92,70 @@ export const contracts: Contract[] = [
     project: "Riverfront Tower",
     owner: "Amanda Lewis",
     tags: ["Safety", "Technology"]
+  },
+  {
+    id: "CON-008",
+    title: "Plumbing & Water Systems Installation",
+    type: "Service",
+    status: "Active",
+    value: 1680000,
+    startDate: "2024-03-15",
+    endDate: "2024-09-30",
+    parties: ["AquaFlow Plumbing", "ABC Construction Co."],
+    project: "Riverfront Tower",
+    owner: "David Rodriguez",
+    tags: ["Infrastructure", "Essential"]
+  },
+  {
+    id: "CON-009",
+    title: "Interior Design & Finishing Services",
+    type: "Design",
+    status: "Draft",
+    value: 2100000,
+    startDate: "2024-07-01",
+    endDate: "2025-02-28",
+    parties: ["Elite Interiors Group", "Westview Development Group"],
+    project: "Westview Residences",
+    owner: "Lisa Martinez",
+    tags: ["Design", "Premium"]
+  },
+  {
+    id: "CON-010",
+    title: "Fire Safety & Suppression Systems",
+    type: "Equipment",
+    status: "Active",
+    value: 890000,
+    startDate: "2024-04-01",
+    endDate: "2024-10-31",
+    parties: ["FireGuard Technologies", "Harbor Bridge Partners"],
+    project: "Harbor Bridge",
+    owner: "Michael Chang",
+    tags: ["Safety", "Compliance"]
+  },
+  {
+    id: "CON-011",
+    title: "Concrete Supply & Pouring Services",
+    type: "Construction",
+    status: "Active",
+    value: 3200000,
+    startDate: "2024-01-20",
+    endDate: "2024-08-15",
+    parties: ["Metropolitan Concrete Corp", "ABC Construction Co."],
+    project: "Riverfront Tower",
+    owner: "Kevin Brown",
+    tags: ["Materials", "Critical"]
+  },
+  {
+    id: "CON-012",
+    title: "Steel Structure Fabrication & Installation",
+    type: "Construction",
+    status: "Active",
+    value: 4750000,
+    startDate: "2024-02-01",
+    endDate: "2024-09-30",
+    parties: ["SteelWorks Industries", "Harbor Bridge Partners"],
+    project: "Harbor Bridge",
+    owner: "Angela Foster",
+    tags: ["Structure", "Critical"]
   }
 ];

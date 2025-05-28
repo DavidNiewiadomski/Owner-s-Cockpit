@@ -4,7 +4,7 @@ import { Insurance } from './types';
 export const insurances: Insurance[] = [
   {
     id: "INS-001",
-    title: "General Liability Insurance",
+    title: "General Liability Insurance - Primary Coverage",
     type: "Liability",
     status: "Active",
     premium: 250000,
@@ -17,7 +17,7 @@ export const insurances: Insurance[] = [
   },
   {
     id: "INS-002",
-    title: "Builder's Risk Policy",
+    title: "Builder's Risk Policy - Construction Phase",
     type: "Builder's Risk",
     status: "Active",
     premium: 175000,
@@ -30,7 +30,7 @@ export const insurances: Insurance[] = [
   },
   {
     id: "INS-003",
-    title: "Professional Liability Insurance",
+    title: "Professional Liability Insurance - Design Team",
     type: "Professional Liability",
     status: "Active",
     premium: 85000,
@@ -43,7 +43,7 @@ export const insurances: Insurance[] = [
   },
   {
     id: "INS-004",
-    title: "Workers Compensation",
+    title: "Workers Compensation - All Projects",
     type: "Workers Comp",
     status: "Active",
     premium: 325000,
@@ -56,7 +56,7 @@ export const insurances: Insurance[] = [
   },
   {
     id: "INS-005",
-    title: "Structural Defects Insurance",
+    title: "Structural Defects Insurance - Long Term",
     type: "Property",
     status: "Active",
     premium: 110000,
@@ -78,6 +78,84 @@ export const insurances: Insurance[] = [
     endDate: "2025-05-01",
     provider: "GreenCover Insurance",
     policyNumber: "EL-2024-57892",
+    project: "Westview Residences"
+  },
+  {
+    id: "INS-007",
+    title: "Equipment Breakdown Coverage",
+    type: "Property",
+    status: "Active",
+    premium: 65000,
+    coverage: 3500000,
+    startDate: "2024-02-01",
+    endDate: "2025-02-01",
+    provider: "MachineSafe Insurance",
+    policyNumber: "EB-2024-23891",
+    project: "All Projects"
+  },
+  {
+    id: "INS-008",
+    title: "Cyber Liability Insurance - Data Protection",
+    type: "Liability",
+    status: "Active",
+    premium: 45000,
+    coverage: 2000000,
+    startDate: "2024-01-01",
+    endDate: "2025-01-01",
+    provider: "CyberShield Insurance",
+    policyNumber: "CL-2024-67234",
+    project: "All Projects"
+  },
+  {
+    id: "INS-009",
+    title: "Contractor's Equipment Insurance",
+    type: "Property",
+    status: "Active",
+    premium: 125000,
+    coverage: 4200000,
+    startDate: "2024-01-10",
+    endDate: "2024-12-31",
+    provider: "EquipmentGuard Insurance",
+    policyNumber: "CE-2024-89456",
+    project: "Riverfront Tower"
+  },
+  {
+    id: "INS-010",
+    title: "Directors & Officers Liability",
+    type: "Professional Liability",
+    status: "Active",
+    premium: 75000,
+    coverage: 5000000,
+    startDate: "2024-01-01",
+    endDate: "2025-01-01",
+    provider: "Executive Protection Insurance",
+    policyNumber: "DO-2024-34789",
+    project: "All Projects"
+  },
+  {
+    id: "INS-011",
+    title: "Marine Cargo Insurance - Materials Transport",
+    type: "Property",
+    status: "Active",
+    premium: 35000,
+    coverage: 1500000,
+    startDate: "2024-03-01",
+    endDate: "2024-11-30",
+    provider: "Maritime Risk Insurance",
+    policyNumber: "MC-2024-56123",
+    project: "Harbor Bridge"
+  },
+  {
+    id: "INS-012",
+    title: "Pollution Legal Liability",
+    type: "Liability",
+    status: "Renewed",
+    premium: 80000,
+    coverage: 3000000,
+    startDate: "2024-04-01",
+    endDate: "2025-04-01",
+    provider: "EcoProtect Insurance",
+    policyNumber: "PLL-2024-78345",
     project: "Westview Residences"
   }
 ];
