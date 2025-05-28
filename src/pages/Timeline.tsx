@@ -5,12 +5,31 @@ import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { TimelineMainView } from '@/components/timeline/TimelineMainView';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
+import { RealityCaptureView } from '@/components/timeline/RealityCaptureView';
 import { useProject } from '@/contexts/ProjectContext';
+import { useTimelineData } from '@/hooks/useTimelineData';
 
 const Timeline = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { selectedProject } = useProject();
   const projectName = selectedProject?.title || 'All Projects';
+
+  const {
+    activeProject,
+    setActiveProject,
+    timelineView,
+    setTimelineView,
+    realityCapture,
+    setRealityCapture,
+    showRealityCaptures,
+    setShowRealityCaptures,
+    milestoneData,
+    projectSpecificInsights,
+    availableRealityCaptures,
+    handleViewRealityCapture,
+    ganttData,
+    delayMetricsData
+  } = useTimelineData();
 
   // Timeline insights formatted as Insight objects
   const timelineInsights = [
@@ -36,6 +55,19 @@ const Timeline = () => {
     }
   ];
 
+  const handleShowRealityCaptures = () => {
+    setShowRealityCaptures(true);
+  };
+
+  const handleCloseRealityCapture = () => {
+    setRealityCapture(null);
+    setShowRealityCaptures(false);
+  };
+
+  const handleSelectCapture = (capture: any) => {
+    setRealityCapture(capture);
+  };
+
   return (
     <div className="flex h-screen bg-black">
       <SidebarNavigation />
@@ -50,7 +82,30 @@ const Timeline = () => {
               initialInsights={timelineInsights}
             />
             
-            <TimelineMainView searchTerm={searchTerm} />
+            {showRealityCaptures ? (
+              <RealityCaptureView
+                realityCapture={realityCapture}
+                availableRealityCaptures={availableRealityCaptures}
+                selectedProject={selectedProject}
+                onClose={handleCloseRealityCapture}
+                onSelectCapture={handleSelectCapture}
+              />
+            ) : (
+              <TimelineMainView
+                activeProject={activeProject}
+                timelineView={timelineView}
+                realityCapture={realityCapture}
+                selectedProject={selectedProject}
+                milestoneData={milestoneData}
+                ganttData={ganttData}
+                delayMetricsData={delayMetricsData}
+                onShowRealityCaptures={handleShowRealityCaptures}
+                onProjectChange={setActiveProject}
+                onViewChange={setTimelineView}
+                onViewRealityCapture={handleViewRealityCapture}
+                onCloseRealityCapture={handleCloseRealityCapture}
+              />
+            )}
           </main>
         </ScrollArea>
       </div>
