@@ -120,10 +120,10 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=256&h=256&fit=crop&crop=faces" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=256&h=256&fit=crop&crop=faces" />
+                    <AvatarFallback>MS</AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:inline-flex">Jane Doe</span>
+                  <span className="hidden md:inline-flex">Michael Smith</span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 </Button>
               </DropdownMenuTrigger>
