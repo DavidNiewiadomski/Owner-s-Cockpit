@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useProject } from '@/contexts/ProjectContext';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { MainDashboard } from '@/components/dashboard/MainDashboard';
+import { EnhancedMainDashboard } from '@/components/dashboard/EnhancedMainDashboard';
 import { dashboardInsights } from '@/data/dashboardData';
 import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
 
@@ -13,13 +13,13 @@ const Index = () => {
   return (
     <DashboardLayout
       projectContext="Dashboard"
-      projectName={selectedProject?.title || "All Projects"}
+      projectName={selectedProject?.title || "Construction Management Suite"}
       initialInsights={dashboardInsights}
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
       <CustomizablePageLayout pageId="dashboard">
-        <MainDashboard />
+        <EnhancedMainDashboard />
       </CustomizablePageLayout>
     </DashboardLayout>
   );
