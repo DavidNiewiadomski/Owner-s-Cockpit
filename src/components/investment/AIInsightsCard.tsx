@@ -12,48 +12,66 @@ interface AIInsightsCardProps {
 
 export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
   return (
-    <Card className="border-construction-600/20 bg-gradient-to-b from-gray-900 to-black backdrop-blur-sm shadow-xl mb-6">
-      <CardContent className="p-5">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-construction-950/60 p-1.5 rounded-lg border border-construction-700/30">
-              <LightbulbIcon className="h-4 w-4 text-construction-400" />
+    <Card className="bg-gradient-to-br from-black via-gray-900 to-black border-cyan-500/30 shadow-[0_0_30px_rgba(0,212,255,0.2)] overflow-hidden mb-6">
+      <CardContent className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-xl border border-cyan-500/30">
+              <LightbulbIcon className="h-6 w-6 text-cyan-400" />
             </div>
-            <h3 className="font-medium text-white">AI Insights for Investment Impact</h3>
+            <div>
+              <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-400 via-blue-300 to-purple-400 bg-clip-text text-transparent">
+                AI Insights for Investment Impact
+              </h3>
+              <p className="text-gray-300 font-medium">Real-time intelligent analysis</p>
+            </div>
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={onChatOpen}
-            className="h-8 text-construction-400 hover:text-construction-300 hover:bg-construction-950/40 transition-colors rounded-lg"
+            className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-cyan-300 hover:text-cyan-200 hover:bg-gradient-to-r hover:from-cyan-500/20 hover:to-blue-500/20 transition-all duration-300 rounded-lg border border-cyan-500/30 hover:border-cyan-400/50 px-4 py-2"
           >
-            <span className="mr-1.5 text-xs">Open AI Chat</span>
-            <MessageSquare className="h-3.5 w-3.5" />
+            <MessageSquare className="h-4 w-4 mr-2" />
+            <span className="text-sm font-medium">Open AI Chat</span>
           </Button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {insights.map((insight, index) => (
             <div 
               key={index} 
-              className={`flex items-start gap-2.5 p-3.5 rounded-lg bg-gradient-to-br from-gray-850 to-gray-900 hover-scale transition-all duration-200 cursor-pointer ${
-                insight.type === "warning" ? "border-l-2 border-amber-500/50 shadow-[0_4px_15px_rgba(251,191,36,0.1)]" : 
-                insight.type === "success" ? "border-l-2 border-green-500/50 shadow-[0_4px_15px_rgba(74,222,128,0.1)]" : 
-                "border-l-2 border-blue-500/50 shadow-[0_4px_15px_rgba(59,130,246,0.1)]"
+              className={`group relative p-4 rounded-lg bg-gradient-to-br from-gray-900/80 to-black transition-all duration-300 cursor-pointer hover:scale-105 border ${
+                insight.type === "warning" 
+                  ? "border-amber-500/30 shadow-[0_0_15px_rgba(251,191,36,0.2)] hover:shadow-[0_0_20px_rgba(251,191,36,0.3)]" 
+                  : insight.type === "success" 
+                  ? "border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.2)] hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]" 
+                  : "border-cyan-500/30 shadow-[0_0_15px_rgba(0,212,255,0.2)] hover:shadow-[0_0_20px_rgba(0,212,255,0.3)]"
               }`}
               onClick={onChatOpen}
             >
-              <div className={`p-1.5 rounded-full ${
-                insight.type === "warning" ? "bg-amber-950/50 text-amber-400" : 
-                insight.type === "success" ? "bg-green-950/50 text-green-400" : 
-                "bg-blue-950/50 text-blue-400"
-              }`}>
-                <LightbulbIcon className="h-3.5 w-3.5 flex-shrink-0" />
+              <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-full ${
+                  insight.type === "warning" 
+                    ? "bg-amber-500/20 text-amber-400" 
+                    : insight.type === "success" 
+                    ? "bg-green-500/20 text-green-400" 
+                    : "bg-cyan-500/20 text-cyan-400"
+                }`}>
+                  <LightbulbIcon className="h-4 w-4 flex-shrink-0" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold mb-2 text-white group-hover:text-cyan-100 transition-colors">
+                    {insight.title}
+                  </p>
+                  <p className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors">
+                    {insight.content}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-semibold mb-1 text-white">{insight.title}</p>
-                <p className="text-sm text-gray-300 leading-snug">{insight.content}</p>
-              </div>
+              
+              {/* Animated background effect on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
             </div>
           ))}
         </div>
