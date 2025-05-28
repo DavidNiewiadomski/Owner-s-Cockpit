@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useProject } from '@/contexts/ProjectContext';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { EnhancedMainDashboard } from '@/components/dashboard/EnhancedMainDashboard';
 import { dashboardInsights } from '@/data/dashboardData';
 import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
@@ -19,7 +20,10 @@ const Index = () => {
       onSearch={setSearchTerm}
     >
       <CustomizablePageLayout pageId="dashboard">
-        <EnhancedMainDashboard />
+        <div className="space-y-8">
+          <DashboardHeader />
+          <EnhancedMainDashboard />
+        </div>
       </CustomizablePageLayout>
     </DashboardLayout>
   );
