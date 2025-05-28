@@ -8,7 +8,7 @@ import { ContractsPageTabs } from '@/components/contracts/ContractsPageTabs';
 import { 
   getContractsByProject, 
   getInsurancesByProject, 
-  getMilestonesByContract 
+  getMilestonesByProject 
 } from '@/data/contracts/contractsData';
 import { useProject } from '@/contexts/ProjectContext';
 import { useToast } from '@/hooks/use-toast';
@@ -19,8 +19,8 @@ export default function ContractsInsurance() {
   const { selectedProject } = useProject();
   const { toast } = useToast();
   
-  // Safe default values
-  const projectId = selectedProject?.id || 'all';
+  // Use 'all' as default to show all data when no project is selected
+  const projectFilter = selectedProject?.title || 'all';
   const projectName = selectedProject?.title || 'All Projects';
   
   // Get data based on active project with error handling
@@ -30,21 +30,21 @@ export default function ContractsInsurance() {
   
   useEffect(() => {
     try {
-      // Use a safe projectId
-      const safeProjectId = projectId || 'all';
+      console.log('Loading contracts data for project:', projectFilter);
       
       // Get contracts
-      const contracts = getContractsByProject(safeProjectId);
+      const contracts = getContractsByProject(projectFilter);
+      console.log('Loaded contracts:', contracts.length);
       setProjectContracts(contracts);
       
       // Get insurances
-      const insurances = getInsurancesByProject(safeProjectId);
+      const insurances = getInsurancesByProject(projectFilter);
+      console.log('Loaded insurances:', insurances.length);
       setProjectInsurances(insurances);
       
-      // Get milestones for all contracts
-      const milestones = contracts.flatMap(contract => 
-        getMilestonesByContract(contract.id)
-      );
+      // Get milestones for the project
+      const milestones = getMilestonesByProject(projectFilter);
+      console.log('Loaded milestones:', milestones.length);
       setProjectMilestones(milestones);
     } catch (error) {
       console.error("Error loading contracts data:", error);
@@ -59,7 +59,7 @@ export default function ContractsInsurance() {
       setProjectInsurances([]);
       setProjectMilestones([]);
     }
-  }, [projectId, toast]);
+  }, [projectFilter, toast]);
   
   return (
     <div className="flex h-screen bg-black">

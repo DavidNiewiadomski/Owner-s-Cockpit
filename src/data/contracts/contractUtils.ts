@@ -4,42 +4,56 @@ import { insurances } from './insuranceData';
 import { contractMilestones } from './milestoneData';
 import { Contract, Insurance, ContractMilestone } from './types';
 
-// Get contracts by project ID
-export const getContractsByProject = (projectId: string | undefined | null): Contract[] => {
-  // Default to 'all' if projectId is undefined or null
-  if (!projectId || projectId === 'all') {
+// Filter contracts by project
+export const getContractsByProject = (projectId: string): Contract[] => {
+  if (projectId === 'all') {
     return contracts;
   }
-  return contracts.filter(contract => {
-    const projectMap: Record<string, string> = {
-      '1': 'Riverfront Tower',
-      '2': 'Westview Residences',
-      '3': 'Harbor Bridge'
-    };
-    return contract.project === projectMap[projectId];
-  });
+  
+  // Handle project filtering by project name or ID
+  return contracts.filter(contract => 
+    contract.project === projectId || 
+    contract.project.toLowerCase().includes(projectId.toLowerCase())
+  );
 };
 
-// Get insurances by project ID
-export const getInsurancesByProject = (projectId: string | undefined | null): Insurance[] => {
-  // Default to 'all' if projectId is undefined or null
-  if (!projectId || projectId === 'all') {
+// Filter insurance by project
+export const getInsurancesByProject = (projectId: string): Insurance[] => {
+  if (projectId === 'all') {
     return insurances;
   }
-  return insurances.filter(insurance => {
-    const projectMap: Record<string, string> = {
-      '1': 'Riverfront Tower',
-      '2': 'Westview Residences',
-      '3': 'Harbor Bridge'
-    };
-    return insurance.project === projectMap[projectId] || insurance.project === 'All Projects';
-  });
+  
+  // Handle project filtering by project name or ID
+  return insurances.filter(insurance => 
+    insurance.project === projectId || 
+    insurance.project.toLowerCase().includes(projectId.toLowerCase()) ||
+    insurance.project === 'All Projects'
+  );
 };
 
-// Get milestones by contract ID
+// Get milestones for specific contracts
 export const getMilestonesByContract = (contractId: string): ContractMilestone[] => {
-  if (!contractId) {
-    return [];
-  }
   return contractMilestones.filter(milestone => milestone.contractId === contractId);
+};
+
+// Get milestones for multiple contracts
+export const getMilestonesByContracts = (contractIds: string[]): ContractMilestone[] => {
+  return contractMilestones.filter(milestone => contractIds.includes(milestone.contractId));
+};
+
+// Get all milestones for contracts in a project
+export const getMilestonesByProject = (projectId: string): ContractMilestone[] => {
+  const projectContracts = getContractsByProject(projectId);
+  const contractIds = projectContracts.map(contract => contract.id);
+  return getMilestonesByContracts(contractIds);
+};
+
+// Get contract by ID
+export const getContractById = (contractId: string): Contract | undefined => {
+  return contracts.find(contract => contract.id === contractId);
+};
+
+// Get insurance by ID
+export const getInsuranceById = (insuranceId: string): Insurance | undefined => {
+  return insurances.find(insurance => insurance.id === insuranceId);
 };
