@@ -25,6 +25,11 @@ export function SafetyInsights({ projectName }: SafetyInsightsProps) {
                projectName === 'Harbor Bridge' ? 'Wind safety protocols activated 8 times this month. Review effectiveness.' :
                'Safety equipment inspection due in 3 days. Schedule has been sent to team leads.',
       type: 'warning' as const
+    },
+    {
+      title: 'Training Progress',
+      content: 'Monthly safety training completion rate at 98%. Outstanding performance across all teams.',
+      type: 'success' as const
     }
   ];
 

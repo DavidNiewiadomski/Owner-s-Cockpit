@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ContractsHeader } from '@/components/contracts/ContractsHeader';
 import { ContractsPageTabs } from '@/components/contracts/ContractsPageTabs';
 import { 
@@ -60,26 +62,31 @@ export default function ContractsInsurance() {
   }, [projectId, toast]);
   
   return (
-    <DashboardLayout 
-      projectContext="Contracts & Insurance" 
-      projectName={projectName}
-      initialInsights={[]} // Passing empty array to prevent DashboardLayout from showing its own CollapsibleAIAssistant
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <ContractsHeader activeTab={activeTab} />
-        </div>
+    <div className="flex h-screen bg-black">
+      <SidebarNavigation />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <DashboardHeader onSearch={setSearchTerm} />
         
-        <div className="mt-8">
-          <ContractsPageTabs 
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            contracts={projectContracts}
-            milestones={projectMilestones}
-            insurances={projectInsurances}
-          />
-        </div>
+        <ScrollArea className="flex-1">
+          <main className="container mx-auto py-6 px-4 md:px-6">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-6">
+                <ContractsHeader activeTab={activeTab} />
+              </div>
+              
+              <div className="mt-8">
+                <ContractsPageTabs 
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  contracts={projectContracts}
+                  milestones={projectMilestones}
+                  insurances={projectInsurances}
+                />
+              </div>
+            </div>
+          </main>
+        </ScrollArea>
       </div>
-    </DashboardLayout>
+    </div>
   );
 }
