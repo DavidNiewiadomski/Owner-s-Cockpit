@@ -64,27 +64,28 @@ export function DashboardHeader() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
           >
-            <Card className={`bg-gradient-to-br ${stat.gradient} border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 overflow-hidden relative group`}>
-              <CardContent className="p-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-3">
+            <Card className={`h-full bg-gradient-to-br ${stat.gradient} border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 overflow-hidden relative group`}>
+              <CardContent className="p-6 relative z-10 h-full flex flex-col justify-between min-h-[160px]">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="space-y-3 flex-1">
                     <p className="text-sm font-medium text-white/80 uppercase tracking-wide">
                       {stat.title}
                     </p>
-                    <p className="text-3xl font-bold text-white">
+                    <p className="text-3xl font-bold text-white break-words">
                       {stat.value}
                     </p>
-                    <div className="flex items-center gap-2 text-sm text-white/70">
-                      {stat.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-300" />}
-                      {stat.trend === 'critical' && <AlertTriangle className="h-4 w-4 text-red-300 animate-pulse" />}
-                      <span>{stat.subtitle}</span>
-                    </div>
                   </div>
-                  <div className={`p-4 rounded-full ${stat.iconBg} backdrop-blur-sm`}>
+                  <div className={`p-4 rounded-full ${stat.iconBg} backdrop-blur-sm flex-shrink-0 ml-4`}>
                     <div className="text-white/90">
                       {stat.icon}
                     </div>
                   </div>
+                </div>
+                
+                <div className="flex items-center gap-2 text-sm text-white/70 mt-auto">
+                  {stat.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-300 flex-shrink-0" />}
+                  {stat.trend === 'critical' && <AlertTriangle className="h-4 w-4 text-red-300 animate-pulse flex-shrink-0" />}
+                  <span className="break-words">{stat.subtitle}</span>
                 </div>
                 
                 {/* Animated background effect */}
