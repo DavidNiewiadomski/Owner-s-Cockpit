@@ -121,5 +121,78 @@ export const contractMilestones: ContractMilestone[] = [
     dueDate: "2024-06-01",
     status: "Pending",
     value: 220000
+  },
+  // Add milestones for Downtown Office Complex contracts
+  {
+    id: "MIL-016",
+    contractId: "CON-013",
+    title: "Foundation & Excavation Completion",
+    dueDate: "2024-05-31",
+    status: "Completed",
+    value: 3200000
+  },
+  {
+    id: "MIL-017",
+    contractId: "CON-013",
+    title: "Structural Frame - Phase 1 (Floors 1-10)",
+    dueDate: "2024-09-30",
+    status: "Pending",
+    value: 5800000
+  },
+  {
+    id: "MIL-018",
+    contractId: "CON-013",
+    title: "Structural Frame - Phase 2 (Floors 11-20)",
+    dueDate: "2025-01-15",
+    status: "Pending",
+    value: 6200000
+  },
+  {
+    id: "MIL-019",
+    contractId: "CON-014",
+    title: "MEP Design Approval & Coordination",
+    dueDate: "2024-07-15",
+    status: "Completed",
+    value: 850000
+  },
+  {
+    id: "MIL-020",
+    contractId: "CON-014",
+    title: "MEP Rough-in Installation - Lower Floors",
+    dueDate: "2024-12-31",
+    status: "Pending",
+    value: 1680000
+  },
+  {
+    id: "MIL-021",
+    contractId: "CON-015",
+    title: "Facade Design & Engineering Approval",
+    dueDate: "2024-08-30",
+    status: "Pending",
+    value: 950000
+  },
+  {
+    id: "MIL-022",
+    contractId: "CON-015",
+    title: "Curtain Wall Installation - Phase 1",
+    dueDate: "2024-11-30",
+    status: "Pending",
+    value: 1420000
+  },
+  {
+    id: "MIL-023",
+    contractId: "CON-016",
+    title: "Smart Systems Infrastructure Planning",
+    dueDate: "2024-10-15",
+    status: "Pending",
+    value: 420000
+  },
+  {
+    id: "MIL-024",
+    contractId: "CON-016",
+    title: "Building Automation System Installation",
+    dueDate: "2025-02-28",
+    status: "Pending",
+    value: 980000
   }
 ];

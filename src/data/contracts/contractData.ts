@@ -157,5 +157,58 @@ export const contracts: Contract[] = [
     project: "Harbor Bridge",
     owner: "Angela Foster",
     tags: ["Structure", "Critical"]
+  },
+  // Add contracts for Downtown Office Complex
+  {
+    id: "CON-013",
+    title: "General Construction Contract - Office Tower",
+    type: "Construction",
+    status: "Active",
+    value: 18500000,
+    startDate: "2024-02-01",
+    endDate: "2025-12-31",
+    parties: ["Premier Construction Group", "Downtown Development Corp"],
+    project: "Downtown Office Complex",
+    owner: "Jennifer Adams",
+    tags: ["Critical", "High-Value", "Core"]
+  },
+  {
+    id: "CON-014",
+    title: "MEP Systems Installation - Downtown Office",
+    type: "Service",
+    status: "Active",
+    value: 4200000,
+    startDate: "2024-04-15",
+    endDate: "2025-06-30",
+    parties: ["Advanced Building Systems", "Premier Construction Group"],
+    project: "Downtown Office Complex",
+    owner: "Robert Kim",
+    tags: ["Infrastructure", "MEP", "Essential"]
+  },
+  {
+    id: "CON-015",
+    title: "Facade & Curtain Wall Installation",
+    type: "Construction",
+    status: "In Review",
+    value: 3800000,
+    startDate: "2024-06-01",
+    endDate: "2025-03-15",
+    parties: ["Glass & Steel Specialists", "Downtown Development Corp"],
+    project: "Downtown Office Complex",
+    owner: "Maria Gonzalez",
+    tags: ["Exterior", "Specialty", "High-Tech"]
+  },
+  {
+    id: "CON-016",
+    title: "Smart Building Technology Integration",
+    type: "Equipment",
+    status: "Draft",
+    value: 2100000,
+    startDate: "2024-08-01",
+    endDate: "2025-04-30",
+    parties: ["TechBuild Solutions", "Downtown Development Corp"],
+    project: "Downtown Office Complex",
+    owner: "Alex Thompson",
+    tags: ["Technology", "Smart Systems", "Innovation"]
   }
 ];
