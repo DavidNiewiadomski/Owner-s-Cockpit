@@ -32,6 +32,7 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
   const [isThinking, setIsThinking] = useState(false);
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [showActions, setShowActions] = useState(false);
+  const [actionResults, setActionResults] = useState<Array<{ type: string; content: string; timestamp: string }>>([]);
   
   const { 
     isListening, 
@@ -90,7 +91,7 @@ export function OwnerAgent({ isOpen, onOpenChange }: { isOpen: boolean; onOpenCh
         title: c.title,
         value: c.value,
         status: c.status,
-        contractor: c.contractor_name
+        contractor: c.contractor || 'TBD'
       }))
     };
 
@@ -224,33 +225,139 @@ Please help with this request using the available project data. If this involves
       updatedMessages[actionMessageIndex].action!.status = 'completed';
     }
     
-    // Add a summary message
+    // Create draft content based on action type
+    let draftContent = '';
     let summaryContent = '';
+    
     switch (actionType) {
       case 'email':
-        summaryContent = "Email draft has been created and is ready for your review. I've attached the relevant project documents.";
+        draftContent = `Subject: Project Update - ${selectedProject?.title || 'Construction Project'}
+
+Dear Team,
+
+I hope this email finds you well. I wanted to provide you with an important update regarding our ongoing construction project.
+
+Based on our latest risk assessment, we have identified several key areas that require immediate attention:
+
+${getProjectContext().topRisks.map(risk => `• ${risk.name}: ${risk.impact}`).join('\n')}
+
+Our current project status shows ${getProjectContext().activeContracts} active contracts with a total value of $${getProjectContext().recentContracts.reduce((sum, c) => sum + c.value, 0).toLocaleString()}.
+
+Please review the attached project documentation and let me know if you have any questions or concerns.
+
+Best regards,
+Project Manager`;
+        summaryContent = "Email draft has been created and is ready for your review. The draft includes current project risks and contract information.";
         break;
       case 'call':
-        summaryContent = "Call has been scheduled. I'll compile a summary of the conversation afterward.";
+        draftContent = `Call Agenda for ${selectedProject?.title || 'Project'} Discussion:
+
+1. Review current project status
+2. Discuss top risks:
+   ${getProjectContext().topRisks.map(risk => `   - ${risk.name}`).join('\n')}
+3. Contract updates and milestones
+4. Next steps and action items
+
+Call Notes Template:
+- Attendees: [To be filled]
+- Key decisions: [To be filled]
+- Action items: [To be filled]
+- Follow-up required: [To be filled]`;
+        summaryContent = "Call agenda has been prepared with current project data. You can review the agenda before making the call.";
         break;
       case 'report':
-        summaryContent = "Report has been generated with the latest project metrics. You can view it in your documents.";
+        draftContent = `PROJECT STATUS REPORT
+${selectedProject?.title || 'Construction Project'}
+Generated: ${new Date().toLocaleDateString()}
+
+EXECUTIVE SUMMARY:
+Current project portfolio consists of ${getProjectContext().totalProjects} active projects with ${getProjectContext().activeRisks} identified risks.
+
+HIGH-PRIORITY RISKS:
+${getProjectContext().topRisks.map((risk, index) => `${index + 1}. ${risk.name}\n   Impact: ${risk.impact}\n   Mitigation: ${risk.mitigation}`).join('\n\n')}
+
+ACTIVE CONTRACTS:
+${getProjectContext().recentContracts.map(contract => `• ${contract.title}: $${contract.value.toLocaleString()} (${contract.status})`).join('\n')}
+
+RECOMMENDATIONS:
+1. Continue monitoring high-severity risks
+2. Ensure all mitigation strategies are actively implemented
+3. Regular contract performance reviews
+
+Next Review Date: ${new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}`;
+        summaryContent = "Comprehensive project report has been generated with current metrics, risks, and recommendations.";
         break;
       case 'schedule':
-        summaryContent = "Meeting has been scheduled and invitations sent to all participants.";
+        draftContent = `Meeting: ${selectedProject?.title || 'Project'} Review
+Date: [Please select date]
+Time: [Please select time]
+Duration: 1 hour
+
+Agenda:
+1. Project status review (15 min)
+2. Risk assessment discussion (20 min)
+3. Contract and milestone updates (15 min)
+4. Action items and next steps (10 min)
+
+Attendees:
+- Project Manager
+- [Add other attendees]
+
+Preparation Required:
+- Review latest project metrics
+- Prepare risk mitigation updates
+- Contract status summaries`;
+        summaryContent = "Meeting has been scheduled with a comprehensive agenda. Please set the date and time that works for all attendees.";
         break;
       case 'reminder':
-        summaryContent = "Reminder has been set. You'll receive a notification at the specified time.";
+        draftContent = `REMINDER CREATED:
+Task: Review project risks and mitigation strategies
+Project: ${selectedProject?.title || 'Current Project'}
+Priority: High
+Due: [Please set reminder date/time]
+
+Details:
+- ${getProjectContext().highSeverityRisks} high-severity risks require attention
+- ${getProjectContext().upcomingMilestones} upcoming milestones to track
+- Regular review ensures project stays on track
+
+Notes: Monitor especially the top risks identified in the latest assessment.`;
+        summaryContent = "Reminder has been set for project risk review. You'll be notified at the specified time.";
         break;
       case 'alert':
-        summaryContent = "Alert has been sent to the project team. They'll take action accordingly.";
+        draftContent = `🚨 PROJECT ALERT
+Project: ${selectedProject?.title || 'Construction Project'}
+Alert Level: High Priority
+Timestamp: ${new Date().toLocaleString()}
+
+IMMEDIATE ATTENTION REQUIRED:
+${getProjectContext().highSeverityRisks} high-severity risks detected that require immediate review.
+
+Top Concerns:
+${getProjectContext().topRisks.map(risk => `⚠️ ${risk.name}: ${risk.impact}`).join('\n')}
+
+Recommended Actions:
+1. Review and update risk mitigation plans
+2. Notify relevant stakeholders
+3. Schedule emergency project review if needed
+
+Contact project manager immediately for clarification.`;
+        summaryContent = "High-priority alert has been sent to the project team. They will take immediate action on the identified risks.";
         break;
     }
     
+    // Store the draft content
+    setActionResults(prev => [...prev, {
+      type: actionType,
+      content: draftContent,
+      timestamp: new Date().toLocaleString()
+    }]);
+    
+    // Add a summary message
     const summaryMessage: AgentMessage = {
       id: Date.now().toString(),
       role: 'agent',
-      content: summaryContent,
+      content: summaryContent + " Click 'View Drafts' below to see the generated content.",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       type: 'summary'
     };
@@ -258,9 +365,11 @@ Please help with this request using the available project data. If this involves
     setMessages([...updatedMessages, summaryMessage]);
     setActiveAction(null);
     
+    // Show a non-blocking toast instead of modal
     toast({
       title: `${actionType.charAt(0).toUpperCase() + actionType.slice(1)} Completed`,
-      description: "The action has been completed successfully.",
+      description: "The action has been completed successfully. Check 'View Drafts' to see the result.",
+      duration: 5000,
     });
   };
 
@@ -298,6 +407,26 @@ Please help with this request using the available project data. If this involves
             isThinking={isThinking}
             completeAction={completeAction}
           />
+          
+          {/* Show drafts section */}
+          {actionResults.length > 0 && (
+            <Card className="mx-4 mb-4 bg-green-950/30 border-green-800/50">
+              <CardContent className="p-3">
+                <h4 className="text-sm font-medium text-green-400 mb-2">Generated Drafts ({actionResults.length})</h4>
+                <div className="space-y-2 max-h-32 overflow-y-auto">
+                  {actionResults.slice(-3).map((result, index) => (
+                    <div key={index} className="text-xs p-2 bg-green-900/20 rounded border border-green-800/30">
+                      <div className="font-medium text-green-300 capitalize">{result.type}</div>
+                      <div className="text-green-400 text-xs">{result.timestamp}</div>
+                      <div className="mt-1 text-green-200 max-h-20 overflow-y-auto whitespace-pre-wrap text-xs">
+                        {result.content.length > 200 ? result.content.substring(0, 200) + '...' : result.content}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
           
           {activeAction && (
             <Card className="mx-4 mb-4 bg-blue-950/30 border-blue-800/50">
