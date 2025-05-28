@@ -30,6 +30,36 @@ export const navigationItems = [
     icon: LayoutDashboard
   },
   {
+    path: "/analytics",
+    label: "Analytics",
+    icon: BarChart
+  },
+  {
+    path: "/action-items",
+    label: "Action Items",
+    icon: ListChecks
+  },
+  {
+    path: "/budget-financials",
+    label: "Budget & Financials",
+    icon: Wallet
+  },
+  {
+    path: "/timeline",
+    label: "Timeline",
+    icon: Calendar
+  },
+  {
+    path: "/quality-control",
+    label: "Quality Control",
+    icon: ClipboardCheck
+  },
+  {
+    path: "/safety-sustainability",
+    label: "Safety & Sustainability",
+    icon: ShieldCheck
+  },
+  {
     path: "/site-selection",
     label: "Site Selection",
     icon: MapPin
@@ -45,44 +75,14 @@ export const navigationItems = [
     icon: Users
   },
   {
-    path: "/quality-control",
-    label: "Quality Control",
-    icon: ClipboardCheck
-  },
-  {
     path: "/resource-management",
     label: "Resources",
     icon: Truck
   },
   {
-    path: "/action-items",
-    label: "Action Items",
-    icon: ListChecks
-  },
-  {
-    path: "/analytics",
-    label: "Analytics",
-    icon: BarChart
-  },
-  {
-    path: "/budget-financials",
-    label: "Budget & Financials",
-    icon: Wallet
-  },
-  {
     path: "/investment-impact",
     label: "Investment Impact",
     icon: DollarSign
-  },
-  {
-    path: "/timeline",
-    label: "Timeline",
-    icon: Calendar
-  },
-  {
-    path: "/safety-sustainability",
-    label: "Safety & Sustainability",
-    icon: ShieldCheck
   },
   {
     path: "/contracts-insurance",
