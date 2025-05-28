@@ -9,7 +9,7 @@ import {
   getContractsByProject, 
   getInsurancesByProject, 
   getMilestonesByProject 
-} from '@/data/contracts/contractsData';
+} from '@/data/contracts/contractUtils';
 import { useProject } from '@/contexts/ProjectContext';
 import { useToast } from '@/hooks/use-toast';
 

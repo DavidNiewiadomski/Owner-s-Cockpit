@@ -19,7 +19,8 @@ import {
   contractMilestones,
   getContractsByProject,
   getInsurancesByProject,
-  getMilestonesByContract
+  getMilestonesByContract,
+  getMilestonesByProject
 } from './contracts/contractsData';
 import {
   designPlansData,
@@ -65,6 +66,7 @@ export {
   getContractsByProject,
   getInsurancesByProject,
   getMilestonesByContract,
+  getMilestonesByProject,
   // Preconstruction data
   designPlansData,
   siteAssessmentsData,
