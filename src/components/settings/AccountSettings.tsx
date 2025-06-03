@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,12 +22,12 @@ interface UserProfile {
 export function AccountSettings() {
   const { toast } = useToast();
   const [profile, setProfile] = useLocalStorage<UserProfile>('userProfile', {
-    firstName: 'Jane',
-    lastName: 'Doe',
-    email: 'jane.doe@example.com',
+    firstName: 'Matt',
+    lastName: 'Grimm',
+    email: 'matt.grimm@example.com',
     company: 'SkyLine Properties LLC',
     role: 'owner',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
   });
 
   const [preferences, setPreferences] = useLocalStorage('ownerPreferences', {
