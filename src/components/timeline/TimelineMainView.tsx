@@ -73,7 +73,7 @@ export function TimelineMainView({
   };
 
   return (
-    <>
+    <div className="space-y-6">
       <div className="mb-6 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Project Timeline</h1>
@@ -142,6 +142,6 @@ export function TimelineMainView({
           </div>
         </div>
       </Tabs>
-    </>
+    </div>
   );
 }

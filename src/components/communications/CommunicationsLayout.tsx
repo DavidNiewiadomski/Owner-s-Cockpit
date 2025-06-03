@@ -4,7 +4,6 @@ import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
 import { CollapsibleAIAssistant } from '@/components/ai/CollapsibleAIAssistant';
 import { Dialog } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface CommunicationsLayoutProps {
   children: React.ReactNode;
@@ -31,7 +30,7 @@ export function CommunicationsLayout({
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader onSearch={setSearchTerm} />
         
-        <ScrollArea className="flex-1">
+        <div className="flex-1 overflow-y-auto">
           <main className="container mx-auto py-6 px-4 md:px-6">
             <CollapsibleAIAssistant 
               projectContext="Communications"
@@ -40,7 +39,7 @@ export function CommunicationsLayout({
             />
             {children}
           </main>
-        </ScrollArea>
+        </div>
       </div>
       
       <Dialog open={!!activeDialog} onOpenChange={handleCloseDialog}>

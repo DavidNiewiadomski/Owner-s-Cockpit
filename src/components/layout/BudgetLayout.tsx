@@ -29,7 +29,7 @@ export function BudgetLayout({ children, onSearch, isLoaded }: BudgetLayoutProps
       <div className="flex-1 flex flex-col overflow-hidden bg-black">
         <DashboardHeader onSearch={onSearch} />
         
-        <main className="flex-1 overflow-y-auto bg-black">
+        <div className="flex-1 overflow-y-auto">
           <div className="p-6">
             <motion.div 
               className="max-w-7xl mx-auto"
@@ -40,7 +40,7 @@ export function BudgetLayout({ children, onSearch, isLoaded }: BudgetLayoutProps
               {children}
             </motion.div>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );

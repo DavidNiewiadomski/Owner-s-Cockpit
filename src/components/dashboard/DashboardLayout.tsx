@@ -27,21 +27,23 @@ export function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
-      <div className="flex">
+      <div className="flex h-screen">
         <SidebarNavigation />
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col overflow-hidden">
           <DashboardHeader 
             title={projectContext}
             subtitle={projectName}
             onSearch={onSearch}
           />
-          <main className="p-6 space-y-6">
-            <AIInsightsCard 
-              insights={initialInsights} 
-              onChatOpen={() => setIsAISheetOpen(true)} 
-            />
-            {children}
-          </main>
+          <div className="flex-1 overflow-y-auto">
+            <main className="p-6 space-y-6">
+              <AIInsightsCard 
+                insights={initialInsights} 
+                onChatOpen={() => setIsAISheetOpen(true)} 
+              />
+              {children}
+            </main>
+          </div>
         </div>
       </div>
       
