@@ -28,23 +28,23 @@ export const notifications = [
 
 export const dashboardInsights = [
   {
-    title: "Schedule Update",
-    content: "Foundation work is ahead of schedule by 3 days.",
-    type: "success" as const
-  },
-  {
-    title: "Budget Alert",
-    content: "Electrical subcontractor costs are 5% over projections.",
-    type: "warning" as const
-  },
-  {
-    title: "Weather Impact",
-    content: "Incoming storm system may affect exterior work next week.",
+    title: "RFP Auto-Review Alert",
+    content: "4 new RFPs received for East Tower project. AI analysis detected potential cost savings of 12% in electrical subcontracting bids.",
     type: "info" as const
   },
   {
-    title: "Material Delay",
-    content: "Custom glass panels shipment delayed by 2 weeks.",
+    title: "Contract Approval Bottleneck",
+    content: "18 contracts pending approval across portfolio. 6 are critical path items that may impact Q2 delivery timelines.",
     type: "warning" as const
+  },
+  {
+    title: "Financial Forecast Update",
+    content: "Q2 portfolio projection shows $342M total value with 8% above projected returns. Harbor Bridge contributing highest margin.",
+    type: "success" as const
+  },
+  {
+    title: "Project Pipeline Status",
+    content: "2 projects moving from site selection to preconstruction phase. Resource allocation optimization recommended for Q3 starts.",
+    type: "info" as const
   }
 ];
