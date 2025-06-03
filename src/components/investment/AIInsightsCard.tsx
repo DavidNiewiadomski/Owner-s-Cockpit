@@ -11,6 +11,9 @@ interface AIInsightsCardProps {
 }
 
 export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
+  // Ensure we always show exactly 4 insights
+  const displayInsights = insights.slice(0, 4);
+
   return (
     <Card className="h-full overflow-hidden bg-gradient-to-br from-gray-900/95 to-black border-gray-800/50 shadow-xl animate-fade-in transition-all duration-300 hover:translate-y-[-4px] mb-6">
       {/* Color gradient top border */}
@@ -40,28 +43,28 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
           </Button>
         </div>
         
-        <div className="flex gap-4 overflow-x-auto">
-          {insights.map((insight, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {displayInsights.map((insight, index) => (
             <div 
               key={index} 
-              className="group relative p-5 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-4px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 min-w-[280px] flex-shrink-0"
+              className="group relative p-4 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-2px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 flex flex-col h-full"
               onClick={onChatOpen}
             >
               <div className="flex items-start gap-3 h-full">
-                <div className={`p-3 rounded-full border flex-shrink-0 ${
+                <div className={`p-2 rounded-full border flex-shrink-0 ${
                   insight.type === "warning" 
                     ? "bg-amber-500/20 text-amber-400 border-amber-700/40" 
                     : insight.type === "success" 
                     ? "bg-green-500/20 text-green-400 border-green-700/40" 
                     : "bg-cyan-500/20 text-cyan-400 border-cyan-700/40"
                 }`}>
-                  <LightbulbIcon className="h-5 w-5" />
+                  <LightbulbIcon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors break-words hyphens-auto">
+                  <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors leading-tight">
                     {insight.title}
                   </p>
-                  <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words hyphens-auto whitespace-normal overflow-wrap-anywhere">
+                  <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words hyphens-auto line-clamp-4">
                     {insight.content}
                   </p>
                 </div>
@@ -69,7 +72,7 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
               
               {/* Add a subtle glow effect at the bottom */}
               <div className="absolute bottom-0 left-0 right-0 h-1 opacity-30">
-                <div className={`h-full w-16 mx-auto rounded-t-full blur-md ${
+                <div className={`h-full w-12 mx-auto rounded-t-full blur-sm ${
                   insight.type === "warning" 
                     ? "bg-amber-400" 
                     : insight.type === "success" 
