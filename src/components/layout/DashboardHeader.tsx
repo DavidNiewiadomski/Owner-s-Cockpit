@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -52,7 +51,7 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
     email: 'matt.grimm@example.com',
     company: 'SkyLine Properties LLC',
     role: 'owner',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+    avatar: '/lovable-uploads/a60047d2-3881-445d-b3a0-2795e70da2db.png'
   });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
