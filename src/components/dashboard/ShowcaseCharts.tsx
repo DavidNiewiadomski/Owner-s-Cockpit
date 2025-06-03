@@ -29,7 +29,8 @@ import {
   Cell,
   ComposedChart,
   Bar,
-  Line
+  Line,
+  BarChart
 } from 'recharts';
 
 // Energy consumption data to match the screenshot
