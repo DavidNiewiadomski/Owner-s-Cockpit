@@ -22,109 +22,137 @@ import {
   Building2,
   Wrench
 } from 'lucide-react';
+import { Permission } from '@/contexts/PermissionsContext';
 
-export const navigationItems = [
+interface NavItem {
+  path: string;
+  label: string;
+  icon: any;
+  permission: Permission;
+}
+
+export const navigationItems: NavItem[] = [
   {
     path: "/",
     label: "Dashboard",
-    icon: LayoutDashboard
+    icon: LayoutDashboard,
+    permission: 'dashboard'
   },
   {
     path: "/analytics",
     label: "Analytics",
-    icon: BarChart
+    icon: BarChart,
+    permission: 'analytics'
   },
   {
     path: "/action-items",
     label: "Action Items",
-    icon: ListChecks
+    icon: ListChecks,
+    permission: 'action-items'
   },
   {
     path: "/budget-financials",
     label: "Budget & Financials",
-    icon: Wallet
+    icon: Wallet,
+    permission: 'budget-financials'
   },
   {
     path: "/timeline",
     label: "Timeline",
-    icon: Calendar
+    icon: Calendar,
+    permission: 'timeline'
   },
   {
     path: "/quality-control",
     label: "Quality Control",
-    icon: ClipboardCheck
+    icon: ClipboardCheck,
+    permission: 'quality-control'
   },
   {
     path: "/safety-sustainability",
     label: "Safety & Sustainability",
-    icon: ShieldCheck
+    icon: ShieldCheck,
+    permission: 'safety-sustainability'
   },
   {
     path: "/site-selection",
     label: "Site Selection",
-    icon: MapPin
+    icon: MapPin,
+    permission: 'site-selection'
   },
   {
     path: "/preconstruction",
     label: "Preconstruction",
-    icon: HardHat
+    icon: HardHat,
+    permission: 'preconstruction'
   },
   {
     path: "/procurement",
     label: "Procurement",
-    icon: Users
+    icon: Users,
+    permission: 'procurement'
   },
   {
     path: "/resource-management",
     label: "Resources",
-    icon: Truck
+    icon: Truck,
+    permission: 'resource-management'
   },
   {
     path: "/investment-impact",
     label: "Investment Impact",
-    icon: DollarSign
+    icon: DollarSign,
+    permission: 'investment-impact'
   },
   {
     path: "/contracts-insurance",
     label: "Contracts & Insurance",
-    icon: ScrollText
+    icon: ScrollText,
+    permission: 'contracts-insurance'
   },
   {
     path: "/documents",
     label: "Documents",
-    icon: FileText
+    icon: FileText,
+    permission: 'documents'
   },
   {
     path: "/facilities-management",
     label: "Facilities Management",
-    icon: Building2
+    icon: Building2,
+    permission: 'facilities-management'
   },
   {
     path: "/communications",
     label: "Communications",
-    icon: MessageSquare
+    icon: MessageSquare,
+    permission: 'communications'
   }
 ];
 
-export const utilityItems = [
+export const utilityItems: NavItem[] = [
   {
     path: "/integrations",
     label: "Integrations",
-    icon: Layers
+    icon: Layers,
+    permission: 'integrations'
   },
   {
     path: "/settings",
     label: "Settings",
-    icon: Settings
+    icon: Settings,
+    permission: 'settings'
   },
   {
     path: "/customize",
     label: "Customize",
-    icon: Brush
+    icon: Brush,
+    permission: 'settings' // Use settings permission for customize
   },
   {
     path: "/export",
     label: "Export",
-    icon: Download
+    icon: Download,
+    permission: 'settings' // Use settings permission for export
   }
 ];

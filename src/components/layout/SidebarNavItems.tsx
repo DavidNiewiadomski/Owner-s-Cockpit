@@ -5,16 +5,10 @@ import { SidebarNavItem } from './SidebarNavItem';
 import { Separator } from '@/components/ui/separator';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ExportMenu } from './ExportMenu';
-
-interface NavItem {
-  path: string;
-  label: string;
-  icon: LucideIcon;
-}
+import { usePermissions } from '@/contexts/PermissionsContext';
+import { navigationItems, utilityItems } from './sidebarConfig';
 
 interface SidebarNavItemsProps {
-  navItems: NavItem[];
-  utilityItems: NavItem[];
   isActive: (path: string) => boolean;
   collapsed: boolean;
   onCustomizeClick?: () => void;
@@ -22,8 +16,6 @@ interface SidebarNavItemsProps {
 }
 
 export function SidebarNavItems({ 
-  navItems, 
-  utilityItems,
   isActive, 
   collapsed,
   onCustomizeClick,
@@ -31,6 +23,11 @@ export function SidebarNavItems({
 }: SidebarNavItemsProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { hasPermission } = usePermissions();
+
+  // Filter navigation items based on permissions
+  const visibleNavItems = navigationItems.filter(item => hasPermission(item.permission));
+  const visibleUtilityItems = utilityItems.filter(item => hasPermission(item.permission));
 
   const handleSpecialItemClick = (path: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -52,7 +49,7 @@ export function SidebarNavItems({
 
   return (
     <div className="flex flex-col w-full gap-1">
-      {navItems.map((item) => (
+      {visibleNavItems.map((item) => (
         <SidebarNavItem
           key={item.path}
           to={item.path}
@@ -63,9 +60,9 @@ export function SidebarNavItems({
         />
       ))}
       
-      <Separator className="my-2 bg-gray-800" />
+      {visibleUtilityItems.length > 0 && <Separator className="my-2 bg-gray-800" />}
       
-      {utilityItems.map((item) => {
+      {visibleUtilityItems.map((item) => {
         // Special case for Export button
         if (item.path === '/export') {
           return (

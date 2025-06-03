@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
 import { SidebarNavigation } from '@/components/layout/SidebarNavigation';
@@ -12,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { PermissionsManager } from '@/components/permissions/PermissionsManager';
 
 const Settings = () => {
   return (
@@ -29,12 +29,17 @@ const Settings = () => {
           <Tabs defaultValue="account" className="w-full">
             <TabsList className="mb-6 bg-muted">
               <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="permissions">Permissions</TabsTrigger>
               <TabsTrigger value="appearance">Appearance</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="projects">Projects</TabsTrigger>
               <TabsTrigger value="billing">Billing</TabsTrigger>
               <TabsTrigger value="team">Team</TabsTrigger>
             </TabsList>
+            
+            <TabsContent value="permissions">
+              <PermissionsManager />
+            </TabsContent>
             
             <TabsContent value="account">
               <div className="grid gap-6 md:grid-cols-6">

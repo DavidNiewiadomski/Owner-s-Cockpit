@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SidebarHeader } from './SidebarHeader';
 import { SidebarNavItems } from './SidebarNavItems';
-import { navigationItems, utilityItems } from './sidebarConfig';
 
 interface SidebarNavigationProps {
   className?: string;
@@ -46,8 +45,6 @@ export function SidebarNavigation({
       <ScrollArea className="h-[calc(100vh-4rem)]">
         <div className="px-3 py-2">
           <SidebarNavItems 
-            navItems={navigationItems}
-            utilityItems={utilityItems}
             isActive={isActive}
             collapsed={collapsed}
             onCustomizeClick={onCustomizeClick}

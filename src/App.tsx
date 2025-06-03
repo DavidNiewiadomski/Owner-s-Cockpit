@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { ToastProvider } from '@/hooks/toast';
 import { ProjectProvider } from '@/contexts/ProjectContext';
+import { PermissionsProvider } from '@/contexts/PermissionsContext';
 import Index from '@/pages/Index';
 import Timeline from '@/pages/Timeline';
 import Analytics from '@/pages/Analytics';
@@ -32,44 +33,46 @@ import './App.css';
 
 function App() {
   return (
-    <ProjectProvider>
-      <ToastProvider>
-        <BrowserRouter>
-          <div className="app">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/site-selection" element={<SiteSelection />} />
-              <Route path="/preconstruction" element={<Preconstruction />} />
-              <Route path="/procurement" element={<Procurement />} />
-              <Route path="/quality-control" element={<QualityControl />} />
-              <Route path="/resource-management" element={<ResourceManagement />} />
-              <Route path="/facilities-management" element={<FacilitiesManagement />} />
-              <Route path="/timeline" element={<Timeline />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/budget-financials" element={<BudgetFinancials />} />
-              <Route path="/documents" element={<Documents />} />
-              <Route path="/communications" element={<Communications />} />
-              <Route path="/investment-impact" element={<InvestmentImpact />} />
-              <Route path="/action-items" element={<ActionItems />} />
-              <Route path="/safety-sustainability" element={<SafetySustainability />} />
-              <Route path="/contracts-insurance" element={<ContractsInsurance />} />
-              <Route path="/risk-mitigation-plans" element={<RiskMitigationPlans />} />
-              <Route path="/meeting-details" element={<MeetingDetails />} />
-              <Route path="/integrations" element={<Integrations />} />
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/customize" element={<Customize />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            
-            {/* Owner's AI Agent */}
-            <OwnerAgentButton />
-            
-            <Toaster />
-          </div>
-        </BrowserRouter>
-      </ToastProvider>
-    </ProjectProvider>
+    <PermissionsProvider>
+      <ProjectProvider>
+        <ToastProvider>
+          <BrowserRouter>
+            <div className="app">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/site-selection" element={<SiteSelection />} />
+                <Route path="/preconstruction" element={<Preconstruction />} />
+                <Route path="/procurement" element={<Procurement />} />
+                <Route path="/quality-control" element={<QualityControl />} />
+                <Route path="/resource-management" element={<ResourceManagement />} />
+                <Route path="/facilities-management" element={<FacilitiesManagement />} />
+                <Route path="/timeline" element={<Timeline />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/budget-financials" element={<BudgetFinancials />} />
+                <Route path="/documents" element={<Documents />} />
+                <Route path="/communications" element={<Communications />} />
+                <Route path="/investment-impact" element={<InvestmentImpact />} />
+                <Route path="/action-items" element={<ActionItems />} />
+                <Route path="/safety-sustainability" element={<SafetySustainability />} />
+                <Route path="/contracts-insurance" element={<ContractsInsurance />} />
+                <Route path="/risk-mitigation-plans" element={<RiskMitigationPlans />} />
+                <Route path="/meeting-details" element={<MeetingDetails />} />
+                <Route path="/integrations" element={<Integrations />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/customize" element={<Customize />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              
+              {/* Owner's AI Agent */}
+              <OwnerAgentButton />
+              
+              <Toaster />
+            </div>
+          </BrowserRouter>
+        </ToastProvider>
+      </ProjectProvider>
+    </PermissionsProvider>
   );
 }
 
