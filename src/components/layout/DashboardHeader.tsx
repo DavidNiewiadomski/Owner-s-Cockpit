@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProjectSelector } from '@/components/project/ProjectSelector';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 export interface DashboardHeaderProps {
   onSearch?: (term: string) => void;
@@ -31,10 +32,28 @@ export interface DashboardHeaderProps {
   subtitle?: string;
 }
 
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  role: string;
+  avatar: string;
+}
+
 export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderProps) {
   const [searchValue, setSearchValue] = useState('');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const isMobile = useIsMobile();
+  
+  const [profile] = useLocalStorage<UserProfile>('userProfile', {
+    firstName: 'Matt',
+    lastName: 'Grimm',
+    email: 'matt.grimm@example.com',
+    company: 'SkyLine Properties LLC',
+    role: 'owner',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+  });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -120,10 +139,10 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=256&h=256&fit=crop&crop=faces" />
-                    <AvatarFallback>MS</AvatarFallback>
+                    <AvatarImage src={profile.avatar} />
+                    <AvatarFallback>{profile.firstName[0]}{profile.lastName[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:inline-flex">Michael Smith</span>
+                  <span className="hidden md:inline-flex">{profile.firstName} {profile.lastName}</span>
                   <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 </Button>
               </DropdownMenuTrigger>
