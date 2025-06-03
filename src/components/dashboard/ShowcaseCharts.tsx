@@ -8,7 +8,8 @@ import {
   TrendingUp, 
   Target,
   Activity,
-  Zap
+  Zap,
+  Building
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -30,6 +31,24 @@ import {
   Bar,
   Line
 } from 'recharts';
+
+// Energy consumption data to match the screenshot
+const energyConsumptionData = [
+  { month: 'Jan', consumption: 13000, cost: 1800 },
+  { month: 'Feb', consumption: 12000, cost: 1750 },
+  { month: 'Mar', consumption: 13500, cost: 1850 },
+  { month: 'Apr', consumption: 11000, cost: 1600 },
+  { month: 'May', consumption: 15500, cost: 2100 },
+  { month: 'Jun', consumption: 16000, cost: 2200 }
+];
+
+// Building efficiency data to match the screenshot
+const buildingEfficiencyData = [
+  { name: 'Building A', current: 92, target: 95 },
+  { name: 'Building B', current: 88, target: 95 },
+  { name: 'Building C', current: 98, target: 95 },
+  { name: 'Building D', current: 89, target: 95 }
+];
 
 // Enhanced showcase data
 const performanceData = [
@@ -77,11 +96,166 @@ export function ShowcaseCharts() {
 
   return (
     <div className="space-y-8">
-      {/* Hero Chart Section */}
+      {/* Energy Charts Section - Top Priority */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Energy Consumption Trend */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <Card className="bg-gradient-to-br from-black via-gray-900 to-black border-orange-500/30 shadow-[0_0_30px_rgba(251,146,60,0.2)] h-full">
+            <CardHeader className="pb-4 bg-gradient-to-r from-orange-950/50 to-transparent border-b border-orange-500/20">
+              <CardTitle className="text-xl text-white flex items-center">
+                <Zap className="h-6 w-6 mr-3 text-orange-400" />
+                Energy Consumption Trend
+              </CardTitle>
+              <p className="text-gray-300">Monthly energy usage and costs</p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="h-80 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={energyConsumptionData}>
+                    <defs>
+                      <linearGradient id="consumptionGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#FB923C" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#F97316" stopOpacity={0.3}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(251, 146, 60, 0.1)" />
+                    <XAxis 
+                      dataKey="month" 
+                      tick={{ fill: '#FB923C', fontSize: 14, fontWeight: 500 }}
+                      axisLine={{ stroke: 'rgba(251, 146, 60, 0.3)' }}
+                    />
+                    <YAxis 
+                      yAxisId="consumption"
+                      orientation="left"
+                      tickFormatter={(value) => `${value/1000}k`}
+                      tick={{ fill: '#FB923C', fontSize: 14, fontWeight: 500 }}
+                      axisLine={{ stroke: 'rgba(251, 146, 60, 0.3)' }}
+                    />
+                    <YAxis 
+                      yAxisId="cost"
+                      orientation="right"
+                      tickFormatter={(value) => `$${value}`}
+                      tick={{ fill: '#10B981', fontSize: 14, fontWeight: 500 }}
+                      axisLine={{ stroke: 'rgba(16, 185, 129, 0.3)' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)', 
+                        border: '1px solid rgba(251, 146, 60, 0.5)', 
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 20px rgba(251, 146, 60, 0.3)'
+                      }}
+                      labelStyle={{ color: '#FB923C', fontWeight: 'bold' }}
+                    />
+                    <Legend 
+                      wrapperStyle={{ paddingTop: '15px' }}
+                      formatter={(value) => <span style={{ color: '#E2E8F0', fontWeight: '600' }}>{value}</span>}
+                    />
+                    <Line 
+                      yAxisId="consumption"
+                      type="monotone" 
+                      dataKey="consumption" 
+                      stroke="#FB923C"
+                      strokeWidth={3}
+                      dot={{ fill: '#FB923C', strokeWidth: 2, r: 6 }}
+                      activeDot={{ r: 8, stroke: '#FFFFFF', strokeWidth: 2 }}
+                      name="Consumption (kWh)"
+                      animationDuration={2000}
+                    />
+                    <Line 
+                      yAxisId="cost"
+                      type="monotone" 
+                      dataKey="cost" 
+                      stroke="#10B981"
+                      strokeWidth={2}
+                      dot={{ fill: '#10B981', strokeWidth: 2, r: 5 }}
+                      activeDot={{ r: 7, stroke: '#FFFFFF', strokeWidth: 2 }}
+                      name="Cost ($)"
+                      animationDuration={2000}
+                      animationBegin={500}
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Building Efficiency Scores */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          <Card className="bg-gradient-to-br from-blue-900/20 via-black to-cyan-900/20 border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.2)] h-full">
+            <CardHeader className="pb-4 bg-gradient-to-r from-blue-950/50 to-transparent border-b border-blue-500/20">
+              <CardTitle className="text-xl text-white flex items-center">
+                <Building className="h-6 w-6 mr-3 text-blue-400" />
+                Building Efficiency Scores
+              </CardTitle>
+              <p className="text-gray-300">Energy efficiency by building</p>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="h-80 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={buildingEfficiencyData} barCategoryGap="20%">
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(59, 130, 246, 0.1)" />
+                    <XAxis 
+                      dataKey="name" 
+                      tick={{ fill: '#60A5FA', fontSize: 14, fontWeight: 500 }}
+                      axisLine={{ stroke: 'rgba(59, 130, 246, 0.3)' }}
+                    />
+                    <YAxis 
+                      domain={[0, 100]}
+                      tick={{ fill: '#E2E8F0', fontSize: 14, fontWeight: 500 }}
+                      axisLine={{ stroke: 'rgba(59, 130, 246, 0.3)' }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(0, 0, 0, 0.9)', 
+                        border: '1px solid rgba(59, 130, 246, 0.5)', 
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 20px rgba(59, 130, 246, 0.3)'
+                      }}
+                      labelStyle={{ color: '#60A5FA', fontWeight: 'bold' }}
+                      formatter={(value, name) => [`${value}%`, name === 'current' ? 'Current Efficiency %' : 'Target %']}
+                    />
+                    <Legend 
+                      wrapperStyle={{ paddingTop: '15px' }}
+                      formatter={(value) => <span style={{ color: '#E2E8F0', fontWeight: '600' }}>{value === 'current' ? 'Current Efficiency %' : 'Target %'}</span>}
+                    />
+                    <Bar 
+                      dataKey="current" 
+                      fill="#3B82F6"
+                      name="current"
+                      radius={[4, 4, 0, 0]}
+                      animationDuration={1500}
+                    />
+                    <Bar 
+                      dataKey="target" 
+                      fill="#10B981"
+                      name="target"
+                      radius={[4, 4, 0, 0]}
+                      animationDuration={1500}
+                      animationBegin={300}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Revenue & Project Performance - Moved Down */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
       >
         <Card className="bg-gradient-to-br from-black via-gray-900 to-black border-cyan-500/30 shadow-[0_0_50px_rgba(0,212,255,0.3)] overflow-hidden">
           <CardHeader className="pb-4 bg-gradient-to-r from-cyan-950/50 via-transparent to-purple-950/50 border-b border-cyan-500/20">
@@ -204,7 +378,7 @@ export function ShowcaseCharts() {
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
           <Card className="bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20 border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] h-full">
             <CardHeader className="pb-4 bg-gradient-to-r from-purple-950/50 to-transparent border-b border-purple-500/20">
@@ -276,7 +450,7 @@ export function ShowcaseCharts() {
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
         >
           <Card className="bg-gradient-to-br from-emerald-900/20 via-black to-cyan-900/20 border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.2)] h-full">
             <CardHeader className="pb-4 bg-gradient-to-r from-emerald-950/50 to-transparent border-b border-emerald-500/20">
@@ -345,7 +519,7 @@ export function ShowcaseCharts() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.8 }}
+        transition={{ delay: 1.0, duration: 0.8 }}
       >
         <Card className="bg-gradient-to-r from-orange-900/20 via-black to-red-900/20 border-orange-500/30 shadow-[0_0_30px_rgba(249,115,22,0.2)]">
           <CardHeader className="pb-4 bg-gradient-to-r from-orange-950/50 to-transparent border-b border-orange-500/20">
