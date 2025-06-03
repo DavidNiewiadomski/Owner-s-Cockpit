@@ -5,14 +5,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
-  Building2, 
+  FileText, 
   DollarSign, 
-  Users, 
+  CheckCircle, 
   AlertTriangle,
   TrendingUp,
   ArrowUpRight,
-  FileText,
-  CheckCircle,
   BarChart3,
   Calendar
 } from 'lucide-react';
@@ -20,40 +18,40 @@ import {
 export function DashboardHeader() {
   const stats = [
     {
-      title: 'Active Projects',
-      value: '12',
-      subtitle: '+2 this month',
-      icon: <Building2 className="h-8 w-8" />,
+      title: 'RFP Management',
+      value: '24',
+      subtitle: 'Auto Review & Leveling/AI Insights',
+      icon: <FileText className="h-8 w-8" />,
       gradient: 'from-blue-600 via-blue-700 to-blue-800',
       iconBg: 'bg-blue-500/20',
       trend: 'up'
     },
     {
-      title: 'Total Budget',
-      value: '$125,000,000',
-      subtitle: '63% utilized',
-      icon: <DollarSign className="h-8 w-8" />,
+      title: 'Contracts & Approvals',
+      value: '18',
+      subtitle: 'Pending from any project stage',
+      icon: <CheckCircle className="h-8 w-8" />,
+      gradient: 'from-orange-600 via-orange-700 to-orange-800',
+      iconBg: 'bg-orange-500/20',
+      trend: 'critical'
+    },
+    {
+      title: 'Financial Forecasting',
+      value: '$342M',
+      subtitle: 'Portfolio per quarter projection',
+      icon: <BarChart3 className="h-8 w-8" />,
       gradient: 'from-green-600 via-green-700 to-green-800',
       iconBg: 'bg-green-500/20',
       trend: 'up'
     },
     {
-      title: 'Team Members',
-      value: '156',
-      subtitle: 'Across 12 projects',
-      icon: <Users className="h-8 w-8" />,
-      gradient: 'from-orange-600 via-orange-700 to-orange-800',
-      iconBg: 'bg-orange-500/20',
-      trend: 'stable'
-    },
-    {
-      title: 'Critical Tasks',
-      value: '8',
-      subtitle: 'Require immediate attention',
-      icon: <AlertTriangle className="h-8 w-8" />,
-      gradient: 'from-red-600 via-red-700 to-red-800',
-      iconBg: 'bg-red-500/20',
-      trend: 'critical'
+      title: 'Active Projects',
+      value: '12',
+      subtitle: 'Site selection to operations',
+      icon: <Calendar className="h-8 w-8" />,
+      gradient: 'from-purple-600 via-purple-700 to-purple-800',
+      iconBg: 'bg-purple-500/20',
+      trend: 'up'
     }
   ];
 
