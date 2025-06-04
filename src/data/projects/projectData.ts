@@ -19,7 +19,7 @@ export interface Project {
 export const projects = [
   {
     id: "1",
-    title: "Arsenal-1 Hyperscale Manufacturing",
+    title: "Arsenal-1 Hyperscale Manufacturing Complex",
     description: "Advanced manufacturing complex - Pickaway County, OH",
     progress: 35,
     status: "at-risk" as const,
@@ -39,7 +39,7 @@ export const projects = [
   },
   {
     id: "2",
-    title: "Atlanta UAV Allied Studios",
+    title: "Atlanta (UAV \"Allied Studios\")",
     description: "1435 Hills Pl. NW, Atlanta GA 30318",
     progress: 68,
     status: "on-track" as const,
