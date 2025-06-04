@@ -1,32 +1,49 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Eye, BarChart3, Download, Plus, Star, Navigation } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { MapPin, Eye, BarChart3, Download, Plus, Star, Navigation, TrendingUp, DollarSign, Clock, Users } from 'lucide-react';
 import { siteAnalysisData, siteComparisonData } from '@/data/site-selection/siteSelectionData';
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line } from 'recharts';
 
 export function SiteAnalysis() {
   const [selectedSite, setSelectedSite] = useState(siteAnalysisData[0]);
+  const [showSiteRankings, setShowSiteRankings] = useState(true);
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      {/* Toggle for Site Rankings */}
+      <div className="flex items-center space-x-2 mb-4">
+        <Switch
+          id="site-rankings"
+          checked={showSiteRankings}
+          onCheckedChange={setShowSiteRankings}
+        />
+        <Label htmlFor="site-rankings" className="text-gray-300">Show Site Rankings Panel</Label>
+      </div>
+
+      <div className={`grid gap-6 ${showSiteRankings ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1'}`}>
+        <div className={showSiteRankings ? 'lg:col-span-2' : 'col-span-1'}>
           <SiteListCard onSiteSelect={setSelectedSite} />
         </div>
-        <div>
-          <SiteDetailsCard site={selectedSite} />
-        </div>
+        {showSiteRankings && (
+          <div className="space-y-6">
+            <SiteDetailsCard site={selectedSite} />
+            <SiteMetricsCard site={selectedSite} />
+            <SiteTimelineCard site={selectedSite} />
+          </div>
+        )}
       </div>
       
       <Tabs defaultValue="comparison" className="w-full">
         <TabsList className="bg-gray-900 text-gray-400 border border-gray-800">
           <TabsTrigger value="comparison">Site Comparison</TabsTrigger>
           <TabsTrigger value="radar">Performance Radar</TabsTrigger>
+          <TabsTrigger value="trends">Market Trends</TabsTrigger>
           <TabsTrigger value="map">Location Map</TabsTrigger>
         </TabsList>
         
@@ -36,6 +53,10 @@ export function SiteAnalysis() {
         
         <TabsContent value="radar" className="mt-6">
           <SiteRadarChart site={selectedSite} />
+        </TabsContent>
+        
+        <TabsContent value="trends" className="mt-6">
+          <MarketTrendsChart />
         </TabsContent>
         
         <TabsContent value="map" className="mt-6">
@@ -188,6 +209,93 @@ function SiteDetailsCard({ site }: { site: any }) {
   );
 }
 
+function SiteMetricsCard({ site }: { site: any }) {
+  return (
+    <Card className="bg-gray-900 border-gray-800">
+      <CardHeader>
+        <CardTitle className="text-white flex items-center">
+          <TrendingUp className="h-5 w-5 mr-2 text-green-400" />
+          Key Metrics
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center p-3 bg-gray-800/50 rounded-lg">
+            <DollarSign className="h-6 w-6 mx-auto mb-2 text-green-400" />
+            <div className="text-lg font-bold text-white">{site.price}</div>
+            <div className="text-xs text-gray-400">Price per Sq Ft</div>
+          </div>
+          <div className="text-center p-3 bg-gray-800/50 rounded-lg">
+            <Clock className="h-6 w-6 mx-auto mb-2 text-blue-400" />
+            <div className="text-lg font-bold text-white">6-8 Months</div>
+            <div className="text-xs text-gray-400">Est. Timeline</div>
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-400">Market Growth:</span>
+            <span className="text-green-400">+12.5%</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-400">Competition Level:</span>
+            <span className="text-yellow-400">Medium</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-400">Risk Score:</span>
+            <span className="text-red-400">Low</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function SiteTimelineCard({ site }: { site: any }) {
+  return (
+    <Card className="bg-gray-900 border-gray-800">
+      <CardHeader>
+        <CardTitle className="text-white flex items-center">
+          <Clock className="h-5 w-5 mr-2 text-orange-400" />
+          Timeline
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <div className="flex-1">
+              <div className="text-sm text-white">Site Identified</div>
+              <div className="text-xs text-gray-400">Completed</div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+            <div className="flex-1">
+              <div className="text-sm text-white">Due Diligence</div>
+              <div className="text-xs text-gray-400">In Progress</div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+            <div className="flex-1">
+              <div className="text-sm text-gray-400">Environmental Review</div>
+              <div className="text-xs text-gray-400">Pending</div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+            <div className="flex-1">
+              <div className="text-sm text-gray-400">Final Approval</div>
+              <div className="text-xs text-gray-400">Pending</div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function ScoreBar({ label, score }: { label: string; score: number }) {
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'bg-green-500';
@@ -294,6 +402,50 @@ function SiteRadarChart({ site }: { site: any }) {
                 strokeWidth={2}
               />
             </RadarChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MarketTrendsChart() {
+  const trendData = [
+    { month: 'Jan', realEstate: 85, commercial: 78, industrial: 92 },
+    { month: 'Feb', realEstate: 88, commercial: 82, industrial: 89 },
+    { month: 'Mar', realEstate: 92, commercial: 85, industrial: 94 },
+    { month: 'Apr', realEstate: 87, commercial: 88, industrial: 91 },
+    { month: 'May', realEstate: 95, commercial: 91, industrial: 96 },
+    { month: 'Jun', realEstate: 93, commercial: 89, industrial: 93 }
+  ];
+
+  return (
+    <Card className="bg-gray-900 border-gray-800">
+      <CardHeader>
+        <CardTitle className="text-white">Market Trends Analysis</CardTitle>
+        <CardDescription className="text-gray-400">
+          Real estate market performance indicators
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[400px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={trendData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(59, 130, 246, 0.2)" />
+              <XAxis dataKey="month" tick={{ fill: '#94a3b8' }} />
+              <YAxis tick={{ fill: '#94a3b8' }} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#1f2937', 
+                  borderColor: '#374151',
+                  color: '#f3f4f6'
+                }}
+              />
+              <Legend />
+              <Line type="monotone" dataKey="realEstate" stroke="#06b6d4" name="Real Estate" strokeWidth={2} />
+              <Line type="monotone" dataKey="commercial" stroke="#10b981" name="Commercial" strokeWidth={2} />
+              <Line type="monotone" dataKey="industrial" stroke="#f59e0b" name="Industrial" strokeWidth={2} />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </CardContent>
