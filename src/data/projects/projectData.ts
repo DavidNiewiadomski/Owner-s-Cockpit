@@ -1,5 +1,4 @@
 
-
 export interface Project {
   id: string;
   title: string;
@@ -178,4 +177,3 @@ export const mockTimelineEvents = [
 console.log('PROJECT DATA LOADED:', projects.map(p => ({ id: p.id, title: p.title })));
 console.log('FINANCIAL DATA LOADED:', mockFinancialData);
 console.log('TIMELINE EVENTS LOADED:', mockTimelineEvents);
-
