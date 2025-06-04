@@ -75,9 +75,6 @@ const mockTasks: Task[] = [
   }
 ];
 
-// Use the projects from the projectData file
-import { projects } from '@/data/projects/projectData';
-
 // Helper function to check if Supabase is properly configured
 const isSupabaseConfigured = () => {
   return true; // Now properly configured
@@ -110,9 +107,11 @@ export const getCompanies = async (): Promise<Company[]> => {
 };
 
 // Projects
-export const getProjects = async () => {
-  console.log('dataService.getProjects returning:', projects.map(p => ({ id: p.id, title: p.title })));
-  return projects;
+export const getProjects = async (): Promise<Project[]> => {
+  return handleSupabaseError(
+    async () => await supabase.from('projects').select('*').order('created_at', { ascending: false }),
+    mockProjects
+  );
 };
 
 export const getProject = async (id: string): Promise<Project | null> => {
@@ -319,8 +318,7 @@ export const getDashboardStats = async () => {
     getMaterials()
   ]);
   
-  // Fixed: Use correct status comparison for projects
-  const activeProjects = projects.filter(p => p.status === 'on-track' || p.status === 'at-risk' || p.status === 'delayed').length;
+  const activeProjects = projects.filter(p => p.status === 'active').length;
   const pendingTasks = tasks.filter(t => t.status === 'pending').length;
   const criticalTasks = tasks.filter(t => t.priority === 'critical').length;
   const equipmentInUse = equipment.filter(e => e.status === 'in-use').length;
