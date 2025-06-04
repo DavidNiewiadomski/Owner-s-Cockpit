@@ -11,20 +11,20 @@ interface SidebarHeaderProps {
 
 export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProps) {
   return (
-    <div className="flex h-48 items-center px-4 border-b border-gray-800">
+    <div className="flex h-16 items-center px-4 border-b border-gray-800">
       <Link to="/" className="flex items-center gap-2 flex-1">
         {!collapsed && (
           <img 
             src="/lovable-uploads/b1d372ae-8ff5-427c-b3f6-05f6a1576929.png" 
             alt="Logo" 
-            className="h-40 w-auto max-w-full object-contain"
+            className="h-8 w-auto max-w-full object-contain"
           />
         )}
         {collapsed && (
           <img 
             src="/lovable-uploads/b1d372ae-8ff5-427c-b3f6-05f6a1576929.png" 
             alt="Logo" 
-            className="h-32 w-auto max-w-full object-contain"
+            className="h-6 w-auto max-w-full object-contain"
           />
         )}
       </Link>
