@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useProject } from '@/contexts/ProjectContext';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { SiteSelectionDashboard } from '@/components/site-selection/SiteSelectionDashboard';
+import { MainDashboard } from '@/components/dashboard/MainDashboard';
 import { CustomizablePageLayout } from '@/components/customization/CustomizablePageLayout';
 
 const Index = () => {
@@ -11,7 +11,7 @@ const Index = () => {
   
   return (
     <DashboardLayout
-      projectContext="Site Selection Dashboard"
+      projectContext="Construction Management Dashboard"
       projectName={selectedProject?.title || "Construction Management Suite"}
       initialInsights={[
         {
@@ -25,21 +25,21 @@ const Index = () => {
           type: 'warning',
         },
         {
-          title: 'Zoning Approval Needed',
-          content: 'Suburban location requires zoning variance for proposed building height',
-          type: 'warning',
+          title: 'Project Milestone Achieved',
+          content: 'Phase 1 construction completed 2 days ahead of schedule',
+          type: 'success',
         },
         {
-          title: 'Flexsim Simulation Complete',
-          content: 'Manufacturing simulation shows 94% efficiency with optimized layout design',
-          type: 'success',
+          title: 'Budget Alert',
+          content: 'Project Alpha is 5% over budget - review required',
+          type: 'warning',
         }
       ]}
       searchTerm={searchTerm}
       onSearch={setSearchTerm}
     >
       <CustomizablePageLayout pageId="dashboard">
-        <SiteSelectionDashboard />
+        <MainDashboard />
       </CustomizablePageLayout>
     </DashboardLayout>
   );

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package, MapPin, Star } from 'lucide-react';
 import { getDashboardStats, getProjects, getTasks } from '@/services/dataService';
 import type { Project, Task } from '@/lib/supabase';
 
@@ -24,7 +24,7 @@ export function MainDashboard() {
         ]);
         
         setStats(dashboardStats);
-        setRecentProjects(projects.slice(0, 3)); // Show 3 most recent projects
+        setRecentProjects(projects.slice(0, 3));
         setUrgentTasks(tasks.filter(t => t.priority === 'critical' || t.priority === 'high').slice(0, 5));
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -107,11 +107,11 @@ export function MainDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Pending Tasks</p>
-                  <p className="text-2xl font-bold text-white">{stats?.pendingTasks || 0}</p>
+                  <p className="text-sm font-medium text-gray-400">Sites Under Review</p>
+                  <p className="text-2xl font-bold text-white">3</p>
                 </div>
-                <div className="bg-yellow-600 p-3 rounded-full">
-                  <Clock className="h-6 w-6 text-white" />
+                <div className="bg-cyan-600 p-3 rounded-full">
+                  <MapPin className="h-6 w-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -159,7 +159,7 @@ export function MainDashboard() {
         </motion.div>
       </div>
 
-      {/* Recent Projects and Urgent Tasks */}
+      {/* Recent Projects and Site Selection Overview */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Projects */}
         <motion.div
@@ -199,7 +199,7 @@ export function MainDashboard() {
           </Card>
         </motion.div>
 
-        {/* Urgent Tasks */}
+        {/* Site Selection Overview */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -208,11 +208,57 @@ export function MainDashboard() {
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
-                Urgent Tasks
+                <MapPin className="h-5 w-5" />
+                Site Selection Status
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {[
+                { name: 'Downtown Metro', score: 94, status: 'High Priority', color: 'bg-green-600' },
+                { name: 'Industrial East', score: 87, status: 'Under Review', color: 'bg-blue-600' },
+                { name: 'Suburban North', score: 82, status: 'Pending Review', color: 'bg-yellow-600' }
+              ].map((site, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                  <div className="flex-1">
+                    <h4 className="font-medium text-white">{site.name}</h4>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Badge className={`${site.color} text-white`}>
+                        {site.status}
+                      </Badge>
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-yellow-400" />
+                        <span className="text-sm text-gray-400">{site.score}/100</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
+                    View
+                  </Button>
+                </div>
+              ))}
+              <Button className="w-full bg-cyan-600 hover:bg-cyan-700 mt-4">
+                View All Sites
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Urgent Tasks */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+      >
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Urgent Tasks
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {urgentTasks.map((task, index) => (
                 <div key={task.id} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
                   <div className="flex-1">
@@ -229,23 +275,18 @@ export function MainDashboard() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
-                      View
-                    </Button>
-                  </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
+        transition={{ delay: 0.8 }}
       >
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
@@ -261,9 +302,9 @@ export function MainDashboard() {
                 <CheckCircle className="h-6 w-6" />
                 <span className="text-sm">Create Task</span>
               </Button>
-              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700">
-                <Users className="h-6 w-6" />
-                <span className="text-sm">Team Overview</span>
+              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-700">
+                <MapPin className="h-6 w-6" />
+                <span className="text-sm">Site Analysis</span>
               </Button>
               <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700">
                 <Package className="h-6 w-6" />
