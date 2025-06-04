@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -48,13 +47,13 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
   const isMobile = useIsMobile();
   
   const [profile] = useLocalStorage<UserProfile>('userProfile', {
-    firstName: 'Matt',
-    lastName: 'Grimm',
-    email: 'matt.grimm@company.com',
+    firstName: 'Connor',
+    lastName: 'Brogan',
+    email: 'connor.brogan@company.com',
     company: 'Real Estate Development Corp',
-    role: 'coo',
-    title: 'Chief Operating Officer',
-    avatar: '/lovable-uploads/a60047d2-3881-445d-b3a0-2795e70da2db.png'
+    role: 'operations',
+    title: 'Business Operations',
+    avatar: '/lovable-uploads/28e601bd-1f3d-4b35-8758-771baf012563.png'
   });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
