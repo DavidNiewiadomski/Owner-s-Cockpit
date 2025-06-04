@@ -19,58 +19,39 @@ export interface Project {
 export const projects = [
   {
     id: "1",
-    title: "Arsenal-1 hyperscale manufacturing complex",
-    description: "Pickaway County, OH",
-    progress: 35,
-    status: "at-risk" as const,
+    title: "Downtown Office Complex",
+    description: "Downtown Business District",
+    progress: 65,
+    status: "on-track" as const,
     dueDate: "2025-03-15",
     startDate: "2023-11-01",
-    budget: "$45.7M",
-    client: "Industrial Partners LLC",
-    location: "Pickaway County, OH",
-    phase: "Foundation & Structure",
+    budget: "$15,000,000",
+    client: "Downtown Development Corp",
+    location: "Downtown Business District",
+    phase: "Construction Phase",
     stage: "construction" as const,
     teamMembers: [
-      { name: "Robert Martinez" },
-      { name: "Lisa Thompson" }
+      { name: "Sarah Johnson" },
+      { name: "Mike Chen" }
     ],
     priority: "High" as const
   },
   {
     id: "2",
-    title: "Atlanta (UAV \"Allied Studios\")",
-    description: "1435 Hills Pl. NW, Atlanta GA 30318",
-    progress: 68,
+    title: "Riverside Residential Tower",
+    description: "Riverside District",
+    progress: 42,
     status: "on-track" as const,
     dueDate: "2024-12-20",
     startDate: "2024-01-10",
-    budget: "$18.9M",
-    client: "Allied Studios Corp",
-    location: "Atlanta, GA",
-    phase: "Interior & Systems",
+    budget: "$28,000,000",
+    client: "Riverside Properties LLC",
+    location: "Riverside District",
+    phase: "Foundation & Structure",
     stage: "construction" as const,
     teamMembers: [
-      { name: "Carlos Rivera" },
-      { name: "Amanda Foster" }
-    ],
-    priority: "High" as const
-  },
-  {
-    id: "3",
-    title: "Quonset Point AUV plant",
-    description: "Flex Tech Park Bldg 11, Quonset Business Park, North Kingstown RI 02852",
-    progress: 22,
-    status: "delayed" as const,
-    dueDate: "2025-06-30",
-    startDate: "2024-03-01",
-    budget: "$28.4M",
-    client: "Maritime Technologies Inc",
-    location: "North Kingstown, RI", 
-    phase: "Site Preparation",
-    stage: "construction" as const,
-    teamMembers: [
-      { name: "James Wilson" },
-      { name: "Patricia Lee" }
+      { name: "Alex Rivera" },
+      { name: "Emily Davis" }
     ],
     priority: "High" as const
   }
