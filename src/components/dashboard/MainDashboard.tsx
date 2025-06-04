@@ -108,20 +108,20 @@ export function MainDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Enhanced Stats Overview */}
+      {/* Enhanced Stats Overview - Fixed Sizing */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 relative overflow-hidden h-[140px]">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent"></div>
-            <CardContent className="p-6 relative">
+            <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-blue-200">Active Projects</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-blue-200 truncate">Active Projects</p>
                   <p className="text-3xl font-bold text-white">{stats?.activeProjects || 12}</p>
                   <p className="text-xs text-blue-300 mt-1">+2 from last month</p>
                 </div>
-                <div className="bg-blue-600/30 p-4 rounded-full backdrop-blur-sm">
-                  <TrendingUp className="h-8 w-8 text-blue-200" />
+                <div className="bg-blue-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
+                  <TrendingUp className="h-6 w-6 text-blue-200" />
                 </div>
               </div>
             </CardContent>
@@ -129,17 +129,17 @@ export function MainDashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700 relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700 relative overflow-hidden h-[140px]">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-transparent"></div>
-            <CardContent className="p-6 relative">
+            <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-cyan-200">Sites Under Review</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-cyan-200 truncate">Sites Under Review</p>
                   <p className="text-3xl font-bold text-white">3</p>
                   <p className="text-xs text-cyan-300 mt-1">Final selection pending</p>
                 </div>
-                <div className="bg-cyan-600/30 p-4 rounded-full backdrop-blur-sm">
-                  <MapPin className="h-8 w-8 text-cyan-200" />
+                <div className="bg-cyan-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
+                  <MapPin className="h-6 w-6 text-cyan-200" />
                 </div>
               </div>
             </CardContent>
@@ -147,17 +147,17 @@ export function MainDashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <Card className="bg-gradient-to-br from-green-900 to-green-800 border-green-700 relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-green-900 to-green-800 border-green-700 relative overflow-hidden h-[140px]">
             <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-transparent"></div>
-            <CardContent className="p-6 relative">
+            <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-green-200">Total Investment</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-green-200 truncate">Total Investment</p>
                   <p className="text-3xl font-bold text-white">$45.2M</p>
                   <p className="text-xs text-green-300 mt-1">Across all sites</p>
                 </div>
-                <div className="bg-green-600/30 p-4 rounded-full backdrop-blur-sm">
-                  <DollarSign className="h-8 w-8 text-green-200" />
+                <div className="bg-green-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
+                  <DollarSign className="h-6 w-6 text-green-200" />
                 </div>
               </div>
             </CardContent>
@@ -165,17 +165,17 @@ export function MainDashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <Card className="bg-gradient-to-br from-orange-900 to-orange-800 border-orange-700 relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-orange-900 to-orange-800 border-orange-700 relative overflow-hidden h-[140px]">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-transparent"></div>
-            <CardContent className="p-6 relative">
+            <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-orange-200">Expected ROI</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-orange-200 truncate">Expected ROI</p>
                   <p className="text-3xl font-bold text-white">22.1%</p>
                   <p className="text-xs text-orange-300 mt-1">Site C leading</p>
                 </div>
-                <div className="bg-orange-600/30 p-4 rounded-full backdrop-blur-sm">
-                  <Target className="h-8 w-8 text-orange-200" />
+                <div className="bg-orange-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
+                  <Target className="h-6 w-6 text-orange-200" />
                 </div>
               </div>
             </CardContent>
