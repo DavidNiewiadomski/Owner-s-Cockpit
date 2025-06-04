@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProjectSelector } from '@/components/project/ProjectSelector';
@@ -8,6 +9,29 @@ import { NotificationsDropdown } from './header/NotificationsDropdown';
 import { UserProfileDropdown } from './header/UserProfileDropdown';
 import { HeaderTitle } from './header/HeaderTitle';
 import { MobileMenuButton } from './header/MobileMenuButton';
+
+// Route to title mapping
+const routeTitles: Record<string, string> = {
+  '/': 'Dashboard',
+  '/analytics': 'Analytics',
+  '/action-items': 'Action Items',
+  '/budget-financials': 'Budget & Financials',
+  '/timeline': 'Timeline',
+  '/quality-control': 'Quality Control',
+  '/safety-sustainability': 'Safety & Sustainability',
+  '/site-selection': 'Site Selection',
+  '/preconstruction': 'Preconstruction',
+  '/procurement': 'Procurement',
+  '/resource-management': 'Resources',
+  '/investment-impact': 'Investment Impact',
+  '/contracts-insurance': 'Contracts & Insurance',
+  '/documents': 'Documents',
+  '/facilities-management': 'Facilities Management',
+  '/communications': 'Communications',
+  '/integrations': 'Integrations',
+  '/settings': 'Settings',
+  '/customize': 'Customize'
+};
 
 export interface DashboardHeaderProps {
   onSearch?: (term: string) => void;
@@ -18,6 +42,10 @@ export interface DashboardHeaderProps {
 export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  // Get dynamic title from route or use provided title as fallback
+  const dynamicTitle = routeTitles[location.pathname] || title || 'Dashboard';
 
   return (
     <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,7 +56,7 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
             onToggle={() => setShowMobileMenu(!showMobileMenu)}
           />
           
-          <HeaderTitle title={title} subtitle={subtitle} />
+          <HeaderTitle title={dynamicTitle} subtitle={subtitle} />
           
           <div className="ml-4 hidden md:block">
             <ProjectSelector />

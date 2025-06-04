@@ -8,7 +8,7 @@ import { Insight } from '@/data/investment/investmentData';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  projectContext: string;
+  projectContext?: string; // Made optional since we're now using dynamic titles
   projectName: string;
   initialInsights: Insight[];
   searchTerm?: string;
@@ -17,7 +17,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ 
   children, 
-  projectContext, 
+  projectContext, // This is now optional and mainly used for subtitle
   projectName, 
   initialInsights,
   searchTerm,
@@ -31,7 +31,6 @@ export function DashboardLayout({
         <SidebarNavigation />
         <div className="flex-1 flex flex-col overflow-hidden">
           <DashboardHeader 
-            title={projectContext}
             subtitle={projectName}
             onSearch={onSearch}
           />

@@ -11,7 +11,6 @@ const Index = () => {
   
   return (
     <DashboardLayout
-      projectContext="Construction Management Dashboard"
       projectName={selectedProject?.title || "Construction Management Suite"}
       initialInsights={[
         {
