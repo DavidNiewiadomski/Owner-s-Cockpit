@@ -25,13 +25,13 @@ interface UserProfile {
 
 export function UserProfileDropdown() {
   const [profile] = useLocalStorage<UserProfile>('userProfile', {
-    firstName: 'Matt',
-    lastName: 'Grimm',
-    email: 'matt.grimm@company.com',
+    firstName: 'Connor',
+    lastName: 'Brogan',
+    email: 'connor.brogan@company.com',
     company: 'Real Estate Development Corp',
     role: 'operations',
-    title: 'Chief Operating Officer',
-    avatar: '/lovable-uploads/7fcd65d6-1afd-4fe8-bea6-1c1eea7dabe3.png'
+    title: 'Business Operations',
+    avatar: '/lovable-uploads/cb5ea042-7298-4d73-83fa-d687a4a7dcce.png'
   });
 
   // Add cache busting parameter to avatar URL for Safari compatibility
