@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { User, Settings, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -24,7 +24,7 @@ interface UserProfile {
 }
 
 export function UserProfileDropdown() {
-  const [profile] = useLocalStorage<UserProfile>('userProfile', {
+  const [profile, setProfile] = useLocalStorage<UserProfile>('userProfile', {
     firstName: 'Connor',
     lastName: 'Brogan',
     email: 'connor.brogan@company.com',
@@ -33,6 +33,21 @@ export function UserProfileDropdown() {
     title: 'Business Operations',
     avatar: '/lovable-uploads/cb5ea042-7298-4d73-83fa-d687a4a7dcce.png'
   });
+
+  // Force update the profile to Connor Brogan if it's still showing old data
+  useEffect(() => {
+    if (profile.firstName !== 'Connor' || profile.lastName !== 'Brogan') {
+      setProfile({
+        firstName: 'Connor',
+        lastName: 'Brogan',
+        email: 'connor.brogan@company.com',
+        company: 'Real Estate Development Corp',
+        role: 'operations',
+        title: 'Business Operations',
+        avatar: '/lovable-uploads/cb5ea042-7298-4d73-83fa-d687a4a7dcce.png'
+      });
+    }
+  }, [profile.firstName, profile.lastName, setProfile]);
 
   // Add cache busting parameter to avatar URL for Safari compatibility
   const avatarUrl = profile.avatar ? `${profile.avatar}?t=${Date.now()}` : profile.avatar;
