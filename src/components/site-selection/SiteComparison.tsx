@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const siteComparisonData = [
   { site: 'Site A', cost: 12.5, schedule: 18, accessibility: 85, utilities: 92, incentives: 78 },
   { site: 'Site B', cost: 15.2, schedule: 24, accessibility: 78, utilities: 88, incentives: 65 },
-  { site: 'Site C', cost: 10.8, schedule: 20, accessibility: 92, utilities: 85, utilities: 88 }
+  { site: 'Site C', cost: 10.8, schedule: 20, accessibility: 92, utilities: 85, incentives: 88 }
 ];
 
 const costBreakdown = [
