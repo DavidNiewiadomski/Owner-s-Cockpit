@@ -75,3 +75,6 @@ export const projects = [
     priority: "High" as const
   }
 ];
+
+// Debug logging to track what data is being exported
+console.log('PROJECT DATA LOADED:', projects.map(p => ({ id: p.id, title: p.title })));
