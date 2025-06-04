@@ -15,15 +15,15 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
       <Link to="/" className="flex items-center gap-2 flex-1">
         {!collapsed && (
           <img 
-            src="/lovable-uploads/8f61d3ff-5575-445f-8a8d-4c05a39501a1.png" 
-            alt="Anduril Logo" 
+            src="/lovable-uploads/10daa908-f2a0-467c-afbb-7515cae0a300.png" 
+            alt="Logo" 
             className="h-40 w-auto max-w-full object-contain"
           />
         )}
         {collapsed && (
           <img 
-            src="/lovable-uploads/8f61d3ff-5575-445f-8a8d-4c05a39501a1.png" 
-            alt="Anduril Logo" 
+            src="/lovable-uploads/10daa908-f2a0-467c-afbb-7515cae0a300.png" 
+            alt="Logo" 
             className="h-32 w-auto max-w-full object-contain"
           />
         )}
