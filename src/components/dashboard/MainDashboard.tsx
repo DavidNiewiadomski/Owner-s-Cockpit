@@ -890,15 +890,75 @@ export function MainDashboard() {
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="mt-6 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-lg p-4">
-              <h4 className="text-cyan-300 font-bold mb-2 flex items-center gap-2">
-                <Cpu className="h-4 w-4" />
-                AI-Driven Predictive Insights
+            <div className="mt-6 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-lg p-6">
+              <h4 className="text-cyan-300 font-bold mb-4 flex items-center gap-2">
+                <Cpu className="h-5 w-5" />
+                AI-Driven Predictive Insights & Recommendations
               </h4>
-              <p className="text-gray-300 text-sm">
-                Neural network analysis indicates AHU-9 filter replacement could prevent $15K in emergency repairs 
-                and reduce facility tickets by 18%. Optimal replacement window: 72 hours.
-              </p>
+              
+              <div className="space-y-4">
+                {/* Critical Priority Insight */}
+                <div className="bg-red-900/20 border border-red-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="h-4 w-4 text-red-400" />
+                    <span className="text-red-400 font-semibold text-sm">Critical Priority</span>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-3">
+                    <strong>AHU-9 Filter Replacement ($2,500):</strong> Arsenal-1's manufacturing environment requires HEPA-grade filtration. 
+                    Predictive algorithms indicate 94% probability of system failure within 72 hours without intervention.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs text-gray-400">
+                      Potential savings: $15,000 in emergency repairs | Risk reduction: 18% fewer facility tickets
+                    </div>
+                    <Button size="sm" className="bg-red-600 hover:bg-red-700 text-xs px-3 py-1">
+                      Immediate Action Required
+                    </Button>
+                  </div>
+                </div>
+
+                {/* High Priority Insights */}
+                <div className="bg-orange-900/20 border border-orange-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="h-4 w-4 text-orange-400" />
+                    <span className="text-orange-400 font-semibold text-sm">High Priority</span>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-3">
+                    <strong>Generator Testing ($1,200):</strong> Atlanta Studio's backup power system shows 87% efficiency. 
+                    Cross-referencing with weather patterns suggests optimal testing window: next 5 days before storm season.
+                  </p>
+                  <div className="text-xs text-gray-400">
+                    Compliance requirement | Prevents $25K in downtime costs
+                  </div>
+                </div>
+
+                {/* Optimization Insight */}
+                <div className="bg-green-900/20 border border-green-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="h-4 w-4 text-green-400" />
+                    <span className="text-green-400 font-semibold text-sm">Cost Optimization</span>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-3">
+                    <strong>Maintenance Bundling Opportunity:</strong> Scheduling Elevator Inspection ($3,200) and Chiller Cleaning ($1,800) 
+                    simultaneously could reduce contractor mobilization costs by 22% ($1,100 savings).
+                  </p>
+                  <div className="text-xs text-gray-400">
+                    Recommended scheduling: December 15-20 window
+                  </div>
+                </div>
+
+                {/* Seasonal Intelligence */}
+                <div className="bg-blue-900/20 border border-blue-400/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Activity className="h-4 w-4 text-blue-400" />
+                    <span className="text-blue-400 font-semibold text-sm">Seasonal Intelligence</span>
+                  </div>
+                  <p className="text-gray-300 text-sm">
+                    <strong>Winter Preparation:</strong> Historical data indicates 34% increase in HVAC issues during Q1. 
+                    Proactive maintenance scheduling now could prevent 67% of cold-weather related facility tickets.
+                  </p>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
