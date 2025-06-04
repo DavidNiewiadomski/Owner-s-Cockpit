@@ -66,8 +66,8 @@ export const projects = [
     budget: "$28.4M",
     client: "Maritime Technologies Inc",
     location: "North Kingstown, RI", 
-    phase: "Site Preparation",
-    stage: "site-selection" as const,
+    phase: "Design Development",
+    stage: "planning-design" as const,
     teamMembers: [
       { name: "James Wilson" },
       { name: "Patricia Lee" }
