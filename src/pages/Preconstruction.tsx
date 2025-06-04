@@ -7,21 +7,21 @@ export default function Preconstruction() {
   return (
     <DashboardLayout
       projectContext="Preconstruction"
-      projectName="All Projects"
+      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
       initialInsights={[
         {
           title: 'Budget Review',
-          content: 'Initial budget estimates are 12% over benchmark targets for similar projects',
+          content: 'Arsenal-1 hyperscale manufacturing budget estimates are 12% over benchmark for similar facilities',
           type: 'warning',
         },
         {
           title: 'Site Assessment',
-          content: 'Environmental assessment found potential concerns with soil quality',
+          content: 'Quonset Point AUV environmental assessment found marine soil stability concerns',
           type: 'warning',
         },
         {
           title: 'Permits Processing',
-          content: 'Building permits are on track for approval by next month',
+          content: 'Atlanta UAV Allied Studios building permits on track for approval by next month',
           type: 'success',
         }
       ]}

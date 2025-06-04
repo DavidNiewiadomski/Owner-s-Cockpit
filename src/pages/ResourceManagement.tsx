@@ -7,21 +7,21 @@ export default function ResourceManagement() {
   return (
     <DashboardLayout
       projectContext="Resource Management"
-      projectName="All Projects"
+      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
       initialInsights={[
         {
           title: 'Equipment Utilization',
-          content: 'Heavy machinery utilization at 85% capacity across all sites',
+          content: 'Heavy manufacturing equipment at Arsenal-1 running at 85% capacity',
           type: 'success',
         },
         {
           title: 'Material Shortage',
-          content: 'Steel reinforcement bars running low - reorder required',
+          content: 'Specialized carbon fiber components for Atlanta UAV production running low',
           type: 'warning',
         },
         {
           title: 'Labor Allocation',
-          content: 'Skilled workers overallocated by 15% this week',
+          content: 'Marine-certified welders overallocated between Arsenal-1 and Quonset Point by 15%',
           type: 'warning',
         }
       ]}

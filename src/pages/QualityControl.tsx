@@ -7,21 +7,21 @@ export default function QualityControl() {
   return (
     <DashboardLayout
       projectContext="Quality Control"
-      projectName="All Projects"
+      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
       initialInsights={[
         {
           title: 'Inspection Schedule',
-          content: '12 quality inspections scheduled for this week',
+          content: '12 quality inspections scheduled across Arsenal-1, Atlanta UAV, and Quonset Point facilities',
           type: 'info',
         },
         {
           title: 'Quality Score',
-          content: 'Overall quality score improved to 94.2% this month',
+          content: 'Arsenal-1 manufacturing quality score improved to 94.2% this month',
           type: 'success',
         },
         {
           title: 'Non-Conformance',
-          content: '3 non-conformance issues require immediate attention',
+          content: '3 non-conformance issues at Quonset Point AUV plant require immediate attention',
           type: 'warning',
         }
       ]}

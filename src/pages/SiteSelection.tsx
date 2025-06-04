@@ -7,21 +7,21 @@ export default function SiteSelection() {
   return (
     <DashboardLayout
       projectContext="Site Selection"
-      projectName="All Projects"
+      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
       initialInsights={[
         {
           title: 'High-Priority Site Identified',
-          content: 'Downtown Metro Area site scores 94/100 in feasibility analysis with excellent transport access',
+          content: 'Pickaway County, OH site for Arsenal-1 scores 94/100 in feasibility analysis with excellent transport access',
           type: 'success',
         },
         {
           title: 'Environmental Concern',
-          content: 'Industrial District site requires additional soil remediation - budget impact $150K',
+          content: 'Quonset Point marine environment requires additional environmental compliance - budget impact $150K',
           type: 'warning',
         },
         {
           title: 'Zoning Approval Needed',
-          content: 'Suburban location requires zoning variance for proposed building height',
+          content: 'Atlanta UAV Allied Studios location requires zoning variance for specialized manufacturing height',
           type: 'warning',
         }
       ]}

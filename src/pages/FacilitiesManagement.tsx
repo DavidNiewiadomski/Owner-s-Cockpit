@@ -7,21 +7,21 @@ export default function FacilitiesManagement() {
   return (
     <DashboardLayout
       projectContext="Facilities Management"
-      projectName="All Properties"
+      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
       initialInsights={[
         {
           title: 'Maintenance Schedule',
-          content: '15 preventive maintenance tasks scheduled for this week',
+          content: '15 preventive maintenance tasks across Arsenal-1, Atlanta UAV, and Quonset Point facilities',
           type: 'info',
         },
         {
           title: 'Energy Efficiency',
-          content: 'HVAC optimization resulted in 18% energy cost reduction',
+          content: 'Arsenal-1 hyperscale HVAC optimization resulted in 18% energy cost reduction',
           type: 'success',
         },
         {
           title: 'Critical Issue',
-          content: 'Elevator in Building A requires immediate attention',
+          content: 'Specialized ventilation system in Atlanta UAV facility requires immediate attention',
           type: 'warning',
         }
       ]}
