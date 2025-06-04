@@ -17,14 +17,14 @@ export function SidebarHeader({ collapsed, onToggleCollapse }: SidebarHeaderProp
           <img 
             src="/lovable-uploads/513e2afe-e072-4286-b450-ecc506716d3c.png" 
             alt="Company Logo" 
-            className="h-12 w-auto max-w-[160px] object-contain"
+            className="h-14 w-auto max-w-[200px] object-contain"
           />
         )}
         {collapsed && (
           <img 
             src="/lovable-uploads/513e2afe-e072-4286-b450-ecc506716d3c.png" 
             alt="Company Logo" 
-            className="h-10 w-auto max-w-[40px] object-contain"
+            className="h-12 w-auto max-w-[48px] object-contain"
           />
         )}
       </Link>
