@@ -151,13 +151,6 @@ export function ProjectsOverview() {
           );
         })}
       </div>
-      
-      <div className="mt-4 pt-3 border-t border-gray-800">
-        <Badge variant="outline" className="text-gray-400 border-gray-600">
-          <Building2 className="h-3 w-3 mr-1" />
-          This is a partial list - 20+ additional locations in portfolio
-        </Badge>
-      </div>
     </div>
   );
 }
