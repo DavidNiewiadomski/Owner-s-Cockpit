@@ -1,3 +1,4 @@
+
 import { supabase } from '@/lib/supabase'
 import type { 
   Project, 
@@ -318,7 +319,8 @@ export const getDashboardStats = async () => {
     getMaterials()
   ]);
   
-  const activeProjects = projects.filter(p => p.status === 'active').length;
+  // Fixed: Use correct status comparison for projects
+  const activeProjects = projects.filter(p => p.status === 'on-track' || p.status === 'at-risk' || p.status === 'delayed').length;
   const pendingTasks = tasks.filter(t => t.status === 'pending').length;
   const criticalTasks = tasks.filter(t => t.priority === 'critical').length;
   const equipmentInUse = equipment.filter(e => e.status === 'in-use').length;
