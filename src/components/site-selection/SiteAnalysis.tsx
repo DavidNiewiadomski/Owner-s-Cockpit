@@ -32,7 +32,7 @@ export function SiteAnalysis() {
         </div>
         {showSiteRankings && (
           <div className="space-y-6">
-            <SiteDetailsCard site={selectedSite} />
+            <SiteRankingCard />
             <SiteMetricsCard site={selectedSite} />
             <SiteTimelineCard site={selectedSite} />
           </div>
@@ -64,6 +64,45 @@ export function SiteAnalysis() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function SiteRankingCard() {
+  const sortedSites = [...siteAnalysisData].sort((a, b) => b.score - a.score);
+
+  return (
+    <Card className="bg-gray-900 border-gray-800">
+      <CardHeader>
+        <CardTitle className="text-white flex items-center">
+          <Star className="h-5 w-5 mr-2 text-yellow-400" />
+          Site Ranking
+        </CardTitle>
+        <CardDescription className="text-gray-400">
+          Performance-based site rankings
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {sortedSites.map((site, index) => (
+          <div key={site.id} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <div className={`w-3 h-3 rounded-full ${
+                site.name === 'Site C' ? 'bg-green-400' : 
+                site.name === 'Site A' ? 'bg-blue-400' : 'bg-orange-400'
+              }`}></div>
+              <span className="text-white font-medium">{site.name}</span>
+            </div>
+            <div className="text-right">
+              <div className="text-white font-bold">{site.score}/100</div>
+              <div className={`text-sm ${
+                site.change.startsWith('+') ? 'text-green-400' : 'text-red-400'
+              }`}>
+                {site.change}
+              </div>
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -413,7 +452,7 @@ function MarketTrendsChart() {
   const trendData = [
     { month: 'Jan', realEstate: 85, commercial: 78, industrial: 92 },
     { month: 'Feb', realEstate: 88, commercial: 82, industrial: 89 },
-    { month: 'Mar', realEstate: 92, commercial: 85, industrial: 94 },
+    { month: 'Mar', realE Estate: 92, commercial: 85, industrial: 94 },
     { month: 'Apr', realEstate: 87, commercial: 88, industrial: 91 },
     { month: 'May', realEstate: 95, commercial: 91, industrial: 96 },
     { month: 'Jun', realEstate: 93, commercial: 89, industrial: 93 }

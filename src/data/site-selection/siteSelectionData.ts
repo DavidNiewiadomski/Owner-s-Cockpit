@@ -1,56 +1,58 @@
-
 // Site Analysis Data
 export const siteAnalysisData = [
   {
     id: 1,
-    name: 'Downtown Metro Area',
+    name: 'Site A',
     address: '1250 Commerce St, Dallas, TX',
     size: '2.5 acres',
     price: '$850,000',
-    score: 94,
+    score: 87,
     status: 'Under Review',
     zoning: 'Commercial',
-    transportation: 95,
-    utilities: 92,
-    environmental: 88,
-    demographics: 96,
-    marketAccess: 98,
+    transportation: 90,
+    utilities: 88,
+    environmental: 85,
+    demographics: 92,
+    marketAccess: 89,
     lastUpdated: '2 hours ago',
-    coordinates: { lat: 32.7767, lng: -96.7970 }
+    coordinates: { lat: 32.7767, lng: -96.7970 },
+    change: '+2%'
   },
   {
     id: 2,
-    name: 'Industrial District East',
+    name: 'Site B',
     address: '5678 Industrial Blvd, Dallas, TX',
     size: '4.2 acres',
     price: '$650,000',
     score: 78,
     status: 'Pending Review',
     zoning: 'Industrial',
-    transportation: 85,
-    utilities: 90,
-    environmental: 65,
-    demographics: 72,
-    marketAccess: 88,
+    transportation: 75,
+    utilities: 82,
+    environmental: 70,
+    demographics: 76,
+    marketAccess: 80,
     lastUpdated: '1 day ago',
-    coordinates: { lat: 32.7505, lng: -96.8353 }
+    coordinates: { lat: 32.7505, lng: -96.8353 },
+    change: '-1%'
   },
   {
     id: 3,
-    name: 'Suburban North Plaza',
+    name: 'Site C',
     address: '3456 Main St, Plano, TX',
     size: '1.8 acres',
     price: '$720,000',
-    score: 85,
+    score: 95,
     status: 'High Priority',
     zoning: 'Mixed Use',
-    transportation: 78,
-    utilities: 95,
+    transportation: 95,
+    utilities: 98,
     environmental: 92,
-    demographics: 89,
-    marketAccess: 82,
+    demographics: 96,
+    marketAccess: 94,
     lastUpdated: '3 hours ago',
-    coordinates: { lat: 33.0198, lng: -96.6989 }
+    coordinates: { lat: 33.0198, lng: -96.6989 },
+    change: '+5%'
   },
   {
     id: 4,
@@ -67,7 +69,8 @@ export const siteAnalysisData = [
     demographics: 94,
     marketAccess: 93,
     lastUpdated: '5 hours ago',
-    coordinates: { lat: 32.8143, lng: -96.9489 }
+    coordinates: { lat: 32.8143, lng: -96.9489 },
+    change: '+3%'
   }
 ];
 
