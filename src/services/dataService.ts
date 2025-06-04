@@ -1,5 +1,5 @@
-
 import { supabase } from '@/lib/supabase'
+import { projects } from '@/data/projects/projectData'
 import type { 
   Project, 
   TeamMember, 
@@ -16,39 +16,25 @@ import type {
   Vendor
 } from '@/lib/supabase'
 
-// Mock data for development when Supabase isn't configured
-const mockProjects: Project[] = [
-  {
-    id: '1',
-    title: 'Downtown Office Complex',
-    description: 'Modern 12-story office building with retail space',
-    status: 'active',
-    progress: 65,
-    start_date: '2024-01-15',
-    end_date: '2024-12-30',
-    budget: 15000000,
-    actual_cost: 9750000,
-    location: 'Downtown Business District',
-    client_name: 'Metro Development Corp',
+// Convert projectData projects to match Supabase Project interface
+const convertToSupabaseFormat = (projectDataProjects: any[]): Project[] => {
+  return projectDataProjects.map(project => ({
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    status: project.status === 'on-track' ? 'active' : 
+            project.status === 'completed' ? 'completed' : 'active',
+    progress: project.progress,
+    start_date: project.startDate || '2024-01-01',
+    end_date: project.dueDate,
+    budget: parseFloat(project.budget?.replace(/[$M,]/g, '') || '0') * 1000000,
+    actual_cost: Math.floor((parseFloat(project.budget?.replace(/[$M,]/g, '') || '0') * 1000000) * (project.progress / 100)),
+    location: project.location || project.description,
+    client_name: project.client || 'Client',
     created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-20T00:00:00Z'
-  },
-  {
-    id: '2',
-    title: 'Riverside Residential Tower',
-    description: '25-story luxury residential building',
-    status: 'active',
-    progress: 42,
-    start_date: '2024-03-01',
-    end_date: '2025-06-15',
-    budget: 28000000,
-    actual_cost: 11760000,
-    location: 'Riverside District',
-    client_name: 'Luxury Living LLC',
-    created_at: '2024-02-15T00:00:00Z',
-    updated_at: '2024-03-01T00:00:00Z'
-  }
-];
+    updated_at: new Date().toISOString()
+  }));
+};
 
 const mockTasks: Task[] = [
   {
@@ -110,7 +96,7 @@ export const getCompanies = async (): Promise<Company[]> => {
 export const getProjects = async (): Promise<Project[]> => {
   return handleSupabaseError(
     async () => await supabase.from('projects').select('*').order('created_at', { ascending: false }),
-    mockProjects
+    convertToSupabaseFormat(projects)
   );
 };
 
