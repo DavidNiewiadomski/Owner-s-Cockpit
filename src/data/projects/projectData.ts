@@ -67,7 +67,7 @@ export const projects = [
     client: "Maritime Technologies Inc",
     location: "North Kingstown, RI", 
     phase: "Site Preparation",
-    stage: "construction" as const,
+    stage: "site-selection" as const,
     teamMembers: [
       { name: "James Wilson" },
       { name: "Patricia Lee" }
