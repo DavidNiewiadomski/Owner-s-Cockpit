@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -101,7 +100,7 @@ export function ShowcaseCharts() {
               <p className="text-cyan-300/80 font-medium mt-1">Quarterly project costs by stage ($ millions)</p>
             </div>
             <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)] px-3 py-1">
-              $1.1B+ Total Portfolio
+              $1.2B Total Portfolio
             </Badge>
           </div>
         </CardHeader>
