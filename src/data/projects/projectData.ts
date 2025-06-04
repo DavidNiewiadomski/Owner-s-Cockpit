@@ -38,7 +38,7 @@ export const projects = [
   },
   {
     id: "2",
-    title: "Atlanta UAV Allied Studios",
+    title: "Atlanta (UAV \"Allied Studios\")",
     description: "1435 Hills Pl. NW, Atlanta GA 30318",
     progress: 68,
     status: "on-track" as const,
