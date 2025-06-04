@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -108,7 +107,7 @@ export function MainDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Enhanced Stats Overview - Fixed Sizing */}
+      {/* Enhanced Stats Overview - Updated for Manufacturing Projects */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 relative overflow-hidden h-[140px]">
@@ -117,8 +116,8 @@ export function MainDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-blue-200 truncate">Active Projects</p>
-                  <p className="text-3xl font-bold text-white">{stats?.activeProjects || 12}</p>
-                  <p className="text-xs text-blue-300 mt-1">+2 from last month</p>
+                  <p className="text-3xl font-bold text-white">{stats?.activeProjects || 3}</p>
+                  <p className="text-xs text-blue-300 mt-1">Manufacturing facilities</p>
                 </div>
                 <div className="bg-blue-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
                   <TrendingUp className="h-6 w-6 text-blue-200" />
@@ -134,12 +133,12 @@ export function MainDashboard() {
             <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-cyan-200 truncate">Sites Under Review</p>
-                  <p className="text-3xl font-bold text-white">3</p>
-                  <p className="text-xs text-cyan-300 mt-1">Final selection pending</p>
+                  <p className="text-sm font-medium text-cyan-200 truncate">Manufacturing Capacity</p>
+                  <p className="text-3xl font-bold text-white">85%</p>
+                  <p className="text-xs text-cyan-300 mt-1">Across all facilities</p>
                 </div>
                 <div className="bg-cyan-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
-                  <MapPin className="h-6 w-6 text-cyan-200" />
+                  <Activity className="h-6 w-6 text-cyan-200" />
                 </div>
               </div>
             </CardContent>
@@ -153,8 +152,8 @@ export function MainDashboard() {
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-green-200 truncate">Total Investment</p>
-                  <p className="text-3xl font-bold text-white">$45.2M</p>
-                  <p className="text-xs text-green-300 mt-1">Across all sites</p>
+                  <p className="text-3xl font-bold text-white">$93.0M</p>
+                  <p className="text-xs text-green-300 mt-1">All projects combined</p>
                 </div>
                 <div className="bg-green-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
                   <DollarSign className="h-6 w-6 text-green-200" />
@@ -170,9 +169,9 @@ export function MainDashboard() {
             <CardContent className="p-6 relative h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-orange-200 truncate">Expected ROI</p>
-                  <p className="text-3xl font-bold text-white">22.1%</p>
-                  <p className="text-xs text-orange-300 mt-1">Site C leading</p>
+                  <p className="text-sm font-medium text-orange-200 truncate">Production Target</p>
+                  <p className="text-3xl font-bold text-white">Q2 2025</p>
+                  <p className="text-xs text-orange-300 mt-1">First facility online</p>
                 </div>
                 <div className="bg-orange-600/30 p-3 rounded-full backdrop-blur-sm flex-shrink-0 ml-3">
                   <Target className="h-6 w-6 text-orange-200" />
@@ -181,6 +180,115 @@ export function MainDashboard() {
             </CardContent>
           </Card>
         </motion.div>
+      </div>
+
+      {/* Updated Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Projects Section */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="lg:col-span-2">
+          <Card className="bg-gray-900 border-gray-700">
+            <CardHeader className="border-b border-gray-700">
+              <CardTitle className="text-xl text-white flex items-center">
+                <Building2 className="h-5 w-5 mr-2" />
+                Manufacturing Projects
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {recentProjects.map((project, index) => (
+                  <div key={project.id} className="flex items-center justify-between p-4 bg-gray-800 rounded-lg border border-gray-700">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-white">{project.title}</h4>
+                      <p className="text-sm text-gray-400">{project.description}</p>
+                      <div className="flex items-center mt-2 space-x-4">
+                        <div className="flex items-center text-sm">
+                          <MapPin className="h-4 w-4 mr-1 text-gray-400" />
+                          <span className="text-gray-300">{project.location}</span>
+                        </div>
+                        <Badge 
+                          className={`text-xs ${
+                            project.status === 'active' ? 'bg-green-600' : 
+                            project.status === 'planning' ? 'bg-blue-600' : 'bg-yellow-600'
+                          }`}
+                        >
+                          {project.status}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-white">{project.progress}%</div>
+                      <Progress value={project.progress} className="w-24 mt-1" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Right Sidebar */}
+        <div className="space-y-6">
+          {/* Urgent Action Items */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+            <Card className="bg-gray-900 border-gray-700">
+              <CardHeader className="border-b border-gray-700">
+                <CardTitle className="text-lg text-white flex items-center">
+                  <AlertTriangle className="h-5 w-5 mr-2 text-red-400" />
+                  Critical Tasks
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="space-y-3">
+                  {urgentTasks.map((task, index) => (
+                    <div key={task.id} className="flex items-start space-x-3 p-3 bg-gray-800 rounded-lg">
+                      <div className={`w-2 h-2 rounded-full mt-2 ${
+                        task.priority === 'critical' ? 'bg-red-500' : 'bg-orange-500'
+                      }`} />
+                      <div className="flex-1">
+                        <h5 className="font-medium text-white text-sm">{task.title}</h5>
+                        <p className="text-xs text-gray-400 mt-1">{task.description}</p>
+                        <div className="flex items-center mt-2">
+                          <Clock className="h-3 w-3 mr-1 text-gray-400" />
+                          <span className="text-xs text-gray-300">{task.due_date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Financial Performance */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
+            <Card className="bg-gray-900 border-gray-700">
+              <CardHeader className="border-b border-gray-700">
+                <CardTitle className="text-lg text-white flex items-center">
+                  <BarChart3 className="h-5 w-5 mr-2 text-green-400" />
+                  Financial Overview
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Total Budget</span>
+                    <span className="text-lg font-bold text-white">$93.0M</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Spent to Date</span>
+                    <span className="text-lg font-bold text-green-400">$35.1M</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Remaining</span>
+                    <span className="text-lg font-bold text-blue-400">$57.9M</span>
+                  </div>
+                  <Progress value={38} className="mt-2" />
+                  <p className="text-xs text-gray-400">38% of total budget utilized</p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
 
       {/* Enhanced Site Selection Dashboard */}
@@ -680,139 +788,6 @@ export function MainDashboard() {
           </CardContent>
         </Card>
       </motion.div>
-
-      {/* New comprehensive grid layout to fill all space */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Projects - Enhanced */}
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
-          <Card className="bg-gray-900 border-gray-700 h-full">
-            <CardHeader className="border-b border-gray-700">
-              <CardTitle className="text-white flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-blue-400" />
-                Recent Projects
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              {recentProjects.map((project) => (
-                <div key={project.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-medium text-white">{project.title}</h4>
-                    <Badge className={`${getStatusBadgeColor(project.status)} text-white`}>
-                      {project.status}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-gray-400 mb-3">{project.location}</p>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-400">Progress</span>
-                    <span className="text-sm text-white">{project.progress}%</span>
-                  </div>
-                  <Progress value={project.progress} className="mb-3 h-2" />
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-400">Budget</span>
-                    <span className="font-medium text-green-400">
-                      ${(project.budget || 0).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Site Ranking Section - NEW */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
-          <Card className="bg-gray-900 border-gray-700 h-full">
-            <CardHeader className="border-b border-gray-700">
-              <CardTitle className="text-white flex items-center gap-2">
-                <Award className="h-5 w-5 text-yellow-400" />
-                Site Performance Ranking
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              {[
-                { rank: 1, name: 'Downtown Metro Site', score: 94, change: '+2', trend: 'up', color: 'text-green-400', bgColor: 'bg-green-600/20' },
-                { rank: 2, name: 'Industrial Complex B', score: 89, change: '+1', trend: 'up', color: 'text-blue-400', bgColor: 'bg-blue-600/20' },
-                { rank: 3, name: 'Riverside District', score: 87, change: '0', trend: 'stable', color: 'text-orange-400', bgColor: 'bg-orange-600/20' },
-                { rank: 4, name: 'Tech Park East', score: 82, change: '-1', trend: 'down', color: 'text-red-400', bgColor: 'bg-red-600/20' },
-                { rank: 5, name: 'Suburban Gateway', score: 78, change: '+3', trend: 'up', color: 'text-purple-400', bgColor: 'bg-purple-600/20' }
-              ].map((site) => (
-                <div key={site.rank} className={`${site.bgColor} rounded-xl p-4 border border-gray-700`}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
-                        <span className="text-white font-bold text-sm">#{site.rank}</span>
-                      </div>
-                      <span className="font-medium text-white">{site.name}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm ${site.color}`}>{site.change}</span>
-                      {site.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-400" />}
-                      {site.trend === 'down' && <TrendingUp className="h-4 w-4 text-red-400 rotate-180" />}
-                      {site.trend === 'stable' && <Activity className="h-4 w-4 text-gray-400" />}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Progress value={site.score} className="flex-1 mr-3 h-2" />
-                    <span className={`font-bold ${site.color}`}>{site.score}/100</span>
-                  </div>
-                </div>
-              ))}
-              <Button className="w-full bg-yellow-600 hover:bg-yellow-700 mt-4">
-                <Award className="h-4 w-4 mr-2" />
-                View Full Rankings
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Urgent Tasks & Action Items - Enhanced */}
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>
-          <Card className="bg-gray-900 border-gray-700 h-full">
-            <CardHeader className="border-b border-gray-700">
-              <CardTitle className="text-white flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-red-400" />
-                Urgent Action Items
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              {[
-                { task: 'Finalize Site C Lease Agreement', priority: 'critical', due: '2 days', status: 'pending' },
-                { task: 'Environmental Impact Assessment', priority: 'high', due: '1 week', status: 'in-progress' },
-                { task: 'Zoning Permit Application', priority: 'high', due: '5 days', status: 'pending' },
-                { task: 'Infrastructure Cost Analysis', priority: 'medium', due: '2 weeks', status: 'review' },
-                { task: 'Local Authority Consultation', priority: 'high', due: '3 days', status: 'scheduled' }
-              ].map((item, index) => (
-                <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-white text-sm">{item.task}</span>
-                    <Badge className={`${getPriorityBadgeColor(item.priority)} text-white text-xs`}>
-                      {item.priority}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3 text-gray-400" />
-                      <span className="text-gray-400">Due in {item.due}</span>
-                    </div>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      item.status === 'pending' ? 'bg-yellow-600/20 text-yellow-400' :
-                      item.status === 'in-progress' ? 'bg-blue-600/20 text-blue-400' :
-                      item.status === 'review' ? 'bg-purple-600/20 text-purple-400' :
-                      'bg-green-600/20 text-green-400'
-                    }`}>
-                      {item.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              <Button className="w-full bg-red-600 hover:bg-red-700 mt-4">
-                <AlertTriangle className="h-4 w-4 mr-2" />
-                View All Tasks
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
 
       {/* Additional Analytics Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

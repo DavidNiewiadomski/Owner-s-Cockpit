@@ -1,4 +1,3 @@
-
 import { supabase } from '@/lib/supabase'
 import type { 
   Project, 
@@ -16,62 +15,88 @@ import type {
   Vendor
 } from '@/lib/supabase'
 
-// Mock data for development when Supabase isn't configured
+// Updated mock data for development when Supabase isn't configured
 const mockProjects: Project[] = [
   {
     id: '1',
-    title: 'Downtown Office Complex',
-    description: 'Modern 12-story office building with retail space',
+    title: 'Arsenal-1 Hyperscale Manufacturing',
+    description: 'Advanced manufacturing complex - Pickaway County, OH',
     status: 'active',
-    progress: 65,
-    start_date: '2024-01-15',
-    end_date: '2024-12-30',
-    budget: 15000000,
-    actual_cost: 9750000,
-    location: 'Downtown Business District',
-    client_name: 'Metro Development Corp',
-    created_at: '2024-01-01T00:00:00Z',
+    progress: 35,
+    start_date: '2023-11-01',
+    end_date: '2025-03-15',
+    budget: 45700000,
+    actual_cost: 16000000,
+    location: 'Pickaway County, OH',
+    client_name: 'Industrial Partners LLC',
+    created_at: '2023-11-01T00:00:00Z',
     updated_at: '2024-01-20T00:00:00Z'
   },
   {
     id: '2',
-    title: 'Riverside Residential Tower',
-    description: '25-story luxury residential building',
+    title: 'Atlanta UAV Allied Studios',
+    description: '1435 Hills Pl. NW, Atlanta GA 30318',
     status: 'active',
-    progress: 42,
-    start_date: '2024-03-01',
-    end_date: '2025-06-15',
-    budget: 28000000,
-    actual_cost: 11760000,
-    location: 'Riverside District',
-    client_name: 'Luxury Living LLC',
-    created_at: '2024-02-15T00:00:00Z',
+    progress: 68,
+    start_date: '2024-01-10',
+    end_date: '2024-12-20',
+    budget: 18900000,
+    actual_cost: 12852000,
+    location: 'Atlanta, GA',
+    client_name: 'Allied Studios Corp',
+    created_at: '2024-01-10T00:00:00Z',
     updated_at: '2024-03-01T00:00:00Z'
+  },
+  {
+    id: '3',
+    title: 'Quonset Point AUV Plant',
+    description: 'Flex Tech Park Bldg 11, Quonset Business Park, North Kingstown RI 02852',
+    status: 'active',
+    progress: 22,
+    start_date: '2024-03-01',
+    end_date: '2025-06-30',
+    budget: 28400000,
+    actual_cost: 6248000,
+    location: 'North Kingstown, RI',
+    client_name: 'Maritime Technologies Inc',
+    created_at: '2024-03-01T00:00:00Z',
+    updated_at: '2024-03-15T00:00:00Z'
   }
 ];
 
 const mockTasks: Task[] = [
   {
     id: '1',
-    title: 'Foundation concrete pour',
-    description: 'Complete foundation concrete pour for Building A',
-    status: 'completed',
-    priority: 'high',
-    due_date: '2024-02-15',
+    title: 'Steel framework installation',
+    description: 'Install primary steel framework for manufacturing floor',
+    status: 'in-progress',
+    priority: 'critical',
+    due_date: '2024-02-28',
     project_id: '1',
     created_at: '2024-01-15T00:00:00Z',
     updated_at: '2024-02-15T00:00:00Z'
   },
   {
     id: '2',
-    title: 'Electrical rough-in inspection',
-    description: 'Schedule and complete electrical rough-in inspection',
+    title: 'UAV system integration testing',
+    description: 'Complete integration testing for UAV control systems',
     status: 'in-progress',
-    priority: 'critical',
+    priority: 'high',
     due_date: '2024-03-01',
-    project_id: '1',
+    project_id: '2',
     created_at: '2024-02-10T00:00:00Z',
     updated_at: '2024-02-20T00:00:00Z'
+  },
+  {
+    id: '3',
+    title: 'Marine facility compliance review',
+    description: 'Ensure compliance with maritime regulations',
+    status: 'pending',
+    priority: 'high',
+    due_date: '2024-03-15',
+    project_id: '3',
+    created_at: '2024-02-01T00:00:00Z',
+    updated_at: '2024-02-05T00:00:00Z'
   }
 ];
 
