@@ -21,9 +21,9 @@ export function ProjectsSection({ projects: providedProjects }: ProjectsSectionP
               title={project.title}
               description={project.description}
               progress={project.progress}
-              status={project.status === "completed" || project.status === "upcoming" 
-                ? "on-track" 
-                : project.status}
+              status={project.status === "completed" || project.status === "upcoming" || project.status === "at-risk" || project.status === "delayed"
+                ? (project.status === "completed" || project.status === "upcoming" ? "on-track" : project.status)
+                : "on-track"}
               dueDate={project.dueDate}
               teamMembers={project.teamMembers}
               priority={project.priority}
