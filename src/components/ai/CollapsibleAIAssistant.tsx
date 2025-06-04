@@ -73,11 +73,11 @@ export function CollapsibleAIAssistant({
           </div>
           
           <CollapsibleContent className="space-y-0">
-            <div className="flex gap-4 overflow-x-auto">
+            <div className="flex gap-4 overflow-x-auto pb-2">
               {allInsights.map((insight, index) => (
                 <div 
                   key={index} 
-                  className="group relative p-5 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-4px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 min-w-[280px] flex-shrink-0"
+                  className="group relative p-5 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-4px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 min-w-[320px] max-w-[400px] flex-shrink-0"
                   onClick={handleChatOpen}
                 >
                   <div className="flex items-start gap-3 h-full">
@@ -91,10 +91,10 @@ export function CollapsibleAIAssistant({
                       <LightbulbIcon className="h-5 w-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors break-words hyphens-auto">
+                      <p className="text-sm font-bold mb-3 text-white group-hover:text-gray-100 transition-colors leading-tight word-wrap break-words">
                         {insight.title}
                       </p>
-                      <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words hyphens-auto whitespace-normal overflow-wrap-anywhere">
+                      <p className="text-sm text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors word-wrap break-words whitespace-normal overflow-wrap-anywhere hyphens-auto">
                         {insight.content}
                       </p>
                     </div>

@@ -47,7 +47,7 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
           {displayInsights.map((insight, index) => (
             <div 
               key={index} 
-              className="group relative p-4 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-2px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 flex flex-col h-full"
+              className="group relative p-4 rounded-lg bg-gradient-to-br from-gray-800/50 to-gray-900/80 transition-all duration-300 cursor-pointer hover:translate-y-[-2px] border border-gray-700/50 shadow-lg hover:border-gray-600/50 flex flex-col h-full min-h-[160px]"
               onClick={onChatOpen}
             >
               <div className="flex items-start gap-3 h-full">
@@ -61,10 +61,10 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
                   <LightbulbIcon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors leading-tight">
+                  <p className="text-sm font-bold mb-2 text-white group-hover:text-gray-100 transition-colors leading-tight word-wrap break-words">
                     {insight.title}
                   </p>
-                  <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors break-words hyphens-auto line-clamp-4">
+                  <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors word-wrap break-words whitespace-normal overflow-wrap-anywhere hyphens-auto">
                     {insight.content}
                   </p>
                 </div>
