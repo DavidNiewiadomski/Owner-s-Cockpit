@@ -41,6 +41,9 @@ const convertedProjects = projects.map(project => {
   };
 });
 
+// Add console log to debug
+console.log('ProjectsOverview convertedProjects:', convertedProjects);
+
 export function ProjectsOverview() {
   const getPriorityBadge = (priority: string) => {
     if (priority === "High") {
