@@ -18,15 +18,16 @@ export function SiteSelectionDashboard() {
       <SiteSelectionHeader />
       
       <Tabs defaultValue="business-case" className="w-full">
-        <TabsList className="bg-gray-900 text-gray-400 border border-gray-800 grid grid-cols-4 lg:grid-cols-8">
-          <TabsTrigger value="business-case">Business Case</TabsTrigger>
-          <TabsTrigger value="flexsim">Flexsim API</TabsTrigger>
-          <TabsTrigger value="comparison">Site Comparison</TabsTrigger>
-          <TabsTrigger value="space-plan">Space Plan</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-          <TabsTrigger value="analysis">Site Analysis</TabsTrigger>
-          <TabsTrigger value="feasibility">Feasibility</TabsTrigger>
-          <TabsTrigger value="zoning">Zoning</TabsTrigger>
+        <TabsList className="bg-gray-900 text-gray-400 border border-gray-800 grid grid-cols-4 lg:grid-cols-9 h-auto p-1">
+          <TabsTrigger value="business-case" className="text-xs px-2 py-2">Business Case</TabsTrigger>
+          <TabsTrigger value="flexsim" className="text-xs px-2 py-2">Flexsim API</TabsTrigger>
+          <TabsTrigger value="comparison" className="text-xs px-2 py-2">Site Comparison</TabsTrigger>
+          <TabsTrigger value="space-plan" className="text-xs px-2 py-2">Space Plan</TabsTrigger>
+          <TabsTrigger value="documents" className="text-xs px-2 py-2">Documents</TabsTrigger>
+          <TabsTrigger value="analysis" className="text-xs px-2 py-2">Site Analysis</TabsTrigger>
+          <TabsTrigger value="feasibility" className="text-xs px-2 py-2">Feasibility</TabsTrigger>
+          <TabsTrigger value="zoning" className="text-xs px-2 py-2">Zoning</TabsTrigger>
+          <TabsTrigger value="market" className="text-xs px-2 py-2">Market</TabsTrigger>
         </TabsList>
         
         <TabsContent value="business-case" className="mt-6">
@@ -59,6 +60,10 @@ export function SiteSelectionDashboard() {
         
         <TabsContent value="zoning" className="mt-6">
           <ZoningCompliance />
+        </TabsContent>
+        
+        <TabsContent value="market" className="mt-6">
+          <MarketAnalysis />
         </TabsContent>
       </Tabs>
     </div>
