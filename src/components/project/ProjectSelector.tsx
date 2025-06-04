@@ -36,6 +36,12 @@ export function ProjectSelector() {
     }
   };
 
+  // Function to truncate long project titles
+  const truncateTitle = (title: string, maxLength: number = 25) => {
+    if (title.length <= maxLength) return title;
+    return title.substring(0, maxLength) + '...';
+  };
+
   if (!selectedProject) return null;
 
   return (
@@ -48,13 +54,13 @@ export function ProjectSelector() {
         >
           <div className="flex items-center gap-2 truncate">
             <span className={`h-2 w-2 rounded-full ${getStatusColor(selectedProject.status)}`} />
-            <span className="truncate">{selectedProject.title}</span>
+            <span className="truncate">{truncateTitle(selectedProject.title)}</span>
           </div>
           <ChevronDown className="h-4 w-4 text-gray-400" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
-        className="w-48 bg-gray-900 border-gray-700 text-white"
+        className="w-80 bg-gray-900 border-gray-700 text-white"
         onMouseLeave={() => setOpen(false)}
       >
         <DropdownMenuItem 
@@ -73,7 +79,7 @@ export function ProjectSelector() {
             className="flex items-center gap-2 hover:bg-purple-700/70 text-white hover:text-white cursor-pointer transition-colors"
           >
             <span className={`h-2 w-2 rounded-full ${getStatusColor(project.status)}`} />
-            <span className="truncate">{project.title}</span>
+            <span className="truncate" title={project.title}>{project.title}</span>
             {selectedProject.id === project.id && <Check className="h-4 w-4 ml-auto" />}
           </DropdownMenuItem>
         ))}
