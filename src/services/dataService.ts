@@ -101,9 +101,10 @@ export const getProjects = async (): Promise<Project[]> => {
 };
 
 export const getProject = async (id: string): Promise<Project | null> => {
+  const convertedProjects = convertToSupabaseFormat(projects);
   return handleSupabaseError(
     async () => await supabase.from('projects').select('*').eq('id', id).single(),
-    mockProjects.find(p => p.id === id) || null
+    convertedProjects.find(p => p.id === id) || null
   );
 };
 
