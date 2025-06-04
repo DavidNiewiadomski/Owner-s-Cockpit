@@ -28,23 +28,23 @@ export const notifications = [
 
 export const dashboardInsights = [
   {
-    title: "Critical Contract Approval Bottleneck",
-    content: "Quonset Point AUV plant construction contract ($85M) requires immediate approval. Delay could impact Q2 2024 production timeline and cascade to other facility launches.",
+    title: "Arsenal-1 Budget Alert - Critical Action Required",
+    content: "Project is $2.4M over budget with 88% completion. Change orders CO-085 and CO-086 totaling $210K require immediate design team review to prevent further cost overruns.",
     type: "warning" as const
   },
   {
-    title: "Arsenal-1 RFP Deadline Critical",
-    content: "24 hours remaining for $900M hyperscale manufacturing facility RFP responses. Late submissions could delay groundbreaking by 6 weeks affecting production capacity targets.",
-    type: "warning" as const
-  },
-  {
-    title: "Facility Management Cost Optimization",
-    content: "The Press HQ campus energy systems show 18% efficiency gains possible through HVAC upgrades. Estimated $1.2M annual savings across portfolio.",
+    title: "Quonset Point Schedule Recovery Opportunity",
+    content: "Despite 22% progress vs. planned timeline, accelerated foundation work could recover 3 weeks. Generator testing and crane capacity upgrades are on critical path.",
     type: "info" as const
   },
   {
-    title: "Site Selection Acceleration Opportunity",
-    content: "South Coast Technology Center permitting fast-track option available. Additional $500K investment could reduce timeline by 8 weeks for Q3 construction start.",
+    title: "Facility Management Optimization Insight",
+    content: "BMS data shows HVAC Zone 3 temperature faults correlating with Occuspace high-usage periods. Predictive maintenance on AHU-9 filters could prevent 18% of facility tickets.",
+    type: "success" as const
+  },
+  {
+    title: "Space Usage Analytics Drive Cost Savings",
+    content: "Kadence planning data indicates 23% food service increase Q1 2025. Early restroom restocking contract negotiations could save $45K annually across all properties.",
     type: "success" as const
   }
 ];
