@@ -13,7 +13,7 @@ const convertedProjects = projects.map(project => ({
   description: project.description,
   progress: project.progress,
   status: project.phase || project.status,
-  stage: project.stage || 'Construction',
+  stage: project.stage || 'construction',
   priority: project.priority,
   icon: project.stage === 'site-selection' ? MapPin : 
         project.stage === 'facility-management' ? Wrench : Building2,
