@@ -43,7 +43,7 @@ export function AIInsightsCard({ insights, onChatOpen }: AIInsightsCardProps) {
           </Button>
         </div>
         
-        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+        <div className="grid grid-cols-4 gap-4">
           {displayInsights.map((insight, index) => (
             <div 
               key={index} 
