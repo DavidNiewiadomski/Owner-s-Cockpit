@@ -6,34 +6,11 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 const projects = [
-  // Site Selection
-  {
-    id: '1',
-    title: 'South Coast Technology Center',
-    description: '3100-3120 W Lake Center Dr., Santa Ana CA 92704',
-    progress: 25,
-    status: 'Site Analysis',
-    stage: 'Site Selection',
-    priority: 'High',
-    icon: MapPin,
-    color: 'bg-blue-600'
-  },
-  {
-    id: '2',
-    title: 'Greater-Boston Expansion', 
-    description: '1050 Winter St., Waltham MA 02451',
-    progress: 45,
-    status: 'Due Diligence',
-    stage: 'Site Selection',
-    priority: 'Medium',
-    icon: MapPin,
-    color: 'bg-blue-600'
-  },
   // Construction
   {
-    id: '3',
-    title: 'Arsenal-1 Hyperscale Manufacturing',
-    description: 'Advanced manufacturing complex - Pickaway County, OH',
+    id: '1',
+    title: 'Arsenal-1 hyperscale manufacturing complex',
+    description: 'Pickaway County, OH',
     progress: 35,
     status: 'Foundation & Structure',
     stage: 'Construction',
@@ -42,9 +19,9 @@ const projects = [
     color: 'bg-red-600'
   },
   {
-    id: '4',
-    title: 'Atlanta UAV Allied Studios',
-    description: '1435 Hills Pl. NW, Atlanta GA 30318',
+    id: '2',
+    title: 'Atlanta (UAV "Allied Studios")',
+    description: 'Atlanta, GA',
     progress: 68,
     status: 'Interior & Systems',
     stage: 'Construction', 
@@ -53,27 +30,15 @@ const projects = [
     color: 'bg-red-600'
   },
   {
-    id: '5',
-    title: 'Quonset Point AUV Plant',
-    description: 'Flex Tech Park Bldg 11, Quonset Business Park, North Kingstown RI 02852',
+    id: '3',
+    title: 'Quonset Point AUV plant',
+    description: 'North Kingstown, RI',
     progress: 22,
     status: 'Site Preparation',
     stage: 'Construction',
     priority: 'High',
     icon: Building2,
     color: 'bg-red-600'
-  },
-  // Facility Management
-  {
-    id: '6',
-    title: 'The Press HQ Campus',
-    description: '1375 Sunflower Ave., Costa Mesa CA 92626',
-    progress: 95,
-    status: 'Operations & Maintenance',
-    stage: 'Facility Management',
-    priority: 'Medium',
-    icon: Wrench,
-    color: 'bg-green-600'
   }
 ];
 

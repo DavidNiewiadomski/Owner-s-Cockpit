@@ -1,7 +1,24 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getProjects } from '@/services/dataService';
-import type { Project } from '@/lib/supabase';
+import { projects as projectsFromData } from '@/data/projects/projectData';
+
+// Define the Project type based on our data structure
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  status: "on-track" | "at-risk" | "delayed" | "completed" | "upcoming";
+  dueDate: string;
+  startDate?: string;
+  budget?: string;
+  client?: string;
+  location?: string;
+  phase?: string;
+  stage?: "site-selection" | "planning-design" | "construction" | "facility-management";
+  teamMembers: { name: string; avatar?: string }[];
+  priority: "High" | "Medium" | "Low";
+}
 
 export type ProjectOrAll = Project | { id: 'all'; title: 'All Projects'; status: string };
 
@@ -26,8 +43,9 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const projectsData = await getProjects();
-        setProjects(projectsData);
+        // Use the projects from our data file directly
+        console.log('ProjectContext loading projects:', projectsFromData.map(p => ({ id: p.id, title: p.title })));
+        setProjects(projectsFromData);
         
         // Ensure "All Projects" remains selected if no other selection has been made
         if (!selectedProject || selectedProject.id === 'all') {

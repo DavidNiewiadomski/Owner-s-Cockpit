@@ -8,9 +8,6 @@ interface ProjectsSectionProps {
 }
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
-  // Debug logging to see what projects are being passed to the component
-  console.log('ProjectsSection received projects:', projects.map(p => ({ id: p.id, title: p.title })));
-  
   return (
     <>
       <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>

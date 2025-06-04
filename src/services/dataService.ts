@@ -1,4 +1,3 @@
-
 import { supabase } from '@/lib/supabase'
 import type { 
   Project, 
@@ -75,6 +74,9 @@ const mockTasks: Task[] = [
   }
 ];
 
+// Use the projects from the projectData file
+import { projects } from '@/data/projects/projectData';
+
 // Helper function to check if Supabase is properly configured
 const isSupabaseConfigured = () => {
   return true; // Now properly configured
@@ -107,11 +109,9 @@ export const getCompanies = async (): Promise<Company[]> => {
 };
 
 // Projects
-export const getProjects = async (): Promise<Project[]> => {
-  return handleSupabaseError(
-    async () => await supabase.from('projects').select('*').order('created_at', { ascending: false }),
-    mockProjects
-  );
+export const getProjects = async () => {
+  console.log('dataService.getProjects returning:', projects.map(p => ({ id: p.id, title: p.title })));
+  return projects;
 };
 
 export const getProject = async (id: string): Promise<Project | null> => {
