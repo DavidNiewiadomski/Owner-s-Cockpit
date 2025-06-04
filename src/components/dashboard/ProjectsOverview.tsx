@@ -1,25 +1,45 @@
 
 import React from 'react';
-import { ArrowRight, MapPin, Building2, Wrench } from 'lucide-react';
+import { ArrowRight, MapPin, Building2, Wrench, PenTool } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { projects } from '@/data/projects/projectData';
 
 // Convert projectData projects to match the component's expected format
-const convertedProjects = projects.map(project => ({
-  id: project.id,
-  title: project.title,
-  description: project.description,
-  progress: project.progress,
-  status: project.phase || project.status,
-  stage: project.stage || 'construction',
-  priority: project.priority,
-  icon: project.stage === 'site-selection' ? MapPin : 
-        project.stage === 'facility-management' ? Wrench : Building2,
-  color: project.stage === 'site-selection' ? 'bg-blue-600' :
-         project.stage === 'facility-management' ? 'bg-green-600' : 'bg-red-600'
-}));
+const convertedProjects = projects.map(project => {
+  // Determine icon based on stage
+  let icon = Building2;
+  if (project.stage === 'site-selection') {
+    icon = MapPin;
+  } else if (project.stage === 'planning-design') {
+    icon = PenTool;
+  } else if (project.stage === 'facility-management') {
+    icon = Wrench;
+  }
+
+  // Determine color based on stage
+  let color = 'bg-red-600';
+  if (project.stage === 'site-selection') {
+    color = 'bg-blue-600';
+  } else if (project.stage === 'planning-design') {
+    color = 'bg-purple-600';
+  } else if (project.stage === 'facility-management') {
+    color = 'bg-green-600';
+  }
+
+  return {
+    id: project.id,
+    title: project.title,
+    description: project.description,
+    progress: project.progress,
+    status: project.phase || project.status,
+    stage: project.stage,
+    priority: project.priority,
+    icon,
+    color
+  };
+});
 
 export function ProjectsOverview() {
   const getPriorityBadge = (priority: string) => {
@@ -35,6 +55,8 @@ export function ProjectsOverview() {
     switch (stage) {
       case 'site-selection':
         return 'text-blue-400';
+      case 'planning-design':
+        return 'text-purple-400';
       case 'construction':
         return 'text-red-400';
       case 'facility-management':
