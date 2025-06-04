@@ -6,8 +6,32 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 const projects = [
+  // Site Selection
   {
     id: '1',
+    title: 'South Coast Technology Center',
+    description: '3100-3120 W Lake Center Dr., Santa Ana CA 92704',
+    progress: 25,
+    status: 'Site Analysis',
+    stage: 'Site Selection',
+    priority: 'High',
+    icon: MapPin,
+    color: 'bg-blue-600'
+  },
+  {
+    id: '2',
+    title: 'Greater-Boston Expansion', 
+    description: '1050 Winter St., Waltham MA 02451',
+    progress: 45,
+    status: 'Due Diligence',
+    stage: 'Site Selection',
+    priority: 'Medium',
+    icon: MapPin,
+    color: 'bg-blue-600'
+  },
+  // Construction
+  {
+    id: '3',
     title: 'Arsenal-1 Hyperscale Manufacturing',
     description: 'Advanced manufacturing complex - Pickaway County, OH',
     progress: 35,
@@ -18,18 +42,18 @@ const projects = [
     color: 'bg-red-600'
   },
   {
-    id: '2',
+    id: '4',
     title: 'Atlanta UAV Allied Studios',
     description: '1435 Hills Pl. NW, Atlanta GA 30318',
     progress: 68,
     status: 'Interior & Systems',
-    stage: 'Construction',
+    stage: 'Construction', 
     priority: 'High',
     icon: Building2,
     color: 'bg-red-600'
   },
   {
-    id: '3',
+    id: '5',
     title: 'Quonset Point AUV Plant',
     description: 'Flex Tech Park Bldg 11, Quonset Business Park, North Kingstown RI 02852',
     progress: 22,
@@ -38,6 +62,18 @@ const projects = [
     priority: 'High',
     icon: Building2,
     color: 'bg-red-600'
+  },
+  // Facility Management
+  {
+    id: '6',
+    title: 'The Press HQ Campus',
+    description: '1375 Sunflower Ave., Costa Mesa CA 92626',
+    progress: 95,
+    status: 'Operations & Maintenance',
+    stage: 'Facility Management',
+    priority: 'Medium',
+    icon: Wrench,
+    color: 'bg-green-600'
   }
 ];
 
@@ -67,7 +103,7 @@ export function ProjectsOverview() {
   return (
     <div className="bg-black border border-gray-800 rounded-lg shadow-lg p-5">
       <div className="flex justify-between items-center mb-5">
-        <h3 className="text-lg font-semibold text-white">Active Manufacturing Projects</h3>
+        <h3 className="text-lg font-semibold text-white">Active Real Estate Projects</h3>
         <button className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center font-medium">
           <span>View All</span>
           <ArrowRight className="ml-1 h-3 w-3" />

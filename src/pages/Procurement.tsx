@@ -7,21 +7,21 @@ export default function Procurement() {
   return (
     <DashboardLayout
       projectContext="Procurement"
-      projectName="Arsenal-1, Atlanta UAV, Quonset Point AUV"
+      projectName="All Projects"
       initialInsights={[
         {
           title: 'Vendor Selection',
-          content: '3 RFPs for Arsenal-1 hyperscale manufacturing equipment pending evaluation',
+          content: '3 RFPs pending evaluation with responses due this week',
           type: 'warning',
         },
         {
           title: 'Cost Savings',
-          content: 'Negotiated 12% savings on specialized UAV manufacturing materials for Atlanta facility',
+          content: 'Negotiated 12% savings on electrical materials procurement',
           type: 'success',
         },
         {
           title: 'Delivery Delays',
-          content: 'Marine-grade equipment delivery for Quonset Point delayed by 2 weeks',
+          content: 'Steel delivery delayed by 2 weeks, may impact critical path',
           type: 'warning',
         }
       ]}

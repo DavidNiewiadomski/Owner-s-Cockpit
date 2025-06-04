@@ -1,41 +1,27 @@
 
 import React from 'react';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
-import { projects } from '@/data/projects/projectData';
+import { Project } from '@/data/projects/projectData';
 
 interface ProjectsSectionProps {
-  projects?: typeof projects;
+  projects: Project[];
 }
 
-export function ProjectsSection({ projects: providedProjects }: ProjectsSectionProps) {
-  const projectsToShow = providedProjects || projects;
-  
-  const mapProjectStatus = (status: string): "on-track" | "at-risk" | "delayed" => {
-    switch (status) {
-      case "completed":
-      case "upcoming":
-        return "on-track";
-      case "at-risk":
-        return "at-risk";
-      case "delayed":
-        return "delayed";
-      default:
-        return "on-track";
-    }
-  };
-  
+export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
     <>
       <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projectsToShow.map((project) => (
+        {projects.map((project) => (
           <div key={project.id}>
             <ProjectCard 
               id={project.id}
               title={project.title}
               description={project.description}
               progress={project.progress}
-              status={mapProjectStatus(project.status)}
+              status={project.status === "completed" || project.status === "upcoming" 
+                ? "on-track" 
+                : project.status}
               dueDate={project.dueDate}
               teamMembers={project.teamMembers}
               priority={project.priority}
