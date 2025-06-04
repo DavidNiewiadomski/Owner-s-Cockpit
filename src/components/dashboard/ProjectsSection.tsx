@@ -10,6 +10,20 @@ interface ProjectsSectionProps {
 export function ProjectsSection({ projects: providedProjects }: ProjectsSectionProps) {
   const projectsToShow = providedProjects || projects;
   
+  const mapProjectStatus = (status: string): "on-track" | "at-risk" | "delayed" => {
+    switch (status) {
+      case "completed":
+      case "upcoming":
+        return "on-track";
+      case "at-risk":
+        return "at-risk";
+      case "delayed":
+        return "delayed";
+      default:
+        return "on-track";
+    }
+  };
+  
   return (
     <>
       <h2 className="text-xl font-semibold text-gray-100">Active Projects</h2>
@@ -21,9 +35,7 @@ export function ProjectsSection({ projects: providedProjects }: ProjectsSectionP
               title={project.title}
               description={project.description}
               progress={project.progress}
-              status={project.status === "completed" || project.status === "upcoming" || project.status === "at-risk" || project.status === "delayed"
-                ? (project.status === "completed" || project.status === "upcoming" ? "on-track" : project.status)
-                : "on-track"}
+              status={mapProjectStatus(project.status)}
               dueDate={project.dueDate}
               teamMembers={project.teamMembers}
               priority={project.priority}
