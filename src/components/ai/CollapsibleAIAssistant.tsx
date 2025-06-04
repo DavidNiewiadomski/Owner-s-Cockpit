@@ -73,7 +73,7 @@ export function CollapsibleAIAssistant({
           </div>
           
           <CollapsibleContent className="space-y-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
               {allInsights.map((insight, index) => (
                 <div 
                   key={index} 
