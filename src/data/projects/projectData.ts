@@ -130,6 +130,44 @@ export const projects = [
       { name: "Alex Chen" }
     ],
     priority: "Medium" as const
+  },
+  {
+    id: "7",
+    title: "Tech Campus Site Analysis",
+    description: "Preliminary site evaluation for tech headquarters",
+    progress: 15,
+    status: "on-track" as const,
+    dueDate: "2025-02-28",
+    startDate: "2024-12-01",
+    budget: "$2.5M",
+    client: "TechCorp Inc",
+    location: "Austin, TX",
+    phase: "Site Assessment",
+    stage: "site-selection" as const,
+    teamMembers: [
+      { name: "Sarah Mitchell" },
+      { name: "Kevin Park" }
+    ],
+    priority: "High" as const
+  },
+  {
+    id: "8", 
+    title: "Medical Center Design Phase",
+    description: "Architectural planning and design development",
+    progress: 55,
+    status: "on-track" as const,
+    dueDate: "2025-05-15",
+    startDate: "2024-09-01",
+    budget: "$8.2M",
+    client: "Regional Healthcare",
+    location: "Denver, CO",
+    phase: "Schematic Design",
+    stage: "planning-design" as const,
+    teamMembers: [
+      { name: "Dr. Amanda Foster" },
+      { name: "Mark Thompson" }
+    ],
+    priority: "High" as const
   }
 ];
 
@@ -174,6 +212,6 @@ export const mockTimelineEvents = [
 ];
 
 // Debug logging to track what data is being exported
-console.log('PROJECT DATA LOADED:', projects.map(p => ({ id: p.id, title: p.title })));
+console.log('PROJECT DATA LOADED:', projects.map(p => ({ id: p.id, title: p.title, stage: p.stage })));
 console.log('FINANCIAL DATA LOADED:', mockFinancialData);
 console.log('TIMELINE EVENTS LOADED:', mockTimelineEvents);
