@@ -25,26 +25,26 @@ interface UserProfile {
 
 export function UserProfileDropdown() {
   const [profile, setProfile] = useLocalStorage<UserProfile>('userProfile', {
-    firstName: 'Connor',
-    lastName: 'Brogan',
-    email: 'connor.brogan@company.com',
+    firstName: 'Tri',
+    lastName: 'Tang',
+    email: 'tri.tang@company.com',
     company: 'Real Estate Development Corp',
     role: 'operations',
-    title: 'Business Operations',
-    avatar: '/lovable-uploads/cb5ea042-7298-4d73-83fa-d687a4a7dcce.png'
+    title: 'Internal Operations',
+    avatar: '/lovable-uploads/15d63465-4118-4f05-9426-771e61d8ca96.png'
   });
 
-  // Force update the profile to Connor Brogan if it's still showing old data
+  // Force update the profile to Tri Tang if it's still showing old data
   useEffect(() => {
-    if (profile.firstName !== 'Connor' || profile.lastName !== 'Brogan') {
+    if (profile.firstName !== 'Tri' || profile.lastName !== 'Tang') {
       setProfile({
-        firstName: 'Connor',
-        lastName: 'Brogan',
-        email: 'connor.brogan@company.com',
+        firstName: 'Tri',
+        lastName: 'Tang',
+        email: 'tri.tang@company.com',
         company: 'Real Estate Development Corp',
         role: 'operations',
-        title: 'Business Operations',
-        avatar: '/lovable-uploads/cb5ea042-7298-4d73-83fa-d687a4a7dcce.png'
+        title: 'Internal Operations',
+        avatar: '/lovable-uploads/15d63465-4118-4f05-9426-771e61d8ca96.png'
       });
     }
   }, [profile.firstName, profile.lastName, setProfile]);
