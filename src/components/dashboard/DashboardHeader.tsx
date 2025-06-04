@@ -58,7 +58,7 @@ export function DashboardHeader() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-400 mb-2">PORTFOLIO VALUE</p>
-                <p className="text-3xl font-bold text-white mb-2">$147M</p>
+                <p className="text-3xl font-bold text-white mb-2">$1.1B+</p>
                 <div className="flex items-center text-xs text-green-400">
                   <MapPin className="h-3 w-3 mr-1" />
                   Active development pipeline

@@ -101,7 +101,7 @@ export function ShowcaseCharts() {
               <p className="text-cyan-300/80 font-medium mt-1">Quarterly project costs by stage ($ millions)</p>
             </div>
             <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-green-500/50 shadow-[0_0_15px_rgba(34,197,94,0.3)] px-3 py-1">
-              $147M Total Portfolio
+              $1.1B+ Total Portfolio
             </Badge>
           </div>
         </CardHeader>
@@ -312,7 +312,7 @@ export function ShowcaseCharts() {
               </div>
               <div className="text-right">
                 <span className="text-white font-bold">2 projects</span>
-                <p className="text-xs text-blue-400">$6.0M budget</p>
+                <p className="text-xs text-blue-400">$165M budget</p>
               </div>
             </div>
             
@@ -334,7 +334,7 @@ export function ShowcaseCharts() {
               </div>
               <div className="text-right">
                 <span className="text-white font-bold">3 projects</span>
-                <p className="text-xs text-red-400">$93.0M budget</p>
+                <p className="text-xs text-red-400">$725M budget</p>
               </div>
             </div>
             
@@ -345,7 +345,7 @@ export function ShowcaseCharts() {
               </div>
               <div className="text-right">
                 <span className="text-white font-bold">3+ projects</span>
-                <p className="text-xs text-green-400">$25.4M operational</p>
+                <p className="text-xs text-green-400">$210M operational</p>
               </div>
             </div>
           </div>
