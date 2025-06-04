@@ -48,7 +48,7 @@ export const projects = [
     client: "Allied Studios Corp",
     location: "Atlanta, GA",
     phase: "Interior & Systems",
-    stage: "construction" as const,
+    stage: "facility-management" as const,
     teamMembers: [
       { name: "Carlos Rivera" },
       { name: "Amanda Foster" }
