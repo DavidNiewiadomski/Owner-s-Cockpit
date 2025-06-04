@@ -2,49 +2,49 @@
 export const notifications = [
   {
     id: 1,
-    title: "Budget Adjustment",
-    message: "Budget increase of $250K approved for electrical work",
+    title: "Critical RFP Response",
+    message: "Arsenal-1 hyperscale manufacturing RFP responses due in 24 hours - $15M impact",
     time: "1 hour ago",
     read: false,
     priority: "high"
   },
   {
     id: 2,
-    title: "New Document",
-    message: "Updated floor plans uploaded by Smith Architects",
+    title: "Contract Approval Needed",
+    message: "Quonset Point AUV plant construction contract pending - critical path item",
     time: "3 hours ago",
-    read: true,
-    priority: "medium"
+    read: false,
+    priority: "high"
   },
   {
     id: 3,
-    title: "Schedule Change",
-    message: "Roofing work rescheduled to next week due to weather",
+    title: "Site Selection Update",
+    message: "Greater-Boston expansion site assessment completed for Waltham location",
     time: "1 day ago",
-    read: false,
-    priority: "high"
+    read: true,
+    priority: "medium"
   }
 ];
 
 export const dashboardInsights = [
   {
-    title: "RFP Auto-Review Alert",
-    content: "4 new RFPs received for East Tower project. AI analysis detected potential cost savings of 12% in electrical subcontracting bids. Review recommended within 48 hours.",
-    type: "info" as const
-  },
-  {
-    title: "Contract Approval Bottleneck",
-    content: "18 contracts pending approval across portfolio. 6 are critical path items that may impact Q2 delivery timelines. Immediate action required.",
+    title: "Critical Contract Approval Bottleneck",
+    content: "Quonset Point AUV plant construction contract ($8.5M) requires immediate approval. Delay could impact Q2 2024 production timeline and cascade to other facility launches.",
     type: "warning" as const
   },
   {
-    title: "Financial Forecast Update",
-    content: "Q2 portfolio projection shows $342M total value with 8% above projected returns. Harbor Bridge contributing highest margin at 15.2%.",
-    type: "success" as const
+    title: "Arsenal-1 RFP Deadline Critical",
+    content: "24 hours remaining for $15M hyperscale manufacturing facility RFP responses. Late submissions could delay groundbreaking by 6 weeks affecting production capacity targets.",
+    type: "warning" as const
   },
   {
-    title: "Resource Optimization",
-    content: "AI detected opportunity to reallocate 3 crane operators from completed phases to high-priority East Tower foundation work starting next week.",
+    title: "Facility Management Cost Optimization",
+    content: "The Press HQ campus energy systems show 18% efficiency gains possible through HVAC upgrades. Estimated $120K annual savings across portfolio.",
     type: "info" as const
+  },
+  {
+    title: "Site Selection Acceleration Opportunity",
+    content: "South Coast Technology Center permitting fast-track option available. Additional $50K investment could reduce timeline by 8 weeks for Q3 construction start.",
+    type: "success" as const
   }
 ];

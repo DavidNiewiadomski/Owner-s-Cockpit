@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Search, 
@@ -37,6 +38,7 @@ interface UserProfile {
   email: string;
   company: string;
   role: string;
+  title: string;
   avatar: string;
 }
 
@@ -48,9 +50,10 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
   const [profile] = useLocalStorage<UserProfile>('userProfile', {
     firstName: 'Matt',
     lastName: 'Grimm',
-    email: 'matt.grimm@example.com',
-    company: 'SkyLine Properties LLC',
-    role: 'owner',
+    email: 'matt.grimm@company.com',
+    company: 'Real Estate Development Corp',
+    role: 'coo',
+    title: 'Chief Operating Officer',
     avatar: '/lovable-uploads/a60047d2-3881-445d-b3a0-2795e70da2db.png'
   });
 
@@ -92,7 +95,7 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input 
               type="search" 
-              placeholder="Search..." 
+              placeholder="Search properties..." 
               className="pl-8 bg-background"
               value={searchValue}
               onChange={handleSearch}
@@ -110,21 +113,39 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
               <DropdownMenuContent align="end" className="w-80">
                 <DropdownMenuLabel className="flex items-center justify-between">
                   <span>Notifications</span>
-                  <Badge variant="outline" className="font-normal">5 new</Badge>
+                  <Badge variant="outline" className="font-normal">3 critical</Badge>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {[1, 2, 3].map((i) => (
-                  <DropdownMenuItem key={i} className="flex flex-col items-start p-4 cursor-pointer">
-                    <div className="flex items-center gap-2 mb-1 w-full">
-                      <span className="font-medium">Project Update</span>
-                      <Badge variant="outline" className="ml-auto">New</Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      East Tower project timeline has been updated.
-                    </p>
-                    <span className="text-xs text-muted-foreground mt-1">10 minutes ago</span>
-                  </DropdownMenuItem>
-                ))}
+                <DropdownMenuItem className="flex flex-col items-start p-4 cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1 w-full">
+                    <span className="font-medium">Critical RFP Deadline</span>
+                    <Badge variant="destructive" className="ml-auto">Critical</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Arsenal-1 manufacturing RFP responses due in 24 hours.
+                  </p>
+                  <span className="text-xs text-muted-foreground mt-1">1 hour ago</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex flex-col items-start p-4 cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1 w-full">
+                    <span className="font-medium">Contract Approval Needed</span>
+                    <Badge variant="outline" className="ml-auto">High</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Quonset Point construction contract pending approval.
+                  </p>
+                  <span className="text-xs text-muted-foreground mt-1">3 hours ago</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex flex-col items-start p-4 cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1 w-full">
+                    <span className="font-medium">Site Assessment Complete</span>
+                    <Badge variant="outline" className="ml-auto">Info</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Greater-Boston expansion site ready for approval.
+                  </p>
+                  <span className="text-xs text-muted-foreground mt-1">1 day ago</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="p-2 cursor-pointer flex justify-center">
                   <Button variant="ghost" size="sm" className="w-full">
@@ -141,7 +162,10 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
                     <AvatarImage src={profile.avatar} />
                     <AvatarFallback>{profile.firstName[0]}{profile.lastName[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:inline-flex">{profile.firstName} {profile.lastName}</span>
+                  <div className="hidden md:flex flex-col items-start">
+                    <span className="text-sm font-medium">{profile.firstName} {profile.lastName}</span>
+                    <span className="text-xs text-muted-foreground">{profile.title}</span>
+                  </div>
                   <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 </Button>
               </DropdownMenuTrigger>

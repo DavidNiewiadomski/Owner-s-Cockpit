@@ -6,51 +6,50 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   FileText, 
-  DollarSign, 
   CheckCircle, 
   AlertTriangle,
-  TrendingUp,
-  ArrowUpRight,
+  Building2,
   BarChart3,
-  Calendar
+  Calendar,
+  MapPin
 } from 'lucide-react';
 
 export function DashboardHeader() {
   const stats = [
     {
       title: 'RFP Management',
-      value: '24',
-      subtitle: 'Auto Review & Leveling/AI Insights',
+      value: '8',
+      subtitle: 'Critical deadlines in next 48 hours',
       icon: <FileText className="h-8 w-8" />,
-      gradient: 'from-blue-600 via-blue-700 to-blue-800',
-      iconBg: 'bg-blue-500/20',
-      trend: 'up'
+      gradient: 'from-red-600 via-red-700 to-red-800',
+      iconBg: 'bg-red-500/20',
+      trend: 'critical'
     },
     {
       title: 'Contracts & Approvals',
-      value: '18',
-      subtitle: 'Pending from any project stage',
+      value: '12',
+      subtitle: 'Pending approvals across all stages',
       icon: <CheckCircle className="h-8 w-8" />,
       gradient: 'from-orange-600 via-orange-700 to-orange-800',
       iconBg: 'bg-orange-500/20',
       trend: 'critical'
     },
     {
-      title: 'Financial Forecasting',
-      value: '$342M',
-      subtitle: 'Portfolio per quarter projection',
+      title: 'Portfolio Value',
+      value: '$147M',
+      subtitle: 'Active development pipeline',
       icon: <BarChart3 className="h-8 w-8" />,
       gradient: 'from-green-600 via-green-700 to-green-800',
       iconBg: 'bg-green-500/20',
       trend: 'up'
     },
     {
-      title: 'Active Projects',
-      value: '12',
-      subtitle: 'Site selection to operations',
-      icon: <Calendar className="h-8 w-8" />,
-      gradient: 'from-purple-600 via-purple-700 to-purple-800',
-      iconBg: 'bg-purple-500/20',
+      title: 'Active Properties',
+      value: '15+',
+      subtitle: 'Site selection to facility management',
+      icon: <Building2 className="h-8 w-8" />,
+      gradient: 'from-blue-600 via-blue-700 to-blue-800',
+      iconBg: 'bg-blue-500/20',
       trend: 'up'
     }
   ];
@@ -85,8 +84,8 @@ export function DashboardHeader() {
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-white/70 mt-auto">
-                  {stat.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-300 flex-shrink-0" />}
                   {stat.trend === 'critical' && <AlertTriangle className="h-4 w-4 text-red-300 animate-pulse flex-shrink-0" />}
+                  {stat.trend === 'up' && <MapPin className="h-4 w-4 text-green-300 flex-shrink-0" />}
                   <span className="break-words">{stat.subtitle}</span>
                 </div>
                 
@@ -100,6 +99,14 @@ export function DashboardHeader() {
             </Card>
           </motion.div>
         ))}
+      </div>
+      
+      {/* Additional Info Badge */}
+      <div className="flex justify-center">
+        <Badge variant="outline" className="text-gray-400 border-gray-600 px-4 py-2">
+          <MapPin className="h-4 w-4 mr-2" />
+          This is a partial list - {Math.floor(Math.random() * 25) + 20} additional locations in portfolio
+        </Badge>
       </div>
     </div>
   );

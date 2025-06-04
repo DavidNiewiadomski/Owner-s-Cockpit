@@ -16,6 +16,7 @@ interface UserProfile {
   email: string;
   company: string;
   role: string;
+  title: string;
   avatar: string;
 }
 
@@ -24,9 +25,10 @@ export function AccountSettings() {
   const [profile, setProfile] = useLocalStorage<UserProfile>('userProfile', {
     firstName: 'Matt',
     lastName: 'Grimm',
-    email: 'matt.grimm@example.com',
-    company: 'SkyLine Properties LLC',
-    role: 'owner',
+    email: 'matt.grimm@company.com',
+    company: 'Real Estate Development Corp',
+    role: 'coo',
+    title: 'Chief Operating Officer',
     avatar: '/lovable-uploads/a60047d2-3881-445d-b3a0-2795e70da2db.png'
   });
 
@@ -125,12 +127,22 @@ export function AccountSettings() {
           </div>
           
           <div className="space-y-2">
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              value={profile.title}
+              onChange={(e) => setProfile(prev => ({ ...prev, title: e.target.value }))}
+            />
+          </div>
+          
+          <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
             <Select value={profile.role} onValueChange={(value) => setProfile(prev => ({ ...prev, role: value }))}>
               <SelectTrigger>
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="coo">Chief Operating Officer</SelectItem>
                 <SelectItem value="owner">Property Owner</SelectItem>
                 <SelectItem value="developer">Developer</SelectItem>
                 <SelectItem value="investor">Investor</SelectItem>
@@ -215,7 +227,7 @@ export function AccountSettings() {
       
       <Card className="col-span-6">
         <CardHeader>
-          <CardTitle>Owner Preferences</CardTitle>
+          <CardTitle>Real Estate Preferences</CardTitle>
           <CardDescription>
             Configure how you want to monitor your properties and projects
           </CardDescription>
