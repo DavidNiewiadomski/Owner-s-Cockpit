@@ -1,4 +1,3 @@
-
 export interface Project {
   id: string;
   title: string;
@@ -73,6 +72,25 @@ export const projects = [
       { name: "Patricia Lee" }
     ],
     priority: "High" as const
+  },
+  {
+    id: "4",
+    title: "Phoenix Distribution Center",
+    description: "Phoenix, AZ",
+    progress: 5,
+    status: "upcoming" as const,
+    dueDate: "2025-09-15",
+    startDate: "2025-01-15",
+    budget: "$12.3M",
+    client: "Logistics Solutions Inc",
+    location: "Phoenix, AZ",
+    phase: "Site Evaluation",
+    stage: "site-selection" as const,
+    teamMembers: [
+      { name: "Michael Chen" },
+      { name: "Sarah Johnson" }
+    ],
+    priority: "Medium" as const
   }
 ];
 
