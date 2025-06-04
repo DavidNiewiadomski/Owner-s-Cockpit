@@ -5,7 +5,6 @@ export const integrationData = {
   description: "Construction management platform",
   connected: true,
   category: "Project Management",
-  features: ["Document Control", "Field Management", "Quality & Safety"],
   onToggle: () => console.log("Toggled Procore integration")
 };
 
