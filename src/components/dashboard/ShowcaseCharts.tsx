@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -310,8 +311,8 @@ export function ShowcaseCharts() {
                 <span className="text-gray-300 font-medium">Site Selection</span>
               </div>
               <div className="text-right">
-                <span className="text-white font-bold">2 projects</span>
-                <p className="text-xs text-blue-400">$165M budget</p>
+                <span className="text-white font-bold">0 projects</span>
+                <p className="text-xs text-blue-400">No active projects</p>
               </div>
             </div>
             
@@ -321,8 +322,8 @@ export function ShowcaseCharts() {
                 <span className="text-gray-300 font-medium">Planning & Design</span>
               </div>
               <div className="text-right">
-                <span className="text-white font-bold">0 projects</span>
-                <p className="text-xs text-yellow-400">Ready for next phase</p>
+                <span className="text-white font-bold">2 projects</span>
+                <p className="text-xs text-yellow-400">In planning phase</p>
               </div>
             </div>
             
@@ -333,7 +334,7 @@ export function ShowcaseCharts() {
               </div>
               <div className="text-right">
                 <span className="text-white font-bold">3 projects</span>
-                <p className="text-xs text-red-400">$725M budget</p>
+                <p className="text-xs text-red-400">Active construction</p>
               </div>
             </div>
             
@@ -343,8 +344,8 @@ export function ShowcaseCharts() {
                 <span className="text-gray-300 font-medium">Facility Management</span>
               </div>
               <div className="text-right">
-                <span className="text-white font-bold">3+ projects</span>
-                <p className="text-xs text-green-400">$210M operational</p>
+                <span className="text-white font-bold">11 projects</span>
+                <p className="text-xs text-green-400">Operational facilities</p>
               </div>
             </div>
           </div>
