@@ -1,4 +1,5 @@
 
+
 export interface Project {
   id: string;
   title: string;
@@ -92,6 +93,44 @@ export const projects = [
       { name: "Sarah Johnson" }
     ],
     priority: "Medium" as const
+  },
+  {
+    id: "5",
+    title: "Downtown Office Complex",
+    description: "Downtown Business District",
+    progress: 65,
+    status: "on-track" as const,
+    dueDate: "2024-08-15",
+    startDate: "2024-01-15",
+    budget: "$15.0M",
+    client: "Urban Development Corp",
+    location: "Downtown Business District",
+    phase: "Interior Build-out",
+    stage: "construction" as const,
+    teamMembers: [
+      { name: "David Kim" },
+      { name: "Jennifer Adams" }
+    ],
+    priority: "High" as const
+  },
+  {
+    id: "6",
+    title: "Riverside Residential Tower",
+    description: "Riverside District",
+    progress: 42,
+    status: "on-track" as const,
+    dueDate: "2025-01-30",
+    startDate: "2024-05-01",
+    budget: "$28.0M",
+    client: "Riverside Developments",
+    location: "Riverside District",
+    phase: "Structural Framework",
+    stage: "construction" as const,
+    teamMembers: [
+      { name: "Maria Rodriguez" },
+      { name: "Alex Chen" }
+    ],
+    priority: "Medium" as const
   }
 ];
 
@@ -139,3 +178,4 @@ export const mockTimelineEvents = [
 console.log('PROJECT DATA LOADED:', projects.map(p => ({ id: p.id, title: p.title })));
 console.log('FINANCIAL DATA LOADED:', mockFinancialData);
 console.log('TIMELINE EVENTS LOADED:', mockTimelineEvents);
+
