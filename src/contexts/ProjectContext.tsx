@@ -15,8 +15,11 @@ interface ProjectContextType {
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
+// Create the "All Projects" default option
+const ALL_PROJECTS_OPTION: ProjectOrAll = { id: 'all', title: 'All Projects', status: 'on-track' };
+
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>({ id: 'all', title: 'All Projects', status: 'on-track' });
+  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(ALL_PROJECTS_OPTION);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +28,11 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       try {
         const projectsData = await getProjects();
         setProjects(projectsData);
+        
+        // Ensure "All Projects" remains selected if no other selection has been made
+        if (!selectedProject || selectedProject.id === 'all') {
+          setSelectedProject(ALL_PROJECTS_OPTION);
+        }
       } catch (error) {
         console.error('Error loading projects:', error);
       } finally {
