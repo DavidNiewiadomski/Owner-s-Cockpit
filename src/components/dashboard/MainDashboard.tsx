@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -153,12 +152,6 @@ export function MainDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Construction Dashboard Header */}
-      <div className="bg-gradient-to-r from-blue-900 to-cyan-900 rounded-xl p-6 border border-blue-700">
-        <h1 className="text-3xl font-bold text-white mb-2">Construction Management Dashboard</h1>
-        <p className="text-blue-200">Budget Financials & Schedule Dashboard for Multiple Projects</p>
-      </div>
-
       {/* Project Health Overview with Traffic Lights */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {constructionProjects.map((project) => (
