@@ -18,7 +18,7 @@ export function SiteSelectionDashboard() {
       <SiteSelectionHeader />
       
       <Tabs defaultValue="business-case" className="w-full">
-        <TabsList className="bg-gray-900 text-gray-400 border border-gray-800 grid grid-cols-4 lg:grid-cols-9 h-auto p-1">
+        <TabsList className="bg-gray-900 text-gray-400 border border-gray-800 grid grid-cols-4 lg:grid-cols-8 h-auto p-1">
           <TabsTrigger value="business-case" className="text-xs px-2 py-2">Business Case</TabsTrigger>
           <TabsTrigger value="flexsim" className="text-xs px-2 py-2">Flexsim API</TabsTrigger>
           <TabsTrigger value="comparison" className="text-xs px-2 py-2">Site Comparison</TabsTrigger>
@@ -26,7 +26,6 @@ export function SiteSelectionDashboard() {
           <TabsTrigger value="documents" className="text-xs px-2 py-2">Documents</TabsTrigger>
           <TabsTrigger value="analysis" className="text-xs px-2 py-2">Site Analysis</TabsTrigger>
           <TabsTrigger value="feasibility" className="text-xs px-2 py-2">Feasibility</TabsTrigger>
-          <TabsTrigger value="zoning" className="text-xs px-2 py-2">Zoning</TabsTrigger>
           <TabsTrigger value="market" className="text-xs px-2 py-2">Market</TabsTrigger>
         </TabsList>
         
@@ -56,10 +55,6 @@ export function SiteSelectionDashboard() {
         
         <TabsContent value="feasibility" className="mt-6">
           <FeasibilityStudies />
-        </TabsContent>
-        
-        <TabsContent value="zoning" className="mt-6">
-          <ZoningCompliance />
         </TabsContent>
         
         <TabsContent value="market" className="mt-6">
