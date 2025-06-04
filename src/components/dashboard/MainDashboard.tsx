@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package, MapPin, Star, Building2, DollarSign, FileText, Zap, Cpu, Eye, PaintBucket, Trees, Settings2, BarChart3, PieChart, Activity, Target } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package, MapPin, Star, Building2, DollarSign, FileText, Zap, Cpu, Eye, PaintBucket, Trees, Settings2, BarChart3, PieChart, Activity, Target, Award, Briefcase, LineChart, Shield } from 'lucide-react';
 import { getDashboardStats, getProjects, getTasks } from '@/services/dataService';
 import type { Project, Task } from '@/lib/supabase';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart as RechartsPieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ComposedChart, Area, AreaChart } from 'recharts';
@@ -107,7 +107,7 @@ export function MainDashboard() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Enhanced Stats Overview - Fixed Sizing */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
@@ -681,8 +681,9 @@ export function MainDashboard() {
         </Card>
       </motion.div>
 
-      {/* Enhanced Project Overview Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* New comprehensive grid layout to fill all space */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Projects - Enhanced */}
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
           <Card className="bg-gray-900 border-gray-700 h-full">
             <CardHeader className="border-b border-gray-700">
@@ -718,55 +719,201 @@ export function MainDashboard() {
           </Card>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.7 }}>
+        {/* Site Ranking Section - NEW */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
           <Card className="bg-gray-900 border-gray-700 h-full">
             <CardHeader className="border-b border-gray-700">
               <CardTitle className="text-white flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-cyan-400" />
-                Site Selection Status
+                <Award className="h-5 w-5 text-yellow-400" />
+                Site Performance Ranking
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
               {[
-                { name: 'Downtown Metro', score: 94, status: 'Recommended', color: 'bg-green-600', details: 'Excellent transport links, high workforce availability', cost: '$42.1M' },
-                { name: 'Industrial East', score: 87, status: 'Under Review', color: 'bg-blue-600', details: 'Good infrastructure, moderate incentives', cost: '$38.7M' },
-                { name: 'Suburban North', score: 82, status: 'Pending Analysis', color: 'bg-yellow-600', details: 'Lower costs, limited transport options', cost: '$35.2M' }
-              ].map((site, index) => (
-                <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-medium text-white">{site.name}</h4>
-                    <Badge className={`${site.color} text-white`}>
-                      {site.status}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-400" />
-                      <span className="text-sm text-gray-300">{site.score}/100</span>
+                { rank: 1, name: 'Downtown Metro Site', score: 94, change: '+2', trend: 'up', color: 'text-green-400', bgColor: 'bg-green-600/20' },
+                { rank: 2, name: 'Industrial Complex B', score: 89, change: '+1', trend: 'up', color: 'text-blue-400', bgColor: 'bg-blue-600/20' },
+                { rank: 3, name: 'Riverside District', score: 87, change: '0', trend: 'stable', color: 'text-orange-400', bgColor: 'bg-orange-600/20' },
+                { rank: 4, name: 'Tech Park East', score: 82, change: '-1', trend: 'down', color: 'text-red-400', bgColor: 'bg-red-600/20' },
+                { rank: 5, name: 'Suburban Gateway', score: 78, change: '+3', trend: 'up', color: 'text-purple-400', bgColor: 'bg-purple-600/20' }
+              ].map((site) => (
+                <div key={site.rank} className={`${site.bgColor} rounded-xl p-4 border border-gray-700`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">#{site.rank}</span>
+                      </div>
+                      <span className="font-medium text-white">{site.name}</span>
                     </div>
-                    <div className="text-sm text-green-400 font-medium">{site.cost}</div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-sm ${site.color}`}>{site.change}</span>
+                      {site.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-400" />}
+                      {site.trend === 'down' && <TrendingUp className="h-4 w-4 text-red-400 rotate-180" />}
+                      {site.trend === 'stable' && <Activity className="h-4 w-4 text-gray-400" />}
+                    </div>
                   </div>
-                  <p className="text-xs text-gray-400 mb-3">{site.details}</p>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <Progress value={site.score} className="flex-1 mr-3 h-2" />
-                    <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
-                      <Eye className="h-4 w-4 mr-1" />
-                      Details
-                    </Button>
+                    <span className={`font-bold ${site.color}`}>{site.score}/100</span>
                   </div>
                 </div>
               ))}
-              <Button className="w-full bg-cyan-600 hover:bg-cyan-700 mt-4">
-                <MapPin className="h-4 w-4 mr-2" />
-                View All Sites
+              <Button className="w-full bg-yellow-600 hover:bg-yellow-700 mt-4">
+                <Award className="h-4 w-4 mr-2" />
+                View Full Rankings
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Urgent Tasks & Action Items - Enhanced */}
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>
+          <Card className="bg-gray-900 border-gray-700 h-full">
+            <CardHeader className="border-b border-gray-700">
+              <CardTitle className="text-white flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-400" />
+                Urgent Action Items
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              {[
+                { task: 'Finalize Site C Lease Agreement', priority: 'critical', due: '2 days', status: 'pending' },
+                { task: 'Environmental Impact Assessment', priority: 'high', due: '1 week', status: 'in-progress' },
+                { task: 'Zoning Permit Application', priority: 'high', due: '5 days', status: 'pending' },
+                { task: 'Infrastructure Cost Analysis', priority: 'medium', due: '2 weeks', status: 'review' },
+                { task: 'Local Authority Consultation', priority: 'high', due: '3 days', status: 'scheduled' }
+              ].map((item, index) => (
+                <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium text-white text-sm">{item.task}</span>
+                    <Badge className={`${getPriorityBadgeColor(item.priority)} text-white text-xs`}>
+                      {item.priority}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-3 w-3 text-gray-400" />
+                      <span className="text-gray-400">Due in {item.due}</span>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      item.status === 'pending' ? 'bg-yellow-600/20 text-yellow-400' :
+                      item.status === 'in-progress' ? 'bg-blue-600/20 text-blue-400' :
+                      item.status === 'review' ? 'bg-purple-600/20 text-purple-400' :
+                      'bg-green-600/20 text-green-400'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              <Button className="w-full bg-red-600 hover:bg-red-700 mt-4">
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                View All Tasks
               </Button>
             </CardContent>
           </Card>
         </motion.div>
       </div>
 
+      {/* Additional Analytics Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Financial Performance */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+          <Card className="bg-gray-900 border-gray-700">
+            <CardHeader className="border-b border-gray-700">
+              <CardTitle className="text-white flex items-center gap-2">
+                <LineChart className="h-5 w-5 text-green-400" />
+                Financial Performance Trends
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-400">$45.2M</div>
+                  <div className="text-sm text-gray-400">Total Investment</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-400">22.1%</div>
+                  <div className="text-sm text-gray-400">Expected ROI</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cyan-400">3.2yr</div>
+                  <div className="text-sm text-gray-400">Payback Period</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { metric: 'Cash Flow Projection', value: 85, color: 'bg-green-500' },
+                  { metric: 'Budget Compliance', value: 92, color: 'bg-blue-500' },
+                  { metric: 'Cost Efficiency', value: 78, color: 'bg-orange-500' },
+                  { metric: 'Risk Assessment', value: 88, color: 'bg-purple-500' }
+                ].map((item, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">{item.metric}</span>
+                      <span className="text-white font-medium">{item.value}%</span>
+                    </div>
+                    <Progress value={item.value} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Risk & Compliance Dashboard */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}>
+          <Card className="bg-gray-900 border-gray-700">
+            <CardHeader className="border-b border-gray-700">
+              <CardTitle className="text-white flex items-center gap-2">
+                <Shield className="h-5 w-5 text-purple-400" />
+                Risk & Compliance Status
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-gray-800 rounded-lg p-4 text-center">
+                  <div className="text-xl font-bold text-green-400">Low</div>
+                  <div className="text-xs text-gray-400">Overall Risk</div>
+                </div>
+                <div className="bg-gray-800 rounded-lg p-4 text-center">
+                  <div className="text-xl font-bold text-blue-400">98%</div>
+                  <div className="text-xs text-gray-400">Compliance</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { area: 'Environmental Compliance', status: 'compliant', risk: 'low' },
+                  { area: 'Zoning Regulations', status: 'compliant', risk: 'low' },
+                  { area: 'Safety Standards', status: 'pending review', risk: 'medium' },
+                  { area: 'Financial Regulations', status: 'compliant', risk: 'low' },
+                  { area: 'Building Codes', status: 'in progress', risk: 'medium' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center justify-between bg-gray-800 rounded-lg p-3">
+                    <span className="text-white text-sm">{item.area}</span>
+                    <div className="flex items-center gap-2">
+                      <Badge className={`text-xs ${
+                        item.status === 'compliant' ? 'bg-green-600' :
+                        item.status === 'pending review' ? 'bg-yellow-600' :
+                        'bg-blue-600'
+                      }`}>
+                        {item.status}
+                      </Badge>
+                      <div className={`w-3 h-3 rounded-full ${
+                        item.risk === 'low' ? 'bg-green-400' :
+                        item.risk === 'medium' ? 'bg-yellow-400' :
+                        'bg-red-400'
+                      }`}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
       {/* Enhanced Quick Actions */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }}>
         <Card className="bg-gray-900 border-gray-700">
           <CardHeader className="border-b border-gray-700">
             <CardTitle className="text-white">Quick Actions</CardTitle>
