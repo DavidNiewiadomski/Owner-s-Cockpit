@@ -56,8 +56,7 @@ export const reducer = (state: State, action: Action): State => {
     case actionTypes.ADD_TOAST:
       const newToast = { ...action.toast, id: action.toast.id || genId() };
       
-      // Auto-dismiss after 4 seconds (4000ms)
-      addToAutoDismissQueue(newToast.id, 4000);
+      // Don't auto-dismiss here - it's handled in the context provider
       
       return {
         ...state,
