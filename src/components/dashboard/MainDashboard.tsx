@@ -104,8 +104,8 @@ const facilityTicketsData = [
 ];
 
 const spaceUsageComparisonData = [
-  { space: 'Conference Rooms', historical: 78, planned: 85 },
-  { space: 'Manufacturing Floor', historical: 92, planned: 88 },
+  { space: 'Conference', historical: 78, planned: 85 },
+  { space: 'Manufacturing', historical: 92, planned: 88 },
   { space: 'Office Areas', historical: 65, planned: 75 },
   { space: 'Cafeteria', historical: 45, planned: 62 },
   { space: 'Workshop', historical: 83, planned: 80 }
@@ -633,7 +633,7 @@ export function MainDashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* New Charts Section */}
+      {/* New Charts Section with Fixed Text Visibility */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Facility Management Tickets Chart */}
         <motion.div
@@ -642,25 +642,26 @@ export function MainDashboard() {
           transition={{ delay: 1.0 }}
         >
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-white flex items-center gap-2 text-lg">
                 <Wrench className="h-5 w-5 text-purple-400" />
                 Facility Management Tickets
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 w-full">
+              <div className="h-72 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <RechartsPieChart>
+                  <RechartsPieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                     <Pie
                       data={facilityTicketsData}
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
+                      outerRadius={70}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, value }) => `${name}: ${value}`}
+                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
                       labelLine={false}
+                      fontSize={12}
                     >
                       {facilityTicketsData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
@@ -671,7 +672,8 @@ export function MainDashboard() {
                         backgroundColor: '#1F2937', 
                         border: '1px solid #374151', 
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#F9FAFB',
+                        fontSize: '12px'
                       }}
                     />
                   </RechartsPieChart>
@@ -698,39 +700,45 @@ export function MainDashboard() {
           transition={{ delay: 1.1 }}
         >
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-white flex items-center gap-2 text-lg">
                 <Wifi className="h-5 w-5 text-green-400" />
                 Space Usage: Historical vs Planned
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 w-full">
+              <div className="h-80 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={spaceUsageComparisonData}>
+                  <BarChart 
+                    data={spaceUsageComparisonData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(55, 65, 81, 0.4)" />
                     <XAxis 
                       dataKey="space" 
-                      tick={{ fill: '#9CA3AF', fontSize: 10 }}
+                      tick={{ fill: '#9CA3AF', fontSize: 11 }}
                       axisLine={{ stroke: '#374151' }}
                       angle={-45}
                       textAnchor="end"
                       height={80}
+                      interval={0}
                     />
                     <YAxis 
                       tick={{ fill: '#9CA3AF', fontSize: 12 }}
                       axisLine={{ stroke: '#374151' }}
+                      label={{ value: 'Usage %', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                     />
                     <Tooltip 
                       contentStyle={{ 
                         backgroundColor: '#1F2937', 
                         border: '1px solid #374151', 
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#F9FAFB',
+                        fontSize: '12px'
                       }}
                     />
-                    <Bar dataKey="historical" fill="#10B981" name="Historical Usage %" />
-                    <Bar dataKey="planned" fill="#3B82F6" name="Planned Usage %" />
+                    <Bar dataKey="historical" fill="#10B981" name="Historical Usage %" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="planned" fill="#3B82F6" name="Planned Usage %" radius={[2, 2, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -755,25 +763,30 @@ export function MainDashboard() {
           transition={{ delay: 1.2 }}
         >
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-white flex items-center gap-2 text-lg">
                 <FileText className="h-5 w-5 text-cyan-400" />
                 Lease Responsibility Analysis
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 w-full">
+              <div className="h-80 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={leaseResponsibilityData}>
+                  <RadarChart 
+                    data={leaseResponsibilityData}
+                    margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+                  >
                     <PolarGrid stroke="rgba(55, 65, 81, 0.4)" />
                     <PolarAngleAxis 
                       dataKey="property" 
-                      tick={{ fill: '#9CA3AF', fontSize: 12 }}
+                      tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                      className="text-xs"
                     />
                     <PolarRadiusAxis 
                       angle={0} 
                       domain={[0, 100]} 
                       tick={{ fill: '#9CA3AF', fontSize: 10 }}
+                      tickFormatter={(value) => `${value}`}
                     />
                     <Radar
                       name="Landlord Compliance"
@@ -796,7 +809,8 @@ export function MainDashboard() {
                         backgroundColor: '#1F2937', 
                         border: '1px solid #374151', 
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#F9FAFB',
+                        fontSize: '12px'
                       }}
                     />
                   </RadarChart>
@@ -824,35 +838,41 @@ export function MainDashboard() {
         transition={{ delay: 1.3 }}
       >
         <Card className="bg-gray-900 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-white flex items-center gap-2 text-lg">
               <Target className="h-5 w-5 text-cyan-400" />
               Predictive Maintenance Cost Analysis
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-80 w-full">
+            <div className="h-96 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={equipmentMaintenance}>
+                <ComposedChart 
+                  data={equipmentMaintenance}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 120 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(55, 65, 81, 0.4)" />
                   <XAxis 
                     dataKey="equipment" 
-                    tick={{ fill: '#9CA3AF', fontSize: 11 }}
+                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
                     axisLine={{ stroke: '#374151' }}
                     angle={-45}
                     textAnchor="end"
-                    height={100}
+                    height={120}
+                    interval={0}
                   />
                   <YAxis 
                     tick={{ fill: '#9CA3AF', fontSize: 12 }}
                     axisLine={{ stroke: '#374151' }}
+                    label={{ value: 'Cost ($)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: '#1F2937', 
                       border: '1px solid #374151', 
                       borderRadius: '8px',
-                      color: '#F9FAFB'
+                      color: '#F9FAFB',
+                      fontSize: '12px'
                     }}
                     formatter={(value, name) => [
                       name === 'cost' ? `$${value.toLocaleString()}` : value,
