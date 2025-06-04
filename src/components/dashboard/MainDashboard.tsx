@@ -5,6 +5,9 @@ import { FinancialOverview } from './FinancialOverview';
 import { DashboardStats } from './DashboardStats';
 import { RecentDocuments } from './RecentDocuments';
 import { IntegrationsOverview } from './IntegrationsOverview';
+import { mockFinancialData } from '@/data/projects/projectData';
+import { documents } from '@/data/documents/documentData';
+import { integrations } from '@/data/integrations/integrationData';
 
 export function MainDashboard() {
   return (
@@ -13,12 +16,12 @@ export function MainDashboard() {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ProjectsOverview />
-        <FinancialOverview />
+        <FinancialOverview financialData={mockFinancialData} />
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RecentDocuments />
-        <IntegrationsOverview />
+        <RecentDocuments documents={documents} />
+        <IntegrationsOverview integrations={integrations} />
       </div>
     </div>
   );
