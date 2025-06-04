@@ -17,7 +17,7 @@ export const dispatchToastRef: { current: React.Dispatch<Action> | null } = { cu
 // Timeout Management
 export const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
-export const addToRemoveQueue = (toastId: string, delay: number) => {
+export const addToRemoveQueue = (toastId: string, delay: number = 1000) => {
   if (toastTimeouts.has(toastId)) {
     return;
   }
@@ -35,16 +35,33 @@ export const addToRemoveQueue = (toastId: string, delay: number) => {
   toastTimeouts.set(toastId, timeout);
 };
 
+// Auto-dismiss functionality
+export const addToAutoDismissQueue = (toastId: string, delay: number = 4000) => {
+  const timeout = setTimeout(() => {
+    if (dispatchToastRef.current) {
+      dispatchToastRef.current({
+        type: actionTypes.DISMISS_TOAST,
+        toastId: toastId,
+      });
+    }
+  }, delay);
+
+  // Store with a different key to avoid conflicts
+  toastTimeouts.set(`auto-${toastId}`, timeout);
+};
+
 // Reducer
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case actionTypes.ADD_TOAST:
+      const newToast = { ...action.toast, id: action.toast.id || genId() };
+      
+      // Auto-dismiss after 4 seconds (4000ms)
+      addToAutoDismissQueue(newToast.id, 4000);
+      
       return {
         ...state,
-        toasts: [
-          ...state.toasts,
-          { ...action.toast, id: action.toast.id || genId() },
-        ],
+        toasts: [...state.toasts, newToast],
       };
 
     case actionTypes.UPDATE_TOAST:
@@ -58,11 +75,22 @@ export const reducer = (state: State, action: Action): State => {
     case actionTypes.DISMISS_TOAST: {
       const { toastId } = action;
 
-      // Side effects
+      // Clear auto-dismiss timeout if it exists
+      if (toastId && toastTimeouts.has(`auto-${toastId}`)) {
+        clearTimeout(toastTimeouts.get(`auto-${toastId}`));
+        toastTimeouts.delete(`auto-${toastId}`);
+      }
+
+      // Side effects - remove from DOM after animation
       if (toastId) {
         addToRemoveQueue(toastId, 1000);
       } else {
         state.toasts.forEach((toast) => {
+          // Clear auto-dismiss timeouts for all toasts
+          if (toastTimeouts.has(`auto-${toast.id}`)) {
+            clearTimeout(toastTimeouts.get(`auto-${toast.id}`));
+            toastTimeouts.delete(`auto-${toast.id}`);
+          }
           addToRemoveQueue(toast.id, 1000);
         });
       }

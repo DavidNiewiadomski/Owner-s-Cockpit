@@ -8,7 +8,7 @@ import {
   initialState,
   Action
 } from "./toast-types";
-import { reducer, dispatchToastRef, genId } from "./toast-actions";
+import { reducer, dispatchToastRef, genId, addToAutoDismissQueue, toastTimeouts } from "./toast-actions";
 
 // Create context
 const ToastContext = createContext<ToastContextType | null>(null);
@@ -34,7 +34,9 @@ export function ToastProvider({
   React.useEffect(() => {
     dispatchToastRef.current = dispatch;
     return () => {
-      // Clean up when the provider unmounts
+      // Clean up timeouts when the provider unmounts
+      toastTimeouts.forEach((timeout) => clearTimeout(timeout));
+      toastTimeouts.clear();
       dispatchToastRef.current = null;
     };
   }, [dispatch]);
@@ -44,17 +46,29 @@ export function ToastProvider({
       toasts: state.toasts,
       toast: (props: ToasterToast) => {
         const id = props.id || genId();
+        const newToast = {
+          ...props,
+          id,
+          open: true,
+        };
+        
         dispatch({
           type: "ADD_TOAST",
-          toast: {
-            ...props,
-            id,
-            open: true,
-          },
+          toast: newToast,
         });
+        
+        // Auto-dismiss after 4 seconds
+        addToAutoDismissQueue(id, 4000);
+        
         return id;
       },
       dismiss: (toastId?: string) => {
+        // Clear auto-dismiss timeout if dismissing manually
+        if (toastId && toastTimeouts.has(`auto-${toastId}`)) {
+          clearTimeout(toastTimeouts.get(`auto-${toastId}`));
+          toastTimeouts.delete(`auto-${toastId}`);
+        }
+        
         dispatch({
           type: "DISMISS_TOAST",
           toastId,
