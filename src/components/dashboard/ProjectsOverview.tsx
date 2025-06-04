@@ -4,78 +4,22 @@ import { ArrowRight, MapPin, Building2, Wrench } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { projects } from '@/data/projects/projectData';
 
-const projects = [
-  // Site Selection
-  {
-    id: '1',
-    title: 'South Coast Technology Center',
-    description: '3100-3120 W Lake Center Dr., Santa Ana CA 92704',
-    progress: 25,
-    status: 'Site Analysis',
-    stage: 'Site Selection',
-    priority: 'High',
-    icon: MapPin,
-    color: 'bg-blue-600'
-  },
-  {
-    id: '2',
-    title: 'Greater-Boston Expansion', 
-    description: '1050 Winter St., Waltham MA 02451',
-    progress: 45,
-    status: 'Due Diligence',
-    stage: 'Site Selection',
-    priority: 'Medium',
-    icon: MapPin,
-    color: 'bg-blue-600'
-  },
-  // Construction
-  {
-    id: '3',
-    title: 'Arsenal-1 Hyperscale Manufacturing',
-    description: 'Advanced manufacturing complex - Pickaway County, OH',
-    progress: 35,
-    status: 'Foundation & Structure',
-    stage: 'Construction',
-    priority: 'High',
-    icon: Building2,
-    color: 'bg-red-600'
-  },
-  {
-    id: '4',
-    title: 'Atlanta UAV Allied Studios',
-    description: '1435 Hills Pl. NW, Atlanta GA 30318',
-    progress: 68,
-    status: 'Interior & Systems',
-    stage: 'Construction', 
-    priority: 'High',
-    icon: Building2,
-    color: 'bg-red-600'
-  },
-  {
-    id: '5',
-    title: 'Quonset Point AUV Plant',
-    description: 'Flex Tech Park Bldg 11, Quonset Business Park, North Kingstown RI 02852',
-    progress: 22,
-    status: 'Site Preparation',
-    stage: 'Construction',
-    priority: 'High',
-    icon: Building2,
-    color: 'bg-red-600'
-  },
-  // Facility Management
-  {
-    id: '6',
-    title: 'The Press HQ Campus',
-    description: '1375 Sunflower Ave., Costa Mesa CA 92626',
-    progress: 95,
-    status: 'Operations & Maintenance',
-    stage: 'Facility Management',
-    priority: 'Medium',
-    icon: Wrench,
-    color: 'bg-green-600'
-  }
-];
+// Convert projectData projects to match the component's expected format
+const convertedProjects = projects.map(project => ({
+  id: project.id,
+  title: project.title,
+  description: project.description,
+  progress: project.progress,
+  status: project.phase || project.status,
+  stage: project.stage || 'Construction',
+  priority: project.priority,
+  icon: project.stage === 'site-selection' ? MapPin : 
+        project.stage === 'facility-management' ? Wrench : Building2,
+  color: project.stage === 'site-selection' ? 'bg-blue-600' :
+         project.stage === 'facility-management' ? 'bg-green-600' : 'bg-red-600'
+}));
 
 export function ProjectsOverview() {
   const getPriorityBadge = (priority: string) => {
@@ -89,11 +33,11 @@ export function ProjectsOverview() {
 
   const getStageColor = (stage: string) => {
     switch (stage) {
-      case 'Site Selection':
+      case 'site-selection':
         return 'text-blue-400';
-      case 'Construction':
+      case 'construction':
         return 'text-red-400';
-      case 'Facility Management':
+      case 'facility-management':
         return 'text-green-400';
       default:
         return 'text-gray-400';
@@ -111,7 +55,7 @@ export function ProjectsOverview() {
       </div>
       
       <div className="space-y-4">
-        {projects.map((project) => {
+        {convertedProjects.map((project) => {
           const IconComponent = project.icon;
           return (
             <div key={project.id} className="p-4 bg-gray-900/80 border border-gray-800 rounded-lg hover:border-gray-700 transition-colors">
