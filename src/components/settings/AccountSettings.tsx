@@ -78,6 +78,9 @@ export function AccountSettings() {
     });
   };
 
+  // Add cache busting parameter to avatar URL for Safari compatibility
+  const avatarUrl = profile.avatar ? `${profile.avatar}?t=${Date.now()}` : profile.avatar;
+
   return (
     <div className="grid gap-6 md:grid-cols-6">
       <Card className="col-span-4">
@@ -168,7 +171,7 @@ export function AccountSettings() {
         </CardHeader>
         <CardContent className="flex flex-col items-center space-y-4">
           <Avatar className="h-24 w-24">
-            <AvatarImage src={profile.avatar} />
+            <AvatarImage src={avatarUrl} />
             <AvatarFallback>{profile.firstName[0]}{profile.lastName[0]}</AvatarFallback>
           </Avatar>
           

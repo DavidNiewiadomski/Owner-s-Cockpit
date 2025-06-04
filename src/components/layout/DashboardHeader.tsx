@@ -65,6 +65,9 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
     }
   };
 
+  // Add cache busting parameter to avatar URL for Safari compatibility
+  const avatarUrl = profile.avatar ? `${profile.avatar}?t=${Date.now()}` : profile.avatar;
+
   return (
     <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between py-4">
@@ -159,7 +162,7 @@ export function DashboardHeader({ onSearch, title, subtitle }: DashboardHeaderPr
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={profile.avatar} />
+                    <AvatarImage src={avatarUrl} />
                     <AvatarFallback>{profile.firstName[0]}{profile.lastName[0]}</AvatarFallback>
                   </Avatar>
                   <div className="hidden md:flex flex-col items-start">
