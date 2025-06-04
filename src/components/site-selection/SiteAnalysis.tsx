@@ -452,7 +452,7 @@ function MarketTrendsChart() {
   const trendData = [
     { month: 'Jan', realEstate: 85, commercial: 78, industrial: 92 },
     { month: 'Feb', realEstate: 88, commercial: 82, industrial: 89 },
-    { month: 'Mar', realE Estate: 92, commercial: 85, industrial: 94 },
+    { month: 'Mar', realEstate: 92, commercial: 85, industrial: 94 },
     { month: 'Apr', realEstate: 87, commercial: 88, industrial: 91 },
     { month: 'May', realEstate: 95, commercial: 91, industrial: 96 },
     { month: 'Jun', realEstate: 93, commercial: 89, industrial: 93 }
