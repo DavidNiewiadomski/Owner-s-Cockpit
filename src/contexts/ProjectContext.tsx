@@ -16,7 +16,7 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectOrAll | null>({ id: 'all', title: 'All Projects', status: 'on-track' });
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,12 +25,6 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
       try {
         const projectsData = await getProjects();
         setProjects(projectsData);
-        
-        // Set the first active project as default
-        const activeProject = projectsData.find(p => p.status === 'active');
-        if (activeProject && !selectedProject) {
-          setSelectedProject(activeProject);
-        }
       } catch (error) {
         console.error('Error loading projects:', error);
       } finally {
