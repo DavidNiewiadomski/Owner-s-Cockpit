@@ -1,44 +1,53 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package, MapPin, Star, Building2, DollarSign, FileText, Zap, Cpu, Eye, PaintBucket, Trees, Settings2 } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Calendar, CheckCircle, Clock, AlertTriangle, TrendingUp, Users, Wrench, Package, MapPin, Star, Building2, DollarSign, FileText, Zap, Cpu, Eye, PaintBucket, Trees, Settings2, BarChart3, PieChart, Activity, Target } from 'lucide-react';
 import { getDashboardStats, getProjects, getTasks } from '@/services/dataService';
 import type { Project, Task } from '@/lib/supabase';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart as RechartsPieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ComposedChart, Area, AreaChart } from 'recharts';
 
-// Sample data for site selection analysis
+// Enhanced sample data for site selection analysis
 const businessCaseData = [
-  { metric: 'ROI', siteA: 18.5, siteB: 15.2, siteC: 22.1 },
-  { metric: 'Payback (Years)', siteA: 3.2, siteB: 4.1, siteC: 2.8 },
-  { metric: 'NPV (M)', siteA: 12.4, siteB: 8.9, siteC: 16.2 },
-  { metric: 'IRR', siteA: 19.8, siteB: 16.3, siteC: 24.5 }
+  { metric: 'ROI (%)', siteA: 18.5, siteB: 15.2, siteC: 22.1, target: 20 },
+  { metric: 'Payback (Years)', siteA: 3.2, siteB: 4.1, siteC: 2.8, target: 3.5 },
+  { metric: 'NPV ($M)', siteA: 12.4, siteB: 8.9, siteC: 16.2, target: 12 },
+  { metric: 'IRR (%)', siteA: 19.8, siteB: 16.3, siteC: 24.5, target: 18 }
 ];
 
 const incentivesData = [
-  { name: 'Tax Credits', value: 2.5, color: '#22d3ee' },
-  { name: 'Job Creation', value: 1.8, color: '#10b981' },
-  { name: 'Infrastructure', value: 3.2, color: '#f59e0b' },
-  { name: 'Training Grants', value: 0.9, color: '#8b5cf6' }
+  { name: 'Tax Credits', value: 2.5, color: '#22d3ee', percentage: 35 },
+  { name: 'Job Creation', value: 1.8, color: '#10b981', percentage: 25 },
+  { name: 'Infrastructure', value: 3.2, color: '#f59e0b', percentage: 30 },
+  { name: 'Training Grants', value: 0.9, color: '#8b5cf6', percentage: 10 }
 ];
 
 const siteComparisonData = [
-  { criteria: 'Cost Efficiency', A: 85, B: 72, C: 95 },
-  { criteria: 'Timeline', A: 78, B: 65, C: 70 },
-  { criteria: 'Accessibility', A: 85, B: 78, C: 92 },
-  { criteria: 'Utilities', A: 92, B: 88, C: 85 },
-  { criteria: 'Incentives', A: 78, B: 65, C: 88 },
-  { criteria: 'Growth Potential', A: 88, B: 75, C: 82 }
+  { criteria: 'Cost Efficiency', A: 85, B: 72, C: 95, fullMark: 100 },
+  { criteria: 'Timeline', A: 78, B: 65, C: 70, fullMark: 100 },
+  { criteria: 'Accessibility', A: 85, B: 78, C: 92, fullMark: 100 },
+  { criteria: 'Utilities', A: 92, B: 88, C: 85, fullMark: 100 },
+  { criteria: 'Incentives', A: 78, B: 65, C: 88, fullMark: 100 },
+  { criteria: 'Growth Potential', A: 88, B: 75, C: 82, fullMark: 100 }
 ];
 
 const flexsimData = [
-  { time: '0', throughput: 0, efficiency: 75 },
-  { time: '6', throughput: 45, efficiency: 82 },
-  { time: '12', throughput: 78, efficiency: 88 },
-  { time: '18', throughput: 92, efficiency: 91 },
-  { time: '24', throughput: 95, efficiency: 94 }
+  { time: '0h', throughput: 0, efficiency: 75, capacity: 100 },
+  { time: '6h', throughput: 45, efficiency: 82, capacity: 100 },
+  { time: '12h', throughput: 78, efficiency: 88, capacity: 100 },
+  { time: '18h', throughput: 92, efficiency: 91, capacity: 100 },
+  { time: '24h', throughput: 95, efficiency: 94, capacity: 100 }
+];
+
+const costScheduleData = [
+  { phase: 'Planning', siteA: { cost: 2.1, schedule: 3 }, siteB: { cost: 2.8, schedule: 4 }, siteC: { cost: 1.9, schedule: 2.5 }, budget: 2.5 },
+  { phase: 'Design', siteA: { cost: 3.2, schedule: 6 }, siteB: { cost: 3.8, schedule: 7 }, siteC: { cost: 2.9, schedule: 5.5 }, budget: 3.5 },
+  { phase: 'Permitting', siteA: { cost: 1.5, schedule: 4 }, siteB: { cost: 2.1, schedule: 6 }, siteC: { cost: 1.2, schedule: 3 }, budget: 1.8 },
+  { phase: 'Construction', siteA: { cost: 8.9, schedule: 18 }, siteB: { cost: 10.2, schedule: 22 }, siteC: { cost: 7.8, schedule: 16 }, budget: 9.0 }
 ];
 
 export function MainDashboard() {
@@ -79,113 +88,94 @@ export function MainDashboard() {
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'active':
-        return 'bg-green-600';
-      case 'planning':
-        return 'bg-blue-600';
-      case 'on-hold':
-        return 'bg-yellow-600';
-      case 'completed':
-        return 'bg-gray-600';
-      default:
-        return 'bg-gray-600';
+      case 'active': return 'bg-green-600';
+      case 'planning': return 'bg-blue-600';
+      case 'on-hold': return 'bg-yellow-600';
+      case 'completed': return 'bg-gray-600';
+      default: return 'bg-gray-600';
     }
   };
 
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority) {
-      case 'critical':
-        return 'bg-red-600';
-      case 'high':
-        return 'bg-orange-600';
-      case 'medium':
-        return 'bg-yellow-600';
-      case 'low':
-        return 'bg-green-600';
-      default:
-        return 'bg-gray-600';
+      case 'critical': return 'bg-red-600';
+      case 'high': return 'bg-orange-600';
+      case 'medium': return 'bg-yellow-600';
+      case 'low': return 'bg-green-600';
+      default: return 'bg-gray-600';
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Stats Overview */}
+    <div className="space-y-8">
+      {/* Enhanced Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Stats Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <Card className="bg-gradient-to-br from-blue-900 to-blue-800 border-blue-700 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent"></div>
+            <CardContent className="p-6 relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Active Projects</p>
-                  <p className="text-2xl font-bold text-white">{stats?.activeProjects || 0}</p>
+                  <p className="text-sm font-medium text-blue-200">Active Projects</p>
+                  <p className="text-3xl font-bold text-white">{stats?.activeProjects || 12}</p>
+                  <p className="text-xs text-blue-300 mt-1">+2 from last month</p>
                 </div>
-                <div className="bg-blue-600 p-3 rounded-full">
-                  <TrendingUp className="h-6 w-6 text-white" />
+                <div className="bg-blue-600/30 p-4 rounded-full backdrop-blur-sm">
+                  <TrendingUp className="h-8 w-8 text-blue-200" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <Card className="bg-gradient-to-br from-cyan-900 to-cyan-800 border-cyan-700 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-transparent"></div>
+            <CardContent className="p-6 relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Sites Under Review</p>
-                  <p className="text-2xl font-bold text-white">3</p>
+                  <p className="text-sm font-medium text-cyan-200">Sites Under Review</p>
+                  <p className="text-3xl font-bold text-white">3</p>
+                  <p className="text-xs text-cyan-300 mt-1">Final selection pending</p>
                 </div>
-                <div className="bg-cyan-600 p-3 rounded-full">
-                  <MapPin className="h-6 w-6 text-white" />
+                <div className="bg-cyan-600/30 p-4 rounded-full backdrop-blur-sm">
+                  <MapPin className="h-8 w-8 text-cyan-200" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <Card className="bg-gradient-to-br from-green-900 to-green-800 border-green-700 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-transparent"></div>
+            <CardContent className="p-6 relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Equipment In Use</p>
-                  <p className="text-2xl font-bold text-white">{stats?.equipmentInUse || 0}</p>
+                  <p className="text-sm font-medium text-green-200">Total Investment</p>
+                  <p className="text-3xl font-bold text-white">$45.2M</p>
+                  <p className="text-xs text-green-300 mt-1">Across all sites</p>
                 </div>
-                <div className="bg-green-600 p-3 rounded-full">
-                  <Wrench className="h-6 w-6 text-white" />
+                <div className="bg-green-600/30 p-4 rounded-full backdrop-blur-sm">
+                  <DollarSign className="h-8 w-8 text-green-200" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+          <Card className="bg-gradient-to-br from-orange-900 to-orange-800 border-orange-700 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-transparent"></div>
+            <CardContent className="p-6 relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Critical Tasks</p>
-                  <p className="text-2xl font-bold text-white">{stats?.criticalTasks || 0}</p>
+                  <p className="text-sm font-medium text-orange-200">Expected ROI</p>
+                  <p className="text-3xl font-bold text-white">22.1%</p>
+                  <p className="text-xs text-orange-300 mt-1">Site C leading</p>
                 </div>
-                <div className="bg-red-600 p-3 rounded-full">
-                  <AlertTriangle className="h-6 w-6 text-white" />
+                <div className="bg-orange-600/30 p-4 rounded-full backdrop-blur-sm">
+                  <Target className="h-8 w-8 text-orange-200" />
                 </div>
               </div>
             </CardContent>
@@ -193,207 +183,328 @@ export function MainDashboard() {
         </motion.div>
       </div>
 
-      {/* Site Selection Dashboard */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-cyan-300 flex items-center">
-              <Building2 className="h-5 w-5 mr-2" />
+      {/* Enhanced Site Selection Dashboard */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+        <Card className="bg-gray-900 border-gray-700 shadow-2xl">
+          <CardHeader className="border-b border-gray-700">
+            <CardTitle className="text-2xl text-cyan-300 flex items-center">
+              <Building2 className="h-6 w-6 mr-3" />
               Site Selection & Business Case Development
+              <Badge className="ml-3 bg-green-600">3 Sites Active</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <Tabs defaultValue="business-case" className="w-full">
-              <TabsList className="bg-gray-800 text-gray-400 grid grid-cols-2 lg:grid-cols-6 h-auto">
-                <TabsTrigger value="business-case" className="text-xs">Business Case</TabsTrigger>
-                <TabsTrigger value="flexsim" className="text-xs">Flexsim API</TabsTrigger>
-                <TabsTrigger value="incentives" className="text-xs">Incentives</TabsTrigger>
-                <TabsTrigger value="comparison" className="text-xs">Site Comparison</TabsTrigger>
-                <TabsTrigger value="space-plan" className="text-xs">Space Plan</TabsTrigger>
-                <TabsTrigger value="documents" className="text-xs">Documents</TabsTrigger>
+              <TabsList className="bg-gray-800 text-gray-400 grid grid-cols-3 lg:grid-cols-6 h-auto p-1 rounded-lg">
+                <TabsTrigger value="business-case" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Business Case</TabsTrigger>
+                <TabsTrigger value="flexsim" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Flexsim API</TabsTrigger>
+                <TabsTrigger value="incentives" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Incentives</TabsTrigger>
+                <TabsTrigger value="comparison" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Site Comparison</TabsTrigger>
+                <TabsTrigger value="space-plan" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Space Plan</TabsTrigger>
+                <TabsTrigger value="documents" className="text-xs px-3 py-2 data-[state=active]:bg-cyan-600">Documents</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="business-case" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-white font-medium mb-4">Financial Metrics Comparison</h4>
-                    <div className="h-[300px]">
+              <TabsContent value="business-case" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2">
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <BarChart3 className="h-5 w-5 mr-2 text-cyan-400" />
+                      Financial Metrics Comparison
+                    </h4>
+                    <div className="h-[400px] bg-gray-800 rounded-xl p-4">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={businessCaseData}>
+                        <ComposedChart data={businessCaseData}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="metric" tick={{ fill: '#94a3b8' }} />
-                          <YAxis tick={{ fill: '#94a3b8' }} />
+                          <XAxis dataKey="metric" tick={{ fill: '#d1d5db', fontSize: 12 }} />
+                          <YAxis tick={{ fill: '#d1d5db', fontSize: 12 }} />
                           <Tooltip 
                             contentStyle={{ 
                               backgroundColor: '#1f2937', 
                               border: '1px solid #374151',
-                              borderRadius: '8px'
+                              borderRadius: '12px',
+                              boxShadow: '0 10px 25px rgba(0,0,0,0.3)'
                             }}
                           />
-                          <Bar dataKey="siteA" name="Site A" fill="#22d3ee" />
-                          <Bar dataKey="siteB" name="Site B" fill="#10b981" />
-                          <Bar dataKey="siteC" name="Site C" fill="#f59e0b" />
-                        </BarChart>
+                          <Bar dataKey="siteA" name="Site A" fill="#22d3ee" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="siteB" name="Site B" fill="#10b981" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="siteC" name="Site C" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                          <Line type="monotone" dataKey="target" stroke="#ef4444" strokeWidth={3} strokeDasharray="5 5" />
+                        </ComposedChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <h4 className="text-white font-medium">Project Scope Summary</h4>
-                    <div className="space-y-3">
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Facility Size:</span>
-                        <span className="text-white">125,000 sq ft</span>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-white font-semibold mb-4 flex items-center">
+                        <Building2 className="h-5 w-5 mr-2 text-cyan-400" />
+                        Project Overview
+                      </h4>
+                      <div className="space-y-4">
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-400 text-sm">Facility Size</span>
+                            <span className="text-white font-semibold">125,000 sq ft</span>
+                          </div>
+                          <Progress value={75} className="h-2" />
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-400 text-sm">Expected Employees</span>
+                            <span className="text-white font-semibold">450 FTE</span>
+                          </div>
+                          <Progress value={85} className="h-2" />
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-400 text-sm">Total Investment</span>
+                            <span className="text-green-400 font-bold text-lg">$45.2M</span>
+                          </div>
+                          <Progress value={90} className="h-2" />
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-gray-400 text-sm">Break Even Point</span>
+                            <span className="text-cyan-400 font-semibold">Year 3.2</span>
+                          </div>
+                          <Progress value={65} className="h-2" />
+                        </div>
                       </div>
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Employees:</span>
-                        <span className="text-white">450 FTE</span>
-                      </div>
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Total Investment:</span>
-                        <span className="text-green-400">$45.2M</span>
-                      </div>
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Break Even:</span>
-                        <span className="text-white">Year 3.2</span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-white font-semibold mb-4">Site Ranking</h4>
+                      <div className="space-y-3">
+                        {[
+                          { site: 'Site C', score: 95, color: 'bg-green-600', trend: '+5%' },
+                          { site: 'Site A', score: 87, color: 'bg-blue-600', trend: '+2%' },
+                          { site: 'Site B', score: 78, color: 'bg-orange-600', trend: '-1%' }
+                        ].map((item, index) => (
+                          <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-3">
+                                <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+                                <span className="text-white font-medium">{item.site}</span>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-white font-bold">{item.score}/100</span>
+                                <span className="text-green-400 text-xs ml-2">{item.trend}</span>
+                              </div>
+                            </div>
+                            <Progress value={item.score} className="h-2" />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="flexsim" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <TabsContent value="flexsim" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-white font-medium mb-4 flex items-center">
-                      <Cpu className="h-4 w-4 mr-2" />
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <Cpu className="h-5 w-5 mr-2 text-green-400" />
                       Manufacturing Simulation Results
                     </h4>
-                    <div className="h-[300px]">
+                    <div className="h-[400px] bg-gray-800 rounded-xl p-4">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={flexsimData}>
+                        <AreaChart data={flexsimData}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                          <XAxis dataKey="time" tick={{ fill: '#94a3b8' }} />
-                          <YAxis tick={{ fill: '#94a3b8' }} />
+                          <XAxis dataKey="time" tick={{ fill: '#d1d5db', fontSize: 12 }} />
+                          <YAxis tick={{ fill: '#d1d5db', fontSize: 12 }} />
                           <Tooltip 
                             contentStyle={{ 
                               backgroundColor: '#1f2937', 
                               border: '1px solid #374151',
-                              borderRadius: '8px'
+                              borderRadius: '12px'
                             }}
                           />
-                          <Line type="monotone" dataKey="throughput" stroke="#22d3ee" strokeWidth={2} />
-                          <Line type="monotone" dataKey="efficiency" stroke="#10b981" strokeWidth={2} />
-                        </LineChart>
+                          <Area type="monotone" dataKey="capacity" stackId="1" stroke="#6b7280" fill="#6b7280" fillOpacity={0.3} />
+                          <Area type="monotone" dataKey="throughput" stackId="2" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.6} />
+                          <Line type="monotone" dataKey="efficiency" stroke="#10b981" strokeWidth={3} />
+                        </AreaChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <h4 className="text-white font-medium">API Integration Status</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400 flex items-center">
-                          <Zap className="h-4 w-4 mr-2" />
-                          Connection Status
-                        </span>
-                        <Badge className="bg-green-600">Active</Badge>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-white font-semibold mb-4 flex items-center">
+                        <Zap className="h-5 w-5 mr-2 text-yellow-400" />
+                        API Integration Status
+                      </h4>
+                      <div className="space-y-4">
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-gray-400 flex items-center">
+                              <Activity className="h-4 w-4 mr-2 text-green-400" />
+                              Connection Status
+                            </span>
+                            <Badge className="bg-green-600">Active</Badge>
+                          </div>
+                          <div className="text-sm text-gray-300">Real-time data streaming</div>
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-400">Last Sync</span>
+                            <span className="text-white">2 minutes ago</span>
+                          </div>
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-400">Simulation Runs</span>
+                            <span className="text-white">24/month</span>
+                          </div>
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-400">Data Points</span>
+                            <span className="text-cyan-400">1,247,892</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Last Sync:</span>
-                        <span className="text-white">2 minutes ago</span>
-                      </div>
-                      <div className="flex justify-between p-3 bg-gray-800 rounded-lg">
-                        <span className="text-gray-400">Simulation Runs:</span>
-                        <span className="text-white">24/month</span>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-white font-semibold mb-4">Performance Metrics</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 text-center">
+                          <div className="text-2xl font-bold text-cyan-400">94%</div>
+                          <div className="text-sm text-gray-400">Efficiency</div>
+                        </div>
+                        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 text-center">
+                          <div className="text-2xl font-bold text-green-400">95</div>
+                          <div className="text-sm text-gray-400">Throughput</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="incentives" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <TabsContent value="incentives" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-white font-medium mb-4">Labour & Government Incentives</h4>
-                    <div className="h-[300px]">
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <PieChart className="h-5 w-5 mr-2 text-purple-400" />
+                      Labour & Government Incentives Distribution
+                    </h4>
+                    <div className="h-[400px] bg-gray-800 rounded-xl p-4">
                       <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
+                        <RechartsPieChart>
                           <Pie
                             data={incentivesData}
                             cx="50%"
                             cy="50%"
-                            outerRadius={100}
+                            outerRadius={120}
+                            innerRadius={60}
                             dataKey="value"
-                            label={({ name, value }) => `${name}: $${value}M`}
+                            label={({ name, percentage }) => `${name}: ${percentage}%`}
+                            labelLine={false}
                           >
                             {incentivesData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
                           </Pie>
-                          <Tooltip />
-                        </PieChart>
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: '#1f2937', 
+                              border: '1px solid #374151',
+                              borderRadius: '12px'
+                            }}
+                          />
+                        </RechartsPieChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <h4 className="text-white font-medium">Available Incentives</h4>
-                    {incentivesData.map((incentive) => (
-                      <div key={incentive.name} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div 
-                            className="w-4 h-4 rounded-full" 
-                            style={{ backgroundColor: incentive.color }}
-                          ></div>
-                          <span className="text-white">{incentive.name}</span>
+                  <div className="space-y-6">
+                    <h4 className="text-white font-semibold mb-4 flex items-center">
+                      <DollarSign className="h-5 w-5 mr-2 text-green-400" />
+                      Available Incentives
+                    </h4>
+                    {incentivesData.map((incentive, index) => (
+                      <div key={incentive.name} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div 
+                              className="w-4 h-4 rounded-full" 
+                              style={{ backgroundColor: incentive.color }}
+                            ></div>
+                            <span className="text-white font-medium text-lg">{incentive.name}</span>
+                          </div>
+                          <Badge className="bg-green-600">Available</Badge>
                         </div>
-                        <div className="text-right">
-                          <div className="text-green-400 font-medium">${incentive.value}M</div>
-                          <div className="text-gray-400 text-sm">Available</div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <div className="text-2xl font-bold text-green-400">${incentive.value}M</div>
+                            <div className="text-gray-400 text-sm">Total Value</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-cyan-400">{incentive.percentage}%</div>
+                            <div className="text-gray-400 text-sm">Of Total</div>
+                          </div>
                         </div>
+                        <Progress value={incentive.percentage} className="mt-4 h-2" />
                       </div>
                     ))}
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="comparison" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <TabsContent value="comparison" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-white font-medium mb-4">Multi-Criteria Site Comparison</h4>
-                    <div className="h-[300px]">
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <Target className="h-5 w-5 mr-2 text-blue-400" />
+                      Multi-Criteria Site Analysis
+                    </h4>
+                    <div className="h-[400px] bg-gray-800 rounded-xl p-4">
                       <ResponsiveContainer width="100%" height="100%">
                         <RadarChart data={siteComparisonData}>
                           <PolarGrid stroke="#374151" />
-                          <PolarAngleAxis tick={{ fill: '#94a3b8' }} />
-                          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#94a3b8' }} />
-                          <Radar name="Site A" dataKey="A" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.1} strokeWidth={2} />
-                          <Radar name="Site B" dataKey="B" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.1} strokeWidth={2} />
-                          <Radar name="Site C" dataKey="C" stroke="#10b981" fill="#10b981" fillOpacity={0.1} strokeWidth={2} />
+                          <PolarAngleAxis tick={{ fill: '#d1d5db', fontSize: 11 }} />
+                          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#d1d5db', fontSize: 10 }} />
+                          <Radar name="Site A" dataKey="A" stroke="#22d3ee" fill="#22d3ee" fillOpacity={0.2} strokeWidth={3} />
+                          <Radar name="Site B" dataKey="B" stroke="#f59e0b" fill="#f59e0b" fillOpacity={0.2} strokeWidth={3} />
+                          <Radar name="Site C" dataKey="C" stroke="#10b981" fill="#10b981" fillOpacity={0.2} strokeWidth={3} />
+                          <Tooltip 
+                            contentStyle={{ 
+                              backgroundColor: '#1f2937', 
+                              border: '1px solid #374151',
+                              borderRadius: '12px'
+                            }}
+                          />
                         </RadarChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <h4 className="text-white font-medium">Budget vs Actual Analysis</h4>
-                    <div className="space-y-3">
-                      {[
-                        { site: 'Site A', budget: '$12.5M', actual: '$12.8M', status: 'Over' },
-                        { site: 'Site B', budget: '$15.2M', actual: '$14.9M', status: 'Under' },
-                        { site: 'Site C', budget: '$10.8M', actual: '$10.2M', status: 'Under' }
-                      ].map((item, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                          <div>
-                            <div className="text-white font-medium">{item.site}</div>
-                            <div className="text-gray-400 text-sm">Budget: {item.budget}</div>
+                  <div className="space-y-6">
+                    <h4 className="text-white font-semibold mb-4 flex items-center">
+                      <BarChart3 className="h-5 w-5 mr-2 text-orange-400" />
+                      Cost & Schedule Analysis
+                    </h4>
+                    <div className="space-y-4">
+                      {costScheduleData.map((phase, index) => (
+                        <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex items-center justify-between mb-3">
+                            <h5 className="text-white font-medium">{phase.phase}</h5>
+                            <Badge className="bg-blue-600">Budget: ${phase.budget}M</Badge>
                           </div>
-                          <div className="text-right">
-                            <div className="text-white">{item.actual}</div>
-                            <Badge className={item.status === 'Under' ? 'bg-green-600' : 'bg-red-600'}>
-                              {item.status} Budget
-                            </Badge>
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div className="text-center">
+                              <div className="text-cyan-400 font-semibold">${phase.siteA.cost}M</div>
+                              <div className="text-gray-400">Site A</div>
+                              <div className="text-xs text-gray-500">{phase.siteA.schedule} months</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-orange-400 font-semibold">${phase.siteB.cost}M</div>
+                              <div className="text-gray-400">Site B</div>
+                              <div className="text-xs text-gray-500">{phase.siteB.schedule} months</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-green-400 font-semibold">${phase.siteC.cost}M</div>
+                              <div className="text-gray-400">Site C</div>
+                              <div className="text-xs text-gray-500">{phase.siteC.schedule} months</div>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -402,131 +513,164 @@ export function MainDashboard() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="space-plan" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <div className="space-y-4">
-                    <h4 className="text-white font-medium">Space Allocation</h4>
-                    <div className="space-y-3">
-                      <div className="p-3 bg-gray-800 rounded-lg">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-400">Manufacturing</span>
-                          <span className="text-white">65,000 sq ft</span>
+              <TabsContent value="space-plan" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="space-y-6">
+                    <h4 className="text-white font-semibold mb-4 flex items-center">
+                      <Building2 className="h-5 w-5 mr-2 text-indigo-400" />
+                      Space Allocation Breakdown
+                    </h4>
+                    <div className="space-y-4">
+                      {[
+                        { name: 'Manufacturing', size: 65000, percentage: 52, color: 'bg-blue-600' },
+                        { name: 'Warehouse', size: 35000, percentage: 28, color: 'bg-green-600' },
+                        { name: 'Office Space', size: 15000, percentage: 12, color: 'bg-cyan-600' },
+                        { name: 'Common Areas', size: 10000, percentage: 8, color: 'bg-orange-600' }
+                      ].map((space, index) => (
+                        <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                          <div className="flex justify-between items-center mb-3">
+                            <span className="text-white font-medium">{space.name}</span>
+                            <span className="text-gray-300">{space.size.toLocaleString()} sq ft</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <Progress value={space.percentage} className="flex-1 h-3" />
+                            <span className="text-sm text-gray-400 w-12">{space.percentage}%</span>
+                          </div>
                         </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                          <div className="bg-blue-600 h-2 rounded-full" style={{ width: '52%' }}></div>
-                        </div>
-                      </div>
-                      <div className="p-3 bg-gray-800 rounded-lg">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-400">Warehouse</span>
-                          <span className="text-white">35,000 sq ft</span>
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                          <div className="bg-green-600 h-2 rounded-full" style={{ width: '28%' }}></div>
-                        </div>
-                      </div>
-                      <div className="p-3 bg-gray-800 rounded-lg">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-400">Office Space</span>
-                          <span className="text-white">15,000 sq ft</span>
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                          <div className="bg-cyan-600 h-2 rounded-full" style={{ width: '12%' }}></div>
-                        </div>
-                      </div>
-                      <div className="p-3 bg-gray-800 rounded-lg">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-400">Common Areas</span>
-                          <span className="text-white">10,000 sq ft</span>
-                        </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                          <div className="bg-orange-600 h-2 rounded-full" style={{ width: '8%' }}></div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="col-span-2">
-                    <h4 className="text-white font-medium mb-4">Preliminary Floor Plan</h4>
-                    <div className="bg-gray-800 rounded-lg p-6 h-[300px] flex items-center justify-center">
-                      <div className="text-gray-400 text-center">
-                        <Building2 className="h-16 w-16 mx-auto mb-4" />
-                        <div>Floor plan visualization will be integrated</div>
-                        <div className="text-sm">CAD integration pending</div>
+                  <div className="lg:col-span-2">
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <Eye className="h-5 w-5 mr-2 text-purple-400" />
+                      Preliminary Floor Plan Visualization
+                    </h4>
+                    <div className="bg-gray-800 rounded-xl p-8 h-[400px] flex flex-col items-center justify-center border border-gray-700">
+                      <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+                        <div className="bg-blue-600/20 border-2 border-blue-600 rounded-lg p-4 text-center">
+                          <Building2 className="h-8 w-8 mx-auto mb-2 text-blue-400" />
+                          <div className="text-blue-400 font-medium">Manufacturing</div>
+                          <div className="text-xs text-gray-400">65,000 sq ft</div>
+                        </div>
+                        <div className="bg-green-600/20 border-2 border-green-600 rounded-lg p-4 text-center">
+                          <Package className="h-8 w-8 mx-auto mb-2 text-green-400" />
+                          <div className="text-green-400 font-medium">Warehouse</div>
+                          <div className="text-xs text-gray-400">35,000 sq ft</div>
+                        </div>
+                        <div className="bg-cyan-600/20 border-2 border-cyan-600 rounded-lg p-4 text-center">
+                          <Users className="h-8 w-8 mx-auto mb-2 text-cyan-400" />
+                          <div className="text-cyan-400 font-medium">Office</div>
+                          <div className="text-xs text-gray-400">15,000 sq ft</div>
+                        </div>
+                        <div className="bg-orange-600/20 border-2 border-orange-600 rounded-lg p-4 text-center">
+                          <Calendar className="h-8 w-8 mx-auto mb-2 text-orange-400" />
+                          <div className="text-orange-400 font-medium">Common</div>
+                          <div className="text-xs text-gray-400">10,000 sq ft</div>
+                        </div>
+                      </div>
+                      <div className="mt-6 text-center">
+                        <div className="text-gray-400 mb-2">Detailed CAD integration pending</div>
+                        <Button variant="outline" className="border-gray-600 text-gray-300">
+                          <Eye className="h-4 w-4 mr-2" />
+                          View 3D Model
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="documents" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <TabsContent value="documents" className="mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div>
-                    <h4 className="text-white font-medium mb-4 flex items-center">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Document Review & AI Insights
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <FileText className="h-5 w-5 mr-2 text-blue-400" />
+                      Document Review & AI Analysis
                     </h4>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       {[
-                        { type: 'Topographic Survey', status: 'Reviewed', aiInsight: 'Minimal grading required', icon: MapPin },
-                        { type: 'Zoning Documents', status: 'In Review', aiInsight: 'Compliance verified', icon: Building2 },
-                        { type: 'Lease Agreement', status: 'AI Analysis', aiInsight: 'Favorable terms identified', icon: FileText },
-                        { type: 'Environmental Report', status: 'Completed', aiInsight: 'No major concerns', icon: AlertTriangle }
+                        { type: 'Topographic Survey', status: 'AI Reviewed', insight: 'Minimal grading required - optimal drainage patterns identified', icon: MapPin, confidence: 95 },
+                        { type: 'Zoning Documents', status: 'In Review', insight: 'Compliance verified - manufacturing use permitted', icon: Building2, confidence: 88 },
+                        { type: 'Lease Agreement', status: 'AI Analysis', insight: 'Favorable terms identified - 15% below market rate', icon: FileText, confidence: 92 },
+                        { type: 'Environmental Report', status: 'Completed', insight: 'No major concerns - minor soil remediation needed', icon: AlertTriangle, confidence: 97 }
                       ].map((doc, index) => (
-                        <div key={index} className="p-4 bg-gray-800 rounded-lg">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <doc.icon className="h-4 w-4 text-cyan-300" />
+                        <div key={index} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <doc.icon className="h-5 w-5 text-cyan-300" />
                               <span className="text-white font-medium">{doc.type}</span>
                             </div>
-                            <Badge className={
-                              doc.status === 'Completed' ? 'bg-green-600' : 
-                              doc.status === 'Reviewed' ? 'bg-blue-600' : 'bg-yellow-600'
-                            }>
-                              {doc.status}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              <Badge className={
+                                doc.status === 'Completed' ? 'bg-green-600' : 
+                                doc.status === 'AI Reviewed' ? 'bg-blue-600' : 'bg-yellow-600'
+                              }>
+                                {doc.status}
+                              </Badge>
+                              <div className="text-xs text-gray-400">{doc.confidence}%</div>
+                            </div>
                           </div>
-                          <div className="text-gray-400 text-sm">AI Insight: {doc.aiInsight}</div>
+                          <div className="text-gray-300 text-sm mb-3">{doc.insight}</div>
+                          <Progress value={doc.confidence} className="h-2" />
                         </div>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <h4 className="text-white font-medium mb-4">Facility Management Insights</h4>
-                    <div className="space-y-3">
+                    <h4 className="text-white font-semibold mb-6 flex items-center">
+                      <Settings2 className="h-5 w-5 mr-2 text-green-400" />
+                      Facility Management Insights
+                    </h4>
+                    <div className="space-y-4 mb-8">
                       {[
-                        { category: 'Site Painting', insight: 'High-durability coating recommended for industrial environment', icon: PaintBucket, priority: 'Medium' },
-                        { category: 'Landscape Modifications', insight: 'Native drought-resistant plants for sustainability', icon: Trees, priority: 'Low' },
-                        { category: 'BMS Integration', insight: 'Schneider Electric system compatible with existing infrastructure', icon: Settings2, priority: 'High' }
+                        { category: 'Site Painting', insight: 'High-durability coating recommended for industrial environment - estimated 15-year lifecycle', icon: PaintBucket, priority: 'Medium', cost: '$125K' },
+                        { category: 'Landscape Modifications', insight: 'Native drought-resistant plants recommended - 40% water savings potential', icon: Trees, priority: 'Low', cost: '$85K' },
+                        { category: 'BMS Integration', insight: 'Schneider Electric system compatible - existing infrastructure leverage possible', icon: Settings2, priority: 'High', cost: '$340K' }
                       ].map((item, index) => (
-                        <div key={index} className="p-4 bg-gray-800 rounded-lg">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <item.icon className="h-4 w-4 text-cyan-300" />
+                        <div key={index} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <item.icon className="h-5 w-5 text-cyan-300" />
                               <span className="text-white font-medium">{item.category}</span>
                             </div>
-                            <Badge className={
-                              item.priority === 'High' ? 'bg-red-600' : 
-                              item.priority === 'Medium' ? 'bg-yellow-600' : 'bg-green-600'
-                            }>
-                              {item.priority}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              <Badge className={
+                                item.priority === 'High' ? 'bg-red-600' : 
+                                item.priority === 'Medium' ? 'bg-yellow-600' : 'bg-green-600'
+                              }>
+                                {item.priority}
+                              </Badge>
+                              <div className="text-cyan-400 font-medium">{item.cost}</div>
+                            </div>
                           </div>
-                          <div className="text-gray-400 text-sm">{item.insight}</div>
+                          <div className="text-gray-300 text-sm">{item.insight}</div>
                         </div>
                       ))}
                     </div>
                     
-                    <div className="mt-6">
-                      <h5 className="text-white font-medium mb-3">Previous Property Comparisons</h5>
-                      <div className="space-y-2">
-                        <div className="flex justify-between p-3 bg-gray-800 rounded-lg text-sm">
-                          <span className="text-gray-400">Downtown Property A</span>
-                          <span className="text-white">85% lease terms match</span>
-                        </div>
-                        <div className="flex justify-between p-3 bg-gray-800 rounded-lg text-sm">
-                          <span className="text-gray-400">Industrial Complex B</span>
-                          <span className="text-white">92% operational similarity</span>
-                        </div>
+                    <div>
+                      <h5 className="text-white font-medium mb-4 flex items-center">
+                        <Building2 className="h-4 w-4 mr-2" />
+                        Previous Property Comparisons
+                      </h5>
+                      <div className="space-y-3">
+                        {[
+                          { name: 'Downtown Property A', match: 85, type: 'Lease Terms', details: 'Similar manufacturing setup' },
+                          { name: 'Industrial Complex B', match: 92, type: 'Operations', details: 'Comparable facility size' },
+                          { name: 'Suburban Site C', match: 78, type: 'Infrastructure', details: 'Utilities compatibility' }
+                        ].map((property, index) => (
+                          <div key={index} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-white font-medium">{property.name}</span>
+                              <span className="text-cyan-400 font-bold">{property.match}%</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-400">{property.type}</span>
+                              <span className="text-gray-500">{property.details}</span>
+                            </div>
+                            <Progress value={property.match} className="mt-2 h-1" />
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -537,39 +681,36 @@ export function MainDashboard() {
         </Card>
       </motion.div>
 
-      {/* Recent Projects and Site Selection Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Projects */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
+      {/* Enhanced Project Overview Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
+          <Card className="bg-gray-900 border-gray-700 h-full">
+            <CardHeader className="border-b border-gray-700">
               <CardTitle className="text-white flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
+                <TrendingUp className="h-5 w-5 text-blue-400" />
                 Recent Projects
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {recentProjects.map((project, index) => (
-                <div key={project.id} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                  <div className="flex-1">
+            <CardContent className="p-6 space-y-4">
+              {recentProjects.map((project) => (
+                <div key={project.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                  <div className="flex items-center justify-between mb-3">
                     <h4 className="font-medium text-white">{project.title}</h4>
-                    <p className="text-sm text-gray-400">{project.location}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge className={`${getStatusBadgeColor(project.status)} text-white`}>
-                        {project.status}
-                      </Badge>
-                      <span className="text-sm text-gray-400">{project.progress}% complete</span>
-                    </div>
+                    <Badge className={`${getStatusBadgeColor(project.status)} text-white`}>
+                      {project.status}
+                    </Badge>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-400">Budget</p>
-                    <p className="font-medium text-white">
+                  <p className="text-sm text-gray-400 mb-3">{project.location}</p>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-gray-400">Progress</span>
+                    <span className="text-sm text-white">{project.progress}%</span>
+                  </div>
+                  <Progress value={project.progress} className="mb-3 h-2" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Budget</span>
+                    <span className="font-medium text-green-400">
                       ${(project.budget || 0).toLocaleString()}
-                    </p>
+                    </span>
                   </div>
                 </div>
               ))}
@@ -577,45 +718,46 @@ export function MainDashboard() {
           </Card>
         </motion.div>
 
-        {/* Site Selection Overview */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
+        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.7 }}>
+          <Card className="bg-gray-900 border-gray-700 h-full">
+            <CardHeader className="border-b border-gray-700">
               <CardTitle className="text-white flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
+                <MapPin className="h-5 w-5 text-cyan-400" />
                 Site Selection Status
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-6 space-y-4">
               {[
-                { name: 'Downtown Metro', score: 94, status: 'High Priority', color: 'bg-green-600' },
-                { name: 'Industrial East', score: 87, status: 'Under Review', color: 'bg-blue-600' },
-                { name: 'Suburban North', score: 82, status: 'Pending Review', color: 'bg-yellow-600' }
+                { name: 'Downtown Metro', score: 94, status: 'Recommended', color: 'bg-green-600', details: 'Excellent transport links, high workforce availability', cost: '$42.1M' },
+                { name: 'Industrial East', score: 87, status: 'Under Review', color: 'bg-blue-600', details: 'Good infrastructure, moderate incentives', cost: '$38.7M' },
+                { name: 'Suburban North', score: 82, status: 'Pending Analysis', color: 'bg-yellow-600', details: 'Lower costs, limited transport options', cost: '$35.2M' }
               ].map((site, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                  <div className="flex-1">
+                <div key={index} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                  <div className="flex items-center justify-between mb-3">
                     <h4 className="font-medium text-white">{site.name}</h4>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge className={`${site.color} text-white`}>
-                        {site.status}
-                      </Badge>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 text-yellow-400" />
-                        <span className="text-sm text-gray-400">{site.score}/100</span>
-                      </div>
-                    </div>
+                    <Badge className={`${site.color} text-white`}>
+                      {site.status}
+                    </Badge>
                   </div>
-                  <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
-                    <Eye className="h-4 w-4 mr-1" />
-                    View
-                  </Button>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 text-yellow-400" />
+                      <span className="text-sm text-gray-300">{site.score}/100</span>
+                    </div>
+                    <div className="text-sm text-green-400 font-medium">{site.cost}</div>
+                  </div>
+                  <p className="text-xs text-gray-400 mb-3">{site.details}</p>
+                  <div className="flex justify-between items-center">
+                    <Progress value={site.score} className="flex-1 mr-3 h-2" />
+                    <Button size="sm" variant="outline" className="border-gray-600 text-gray-300">
+                      <Eye className="h-4 w-4 mr-1" />
+                      Details
+                    </Button>
+                  </div>
                 </div>
               ))}
               <Button className="w-full bg-cyan-600 hover:bg-cyan-700 mt-4">
+                <MapPin className="h-4 w-4 mr-2" />
                 View All Sites
               </Button>
             </CardContent>
@@ -623,71 +765,29 @@ export function MainDashboard() {
         </motion.div>
       </div>
 
-      {/* Urgent Tasks */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Urgent Tasks
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {urgentTasks.map((task, index) => (
-                <div key={task.id} className="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-white">{task.title}</h4>
-                    <p className="text-sm text-gray-400 line-clamp-1">{task.description}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge className={`${getPriorityBadgeColor(task.priority)} text-white`}>
-                        {task.priority}
-                      </Badge>
-                      {task.due_date && (
-                        <span className="text-sm text-gray-400">
-                          Due: {new Date(task.due_date).toLocaleDateString()}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
+      {/* Enhanced Quick Actions */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
+        <Card className="bg-gray-900 border-gray-700">
+          <CardHeader className="border-b border-gray-700">
             <CardTitle className="text-white">Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700">
-                <Calendar className="h-6 w-6" />
-                <span className="text-sm">Schedule Meeting</span>
+              <Button className="h-24 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 border-0">
+                <Calendar className="h-8 w-8" />
+                <span className="text-sm font-medium">Schedule Site Visit</span>
               </Button>
-              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-green-600 hover:bg-green-700">
-                <CheckCircle className="h-6 w-6" />
-                <span className="text-sm">Create Task</span>
+              <Button className="h-24 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 border-0">
+                <CheckCircle className="h-8 w-8" />
+                <span className="text-sm font-medium">Review Documents</span>
               </Button>
-              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-700">
-                <MapPin className="h-6 w-6" />
-                <span className="text-sm">Site Analysis</span>
+              <Button className="h-24 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 border-0">
+                <BarChart3 className="h-8 w-8" />
+                <span className="text-sm font-medium">Run Analysis</span>
               </Button>
-              <Button className="h-20 flex flex-col items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700">
-                <Package className="h-6 w-6" />
-                <span className="text-sm">Material Orders</span>
+              <Button className="h-24 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 border-0">
+                <FileText className="h-8 w-8" />
+                <span className="text-sm font-medium">Generate Report</span>
               </Button>
             </div>
           </CardContent>
