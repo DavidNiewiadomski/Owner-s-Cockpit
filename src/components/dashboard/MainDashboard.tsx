@@ -96,25 +96,33 @@ const changeOrders = [
   { id: 'CO-088', project: 'Quonset Point', description: 'Additional crane capacity requirements', cost: 220000, status: 'flagged', designImpact: 'high' }
 ];
 
-// Chart data for visualizations
+// Updated Chart data with better names for the futuristic theme
 const facilityTicketsData = [
-  { name: 'Critical', value: 8, color: '#EF4444' },
-  { name: 'High', value: 15, color: '#F97316' },
-  { name: 'Normal', value: 23, color: '#10B981' }
+  { name: 'Critical Alerts', value: 8, color: '#FF0080' },
+  { name: 'High Priority', value: 15, color: '#00D4FF' },
+  { name: 'Standard', value: 23, color: '#00FF88' }
 ];
 
 const spaceUsageComparisonData = [
-  { space: 'Conference', historical: 78, planned: 85 },
-  { space: 'Manufacturing', historical: 92, planned: 88 },
-  { space: 'Office Areas', historical: 65, planned: 75 },
-  { space: 'Cafeteria', historical: 45, planned: 62 },
+  { space: 'Conf', historical: 78, planned: 85 },
+  { space: 'Mfg', historical: 92, planned: 88 },
+  { space: 'Office', historical: 65, planned: 75 },
+  { space: 'Dining', historical: 45, planned: 62 },
   { space: 'Workshop', historical: 83, planned: 80 }
 ];
 
 const leaseResponsibilityData = [
   { property: 'Arsenal-1', landlordScore: 85, tenantScore: 92, issues: 3 },
-  { property: 'Atlanta Studio', landlordScore: 78, tenantScore: 88, issues: 2 },
-  { property: 'Quonset Point', landlordScore: 90, tenantScore: 85, issues: 1 }
+  { property: 'Atlanta', landlordScore: 78, tenantScore: 88, issues: 2 },
+  { property: 'Quonset', landlordScore: 90, tenantScore: 85, issues: 1 }
+];
+
+// Simplified maintenance data for better chart display
+const maintenanceAnalysisData = [
+  { item: 'HVAC Filter', cost: 2500, priority: 3, building: 'Arsenal-1' },
+  { item: 'Generator Test', cost: 1200, priority: 3, building: 'Atlanta' },
+  { item: 'Elevator Inspect', cost: 3200, priority: 2, building: 'Quonset' },
+  { item: 'Chiller Clean', cost: 1800, priority: 2, building: 'Arsenal-1' }
 ];
 
 export function MainDashboard() {
@@ -169,6 +177,24 @@ export function MainDashboard() {
       case 'medium': return 'text-yellow-400 bg-yellow-900/20';
       default: return 'text-green-400 bg-green-900/20';
     }
+  };
+
+  // Custom futuristic tooltip component
+  const FuturisticTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-black/90 backdrop-blur-md border border-cyan-400/30 rounded-lg p-3 shadow-lg shadow-cyan-400/20">
+          <p className="text-cyan-400 font-medium text-sm">{label}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={index} className="text-white text-sm">
+              <span style={{ color: entry.color }}>{entry.name}: </span>
+              <span className="font-bold">{entry.value}</span>
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -633,7 +659,7 @@ export function MainDashboard() {
         </TabsContent>
       </Tabs>
 
-      {/* New Charts Section with Fixed Text Visibility */}
+      {/* Futuristic Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Facility Management Tickets Chart */}
         <motion.div
@@ -641,15 +667,15 @@ export function MainDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0 }}
         >
-          <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-white flex items-center gap-2 text-lg">
-                <Wrench className="h-5 w-5 text-purple-400" />
-                Facility Management Tickets
+          <Card className="bg-black/80 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-500/20">
+            <CardHeader className="pb-4 border-b border-cyan-500/20">
+              <CardTitle className="text-cyan-400 flex items-center gap-2 text-lg font-bold">
+                <Wrench className="h-5 w-5 text-cyan-400" />
+                System Alert Distribution
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-72 w-full">
+            <CardContent className="pt-6">
+              <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <RechartsPieChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                     <Pie
@@ -659,33 +685,24 @@ export function MainDashboard() {
                       outerRadius={70}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                      labelLine={false}
-                      fontSize={12}
+                      stroke="rgba(0, 212, 255, 0.3)"
+                      strokeWidth={2}
                     >
                       {facilityTicketsData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#1F2937', 
-                        border: '1px solid #374151', 
-                        borderRadius: '8px',
-                        color: '#F9FAFB',
-                        fontSize: '12px'
-                      }}
-                    />
+                    <Tooltip content={<FuturisticTooltip />} />
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="grid grid-cols-3 gap-2 mt-4">
                 {facilityTicketsData.map((item, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-2xl font-bold" style={{ color: item.color }}>
+                  <div key={index} className="text-center p-2 bg-gray-900/50 rounded border border-cyan-500/20">
+                    <div className="text-xl font-bold" style={{ color: item.color }}>
                       {item.value}
                     </div>
-                    <div className="text-sm text-gray-400">{item.name}</div>
+                    <div className="text-xs text-gray-400">{item.name}</div>
                   </div>
                 ))}
               </div>
@@ -699,57 +716,55 @@ export function MainDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
         >
-          <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-white flex items-center gap-2 text-lg">
-                <Wifi className="h-5 w-5 text-green-400" />
-                Space Usage: Historical vs Planned
+          <Card className="bg-black/80 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-500/20">
+            <CardHeader className="pb-4 border-b border-cyan-500/20">
+              <CardTitle className="text-cyan-400 flex items-center gap-2 text-lg font-bold">
+                <Wifi className="h-5 w-5 text-cyan-400" />
+                Space Analytics Matrix
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-80 w-full">
+            <CardContent className="pt-6">
+              <div className="h-72 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart 
                     data={spaceUsageComparisonData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(55, 65, 81, 0.4)" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(0, 212, 255, 0.2)" />
                     <XAxis 
                       dataKey="space" 
-                      tick={{ fill: '#9CA3AF', fontSize: 11 }}
-                      axisLine={{ stroke: '#374151' }}
-                      angle={-45}
-                      textAnchor="end"
-                      height={80}
-                      interval={0}
+                      tick={{ fill: '#00D4FF', fontSize: 12, fontWeight: 'bold' }}
+                      axisLine={{ stroke: '#00D4FF' }}
                     />
                     <YAxis 
-                      tick={{ fill: '#9CA3AF', fontSize: 12 }}
-                      axisLine={{ stroke: '#374151' }}
-                      label={{ value: 'Usage %', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                      tick={{ fill: '#00D4FF', fontSize: 12 }}
+                      axisLine={{ stroke: '#00D4FF' }}
+                      label={{ value: 'Usage %', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#00D4FF' } }}
                     />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#1F2937', 
-                        border: '1px solid #374151', 
-                        borderRadius: '8px',
-                        color: '#F9FAFB',
-                        fontSize: '12px'
-                      }}
-                    />
-                    <Bar dataKey="historical" fill="#10B981" name="Historical Usage %" radius={[2, 2, 0, 0]} />
-                    <Bar dataKey="planned" fill="#3B82F6" name="Planned Usage %" radius={[2, 2, 0, 0]} />
+                    <Tooltip content={<FuturisticTooltip />} />
+                    <Bar dataKey="historical" fill="url(#historicalGradient)" name="Historical Usage %" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="planned" fill="url(#plannedGradient)" name="Planned Usage %" radius={[2, 2, 0, 0]} />
+                    <defs>
+                      <linearGradient id="historicalGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#00FF88" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#00FF88" stopOpacity={0.3}/>
+                      </linearGradient>
+                      <linearGradient id="plannedGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#00D4FF" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#00D4FF" stopOpacity={0.3}/>
+                      </linearGradient>
+                    </defs>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
               <div className="flex items-center justify-center gap-6 mt-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded"></div>
-                  <span className="text-sm text-gray-300">Historical</span>
+                  <div className="w-3 h-3 bg-green-400 rounded shadow-sm shadow-green-400"></div>
+                  <span className="text-sm text-cyan-300">Historical</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                  <span className="text-sm text-gray-300">Planned</span>
+                  <div className="w-3 h-3 bg-cyan-400 rounded shadow-sm shadow-cyan-400"></div>
+                  <span className="text-sm text-cyan-300">Planned</span>
                 </div>
               </div>
             </CardContent>
@@ -762,68 +777,59 @@ export function MainDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 }}
         >
-          <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-white flex items-center gap-2 text-lg">
+          <Card className="bg-black/80 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-500/20">
+            <CardHeader className="pb-4 border-b border-cyan-500/20">
+              <CardTitle className="text-cyan-400 flex items-center gap-2 text-lg font-bold">
                 <FileText className="h-5 w-5 text-cyan-400" />
-                Lease Responsibility Analysis
+                Contract Compliance Radar
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="h-80 w-full">
+            <CardContent className="pt-6">
+              <div className="h-72 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart 
                     data={leaseResponsibilityData}
-                    margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+                    margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                   >
-                    <PolarGrid stroke="rgba(55, 65, 81, 0.4)" />
+                    <PolarGrid stroke="rgba(0, 212, 255, 0.3)" />
                     <PolarAngleAxis 
                       dataKey="property" 
-                      tick={{ fill: '#9CA3AF', fontSize: 11 }}
-                      className="text-xs"
+                      tick={{ fill: '#00D4FF', fontSize: 12, fontWeight: 'bold' }}
                     />
                     <PolarRadiusAxis 
                       angle={0} 
                       domain={[0, 100]} 
-                      tick={{ fill: '#9CA3AF', fontSize: 10 }}
+                      tick={{ fill: '#00D4FF', fontSize: 10 }}
                       tickFormatter={(value) => `${value}`}
                     />
                     <Radar
-                      name="Landlord Compliance"
+                      name="Landlord Score"
                       dataKey="landlordScore"
-                      stroke="#10B981"
-                      fill="#10B981"
-                      fillOpacity={0.2}
-                      strokeWidth={2}
+                      stroke="#00FF88"
+                      fill="#00FF88"
+                      fillOpacity={0.3}
+                      strokeWidth={3}
                     />
                     <Radar
-                      name="Tenant Compliance"
+                      name="Tenant Score"
                       dataKey="tenantScore"
-                      stroke="#3B82F6"
-                      fill="#3B82F6"
-                      fillOpacity={0.2}
-                      strokeWidth={2}
+                      stroke="#00D4FF"
+                      fill="#00D4FF"
+                      fillOpacity={0.3}
+                      strokeWidth={3}
                     />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#1F2937', 
-                        border: '1px solid #374151', 
-                        borderRadius: '8px',
-                        color: '#F9FAFB',
-                        fontSize: '12px'
-                      }}
-                    />
+                    <Tooltip content={<FuturisticTooltip />} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
               <div className="flex items-center justify-center gap-6 mt-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded"></div>
-                  <span className="text-sm text-gray-300">Landlord</span>
+                  <div className="w-3 h-3 bg-green-400 rounded shadow-sm shadow-green-400"></div>
+                  <span className="text-sm text-cyan-300">Landlord</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                  <span className="text-sm text-gray-300">Tenant</span>
+                  <div className="w-3 h-3 bg-cyan-400 rounded shadow-sm shadow-cyan-400"></div>
+                  <span className="text-sm text-cyan-300">Tenant</span>
                 </div>
               </div>
             </CardContent>
@@ -831,75 +837,67 @@ export function MainDashboard() {
         </motion.div>
       </div>
 
-      {/* Predictive Maintenance Insights Chart */}
+      {/* Enhanced Predictive Maintenance Chart */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.3 }}
       >
-        <Card className="bg-gray-900 border-gray-700">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-white flex items-center gap-2 text-lg">
+        <Card className="bg-black/80 border border-cyan-500/30 backdrop-blur-md shadow-lg shadow-cyan-500/20">
+          <CardHeader className="pb-4 border-b border-cyan-500/20">
+            <CardTitle className="text-cyan-400 flex items-center gap-2 text-lg font-bold">
               <Target className="h-5 w-5 text-cyan-400" />
               Predictive Maintenance Cost Analysis
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="h-96 w-full">
+          <CardContent className="pt-6">
+            <div className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart 
-                  data={equipmentMaintenance}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 120 }}
+                <BarChart 
+                  data={maintenanceAnalysisData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(55, 65, 81, 0.4)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0, 212, 255, 0.2)" />
                   <XAxis 
-                    dataKey="equipment" 
-                    tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                    axisLine={{ stroke: '#374151' }}
+                    dataKey="item" 
+                    tick={{ fill: '#00D4FF', fontSize: 11, fontWeight: 'bold' }}
+                    axisLine={{ stroke: '#00D4FF' }}
                     angle={-45}
                     textAnchor="end"
-                    height={120}
+                    height={60}
                     interval={0}
                   />
                   <YAxis 
-                    tick={{ fill: '#9CA3AF', fontSize: 12 }}
-                    axisLine={{ stroke: '#374151' }}
-                    label={{ value: 'Cost ($)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    tick={{ fill: '#00D4FF', fontSize: 12 }}
+                    axisLine={{ stroke: '#00D4FF' }}
+                    label={{ value: 'Cost ($)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#00D4FF' } }}
                   />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#1F2937', 
-                      border: '1px solid #374151', 
-                      borderRadius: '8px',
-                      color: '#F9FAFB',
-                      fontSize: '12px'
-                    }}
-                    formatter={(value, name) => [
-                      name === 'cost' ? `$${value.toLocaleString()}` : value,
-                      name === 'cost' ? 'Estimated Cost' : 'Priority Level'
-                    ]}
-                  />
+                  <Tooltip content={<FuturisticTooltip />} />
                   <Bar 
                     dataKey="cost" 
-                    fill="#F59E0B" 
-                    name="cost"
+                    fill="url(#maintenanceGradient)"
+                    name="Maintenance Cost"
                     radius={[4, 4, 0, 0]}
+                    stroke="rgba(255, 0, 128, 0.5)"
+                    strokeWidth={1}
                   />
-                  <Line 
-                    type="monotone" 
-                    dataKey={(item) => item.priority === 'critical' ? 3 : item.priority === 'high' ? 2 : 1}
-                    stroke="#EF4444" 
-                    strokeWidth={3}
-                    name="priority"
-                  />
-                </ComposedChart>
+                  <defs>
+                    <linearGradient id="maintenanceGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#FF0080" stopOpacity={0.9}/>
+                      <stop offset="95%" stopColor="#FF0080" stopOpacity={0.3}/>
+                    </linearGradient>
+                  </defs>
+                </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="mt-4 bg-blue-900/20 border border-blue-700 rounded-lg p-4">
-              <h4 className="text-blue-300 font-medium mb-2">AI-Driven Insights</h4>
+            <div className="mt-6 bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-lg p-4">
+              <h4 className="text-cyan-300 font-bold mb-2 flex items-center gap-2">
+                <Cpu className="h-4 w-4" />
+                AI-Driven Predictive Insights
+              </h4>
               <p className="text-gray-300 text-sm">
-                Based on historical data and current usage patterns, AHU-9 filter replacement could prevent 
-                an estimated $15K in emergency repairs and reduce facility tickets by 18%.
+                Neural network analysis indicates AHU-9 filter replacement could prevent $15K in emergency repairs 
+                and reduce facility tickets by 18%. Optimal replacement window: 72 hours.
               </p>
             </div>
           </CardContent>
