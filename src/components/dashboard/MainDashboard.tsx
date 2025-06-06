@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,7 +38,7 @@ const CircularGauge = ({ value, max, label, unit, color = "#00ff88", size = 120,
           cy={centerY}
           r={radius + 5}
           fill="none"
-          stroke="#333"
+          stroke="#1a1a1a"
           strokeWidth="3"
         />
         {/* Main gauge background */}
@@ -46,7 +47,7 @@ const CircularGauge = ({ value, max, label, unit, color = "#00ff88", size = 120,
           cy={centerY}
           r={radius}
           fill="url(#gaugeGradient)"
-          stroke="#666"
+          stroke="#333"
           strokeWidth="2"
         />
         {/* Scale marks */}
@@ -64,7 +65,7 @@ const CircularGauge = ({ value, max, label, unit, color = "#00ff88", size = 120,
               y1={markStartY}
               x2={markEndX}
               y2={markEndY}
-              stroke="#ccc"
+              stroke="#888"
               strokeWidth="2"
             />
           );
@@ -86,7 +87,7 @@ const CircularGauge = ({ value, max, label, unit, color = "#00ff88", size = 120,
               cy={centerY}
               r="4"
               fill={color}
-              stroke="#333"
+              stroke="#1a1a1a"
               strokeWidth="1"
             />
           </>
@@ -107,9 +108,9 @@ const CircularGauge = ({ value, max, label, unit, color = "#00ff88", size = 120,
         
         <defs>
           <radialGradient id="gaugeGradient" cx="50%" cy="50%">
-            <stop offset="0%" stopColor="#1a1a1a" />
-            <stop offset="70%" stopColor="#2a2a2a" />
-            <stop offset="100%" stopColor="#0a0a0a" />
+            <stop offset="0%" stopColor="#000000" />
+            <stop offset="70%" stopColor="#0a0a0a" />
+            <stop offset="100%" stopColor="#000000" />
           </radialGradient>
         </defs>
       </svg>
@@ -297,19 +298,19 @@ export function MainDashboard() {
   };
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-gray-800 via-gray-900 to-black min-h-screen p-6">
+    <div className="space-y-6 bg-black min-h-screen p-6">
       {/* Cockpit Header Panel */}
-      <div className="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-700 border-2 border-gray-600 rounded-lg p-4 shadow-2xl">
+      <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-4 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.3)' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 bg-green-500 rounded-full animate-pulse shadow-lg"></div>
-            <h1 className="text-2xl font-bold text-amber-300 uppercase tracking-wider">Construction Management Cockpit</h1>
+            <h1 className="text-2xl font-bold text-cyan-400 uppercase tracking-wider">Construction Management Cockpit</h1>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-amber-300 font-mono text-sm">
+            <div className="text-cyan-400 font-mono text-sm">
               {new Date().toLocaleTimeString()}
             </div>
-            <div className="w-6 h-6 bg-amber-500 rounded-full animate-pulse"></div>
+            <div className="w-6 h-6 bg-cyan-500 rounded-full animate-pulse"></div>
           </div>
         </div>
       </div>
@@ -322,7 +323,8 @@ export function MainDashboard() {
             initial={{ opacity: 0, scale: 0.8 }} 
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.2 }}
-            className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 rounded-full p-6 shadow-2xl relative"
+            className="bg-black border-2 border-cyan-800/30 rounded-lg p-6 shadow-2xl relative"
+            style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}
           >
             <div className="flex flex-col items-center">
               <CircularGauge
@@ -342,33 +344,33 @@ export function MainDashboard() {
               </div>
             </div>
             
-            {/* Corner rivets */}
-            <div className="absolute top-2 left-2 w-2 h-2 bg-gray-500 rounded-full shadow-inner"></div>
-            <div className="absolute top-2 right-2 w-2 h-2 bg-gray-500 rounded-full shadow-inner"></div>
-            <div className="absolute bottom-2 left-2 w-2 h-2 bg-gray-500 rounded-full shadow-inner"></div>
-            <div className="absolute bottom-2 right-2 w-2 h-2 bg-gray-500 rounded-full shadow-inner"></div>
+            {/* Corner accent lights */}
+            <div className="absolute top-2 left-2 w-2 h-2 bg-cyan-500 rounded-full shadow-inner"></div>
+            <div className="absolute top-2 right-2 w-2 h-2 bg-cyan-500 rounded-full shadow-inner"></div>
+            <div className="absolute bottom-2 left-2 w-2 h-2 bg-cyan-500 rounded-full shadow-inner"></div>
+            <div className="absolute bottom-2 right-2 w-2 h-2 bg-cyan-500 rounded-full shadow-inner"></div>
           </motion.div>
         ))}
       </div>
 
       {/* Secondary Instrument Panel */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-gray-600 rounded-lg p-4 text-center">
-          <Compass className="h-8 w-8 text-amber-400 mx-auto mb-2" />
-          <div className="text-amber-300 font-bold text-lg">$93M</div>
+        <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-4 text-center" style={{ boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)' }}>
+          <Compass className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+          <div className="text-cyan-300 font-bold text-lg">$93M</div>
           <div className="text-gray-400 text-xs uppercase">Total Budget</div>
         </div>
-        <div className="bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-gray-600 rounded-lg p-4 text-center">
+        <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-4 text-center" style={{ boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)' }}>
           <Gauge className="h-8 w-8 text-green-400 mx-auto mb-2" />
           <div className="text-green-300 font-bold text-lg">$63.3M</div>
           <div className="text-gray-400 text-xs uppercase">Spent</div>
         </div>
-        <div className="bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-gray-600 rounded-lg p-4 text-center">
+        <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-4 text-center" style={{ boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)' }}>
           <AlertTriangle className="h-8 w-8 text-red-400 mx-auto mb-2" />
           <div className="text-red-300 font-bold text-lg">23</div>
           <div className="text-gray-400 text-xs uppercase">Active Issues</div>
         </div>
-        <div className="bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-gray-600 rounded-lg p-4 text-center">
+        <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-4 text-center" style={{ boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)' }}>
           <Navigation className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
           <div className="text-cyan-300 font-bold text-lg">68%</div>
           <div className="text-gray-400 text-xs uppercase">Avg Progress</div>
@@ -377,30 +379,29 @@ export function MainDashboard() {
 
       {/* Control Panel Tabs */}
       <Tabs defaultValue="controls" className="w-full">
-        <TabsList className="bg-gradient-to-r from-gray-700 to-gray-800 border-2 border-gray-600 grid grid-cols-2 lg:grid-cols-6 h-auto p-1 rounded-lg">
-          <TabsTrigger value="controls" className="text-xs px-3 py-2 text-amber-300">Systems</TabsTrigger>
-          <TabsTrigger value="facility" className="text-xs px-3 py-2 text-amber-300">Facility</TabsTrigger>
-          <TabsTrigger value="space" className="text-xs px-3 py-2 text-amber-300">Space</TabsTrigger>
-          <TabsTrigger value="bms" className="text-xs px-3 py-2 text-amber-300">BMS</TabsTrigger>
-          <TabsTrigger value="maintenance" className="text-xs px-3 py-2 text-amber-300">Maint</TabsTrigger>
-          <TabsTrigger value="lease" className="text-xs px-3 py-2 text-amber-300">Lease</TabsTrigger>
+        <TabsList className="bg-black border-2 border-cyan-800/30 grid grid-cols-2 lg:grid-cols-6 h-auto p-1 rounded-lg" style={{ boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)' }}>
+          <TabsTrigger value="controls" className="text-xs px-3 py-2 text-cyan-300">Systems</TabsTrigger>
+          <TabsTrigger value="facility" className="text-xs px-3 py-2 text-cyan-300">Facility</TabsTrigger>
+          <TabsTrigger value="space" className="text-xs px-3 py-2 text-cyan-300">Space</TabsTrigger>
+          <TabsTrigger value="bms" className="text-xs px-3 py-2 text-cyan-300">BMS</TabsTrigger>
+          <TabsTrigger value="maintenance" className="text-xs px-3 py-2 text-cyan-300">Maint</TabsTrigger>
+          <TabsTrigger value="lease" className="text-xs px-3 py-2 text-cyan-300">Lease</TabsTrigger>
         </TabsList>
 
         <TabsContent value="controls" className="mt-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-              <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-                <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+            <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+              <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+                <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                   <AlertTriangle className="h-5 w-5" />
                   System Alerts
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 p-6">
-                {/* Keep existing change orders content but with cockpit styling */}
                 <div className="space-y-3">
                   {['CO-085: Fire suppression - $125K', 'CO-086: Electrical upgrade - $85K', 'CO-087: Soundproofing - $45K'].map((item, index) => (
-                    <div key={index} className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 flex items-center justify-between">
-                      <span className="text-amber-200 font-mono text-sm">{item}</span>
+                    <div key={index} className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 flex items-center justify-between">
+                      <span className="text-cyan-200 font-mono text-sm">{item}</span>
                       <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
                     </div>
                   ))}
@@ -408,16 +409,16 @@ export function MainDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-              <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-                <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+            <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+              <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+                <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                   <DollarSign className="h-5 w-5" />
                   Financial Status
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 p-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 text-center">
+                  <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 text-center">
                     <CircularGauge
                       value={68}
                       max={100}
@@ -427,7 +428,7 @@ export function MainDashboard() {
                       size={80}
                     />
                   </div>
-                  <div className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 text-center">
+                  <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 text-center">
                     <CircularGauge
                       value={85}
                       max={100}
@@ -443,11 +444,10 @@ export function MainDashboard() {
           </div>
         </TabsContent>
 
-        {/* Keep other tab contents with similar cockpit styling */}
         <TabsContent value="facility" className="mt-6">
-          <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-              <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+          <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+            <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+              <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                 <Wrench className="h-5 w-5" />
                 Facility Systems Monitor
               </CardTitle>
@@ -487,16 +487,16 @@ export function MainDashboard() {
         </TabsContent>
 
         <TabsContent value="space" className="mt-6">
-          <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-              <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+          <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+            <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+              <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                 <Users className="h-5 w-5" />
                 Space Usage Analysis
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 text-center">
+                <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 text-center">
                   <CircularGauge
                     value={78}
                     max={100}
@@ -506,7 +506,7 @@ export function MainDashboard() {
                     size={80}
                   />
                 </div>
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 text-center">
+                <div className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 text-center">
                   <CircularGauge
                     value={62}
                     max={100}
@@ -522,9 +522,9 @@ export function MainDashboard() {
         </TabsContent>
 
         <TabsContent value="bms" className="mt-6">
-          <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-              <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+          <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+            <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+              <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                 <ThermometerSun className="h-5 w-5" />
                 BMS Alarms Overview
               </CardTitle>
@@ -532,8 +532,8 @@ export function MainDashboard() {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {bmsAlarms.map((alarm, index) => (
-                  <div key={index} className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 flex items-center justify-between">
-                    <span className="text-amber-200 font-mono text-sm">{alarm.system} - {alarm.message}</span>
+                  <div key={index} className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 flex items-center justify-between">
+                    <span className="text-cyan-200 font-mono text-sm">{alarm.system} - {alarm.message}</span>
                     <div className={`w-3 h-3 rounded-full ${alarm.priority === 'critical' ? 'bg-red-500' : alarm.priority === 'high' ? 'bg-orange-500' : 'bg-yellow-500'} animate-pulse`}></div>
                   </div>
                 ))}
@@ -543,9 +543,9 @@ export function MainDashboard() {
         </TabsContent>
 
         <TabsContent value="maintenance" className="mt-6">
-          <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-              <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+          <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+            <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+              <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                 <Settings2 className="h-5 w-5" />
                 Maintenance Schedule
               </CardTitle>
@@ -553,8 +553,8 @@ export function MainDashboard() {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {equipmentMaintenance.map((item, index) => (
-                  <div key={index} className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 flex items-center justify-between">
-                    <span className="text-amber-200 font-mono text-sm">{item.equipment} - {item.building}</span>
+                  <div key={index} className="bg-black border-2 border-cyan-800/30 rounded-lg p-3 flex items-center justify-between">
+                    <span className="text-cyan-200 font-mono text-sm">{item.equipment} - {item.building}</span>
                     <div className={`w-3 h-3 rounded-full ${item.priority === 'critical' ? 'bg-red-500' : item.priority === 'high' ? 'bg-orange-500' : 'bg-yellow-500'} animate-pulse`}></div>
                   </div>
                 ))}
@@ -564,9 +564,9 @@ export function MainDashboard() {
         </TabsContent>
 
         <TabsContent value="lease" className="mt-6">
-          <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 border-4 border-gray-600 shadow-2xl">
-            <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 border-b-2 border-gray-500">
-              <CardTitle className="text-amber-300 flex items-center gap-2 uppercase tracking-wider">
+          <Card className="bg-black border-2 border-cyan-800/30 shadow-2xl" style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.2)' }}>
+            <CardHeader className="bg-black border-b-2 border-cyan-800/30">
+              <CardTitle className="text-cyan-300 flex items-center gap-2 uppercase tracking-wider">
                 <FileText className="h-5 w-5" />
                 Lease Information
               </CardTitle>
@@ -574,8 +574,8 @@ export function MainDashboard() {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {leaseInsights.map((lease, index) => (
-                  <div key={index} className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3">
-                    <div className="text-amber-200 font-mono text-sm">{lease.property}</div>
+                  <div key={index} className="bg-black border-2 border-cyan-800/30 rounded-lg p-3">
+                    <div className="text-cyan-200 font-mono text-sm">{lease.property}</div>
                     <div className="text-gray-400 text-xs">{lease.issue}</div>
                   </div>
                 ))}
